@@ -1,0 +1,1 @@
+"resources/generator.exe" number 100 100 5 resources/sample.txt
