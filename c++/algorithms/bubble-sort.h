@@ -3,7 +3,7 @@
 
 namespace sorter {
 
-  class BubbleSort {
+  class Bubble {
   public:
     static void solve(std::vector<int> &messy) {
       for (int i = 0; i < messy.size(); i++) {
@@ -23,7 +23,7 @@ namespace sorter {
           else k = j;
         }
         
-        utils::Printer::log(messy, i, utils::Printer::BAR_STYLE);
+        util::Printer::log(messy, i, util::Printer::BAR_STYLE);
         if (breakLoop) break;
       }
     }
