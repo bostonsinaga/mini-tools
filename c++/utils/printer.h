@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-namespace utils {
+namespace util {
 
   class Printer {
   public:

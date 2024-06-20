@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-namespace utils {
+namespace util {
 
   class Reader {
   public:
