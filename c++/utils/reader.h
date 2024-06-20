@@ -8,7 +8,7 @@ namespace util {
   class Reader {
   public:
     static std::vector<int> txtToNumbers(
-      std::string filename = "sample.txt"
+      std::string filename = "resources/sample.txt"
     ) {
       /** Read file */
 
