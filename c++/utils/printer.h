@@ -10,20 +10,36 @@ namespace util {
   public:
     enum {BAR_STYLE, NUMBER_STYLE};
 
-    static void log(std::vector<int> &nums, int step, bool style) {
-      std::cout << "Step: " << step << std::endl;
+    static void log(
+      std::vector<int> &nums,
+      bool style,
+      int step,
+      std::string title = "Step"
+    ) {
+      if (step >= 0) {
+        std::cout << title << ": " << step << std::endl;
+      }
+      else std::cout << title << ": " << std::endl;
 
       for (int i = 0; i < nums.size(); i++) {
-
-        if (style) std::cout << nums[i] << ',';
+        if (style) {
+          std::cout << nums[i] << (i < nums.size() - 1 ? ", " : "\n");
+        }
         else {
           for (int j = 0; j < nums[i]; j++) {
             std::cout << "[]";
           }
+          std::cout << std::endl;
         }
-
-        std::cout << std::endl;
       }
+    }
+
+    static void log(
+      std::vector<int> &nums,
+      bool style,
+      std::string title = "Result"
+    ) {
+      log(nums, style, -1, title);
     }
   };
 }
