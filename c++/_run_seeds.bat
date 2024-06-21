@@ -1,0 +1,1 @@
+_generate-seeds.bat & program.exe
