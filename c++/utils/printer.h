@@ -22,7 +22,7 @@ namespace util {
           }
         }
 
-        std::cout << "\n\n";
+        std::cout << std::endl;
       }
     }
   };
