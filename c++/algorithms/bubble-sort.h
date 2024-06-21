@@ -20,9 +20,10 @@ namespace sorter {
             messy[k] = messy[j];
             messy[j] = buffer;
           }
-          else k = j;
+
+          k = j;
         }
-        
+
         util::Printer::log(messy, i, util::Printer::BAR_STYLE);
         if (breakLoop) break;
       }
