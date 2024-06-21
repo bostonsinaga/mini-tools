@@ -24,7 +24,6 @@ namespace sorter {
           k = j;
         }
 
-        util::Printer::log(messy, i, util::Printer::BAR_STYLE);
         if (breakLoop) break;
       }
     }
