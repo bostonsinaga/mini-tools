@@ -25,12 +25,7 @@ namespace util {
         if (style) {
           std::cout << nums[i] << (i < nums.size() - 1 ? ", " : "\n");
         }
-        else {
-          for (int j = 0; j < nums[i]; j++) {
-            std::cout << "[]";
-          }
-          std::cout << std::endl;
-        }
+        else std::cout << std::string(nums[i], '=') << std::endl;
       }
     }
 
