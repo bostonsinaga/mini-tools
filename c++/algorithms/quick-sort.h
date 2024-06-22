@@ -5,9 +5,11 @@ namespace sorter {
 
   class Quick {
   private:
+    typedef const int & INT;
+
     // 'left' and 'right' are index of 'messy'
     static int partition(
-      std::vector<int> &messy, int left, int right
+      std::vector<int> &messy, INT left, INT right
     ) {
       int i = left - 1;
 
@@ -24,10 +26,10 @@ namespace sorter {
 
     // 'left' and 'right' are index of 'messy'
     static void recursion(
-      std::vector<int> &messy, int left, int right
+      std::vector<int> &messy, INT left, INT right
     ) {
       if (left < right) {
-        int piv = partition(messy, left, right);
+        INT piv = partition(messy, left, right);
         recursion(messy, left, piv - 1);
         recursion(messy, piv + 1, right);
       }
