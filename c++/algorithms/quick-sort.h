@@ -24,18 +24,23 @@ namespace sorter {
 
     // 'left' and 'right' are index of 'messy'
     static void recursion(
-      std::vector<int> &messy, int left, int right
+      std::vector<int> &messy, int left, int right,
+      int &ctrHook
     ) {
+      ctrHook++;
+
       if (left < right) {
         int piv = partition(messy, left, right);
-        recursion(messy, 0, piv - 1);
-        recursion(messy, piv + 1, right);
+        recursion(messy, left, piv - 1, ctrHook);
+        recursion(messy, piv + 1, right, ctrHook);
       }
     }
 
   public:
-    static void solve(std::vector<int> &messy) {
-      recursion(messy, 0, messy.size() - 1);
+    static int solve(std::vector<int> &messy) {
+      int ctrHook = 0;
+      recursion(messy, 0, messy.size() - 1, ctrHook);
+      return ctrHook;
     }
   };
 }
