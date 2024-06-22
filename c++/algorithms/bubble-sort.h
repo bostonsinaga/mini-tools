@@ -5,11 +5,9 @@ namespace sorter {
 
   class Bubble {
   public:
-    static int solve(std::vector<int> &messy) {
-      int ctr = 0;
+    static void solve(std::vector<int> &messy) {
 
       for (int i = 0; i < messy.size(); i++) {
-
         bool breakLoop = true;
         int k = 0;
 
@@ -23,11 +21,8 @@ namespace sorter {
           k = j;
         }
 
-        ctr++;
         if (breakLoop) break;
       }
-
-      return ctr;
     }
   };
 }
