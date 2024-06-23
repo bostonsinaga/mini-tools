@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
 #include <functional>
-#include "../types.h"
 
 namespace mini_tools {
 namespace utils {
