@@ -29,7 +29,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::txtToNumbers(std::string filename) {
 
-    if constexpr (!Types::isNumber<T>()) {
+    if constexpr (!CheckType::isNumber<T>()) {
       constexpr bool txtToNumbers_template_error = false;
       static_assert(txtToNumbers_template_error, "only for numbers");
     }
@@ -59,7 +59,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::txtToLetters(std::string filename) {
 
-    if constexpr (!Types::isLetter<T>()) {
+    if constexpr (!CheckType::isLetter<T>()) {
       constexpr bool txtToLetters_template_error = false;
       static_assert(txtToLetters_template_error, "only for letters");
     }
