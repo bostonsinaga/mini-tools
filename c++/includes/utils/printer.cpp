@@ -1,7 +1,10 @@
-#ifndef __UTILS__PRINTER_CPP__ 
-#define __UTILS__PRINTER_CPP__
+#ifndef __MINI_TOOLS__UTILS__PRINTER_CPP__ 
+#define __MINI_TOOLS__UTILS__PRINTER_CPP__
 
-namespace util {
+#include <iostream>
+
+namespace mini_tools {
+namespace utils {
 
   template <typename T>
   std::string Printer<T>::combine(
@@ -103,6 +106,6 @@ namespace util {
   ) {
     Printer<T>::logf(vec, asBar, extended, -1, title, filename);
   }
-}
+}}
 
-#endif // __UTILS__PRINTER_CPP__
+#endif // __MINI_TOOLS__UTILS__PRINTER_CPP__
