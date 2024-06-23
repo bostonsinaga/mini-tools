@@ -46,16 +46,16 @@ namespace utils {
       bool asBar,
       bool extended, // 'false' will overwrite
       int step,
-      std::string title = "Step",
-      std::string filename
+      std::string filename,
+      std::string title = "Step"
     );
 
     static void logf(
       std::vector<T> &vec,
       bool asBar,
       bool extended, // 'false' will overwrite
-      std::string title = "Result",
-      std::string filename
+      std::string filename,
+      std::string title = "Result"
     );
   };
 }}
