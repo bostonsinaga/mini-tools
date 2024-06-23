@@ -1,32 +1,21 @@
-
 #include <chrono>
-
-#include "utils/printer.h"
-#include "utils/reader.h"
-#include "algorithms/bubble-sort.h"
-#include "algorithms/quick-sort.h"
+#include "utils/utils.h"
+#include "algorithms/algorithms.h"
 
 int main() {
-  /** Start Time */
-
+  // start time
   typedef std::chrono::high_resolution_clock Time;
   typedef std::chrono::milliseconds ms;
   typedef std::chrono::duration<float> fsec;
   auto t0 = Time::now();
 
-  /** Algorithm Test */
-
-  std::vector<int> numbers = util::Reader::txtToNumbers();
-
-  util::Printer::log(numbers, util::Printer::BAR_STYLE, "BEFORE");
-  std::cout << std::endl;
-
+  // algorithm test
+  std::vector<int> numbers = util::Reader<int>::txtToNumbers();
+  util::Printer<int>::logf(numbers, true, false, "BEFORE");
   sorter::Quick::solve(numbers);
+  util::Printer<int>::logf(numbers, true, true, "AFTER");
 
-  util::Printer::log(numbers, util::Printer::BAR_STYLE, "AFTER");
-
-  /** Process Time */
-
+  // process time
   auto t1 = Time::now();
   fsec fs = t1 - t0;
   ms d = std::chrono::duration_cast<ms>(fs);
