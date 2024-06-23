@@ -1,6 +1,5 @@
 #include <chrono>
-#include "utils/utils.h"
-#include "algorithms/algorithms.h"
+#include "includes/mini-tools.h"
 
 int main() {
   // start time
@@ -9,11 +8,15 @@ int main() {
   typedef std::chrono::duration<float> fsec;
   auto t0 = Time::now();
 
+  std::string
+    filename_seeds = "resources/sample.txt",
+    filename_sorted = "resources/output.txt";
+
   // algorithm test
-  std::vector<int> numbers = util::Scanner<int>::txtToNumbers();
-  util::Printer<int>::logf(numbers, true, false, "BEFORE");
-  sorter::Quick::solve(numbers);
-  util::Printer<int>::logf(numbers, true, true, "AFTER");
+  mt::VEC_INT numbers = mt_uti::Scanner<int>::txtToNumbers(filename_seeds);
+  mt_uti::Printer<int>::logf(numbers, true, false, filename_sorted, "BEFORE");
+  mt_alg_sort::Quick::solve(numbers);
+  mt_uti::Printer<int>::logf(numbers, true, true, filename_sorted, "AFTER");
 
   // process time
   auto t1 = Time::now();
