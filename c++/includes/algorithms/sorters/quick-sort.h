@@ -1,7 +1,9 @@
-#ifndef __SORTERS__QUICK_SORT_H__
-#define __SORTERS__QUICK_SORT_H__
+#ifndef __ALGORITHMS__SORTERS__QUICK_SORT_H__
+#define __ALGORITHMS__SORTERS__QUICK_SORT_H__
 
-namespace sorter {
+namespace mini_tools {
+namespace algorithms {
+namespace sorters {
 
   class Quick {
   private:
@@ -40,6 +42,6 @@ namespace sorter {
       recursion(messy, 0, messy.size() - 1);
     }
   };
-}
+}}}
 
-#endif // __SORTERS__QUICK_SORT_H__
+#endif // __ALGORITHMS__SORTERS__QUICK_SORT_H__

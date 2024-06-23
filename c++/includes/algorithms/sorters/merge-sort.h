@@ -1,7 +1,9 @@
-#ifndef __SORTERS__MERGE_SORT_H__
-#define __SORTERS__MERGE_SORT_H__
+#ifndef __ALGORITHMS__SORTERS__MERGE_SORT_H__
+#define __ALGORITHMS__SORTERS__MERGE_SORT_H__
 
-namespace sorter {
+namespace mini_tools {
+namespace algorithms {
+namespace sorters {
 
   class Merge {
   private:
@@ -18,6 +20,6 @@ namespace sorter {
 
     }
   };
-}
+}}}
 
-#endif // __SORTERS__MERGE_SORT_H__
+#endif // __ALGORITHMS__SORTERS__MERGE_SORT_H__
