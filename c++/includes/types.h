@@ -1,8 +1,8 @@
-#ifndef __MINI_TOOLS__TYPE_H__
-#define __MINI_TOOLS__TYPE_H__
+#ifndef __MINI_TOOLS__TYPES_H__
+#define __MINI_TOOLS__TYPES_H__
 
-#include <iostream>
-#include <fstream>
+#include <type_traits>
+#include <string>
 #include <vector>
 
 namespace mini_tools {
@@ -123,5 +123,4 @@ namespace mini_tools {
   }
 }
 
-using mt = mini_tools;
-#endif // __MINI_TOOLS__TYPE_H__
+#endif // __MINI_TOOLS__TYPES_H__
