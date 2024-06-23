@@ -1,7 +1,10 @@
-#ifndef __UTILS__READER_CPP__
-#define __UTILS__READER_CPP__
+#ifndef __MINI_TOOLS__UTILS__READER_CPP__
+#define __MINI_TOOLS__UTILS__READER_CPP__
 
-namespace util {
+#include <fstream>
+
+namespace mini_tools {
+namespace utils {
 
   namespace Reader {
     bool isSeparator(std::string &text, int &i) {
@@ -81,6 +84,6 @@ namespace util {
       return letters;
     }
   }
-}
+}}
 
-#endif // __UTILS__READER_CPP__
+#endif // __MINI_TOOLS__UTILS__READER_CPP__
