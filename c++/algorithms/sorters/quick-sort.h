@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__QUICK_SORT_H__
-#define __ALGORITHMS__QUICK_SORT_H__
+#ifndef __SORTERS__QUICK_SORT_H__
+#define __SORTERS__QUICK_SORT_H__
 
 namespace sorter {
 
@@ -42,4 +42,4 @@ namespace sorter {
   };
 }
 
-#endif // __ALGORITHMS__QUICK_SORT_H__
+#endif // __SORTERS__QUICK_SORT_H__

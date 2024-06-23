@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__MERGE_SORT_H__
-#define __ALGORITHMS__MERGE_SORT_H__
+#ifndef __SORTERS__MERGE_SORT_H__
+#define __SORTERS__MERGE_SORT_H__
 
 namespace sorter {
 
@@ -20,4 +20,4 @@ namespace sorter {
   };
 }
 
-#endif // __ALGORITHMS__MERGE_SORT_H__
+#endif // __SORTERS__MERGE_SORT_H__

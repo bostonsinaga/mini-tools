@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__BUBBLE_SORT_H__
-#define __ALGORITHMS__BUBBLE_SORT_H__
+#ifndef __SORTERS__BUBBLE_SORT_H__
+#define __SORTERS__BUBBLE_SORT_H__
 
 namespace sorter {
 
@@ -27,4 +27,4 @@ namespace sorter {
   };
 }
 
-#endif // __ALGORITHMS__BUBBLE_SORT_H__
+#endif // __SORTERS__BUBBLE_SORT_H__
