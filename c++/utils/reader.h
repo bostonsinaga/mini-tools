@@ -1,41 +1,29 @@
 #ifndef __UTILS__READER_H__
 #define __UTILS__READER_H__
 
-#include <fstream>
-
 namespace util {
 
+  namespace ReaderTool {
+    bool isSeparator(char &ch);
+
+    void readFile(
+      std::string &filename,
+      std::string &textHook
+    );
+  }
+
+  template <class T>
   class Reader {
   public:
-    static std::vector<int> txtToNumbers(
+    static std::vector<T> txtToNumbers(
       std::string filename = "resources/sample.txt"
-    ) {
-      /** Read file */
+    );
 
-      std::ifstream reader(filename);
-      std::string text, line;
-
-      while (std::getline(reader, line)) { text += line; }
-      reader.close();
-
-      /** Convert to numbers */
-
-      std::vector<int> numbers;
-      std::string numStr;
-
-      for (int i = 0; i < text.length(); i++) {
-        if (std::isdigit(text[i])) {
-          numStr += text[i];
-        }
-        else if (text[i] == ' ' || i == text.length() - 1) {
-          numbers.push_back(std::stoi(numStr));
-          numStr = "";
-        }
-      }
-
-      return numbers;
-    }
+    static std::vector<T> txtToLetters(
+      std::string filename = "resources/sample.txt"
+    );
   };
 }
 
+#include "reader.cpp"
 #endif // __UTILS__READER_H__
