@@ -3,17 +3,17 @@
 
 namespace util {
 
-  namespace ReaderTool {
+  namespace Reader {
     bool isSeparator(char &ch);
 
-    void readFile(
+    void getFrom(
       std::string &filename,
       std::string &textHook
     );
   }
 
   template <class T>
-  class Reader {
+  class Scanner {
   public:
     static std::vector<T> txtToNumbers(
       std::string filename = "resources/sample.txt"

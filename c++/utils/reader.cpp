@@ -3,7 +3,7 @@
 
 namespace util {
 
-  namespace ReaderTool {
+  namespace Reader {
     bool isSeparator(std::string &text, int &i) {
       if (text[i] == ' ' || text[i] == ',' ||
         text[i] == '\n' || i == text.length() - 1
@@ -12,7 +12,7 @@ namespace util {
     }
 
     // unable to read '\n' character
-    void readFile(
+    void getFrom(
       std::string &filename,
       std::string &textHook
     ) {
@@ -24,7 +24,7 @@ namespace util {
   }
 
   template <typename T>
-  std::vector<T> Reader<T>::txtToNumbers(std::string filename) {
+  std::vector<T> Scanner<T>::txtToNumbers(std::string filename) {
 
     if constexpr (!Types::isNumber<T>()) {
       constexpr bool txtToNumbers_template_error = false;
@@ -54,7 +54,7 @@ namespace util {
   }
 
   template <typename T>
-  std::vector<T> Reader<T>::txtToLetters(std::string filename) {
+  std::vector<T> Scanner<T>::txtToLetters(std::string filename) {
 
     if constexpr (!Types::isLetter<T>()) {
       constexpr bool txtToLetters_template_error = false;
