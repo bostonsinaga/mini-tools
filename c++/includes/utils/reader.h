@@ -1,7 +1,8 @@
-#ifndef __UTILS__READER_H__
-#define __UTILS__READER_H__
+#ifndef __MINI_TOOLS__UTILS__READER_H__
+#define __MINI_TOOLS__UTILS__READER_H__
 
-namespace util {
+namespace mini_tools {
+namespace utils {
 
   namespace Reader {
     bool isSeparator(char &ch);
@@ -15,15 +16,10 @@ namespace util {
   template <class T>
   class Scanner {
   public:
-    static std::vector<T> txtToNumbers(
-      std::string filename = "resources/sample.txt"
-    );
-
-    static std::vector<T> txtToLetters(
-      std::string filename = "resources/sample.txt"
-    );
+    static std::vector<T> txtToNumbers(std::string filename);
+    static std::vector<T> txtToLetters(std::string filename);
   };
-}
+}}
 
 #include "reader.cpp"
-#endif // __UTILS__READER_H__
+#endif // __MINI_TOOLS__UTILS__READER_H__
