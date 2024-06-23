@@ -10,7 +10,7 @@ int main() {
   auto t0 = Time::now();
 
   // algorithm test
-  std::vector<int> numbers = util::Reader<int>::txtToNumbers();
+  std::vector<int> numbers = util::Scanner<int>::txtToNumbers();
   util::Printer<int>::logf(numbers, true, false, "BEFORE");
   sorter::Quick::solve(numbers);
   util::Printer<int>::logf(numbers, true, true, "AFTER");
