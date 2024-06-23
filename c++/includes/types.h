@@ -1,7 +1,8 @@
 #ifndef __MINI_TOOLS__TYPE_H__
 #define __MINI_TOOLS__TYPE_H__
 
-#include <string>
+#include <iostream>
+#include <fstream>
 #include <vector>
 
 namespace mini_tools {
@@ -97,6 +98,29 @@ namespace mini_tools {
   typedef std::vector<VEC_FLT_P> VEC2_FLT_P;
   typedef std::vector<VEC_DBL_P> VEC2_DBL_P;
   typedef std::vector<VEC_LD_P> VEC2_LD_P;
+
+  /** INSPECTOR */
+
+  namespace CheckType {
+
+    template <typename T>
+    constexpr bool isLetter() {
+      return
+        std::is_same<T, char>::value ||
+        std::is_same<T, wchar_t>::value ||
+        std::is_same<T, std::string>::value;
+    }
+
+    template <typename T>
+    constexpr bool isNumber() {
+      if (!isLetter<T>()) {
+        return
+          std::is_integral<T>::value ||
+          std::is_floating_point<T>::value;
+      }
+      return false;
+    }
+  }
 }
 
 using mt = mini_tools;
