@@ -9,8 +9,8 @@ namespace sorter {
 
     }
 
-    static void mergeSort() {
-
+    static void divide(std::vector<int> &messy) {
+      
     }
 
   public:
