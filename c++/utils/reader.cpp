@@ -32,7 +32,7 @@ namespace util {
     }
     else {
       std::string text;
-      ReaderTool::readFile(filename, text);
+      Reader::getFrom(filename, text);
 
       /** Convert to numbers */
 
@@ -43,7 +43,7 @@ namespace util {
         if (std::isdigit(text[i])) {
           numStr += text[i];
         }
-        else if (ReaderTool::isSeparator(text, i)) {
+        else if (Reader::isSeparator(text, i)) {
           numbers.push_back(std::stoi(numStr));
           numStr = "";
         }
@@ -62,7 +62,7 @@ namespace util {
     }
     else {
       std::string text;
-      ReaderTool::readFile(filename, text);
+      Reader::getFrom(filename, text);
 
       /** Convert to letters */
 
@@ -72,7 +72,7 @@ namespace util {
       for (int i = 0; i < text.length(); i++) {
         chars += text[i];
 
-        if (ReaderTool::isSeparator(text, i)) {
+        if (Reader::isSeparator(text, i)) {
           letters.push_back(chars);
           chars = "";
         }
