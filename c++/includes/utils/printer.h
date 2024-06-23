@@ -1,7 +1,8 @@
-#ifndef __UTILS__PRINTER_H__
-#define __UTILS__PRINTER_H__
+#ifndef __MINI_TOOLS__UTILS__PRINTER_H__
+#define __MINI_TOOLS__UTILS__PRINTER_H__
 
-namespace util {
+namespace mini_tools {
+namespace utils {
 
   template <class T>
   class Printer {
@@ -46,7 +47,7 @@ namespace util {
       bool extended, // 'false' will overwrite
       int step,
       std::string title = "Step",
-      std::string filename = "resources/output.txt"
+      std::string filename
     );
 
     static void logf(
@@ -54,10 +55,10 @@ namespace util {
       bool asBar,
       bool extended, // 'false' will overwrite
       std::string title = "Result",
-      std::string filename = "resources/output.txt"
+      std::string filename
     );
   };
-}
+}}
 
 #include "printer.cpp"
-#endif // __UTILS__PRINTER_H__
+#endif // __MINI_TOOLS__UTILS__PRINTER_H__
