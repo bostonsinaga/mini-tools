@@ -82,8 +82,8 @@ namespace utils {
     bool asBar,
     bool extended,
     int step,
-    std::string title,
-    std::string filename
+    std::string filename,
+    std::string title
   ) {
     std::ofstream writer;
 
@@ -101,10 +101,10 @@ namespace utils {
     std::vector<T> &vec,
     bool asBar,
     bool extended,
-    std::string title,
-    std::string filename
+    std::string filename,
+    std::string title
   ) {
-    Printer<T>::logf(vec, asBar, extended, -1, title, filename);
+    Printer<T>::logf(vec, asBar, extended, -1, filename, title);
   }
 }}
 
