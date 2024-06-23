@@ -12,7 +12,7 @@ namespace utils {
     int &step,
     std::string &title
   ) {
-    if constexpr (!Types::isLetter<T>()) {
+    if constexpr (!CheckType::isLetter<T>()) {
       constexpr bool stringify_and_combine_error = false;
       static_assert(stringify_and_combine_error, "only for numbers and letters");
     }
@@ -34,7 +34,7 @@ namespace utils {
     int &step,
     std::string &title
   ) {
-    if constexpr (!Types::isNumber<T>()) {
+    if constexpr (!CheckType::isNumber<T>()) {
       return Printer<T>::combine(vec, step, title);
     }
     else {
