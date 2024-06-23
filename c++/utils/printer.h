@@ -1,42 +1,63 @@
 #ifndef __UTILS__PRINTER_H__
 #define __UTILS__PRINTER_H__
 
-#include <iostream>
-#include <vector>
-
 namespace util {
 
+  template <class T>
   class Printer {
-  public:
-    enum {BAR_STYLE, NUMBER_STYLE};
+  private:
+    static std::string initText(int &step, std::string &title) {
+      if (step >= 0) {
+        return title + ": " + std::to_string(step) + "\n";
+      }
+      return title + ":\n";
+    }
 
+    static std::string combine(
+      std::vector<T> &vec,
+      int &step,
+      std::string &title
+    );
+
+    static std::string stringify(
+      std::vector<T> &vec,
+      bool &asBar,
+      int &step,
+      std::string &title
+    );
+
+  public:
     static void log(
-      std::vector<int> &nums,
-      bool style,
+      std::vector<T> &vec,
+      bool asBar,
       int step,
       std::string title = "Step"
-    ) {
-      if (step >= 0) {
-        std::cout << title << ": " << step << std::endl;
-      }
-      else std::cout << title << ": " << std::endl;
-
-      for (int i = 0; i < nums.size(); i++) {
-        if (style) {
-          std::cout << nums[i] << (i < nums.size() - 1 ? ", " : "\n");
-        }
-        else std::cout << std::string(nums[i], '=') << std::endl;
-      }
-    }
+    );
 
     static void log(
-      std::vector<int> &nums,
-      bool style,
+      std::vector<T> &vec,
+      bool asBar,
       std::string title = "Result"
-    ) {
-      log(nums, style, -1, title);
-    }
+    );
+
+    static void logf(
+      std::vector<T> &vec,
+      bool asBar,
+      bool extended, // 'false' will overwrite
+      int step,
+      std::string title = "Step",
+      std::string filename = "resources/output.txt"
+    );
+
+    static void logf(
+      std::vector<T> &vec,
+      bool asBar,
+      bool extended, // 'false' will overwrite
+      std::string title = "Result",
+      std::string filename = "resources/output.txt"
+    );
   };
 }
 
+#include "printer.cpp"
 #endif // __UTILS__PRINTER_H__
