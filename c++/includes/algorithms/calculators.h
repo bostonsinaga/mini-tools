@@ -2,7 +2,6 @@
 #define __ALGORITHMS__CALCULATORS_H__
 
 #include <cmath>
-#include "../types.h"
 
 namespace mini_tools {
 namespace algorithms {
@@ -19,12 +18,31 @@ namespace Calc {
     return ret;
   }
 
-  int arithmeticSeries(int a0, int an, int n) {
-    return n * ((a0 + an) / 2);
+  /**
+   * Stands of parameters:
+   *
+   * a = first number
+   * an = last number
+   * d = difference
+   * o = order
+   * r = ratio
+   * q = quantity
+   */
+
+  int arithmeticSeries(int a, int an, int q) {
+    return q * ((a + an) / 2);
   }
 
-  int geometricSeries(int a0, int r, int n) {
-    return a0 * (1 - std::pow(r, n)) / (1 - r);
+  int geometricSeries(int a, int r, int q) {
+    return a * (1 - std::pow(r, q)) / (1 - r);
+  }
+
+  int arithmeticSequence(int a, int o, int d) {
+    return a + (o - 1) * d;
+  }
+
+  int geometricSequence(int a, int r, int o) {
+    return a * std::pow(r, o - 1);
   }
 }}}
 
