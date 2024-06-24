@@ -1,13 +1,15 @@
 #ifndef __ALGORITHMS__SORTERS__BUBBLE_SORT_H__
 #define __ALGORITHMS__SORTERS__BUBBLE_SORT_H__
 
+#include "../../types.h"
+
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
   class Bubble {
   public:
-    static void solve(std::vector<int> &messy) {
+    static void solve(VEC_INT &messy) {
 
       for (int i = 0; i < messy.size(); i++) {
         bool breakLoop = true;
