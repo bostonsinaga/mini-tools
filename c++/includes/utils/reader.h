@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__READER_H__
 #define __MINI_TOOLS__UTILS__READER_H__
 
+#include "../types.h"
+
 namespace mini_tools {
 namespace utils {
 
