@@ -1,8 +1,8 @@
 #ifndef __MINI_TOOLS_H__
 #define __MINI_TOOLS_H__
 
-#include "algorithms/algorithms.h"
 #include "utils/utils.h"
+#include "algorithms/algorithms.h"
 
 namespace mt = mini_tools;
 namespace mt_alg = mt::algorithms;
