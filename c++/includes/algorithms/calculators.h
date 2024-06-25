@@ -2,8 +2,8 @@
 #define __ALGORITHMS__CALCULATORS_H__
 
 #include <cmath>
-#include <vector>
 #include <algorithms>
+#include "../types.h"
 
 namespace mini_tools {
 namespace algorithms {
@@ -47,41 +47,83 @@ namespace algorithms {
       return a * std::pow(r, o - 1);
     }
 
-    static bool isArithmeticSequence(std::vector<int> nums, int d) {
+    static bool isArithmeticSequence(VEC_INT &nums, int d) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] + d != nums[i+1]) return false;
       }
       return true;
     }
 
-    static bool isGeometricSequence(std::vector<int> nums, int r) {
+    static bool isArithmeticSequence(CR_VEC_INT nums, int d) {
+      for (int i = 0; i < nums.size() - 1; i++) {
+        if (nums[i] + d != nums[i+1]) return false;
+      }
+      return true;
+    }
+
+    static bool isGeometricSequence(VEC_INT &nums, int r) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] * r != nums[i+1]) return false;
       }
       return true;
     }
 
-  private:
-    static void limitPartialSortedTestCount(
-      const int &totalCount,
-      int &partialTestCount
-    ) {
-      if (partialTestCount <= 0) {
-        partialTestCount = totalCount - 1;
+    static bool isGeometricSequence(CR_VEC_INT nums, int r) {
+      for (int i = 0; i < nums.size() - 1; i++) {
+        if (nums[i] * r != nums[i+1]) return false;
       }
-      else if (partialTestCount > totalCount - 1) {
-        partialTestCount = totalCount - 1;
-      }
+      return true;
     }
 
-  public:
+    /**
+     * Returns true if 'nums' is single
+     * or 'startIndex' is the last when 'ascending' true
+     * or 'startIndex' is the first when 'ascending' false
+     */
     static bool isSorted(
-      std::vector<int> &nums,
-      bool ascending = true,
-      int partialTestCount = 0
+      VEC_INT &nums,
+      bool ascending,
+      int startIndex,
+      int partialTestCount,
+      int skipTestCount
     ) {
-      limitPartialSortedTestCount(nums.size(), partialTestCount);
       int last = nums.size() - 1;
+      if (last < 0) return true;
+
+      auto limitPartialTestCount = [&]() {
+        if (partialTestCount <= 0 ||
+          partialTestCount > nums.size()
+        ) { partialTestCount = nums.size(); }
+      };
+
+      // bad arguments
+      if (startIndex < 0 || startIndex > last) return false;
+      limitPartialTestCount();
+
+      // this function will not change the 'nums'
+      VEC_INT backup;
+
+      if (skipTestCount > 0) {
+
+        // limit 'skipTestCount'
+        if (skipTestCount + startIndex > last) {
+          skipTestCount = last - startIndex;
+        }
+
+        backup = nums;
+        nums = {};
+
+        // skip 'nums'
+        for (int i = startIndex; i <= last; i += skipTestCount + 1) {
+          nums.push_back(backup[i]);
+        }
+
+        last = nums.size() - 1;
+        limitPartialTestCount();
+      }
+
+      if (startIndex >= last) return true;
+      partialTestCount--;
 
       for (int i = 0; i < last; i += partialTestCount) {
 
@@ -100,6 +142,7 @@ namespace algorithms {
         }
       }
 
+      if (backup.size() > 0) nums = backup;
       return true;
     }
   };
