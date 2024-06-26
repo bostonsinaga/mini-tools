@@ -47,30 +47,42 @@ namespace algorithms {
     }
 
     static bool isArithmeticSequence(std::vector<int> &nums, int d) {
+      if (nums.size() == 0) return false;
+
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] + d != nums[i+1]) return false;
       }
+
       return true;
     }
 
     static bool isArithmeticSequence(const stsd::vector<int> &nums, int d) {
+      if (nums.size() == 0) return false;
+
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] + d != nums[i+1]) return false;
       }
+
       return true;
     }
 
     static bool isGeometricSequence(std::vector<int> &nums, int r) {
+      if (nums.size() == 0) return false;
+
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] * r != nums[i+1]) return false;
       }
+
       return true;
     }
 
     static bool isGeometricSequence(const stsd::vector<int> &nums, int r) {
+      if (nums.size() == 0) return false;
+
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] * r != nums[i+1]) return false;
       }
+
       return true;
     }
 
