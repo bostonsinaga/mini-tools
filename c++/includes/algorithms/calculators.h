@@ -81,10 +81,10 @@ namespace algorithms {
      */
     static bool isSorted(
       std::vector<int> &nums,
-      bool ascending,
-      int startIndex,
-      int partialTestCount,
-      int skipTestCount
+      bool ascending = true,
+      int startIndex = 0,
+      int partialTestCount = 0,
+      int skipTestCount = 0
     ) {
       int last = nums.size() - 1;
       if (last < 0) return true;
