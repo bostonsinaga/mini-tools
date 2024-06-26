@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <algorithms>
-#include "../types.h"
 
 namespace mini_tools {
 namespace algorithms {
@@ -47,28 +46,28 @@ namespace algorithms {
       return a * std::pow(r, o - 1);
     }
 
-    static bool isArithmeticSequence(VEC_INT &nums, int d) {
+    static bool isArithmeticSequence(std::vector<int> &nums, int d) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] + d != nums[i+1]) return false;
       }
       return true;
     }
 
-    static bool isArithmeticSequence(CR_VEC_INT nums, int d) {
+    static bool isArithmeticSequence(const stsd::vector<int> &nums, int d) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] + d != nums[i+1]) return false;
       }
       return true;
     }
 
-    static bool isGeometricSequence(VEC_INT &nums, int r) {
+    static bool isGeometricSequence(std::vector<int> &nums, int r) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] * r != nums[i+1]) return false;
       }
       return true;
     }
 
-    static bool isGeometricSequence(CR_VEC_INT nums, int r) {
+    static bool isGeometricSequence(const stsd::vector<int> &nums, int r) {
       for (int i = 0; i < nums.size() - 1; i++) {
         if (nums[i] * r != nums[i+1]) return false;
       }
@@ -81,7 +80,7 @@ namespace algorithms {
      * or 'startIndex' is the first when 'ascending' false
      */
     static bool isSorted(
-      VEC_INT &nums,
+      std::vector<int> &nums,
       bool ascending,
       int startIndex,
       int partialTestCount,
@@ -101,7 +100,7 @@ namespace algorithms {
       limitPartialTestCount();
 
       // this function will not change the 'nums'
-      VEC_INT backup;
+      std::vector<int> backup;
 
       if (skipTestCount > 0) {
 
