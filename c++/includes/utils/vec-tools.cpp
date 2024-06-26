@@ -22,7 +22,8 @@ namespace utils {
   void VecTools<T>::cutInterval(
     std::vector<T> &vec,
     std::vector<T> &wasted,
-    int begin, int end
+    int begin, int end,
+    bool needDelete
   ) {
     int sz = vec.size();
 
@@ -48,17 +49,30 @@ namespace utils {
     wasted = std::vector<T>(vec.begin() + begin, vec.begin() + end + 1);
     vec = std::vector<T>(vec.begin(), vec.begin() + begin);
     vec.insert(vec.end(), tail.begin(), tail.end());
+
+    if constexpr (std::is_pointer<T>::value) {
+      if (needDelete) for (auto &m : wasted) delete m;
+    }
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::cutInterval(std::vector<T> &vec, int begin, int end) {
+  std::vector<T> VecTools<T>::cutInterval(
+    std::vector<T> &vec,
+    int begin, int end,
+    bool needDelete
+  ) {
     std::vector<T> wasted;
-    VecTools<T>::cutInterval(vec, wasted, begin, end);
+    VecTools<T>::cutInterval(vec, wasted, begin, end, needDelete);
     return wasted;
   }
 
   template <typename T>
-  void VecTools<T>::cutSingle(std::vector<T> &vec, T &wasted, int idx) {
+  void VecTools<T>::cutSingle(
+    std::vector<T> &vec,
+    T &wasted,
+    int idx,
+    bool needDelete
+  ) {
     if (vec.size() == 0) return;
 
     if (idx < 0) idx = 0;
@@ -68,12 +82,20 @@ namespace utils {
     std::vector<T> tail = std::vector<T>(vec.begin() + idx + 1, vec.end());
     vec = std::vector<T>(vec.begin(), vec.begin() + idx);
     vec.insert(vec.end(), tail.begin(), tail.end());
+
+    if constexpr (std::is_pointer<T>::value) {
+      if (needDelete) delete wasted;
+    }
   }
 
   template <typename T>
-  T VecTools<T>::cutSingle(std::vector<T> &vec, int idx) {
+  T VecTools<T>::cutSingle(
+    std::vector<T> &vec,
+    int idx,
+    bool needDelete
+  ) {
     T wasted = vec[idx];
-    VecTools<T>::cutSingle(vec, wasted, idx);
+    VecTools<T>::cutSingle(vec, wasted, idx, needDelete);
     return wasted;
   }
 
@@ -82,18 +104,19 @@ namespace utils {
     std::vector<T> &vec,
     std::vector<T> &wasted,
     VEC_INT idxs,
-    bool lockedIndex
+    bool lockedIndex,
+    bool needDelete
   ) {
     if (vec.size() == 0) return;
     int last = idxs.size() - 1;
 
     // ascending
     if (algorithms::Calc::isArithmeticSequence(idxs, 1)) {
-      VecTools<T>::cutInterval(vec, wasted, idxs[0], idxs[last]);
+      VecTools<T>::cutInterval(vec, wasted, idxs[0], idxs[last], needDelete);
     }
     // descending
     else if (algorithms::Calc::isArithmeticSequence(idxs, -1)) {
-      VecTools<T>::cutInterval(vec, wasted, idxs[last], idxs[0]);
+      VecTools<T>::cutInterval(vec, wasted, idxs[last], idxs[0], needDelete);
     }
     // one by one
     else {
@@ -103,7 +126,7 @@ namespace utils {
       for (int i = 0; i < idxs.size(); i++) {
 
         if (!lockedIndex || (prevIndex >= 0 && prevIndex != idxs[i])) {
-          wasted.push_back(VecTools<T>::cutSingle(vec, idxs[i]));
+          wasted.push_back(VecTools<T>::cutSingle(vec, idxs[i], needDelete));
         }
 
         if (lockedIndex) {
@@ -121,10 +144,11 @@ namespace utils {
   std::vector<T> VecTools<T>::cutIndexes(
     std::vector<T> &vec,
     VEC_INT idxs,
-    bool lockedIndex
+    bool lockedIndex,
+    bool needDelete
   ) {
     std::vector<T> wasted;
-    VecTools<T>::cutIndexes(vec, wasted, idxs, lockedIndex);
+    VecTools<T>::cutIndexes(vec, wasted, idxs, lockedIndex, needDelete);
     return wasted;
   }
 

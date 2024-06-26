@@ -17,28 +17,42 @@ namespace utils {
     static void cutInterval(
       std::vector<T> &vec,
       std::vector<T> &wasted,
-      int begin, int end
+      int begin, int end,
+      bool needDelete = false
     );
 
     static std::vector<T> cutInterval(
       std::vector<T> &vec,
-      int begin, int end
+      int begin, int end,
+      bool needDelete = false
     );
 
-    static void cutSingle(std::vector<T> &vec, T &wasted, int idx);
-    static T cutSingle(std::vector<T> &vec, int idx);
+    static void cutSingle(
+      std::vector<T> &vec,
+      T &wasted,
+      int idx,
+      bool needDelete = false
+    );
+
+    static T cutSingle(
+      std::vector<T> &vec,
+      int idx,
+      bool needDelete = false
+    );
 
     static void cutIndexes(
       std::vector<T> &vec,
       std::vector<T> &wasted,
       VEC_INT idxs,
-      bool lockedIndex = false
+      bool lockedIndex = false,
+      bool needDelete = false
     );
 
     static std::vector<T> cutIndexes(
       std::vector<T> &vec,
       VEC_INT idxs,
-      bool lockedIndex = false
+      bool lockedIndex = false,
+      bool needDelete = false
     );
 
     static std::vector<T> cleanDuplicateInside(
