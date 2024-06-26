@@ -2,7 +2,7 @@
 #define __ALGORITHMS__CALCULATORS_H__
 
 #include <cmath>
-#include <algorithms>
+#include <algorithm>
 
 namespace mini_tools {
 namespace algorithms {
@@ -56,7 +56,7 @@ namespace algorithms {
       return true;
     }
 
-    static bool isArithmeticSequence(const stsd::vector<int> &nums, int d) {
+    static bool isArithmeticSequence(const std::vector<int> &nums, int d) {
       if (nums.size() == 0) return false;
 
       for (int i = 0; i < nums.size() - 1; i++) {
@@ -76,7 +76,7 @@ namespace algorithms {
       return true;
     }
 
-    static bool isGeometricSequence(const stsd::vector<int> &nums, int r) {
+    static bool isGeometricSequence(const std::vector<int> &nums, int r) {
       if (nums.size() == 0) return false;
 
       for (int i = 0; i < nums.size() - 1; i++) {
