@@ -1,3 +1,6 @@
+#ifndef __ALGORITHMS__SORTERS__MERGE_SORT_H__
+#define __ALGORITHMS__SORTERS__MERGE_SORT_H__
+
 #include "../../types.h"
 #include "../../utils/vec-tools.h"
 
@@ -63,3 +66,5 @@ namespace sorters {
     }
   };
 }}}
+
+#endif // __ALGORITHMS__SORTERS__MERGE_SORT_H__
