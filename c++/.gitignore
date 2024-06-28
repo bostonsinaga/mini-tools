@@ -1,4 +1,5 @@
 resources/sample.txt
 resources/output.txt
+resources/test/outputs/
 resources/generator.exe
 program.exe
