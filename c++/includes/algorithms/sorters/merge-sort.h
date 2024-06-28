@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
   class Merge {
-  public:
+  private:
     static void merge(
       VEC_INT &messy, int left, int mid, int right
     ) {
@@ -47,14 +47,19 @@ namespace sorters {
       }
     }
 
-    static void mergeSort(VEC_INT &messy, int begin, int end) {
+    static void partition(VEC_INT &messy, int begin, int end) {
 
       if (begin >= end) return;
       int mid = begin + (end - begin) / 2;
 
-      mergeSort(messy, begin, mid);
-      mergeSort(messy, mid + 1, end);
+      partition(messy, begin, mid);
+      partition(messy, mid + 1, end);
       merge(messy, begin, mid, end);
+    }
+
+  public:
+    static void solve(VEC_INT &messy) {
+      partition(messy, 0, messy.size() - 1);
     }
   };
 }}}
