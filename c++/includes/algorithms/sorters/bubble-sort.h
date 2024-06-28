@@ -10,22 +10,23 @@ namespace sorters {
   class Bubble {
   public:
     static void solve(VEC_INT &messy) {
+      bool stop = false;
 
-      for (int i = 0; i < messy.size(); i++) {
-        bool breakLoop = true;
-        int k = 0;
+      while (!stop) {
+        stop = true;
+        int i = 0;
 
         for (int j = 1; j < messy.size(); j++) {
 
-          if (messy[j] < messy[k]) {
-            breakLoop = false;
-            std::swap(messy[j], messy[k]);
+          if (messy[j] < messy[i]) {
+            stop = false;
+            std::swap(messy[j], messy[i]);
           }
 
-          k = j;
+          i = j;
         }
 
-        if (breakLoop) break;
+        if (stop) break;
       }
     }
   };
