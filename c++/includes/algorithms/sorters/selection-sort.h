@@ -9,7 +9,7 @@ namespace sorters {
 
 	class Selection {
 	public:
-		static void solve(std::vector<int> &messy) {
+		static void solve(VEC_INT &messy) {
 			int i, j, least; 
 
 			for (i = 0; i < messy.size() - 1; i++) {
