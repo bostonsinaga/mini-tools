@@ -10,13 +10,13 @@ namespace sorters {
     int i = left - 1;
 
     for (int j = left; j < right; j++) {
-      if (messy[j] < messy[right]) {
+      if (messy->at(j) < messy->at(right)) {
         i++;
-        std::swap(messy[i], messy[j]);
+        std::swap(messy->at(i), messy->at(j));
       }
     }
 
-    std::swap(messy[i+1], messy[right]);
+    std::swap(messy->at(i+1), messy->at(right));
     return i+1;
   }
 
@@ -32,7 +32,7 @@ namespace sorters {
   template <typename T>
   void Quick<T>::solve(std::vector<T> *messy) {
     if constexpr (CheckType::isNumber<T>()) {
-      Quick<T>::recursion(messy, 0, messy.size() - 1);
+      Quick<T>::recursion(messy, 0, messy->size() - 1);
     }
   }
 
