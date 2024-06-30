@@ -4,25 +4,16 @@
 #include "../../types.h"
 
 namespace mini_tools {
-namespace algorithm {
+namespace algorithms {
 namespace sorters {
 
+	template <class T>
 	class Selection {
 	public:
-		static void solve(VEC_INT &messy) {
-			int i, j, least; 
-
-			for (i = 0; i < messy.size() - 1; i++) {
-				least = i; 
-
-				for (j = i + 1; j < messy.size(); j++) {
-					if (messy[j] < messy[least]) least = j;
-				}
-
-				std::swap(messy[least], messy[i]);
-			}
-		}
+		static void solve(std::vector<T> *messy);
+		static std::vector<T> solve(std::vector<T> messy);
 	};
 }}}
 
+#include "selection-sort.cpp"
 #endif // __ALGORITHMS__SORTERS__SELECTION_SORT_H__
