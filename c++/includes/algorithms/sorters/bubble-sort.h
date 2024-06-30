@@ -7,27 +7,35 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
+  template <class T>
   class Bubble {
   public:
-    static void solve(VEC_INT &messy) {
-      bool stop = false;
+    static void solve(std::vector<T> *messy) {
+      if constexpr (CheckType::isNumber<T>()) {
+        bool stop = false;
 
-      while (!stop) {
-        stop = true;
-        int i = 0;
+        while (!stop) {
+          stop = true;
+          int i = 0;
 
-        for (int j = 1; j < messy.size(); j++) {
+          for (int j = 1; j < messy->size(); j++) {
 
-          if (messy[j] < messy[i]) {
-            stop = false;
-            std::swap(messy[j], messy[i]);
+            if (messy->at(j) < messy->at(i)) {
+              stop = false;
+              std::swap(messy->at(j), messy->at(i));
+            }
+
+            i = j;
           }
 
-          i = j;
+          if (stop) break;
         }
-
-        if (stop) break;
       }
+    }
+
+    static std::vector<T> solve(std::vector<T> messy) {
+      Bubble<T>::solve(&messy);
+      return messy;
     }
   };
 }}}
