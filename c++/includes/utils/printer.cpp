@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__UTILS__PRINTER_CPP__
 
 #include <iostream>
+#include <fstream>
 
 namespace mini_tools {
 namespace utils {
@@ -59,31 +60,32 @@ namespace utils {
 
   template <typename T>
   void Printer<T>::log(
-    std::vector<T> &vec,
+    std::vector<T> *vec,
     bool asBar,
-    int step,
-    std::string title
+    std::string title,
+    int step
   ) {
-    std::cout << Printer<T>::stringify(vec, asBar, step, title);
+    std::cout << Printer<T>::stringify(*vec, asBar, step, title);
   }
 
   template <typename T>
   void Printer<T>::log(
-    std::vector<T> &vec,
+    std::vector<T> vec,
     bool asBar,
-    std::string title
+    std::string title,
+    int step
   ) {
-    Printer<T>::log(vec, asBar, -1, title);
+    Printer<T>::log(&vec, asBar, title, step);
   }
 
   template <typename T>
   void Printer<T>::logf(
-    std::vector<T> &vec,
+    std::vector<T> *vec,
     bool asBar,
     bool extended,
-    int step,
     std::string filename,
-    std::string title
+    std::string title,
+    int step
   ) {
     std::ofstream writer;
 
@@ -92,19 +94,20 @@ namespace utils {
     }
     else writer.open(filename);
 
-    writer << Printer<T>::stringify(vec, asBar, step, title);
+    writer << Printer<T>::stringify(*vec, asBar, step, title);
     writer.close();
   }
 
   template <typename T>
   void Printer<T>::logf(
-    std::vector<T> &vec,
+    std::vector<T> vec,
     bool asBar,
     bool extended,
     std::string filename,
-    std::string title
+    std::string title,
+    int step
   ) {
-    Printer<T>::logf(vec, asBar, extended, -1, filename, title);
+    Printer<T>::logf(&vec, asBar, extended, filename, title, step);
   }
 }}
 

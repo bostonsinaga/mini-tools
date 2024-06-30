@@ -31,33 +31,35 @@ namespace utils {
 
   public:
     static void log(
-      std::vector<T> &vec,
+      std::vector<T> *vec,
       bool asBar,
-      int step,
-      std::string title = "Step"
+      std::string title = "Step",
+      int step = -1
     );
 
     static void log(
-      std::vector<T> &vec,
+      std::vector<T> vec,
       bool asBar,
-      std::string title = "Result"
+      std::string title = "Result",
+      int step = -1
     );
 
     static void logf(
-      std::vector<T> &vec,
+      std::vector<T> *vec,
       bool asBar,
       bool extended, // 'false' will overwrite
-      int step,
       std::string filename,
-      std::string title = "Step"
+      std::string title = "Step",
+      int step = -1
     );
 
     static void logf(
-      std::vector<T> &vec,
+      std::vector<T> vec,
       bool asBar,
       bool extended, // 'false' will overwrite
       std::string filename,
-      std::string title = "Result"
+      std::string title = "Result",
+      int step = -1
     );
   };
 }}
