@@ -23,25 +23,6 @@ namespace sorters {
         if (gap < 1) gap = 1;
         swapped = false;
 
-        /** FASTER */
-        // if (ascending) {
-        //   for (int i = 0; i < messy->size() - gap; i++) {
-        //     if (messy->at(i) > messy->at(i + gap)) {
-        //       std::swap(messy->at(i), messy->at(i + gap));
-        //       swapped = true;
-        //     }
-        //   }
-        // }
-        // else {
-        //   for (int i = 0; i < messy->size() - gap; i++) {
-        //     if (messy->at(i) < messy->at(i + gap)) {
-        //       std::swap(messy->at(i), messy->at(i + gap));
-        //       swapped = true;
-        //     }
-        //   }
-        // }
-
-        /** SLOWER */
         for (int i = 0; i < messy->size() - gap; i++) {
           if ((ascending && messy->at(i) > messy->at(i + gap)) ||
             (!ascending && messy->at(i) < messy->at(i + gap))
