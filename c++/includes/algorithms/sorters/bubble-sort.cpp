@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
   template <typename T>
-  void Bubble<T>::solve(std::vector<T> *messy) {
+  void Bubble<T>::solve(std::vector<T> *messy, bool ascending) {
     if constexpr (CheckType::isNumber<T>()) {
       bool stop = false;
 
@@ -16,7 +16,9 @@ namespace sorters {
 
         for (int j = 1; j < messy->size(); j++) {
 
-          if (messy->at(j) < messy->at(i)) {
+          if ((ascending && messy->at(j) < messy->at(i)) ||
+            (!ascending && messy->at(j) > messy->at(i))
+          ) {
             stop = false;
             std::swap(messy->at(j), messy->at(i));
           }
@@ -30,8 +32,8 @@ namespace sorters {
   }
 
   template <typename T>
-  std::vector<T> Bubble<T>::solve(std::vector<T> messy) {
-    Bubble<T>::solve(&messy);
+  std::vector<T> Bubble<T>::solve(std::vector<T> messy, bool ascending) {
+    Bubble<T>::solve(&messy, ascending);
     return messy;
   }
 }}}

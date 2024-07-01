@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
 	template <typename T>
-  void Selection<T>::solve(std::vector<T> *messy) {
+  void Selection<T>::solve(std::vector<T> *messy, bool ascending) {
     if constexpr (CheckType::isNumber<T>()) {
       int i, j, least; 
 
@@ -14,7 +14,9 @@ namespace sorters {
         least = i; 
 
         for (j = i + 1; j < messy->size(); j++) {
-          if (messy->at(j) < messy->at(least)) least = j;
+          if ((ascending && messy->at(j) < messy->at(least)) ||
+            (!ascending && messy->at(j) > messy->at(least))
+          ) { least = j; }
         }
 
         std::swap(messy->at(least), messy->at(i));
@@ -23,8 +25,8 @@ namespace sorters {
   }
 
   template <typename T>
-  std::vector<T> Selection<T>::solve(std::vector<T> messy) {
-    Selection<T>::solve(&messy);
+  std::vector<T> Selection<T>::solve(std::vector<T> messy, bool ascending) {
+    Selection<T>::solve(&messy, ascending);
     return messy;
   }
 }}}

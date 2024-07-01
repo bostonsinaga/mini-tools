@@ -10,8 +10,15 @@ namespace sorters {
   template <class T>
   class Bubble {
   public:
-    static void solve(std::vector<T> *messy);
-    static std::vector<T> solve(std::vector<T> messy);
+    static void solve(
+      std::vector<T> *messy,
+      bool ascending = true
+    );
+
+    static std::vector<T> solve(
+      std::vector<T> messy,
+      bool ascending = true
+    );
   };
 }}}
 

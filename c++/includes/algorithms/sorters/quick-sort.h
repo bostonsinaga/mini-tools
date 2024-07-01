@@ -12,17 +12,30 @@ namespace sorters {
   private:
     // 'left' and 'right' are index of 'messy'
     static int partition(
-      std::vector<T> *messy, CR_INT left, CR_INT right
+      std::vector<T> *messy,
+      CR_INT left,
+      CR_INT right,
+      bool ascending
     );
 
     // 'left' and 'right' are index of 'messy'
     static void recursion(
-      std::vector<T> *messy, CR_INT left, CR_INT right
+      std::vector<T> *messy,
+      CR_INT left,
+      CR_INT right,
+      bool ascending
     );
 
   public:
-    static void solve(std::vector<T> *messy);
-    static std::vector<T> solve(std::vector<T> messy);
+    static void solve(
+      std::vector<T> *messy,
+      bool ascending = true
+    );
+
+    static std::vector<T> solve(
+      std::vector<T> messy,
+      bool ascending = true
+    );
   };
 }}}
 

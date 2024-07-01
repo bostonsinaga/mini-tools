@@ -8,8 +8,13 @@ namespace algorithms {
 namespace sorters {
 
   template <typename T>
-  void Merge<T>::merge(std::vector<T> *messy, CR_INT left, CR_INT mid, CR_INT right) {
-
+  void Merge<T>::merge(
+    std::vector<T> *messy,
+    CR_INT left,
+    CR_INT mid,
+    CR_INT right,
+    bool ascending
+  ) {
     int subSize[2] = {mid - left + 1, right - mid};
 
     std::vector<T> subVec[2] = {
@@ -27,7 +32,9 @@ namespace sorters {
     while (subVecDex[0] < subSize[0] &&
       subVecDex[1] < subSize[1]
     ) {
-      if (subVec[0][subVecDex[0]] <= subVec[1][subVecDex[1]]) {
+      if ((ascending && subVec[0][subVecDex[0]] <= subVec[1][subVecDex[1]]) ||
+        (!ascending && subVec[0][subVecDex[0]] >= subVec[1][subVecDex[1]])
+      ) {
         messy->at(mergedVecDex) = subVec[0][subVecDex[0]];
         subVecDex[0]++;
       }
@@ -35,6 +42,7 @@ namespace sorters {
         messy->at(mergedVecDex) = subVec[1][subVecDex[1]];
         subVecDex[1]++;
       }
+
       mergedVecDex++;
     }
 
@@ -48,25 +56,30 @@ namespace sorters {
   }
 
   template <typename T>
-  void Merge<T>::partition(std::vector<T> *messy, CR_INT begin, CR_INT end) {
+  void Merge<T>::partition(
+    std::vector<T> *messy,
+    CR_INT begin,
+    CR_INT end,
+    bool ascending
+  ) {
     if (begin >= end) return;
     int mid = begin + (end - begin) / 2;
 
-    Merge<T>::partition(messy, begin, mid);
-    Merge<T>::partition(messy, mid + 1, end);
-    Merge<T>::merge(messy, begin, mid, end);
+    Merge<T>::partition(messy, begin, mid, ascending);
+    Merge<T>::partition(messy, mid + 1, end, ascending);
+    Merge<T>::merge(messy, begin, mid, end, ascending);
   }
 
   template <typename T>
-  void Merge<T>::solve(std::vector<T> *messy) {
+  void Merge<T>::solve(std::vector<T> *messy, bool ascending) {
     if constexpr (CheckType::isNumber<T>()) {
-      Merge<T>::partition(messy, 0, messy->size() - 1);
+      Merge<T>::partition(messy, 0, messy->size() - 1, ascending);
     }
   }
 
   template <typename T>
-  std::vector<T> Merge<T>::solve(std::vector<T> messy) {
-    Merge<T>::solve(&messy);
+  std::vector<T> Merge<T>::solve(std::vector<T> messy, bool ascending) {
+    Merge<T>::solve(&messy, ascending);
     return messy;
   }
 }}}

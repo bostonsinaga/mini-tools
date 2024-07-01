@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
   template <typename T>
-  void Comb<T>::solve(std::vector<T> *messy) {
+  void Comb<T>::solve(std::vector<T> *messy, bool ascending) {
     if constexpr (CheckType::isNumber<T>()) {
 
       int gap = messy->size();
@@ -23,8 +23,29 @@ namespace sorters {
         if (gap < 1) gap = 1;
         swapped = false;
 
+        /** FASTER */
+        // if (ascending) {
+        //   for (int i = 0; i < messy->size() - gap; i++) {
+        //     if (messy->at(i) > messy->at(i + gap)) {
+        //       std::swap(messy->at(i), messy->at(i + gap));
+        //       swapped = true;
+        //     }
+        //   }
+        // }
+        // else {
+        //   for (int i = 0; i < messy->size() - gap; i++) {
+        //     if (messy->at(i) < messy->at(i + gap)) {
+        //       std::swap(messy->at(i), messy->at(i + gap));
+        //       swapped = true;
+        //     }
+        //   }
+        // }
+
+        /** SLOWER */
         for (int i = 0; i < messy->size() - gap; i++) {
-          if (messy->at(i) > messy->at(i + gap)) {
+          if ((ascending && messy->at(i) > messy->at(i + gap)) ||
+            (!ascending && messy->at(i) < messy->at(i + gap))
+          ) {
             std::swap(messy->at(i), messy->at(i + gap));
             swapped = true;
           }
@@ -34,8 +55,8 @@ namespace sorters {
   }
 
   template <typename T>
-  std::vector<T> Comb<T>::solve(std::vector<T> messy) {
-    Comb<T>::solve(&messy);
+  std::vector<T> Comb<T>::solve(std::vector<T> messy, bool ascending) {
+    Comb<T>::solve(&messy, ascending);
     return messy;
   }
 }}}

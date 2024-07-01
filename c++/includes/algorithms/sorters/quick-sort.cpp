@@ -6,11 +6,18 @@ namespace algorithms {
 namespace sorters {
 
   template <typename T>
-  int Quick<T>::partition(std::vector<T> *messy, CR_INT left, CR_INT right) {
+  int Quick<T>::partition(
+    std::vector<T> *messy,
+    CR_INT left,
+    CR_INT right,
+    bool ascending
+  ) {
     int i = left - 1;
 
     for (int j = left; j < right; j++) {
-      if (messy->at(j) < messy->at(right)) {
+      if ((ascending && messy->at(j) < messy->at(right)) ||
+        (!ascending && messy->at(j) > messy->at(right))
+      ) {
         i++;
         std::swap(messy->at(i), messy->at(j));
       }
@@ -21,24 +28,29 @@ namespace sorters {
   }
 
   template <typename T>
-  void Quick<T>::recursion(std::vector<T> *messy, CR_INT left, CR_INT right) {
+  void Quick<T>::recursion(
+    std::vector<T> *messy,
+    CR_INT left,
+    CR_INT right,
+    bool ascending
+  ) {
     if (left < right) {
-      int piv = partition(messy, left, right);
-      Quick<T>::recursion(messy, left, piv - 1);
-      Quick<T>::recursion(messy, piv + 1, right);
+      int piv = partition(messy, left, right, ascending);
+      Quick<T>::recursion(messy, left, piv - 1, ascending);
+      Quick<T>::recursion(messy, piv + 1, right, ascending);
     }
   }
 
   template <typename T>
-  void Quick<T>::solve(std::vector<T> *messy) {
+  void Quick<T>::solve(std::vector<T> *messy, bool ascending) {
     if constexpr (CheckType::isNumber<T>()) {
-      Quick<T>::recursion(messy, 0, messy->size() - 1);
+      Quick<T>::recursion(messy, 0, messy->size() - 1, ascending);
     }
   }
 
   template <typename T>
-  std::vector<T> Quick<T>::solve(std::vector<T> messy) {
-    solve(&messy);
+  std::vector<T> Quick<T>::solve(std::vector<T> messy, bool ascending) {
+    solve(&messy, ascending);
     return messy;
   }
 }}}

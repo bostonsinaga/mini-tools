@@ -10,12 +10,31 @@ namespace sorters {
   template <class T>
   class Merge {
   private:
-    static void merge(std::vector<T> *messy, CR_INT left, CR_INT mid, CR_INT right);
-    static void partition(std::vector<T> *messy, CR_INT begin, CR_INT end);
+    static void merge(
+      std::vector<T> *messy,
+      CR_INT left,
+      CR_INT mid,
+      CR_INT right,
+      bool ascending
+    );
+
+    static void partition(
+      std::vector<T> *messy,
+      CR_INT begin,
+      CR_INT end,
+      bool ascending
+    );
 
   public:
-    static void solve(std::vector<T> *messy);
-    static std::vector<T> solve(std::vector<T> messy);
+    static void solve(
+      std::vector<T> *messy,
+      bool ascending = true
+    );
+
+    static std::vector<T> solve(
+      std::vector<T> messy,
+      bool ascending = true
+    );
   };
 }}}
 
