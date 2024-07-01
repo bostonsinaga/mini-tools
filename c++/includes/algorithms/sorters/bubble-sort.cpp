@@ -7,26 +7,14 @@ namespace sorters {
 
   template <typename T>
   void Bubble<T>::solve(std::vector<T> *messy, bool ascending) {
-    if constexpr (CheckType::isNumber<T>()) {
-      bool stop = false;
-
-      while (!stop) {
-        stop = true;
-        int i = 0;
-
-        for (int j = 1; j < messy->size(); j++) {
-
-          if ((ascending && messy->at(j) < messy->at(i)) ||
-            (!ascending && messy->at(j) > messy->at(i))
-          ) {
-            stop = false;
-            std::swap(messy->at(j), messy->at(i));
-          }
-
-          i = j;
+    int i, j;
+    for (i = 0; i < messy->size() - 1; i++) {
+      for (j = 0; j < messy->size() - i - 1; j++) {
+        if ((ascending && messy->at(j) > messy->at(j + 1)) ||
+          (!ascending && messy->at(j) < messy->at(j + 1))
+        ) {
+          std::swap(messy->at(j), messy->at(j + 1));
         }
-
-        if (stop) break;
       }
     }
   }
