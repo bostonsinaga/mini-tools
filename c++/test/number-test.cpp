@@ -17,8 +17,10 @@ int main() {
   mt::VEC_INT numbers = mt_uti::Scanner<int>::txtToNumbers(filenames[0]);
   std::cout << std::endl;
 
-  /** Bubble Sort */
+  // start time
   mt_uti::Timer timer;
+
+  /** Bubble Sort */
   mt_uti::Printer<int>::logf(
     mt_alg::sorters::Bubble<int>::solve(numbers),
     true, false, filenames[1]
@@ -27,7 +29,6 @@ int main() {
   std::cout << std::endl;
 
   /** Comb Sort */
-  timer.reset();
   mt_uti::Printer<int>::logf(
     mt_alg::sorters::Comb<int>::solve(numbers),
     true, false, filenames[2]
@@ -36,7 +37,6 @@ int main() {
   std::cout << std::endl;
 
   /** Merge Sort */
-  timer.reset();
   mt_uti::Printer<int>::logf(
     mt_alg::sorters::Merge<int>::solve(numbers),
     true, false, filenames[3]
@@ -45,7 +45,6 @@ int main() {
   std::cout << std::endl;
 
   /** Quick Sort */
-  timer.reset();
   mt_uti::Printer<int>::logf(
     mt_alg::sorters::Quick<int>::solve(numbers),
     true, false, filenames[4]
@@ -54,7 +53,6 @@ int main() {
   std::cout << std::endl;
 
   /** Selection Sort */
-  timer.reset();
   mt_uti::Printer<int>::logf(
     mt_alg::sorters::Selection<int>::solve(numbers),
     true, false, filenames[5]
