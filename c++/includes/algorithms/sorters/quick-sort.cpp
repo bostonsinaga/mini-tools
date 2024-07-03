@@ -1,60 +1,87 @@
 #ifndef __ALGORITHMS__SORTERS__QUICK_SORT_CPP__
 #define __ALGORITHMS__SORTERS__QUICK_SORT_CPP__
 
+#include <iostream>
 #include <ctime>
 
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  /** Lomuto Partitioning */
+  /** Slower Algorithm *******************************************
+    template <typename T>
+    int Quick<T>::lomutoPartition(
+      std::vector<T> *messy,
+      CR_INT left,
+      CR_INT right,
+      bool &ascending
+    ) {
+      int i = left - 1;
+
+      for (int j = left; j < right; j++) {
+        if ((ascending && messy->at(j) <= messy->at(right)) ||
+          (!ascending && messy->at(j) >= messy->at(right))
+        ) {
+          i++;
+          std::swap(messy->at(i), messy->at(j));
+        }
+      }
+
+      std::swap(messy->at(i+1), messy->at(right));
+      return i+1;
+    }
+  *****************************************************************/
+
+  /** Faster Algorithm */
   template <typename T>
-  int Quick<T>::lomutoPartition(
+  int Quick<T>::hoarePartition(
     std::vector<T> *messy,
-    CR_INT low,
-    CR_INT high,
+    CR_INT left,
+    CR_INT right,
     bool &ascending
   ) {
-    int i = low - 1;
+    int i = left - 1, j = right + 1;
 
-    for (int j = low; j < high; j++) {
-      if ((ascending && messy->at(j) < messy->at(high)) ||
-        (!ascending && messy->at(j) > messy->at(high))
-      ) {
-        i++;
-        std::swap(messy->at(i), messy->at(j));
+    while (true) {
+
+      if (ascending) {
+        do { i++; } while (messy->at(i) < messy->at(left));
+        do { j--; } while (messy->at(j) > messy->at(left));
       }
-    }
+      else {
+        do { i++; } while (messy->at(i) > messy->at(left));
+        do { j--; } while (messy->at(j) < messy->at(left));
+      }
 
-    std::swap(messy->at(i+1), messy->at(high));
-    return i+1;
+      if (i >= j) return j;
+      std::swap(messy->at(i), messy->at(j));
+    }
   }
 
   template <typename T>
   int Quick<T>::randomPartition(
     std::vector<T> *messy,
-    CR_INT low,
-    CR_INT high,
+    CR_INT left,
+    CR_INT right,
     bool &ascending
   ) {
     std::srand(std::time(NULL));
-    int random = low + std::rand() % (high - low);
-    std::swap(messy->at(random), messy->at(high));
-    return Quick<T>::lomutoPartition(messy, low, high, ascending);
+    int random = left + std::rand() % (right - left);
+    std::swap(messy->at(random), messy->at(right));
+    return Quick<T>::hoarePartition(messy, left, right, ascending);
   }
 
   template <typename T>
   void Quick<T>::recursion(
     std::vector<T> *messy,
-    CR_INT low,
-    CR_INT high,
+    CR_INT left,
+    CR_INT right,
     bool &ascending
   ) {
-    if (low < high) {
-      int piv = randomPartition(messy, low, high, ascending);
-      // int piv = lomutoPartition(messy, low, high, ascending);
-      Quick<T>::recursion(messy, low, piv - 1, ascending);
-      Quick<T>::recursion(messy, piv + 1, high, ascending);
+    if (left < right) {
+      int piv = randomPartition(messy, left, right, ascending);
+      Quick<T>::recursion(messy, left, piv - 1, ascending);
+      Quick<T>::recursion(messy, piv + 1, right, ascending);
     }
   }
 

@@ -7,29 +7,29 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  /** Lomuto Partitioning */
   template <class T>
   class Quick {
   private:
-    // 'low' and 'high' are index of 'messy'
-    static int lomutoPartition(
+    /** The 'left' and 'right' are indexes of 'messy' */
+
+    static int hoarePartition(
       std::vector<T> *messy,
-      CR_INT low,
-      CR_INT high,
+      CR_INT left,
+      CR_INT right,
       bool &ascending
     );
 
     static int randomPartition(
       std::vector<T> *messy,
-      CR_INT low,
-      CR_INT high,
+      CR_INT left,
+      CR_INT right,
       bool &ascending
     );
 
     static void recursion(
       std::vector<T> *messy,
-      CR_INT low,
-      CR_INT high,
+      CR_INT left,
+      CR_INT right,
       bool &ascending
     );
 
