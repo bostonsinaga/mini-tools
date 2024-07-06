@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_CPP__
 #define __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_CPP__
 
+#include <cmath>
 #include "point.h"
 
 namespace mini_tools {
