@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_H__
 #define __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_H__
 
-#include <cmath>
-
 namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
