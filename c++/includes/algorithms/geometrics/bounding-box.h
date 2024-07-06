@@ -1,7 +1,6 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__GEOMETRICS__BOUNDING_BOX_H__
 #define __MINI_TOOLS__ALGORITHMS__GEOMETRICS__BOUNDING_BOX_H__
 
-#include "point.h"
 #include "size.h"
 
 namespace mini_tools {
