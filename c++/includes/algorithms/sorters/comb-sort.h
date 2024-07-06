@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__SORTERS__COMB_SORT_H__
-#define __ALGORITHMS__SORTERS__COMB_SORT_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
 
 #include "../../types.h"
 
@@ -23,4 +23,4 @@ namespace sorters {
 }}}
 
 #include "comb-sort.cpp"
-#endif // __ALGORITHMS__SORTERS__COMB_SORT_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__

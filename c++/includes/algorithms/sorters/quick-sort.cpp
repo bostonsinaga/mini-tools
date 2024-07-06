@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__SORTERS__QUICK_SORT_CPP__
-#define __ALGORITHMS__SORTERS__QUICK_SORT_CPP__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__
 
 #include <iostream>
 #include <ctime>
@@ -99,4 +99,4 @@ namespace sorters {
   }
 }}}
 
-#endif // __ALGORITHMS__SORTERS__QUICK_SORT_CPP__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__

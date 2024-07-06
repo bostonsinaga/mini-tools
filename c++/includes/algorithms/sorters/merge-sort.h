@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__SORTERS__MERGE_SORT_H__
-#define __ALGORITHMS__SORTERS__MERGE_SORT_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
 
 #include "../../types.h"
 
@@ -39,4 +39,4 @@ namespace sorters {
 }}}
 
 #include "merge-sort.cpp"
-#endif // __ALGORITHMS__SORTERS__MERGE_SORT_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
