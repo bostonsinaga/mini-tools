@@ -7,42 +7,42 @@ namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
 
-  class BoundingBox {
+  class Rect {
   private:
     Point position, anchor = Point(0.5, 0.5);
     Size size;
 
   public:
-    BoundingBox() {}
+    Rect() {}
 
-    BoundingBox(
+    Rect(
       Point &position_in,
       Size &size_in
     );
 
-    BoundingBox(
+    Rect(
       const Point &position_in,
       const Size &size_in
     );
 
-    BoundingBox(
+    Rect(
       Point &position_in,
       Size &size_in,
       Point &anchor_in
     );
 
-    BoundingBox(
+    Rect(
       const Point &position_in,
       const Size &size_in,
       const Point &anchor_in
     );
 
-    BoundingBox(
+    Rect(
       double &x, double &y,
       double &w, double &h
     );
 
-    BoundingBox(
+    Rect(
       const double &x, const double &y,
       const double &w, const double &h
     );
@@ -71,14 +71,14 @@ namespace geometrics {
 
     bool contains(Point *pt);
     bool contains(Point pt);
-    bool contains(BoundingBox *bb);
-    bool contains(BoundingBox bb);
+    bool contains(Rect *bb);
+    bool contains(Rect bb);
 
-    bool inside(BoundingBox *bb);
-    bool inside(BoundingBox bb);
+    bool inside(Rect *bb);
+    bool inside(Rect bb);
 
-    bool intersect(BoundingBox *bb);
-    bool intersect(BoundingBox bb);
+    bool intersect(Rect *bb);
+    bool intersect(Rect bb);
   };
 }}}
 

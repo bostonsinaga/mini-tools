@@ -7,7 +7,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     Point &position_in,
     Size &size_in
   ) {
@@ -15,7 +15,7 @@ namespace geometrics {
     size = size_in;
   }
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     const Point &position_in,
     const Size &size_in
   ) {
@@ -23,7 +23,7 @@ namespace geometrics {
     size = size_in;
   }
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     Point &position_in,
     Size &size_in,
     Point &anchor_in
@@ -33,7 +33,7 @@ namespace geometrics {
     anchor = anchor_in;
   }
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     const Point &position_in,
     const Size &size_in,
     const Point &anchor_in
@@ -43,7 +43,7 @@ namespace geometrics {
     anchor = anchor_in;
   }
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     double &x, double &y,
     double &w, double &h
   ) {
@@ -51,7 +51,7 @@ namespace geometrics {
     size = Size(w, h);
   }
 
-  BoundingBox::BoundingBox(
+  Rect::Rect(
     const double &x, const double &y,
     const double &w, const double &h
   ) {
@@ -61,38 +61,38 @@ namespace geometrics {
 
   /** Values */
 
-  Point BoundingBox::getPosition() { return position; }
-  Size BoundingBox::getSize() { return size; }
-  Point BoundingBox::getAnchor() { return anchor; }
+  Point Rect::getPosition() { return position; }
+  Size Rect::getSize() { return size; }
+  Point Rect::getAnchor() { return anchor; }
 
-  void BoundingBox::setPosition(Point &pt) { position = pt; }
-  void BoundingBox::setPosition(const Point &pt) { position = pt; }
+  void Rect::setPosition(Point &pt) { position = pt; }
+  void Rect::setPosition(const Point &pt) { position = pt; }
 
-  void BoundingBox::setSize(Size &sz) { size = az; }
-  void BoundingBox::setSize(const Size &sz) { size = az; }
+  void Rect::setSize(Size &sz) { size = az; }
+  void Rect::setSize(const Size &sz) { size = az; }
 
-  void BoundingBox::setAnchor(Point &pt) { anchor = pt; }
-  void BoundingBox::setAnchor(const Point &pt) { anchor = pt; }
+  void Rect::setAnchor(Point &pt) { anchor = pt; }
+  void Rect::setAnchor(const Point &pt) { anchor = pt; }
 
-  double BoundingBox::getLeft() { return position.x - size.w * anchor.x; }
-  double BoundingBox::getRight() { return position.x + size.w * (1 - anchor.x); }
-  double BoundingBox::getBottom() { return position.y - size.h * anchor.y; }
-  double BoundingBox::getTop() { return position.y + size.h * (1 - anchor.y); }
+  double Rect::getLeft() { return position.x - size.w * anchor.x; }
+  double Rect::getRight() { return position.x + size.w * (1 - anchor.x); }
+  double Rect::getBottom() { return position.y - size.h * anchor.y; }
+  double Rect::getTop() { return position.y + size.h * (1 - anchor.y); }
 
   /** Relations */
 
-  bool BoundingBox::contains(Point *pt) {
+  bool Rect::contains(Point *pt) {
     if (pt->x >= getLeft() && pt->x <= getRight() &&
       pt->y >= getBottom() && pt->y <= getTop()
     ) { return true; }
     return false;
   }
 
-  bool BoundingBox::contains(Point pt) {
+  bool Rect::contains(Point pt) {
     return contains(&pt);
   }
 
-  bool BoundingBox::contains(BoundingBox *bb) {
+  bool Rect::contains(Rect *bb) {
     if (bb->getLeft() >= getLeft() &&
       bb->getRight() <= getRight() &&
       bb->getBottom() >= getBottom() &&
@@ -101,11 +101,11 @@ namespace geometrics {
     return false;
   }
 
-  bool BoundingBox::contains(BoundingBox bb) {
+  bool Rect::contains(Rect bb) {
     return contains(&bb);
   }
 
-  bool BoundingBox::inside(BoundingBox *bb) {
+  bool Rect::inside(Rect *bb) {
     if (getLeft() >= bb->getLeft() &&
       getRight() <= bb->getRight() &&
       getBottom() >= bb->getBottom() &&
@@ -114,11 +114,11 @@ namespace geometrics {
     return false;
   }
 
-  bool BoundingBox::inside(BoundingBox bb) {
+  bool Rect::inside(Rect bb) {
     return inside(&bb);
   }
 
-  bool BoundingBox::intersect(BoundingBox *bb) {
+  bool Rect::intersect(Rect *bb) {
     if ((
       (getLeft() >= bb->getLeft() &&
       getLeft() <= bb->getRight()) ||
@@ -135,7 +135,7 @@ namespace geometrics {
     return false;
   }
 
-  bool BoundingBox::intersect(BoundingBox bb) {
+  bool Rect::intersect(Rect bb) {
     return intersect(&bb);
   }
 }}}
