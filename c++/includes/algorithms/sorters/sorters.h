@@ -3,6 +3,7 @@
 
 #include "bubble-sort.h"
 #include "comb-sort.h"
+#include "insertion-sort.h"
 #include "merge-sort.h"
 #include "selection-sort.h"
 #include "quick-sort.h"
