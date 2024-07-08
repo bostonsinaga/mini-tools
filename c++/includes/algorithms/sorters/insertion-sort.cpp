@@ -5,6 +5,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
+  template <typename T>
   void Insertion<T>::solve(
     std::vector<T> *messy,
     bool ascending
@@ -16,15 +17,19 @@ namespace sorters {
       key = messy->at(i);
       j = i - 1;
 
-      while (j >= 0 && messy->at(j) > key) {
+      while (j >= 0 && (
+        (ascending && messy->at(j) > key) ||
+        (!ascending && messy->at(j) < key)
+      )) {
         messy->at(j + 1) = messy->at(j);
-        j = j - 1;
+        j--;
       }
 
       messy->at(j + 1) = key;
     }
   }
-
+  
+  template <typename T>
   std::vector<T> Insertion<T>::solve(
     std::vector<T> messy,
     bool ascending
