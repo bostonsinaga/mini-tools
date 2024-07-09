@@ -45,6 +45,10 @@ namespace geometrics {
       std::vector<double> *vec_x,
       std::vector<double> *vec_y
     );
+
+    Point getVertice(int index);
+    std::vector<Point>* getVertices() { return &vertices; }
+    Rect* getRect() { return &rect; }
   };
 }}}
 

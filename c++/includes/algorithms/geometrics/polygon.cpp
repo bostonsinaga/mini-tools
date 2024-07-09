@@ -56,6 +56,13 @@ namespace geometrics {
 
     setRect();
   }
+
+  Point Polygon::getVertice(int index) {
+    if (index >= 0 && index < vertices.size()) {
+      return vertices.at(index);
+    }
+    else return Point(0, 0);
+  }
 }}}
 
 #endif // __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POLYGON_CPP__
