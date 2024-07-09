@@ -8,16 +8,20 @@ namespace sorters {
   template <typename T>
   void Insertion<T>::solve(
     std::vector<T> *messy,
-    bool ascending
+    bool ascending,
+    int start, int end
   ) {
-    int i, key, j;
+    int i, j;
+    T key;
 
-    for (i = 1; i < messy->size(); i++) {
+    if (start < 0) start = 0;
+    if (end == -1 || end > messy->size()) end = messy->size();
 
-      key = messy->at(i);
+    for (i = start + 1; i < end; i++) {
       j = i - 1;
+      key = messy->at(i);
 
-      while (j >= 0 && (
+      while (j >= start && (
         (ascending && messy->at(j) > key) ||
         (!ascending && messy->at(j) < key)
       )) {
@@ -32,9 +36,10 @@ namespace sorters {
   template <typename T>
   std::vector<T> Insertion<T>::solve(
     std::vector<T> messy,
-    bool ascending
+    bool ascending,
+    int start, int end
   ) {
-    Insertion<T>::solve(&messy, ascending);
+    Insertion<T>::solve(&messy, ascending, start, end);
     return messy;
   }
 }}}

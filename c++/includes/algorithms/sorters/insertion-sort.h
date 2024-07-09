@@ -12,12 +12,14 @@ namespace sorters {
   public:
     static void solve(
       std::vector<T> *messy,
-      bool ascending = true
+      bool ascending = true,
+      int start = 1, int end = -1
     );
 
     static std::vector<T> solve(
       std::vector<T> messy,
-      bool ascending = true
+      bool ascending = true,
+      int start = 1, int end = -1
     );
   };
 }}}
