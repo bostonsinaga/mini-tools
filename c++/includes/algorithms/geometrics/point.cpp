@@ -10,6 +10,16 @@ namespace geometrics {
 
   /** Constructors */
 
+  Point::Point(double &num) {
+    x = num;
+    y = num;
+  }
+
+  Point::Point(const double &num) {
+    x = num;
+    y = num;
+  }
+
   Point::Point(double &x_in, double &y_in) {
     x = x_in;
     y = y_in;

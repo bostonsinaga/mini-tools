@@ -11,6 +11,8 @@ namespace geometrics {
     double& w = 0, h = 0;
 
     Point() {}
+    Point(double &num);
+    Point(const double &num);
     Point(double &x_in, double &y_in);
     Point(const double &x_in, const double &y_in);
 
