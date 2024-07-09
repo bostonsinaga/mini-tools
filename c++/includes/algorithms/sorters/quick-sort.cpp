@@ -1,38 +1,12 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__
 
-#include <iostream>
 #include <ctime>
-#include "insertion-sort.h"
 
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  /** Slower Algorithm */
-  template <typename T>
-  int Quick<T>::lomutoPartition(
-    std::vector<T> *messy,
-    CR_INT left,
-    CR_INT right,
-    bool &ascending
-  ) {
-    int i = left - 1;
-
-    for (int j = left; j < right; j++) {
-      if ((ascending && messy->at(j) <= messy->at(right)) ||
-        (!ascending && messy->at(j) >= messy->at(right))
-      ) {
-        i++;
-        std::swap(messy->at(i), messy->at(j));
-      }
-    }
-
-    std::swap(messy->at(i+1), messy->at(right));
-    return i+1;
-  }
-
-  /** Faster Algorithm */
   template <typename T>
   int Quick<T>::hoarePartition(
     std::vector<T> *messy,

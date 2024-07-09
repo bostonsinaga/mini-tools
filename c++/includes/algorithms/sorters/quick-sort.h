@@ -12,13 +12,6 @@ namespace sorters {
   private:
     /** The 'left' and 'right' are indexes of 'messy' */
 
-    static int lomutoPartition(
-      std::vector<T> *messy,
-      CR_INT left,
-      CR_INT right,
-      bool &ascending
-    );
-
     static int hoarePartition(
       std::vector<T> *messy,
       CR_INT left,
