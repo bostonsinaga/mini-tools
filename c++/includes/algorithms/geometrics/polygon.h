@@ -12,7 +12,6 @@ namespace geometrics {
   private:
     Rect rect;
     std::vector<Point> vertices;
-    void setRect();
 
   public:
     Polygon() {}
@@ -39,6 +38,7 @@ namespace geometrics {
       setVertices(&vec_x, &vec_y);
     }
 
+    void createRect();
     void setVertices(std::vector<Point> *points);
 
     void setVertices(

@@ -7,7 +7,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
 
-  void Polygon::setRect() {
+  void Polygon::createRect() {
     double farX[2] = {0, 0}, farY[2] = {0, 0};
 
     for (Point &pt : vertices) {
@@ -37,7 +37,7 @@ namespace geometrics {
 
   void Polygon::setVertices(std::vector<Point> *points) {
     vertices = *points;
-    setRect();
+    createRect();
   }
 
   void Polygon::setVertices(
@@ -54,7 +54,7 @@ namespace geometrics {
       );
     }
 
-    setRect();
+    createRect();
   }
 
   Point Polygon::getVertice(int index) {
