@@ -13,6 +13,7 @@ namespace geometrics {
     Rect rect;
     std::vector<Point> vertices;
     Point farMin, farMax;
+    bool withinVertices(int index);
 
   public:
     Polygon() {}
@@ -40,6 +41,7 @@ namespace geometrics {
     }
 
     void createRect();
+    void editVertices(int index, double val);
     void setVertices(std::vector<Point> *points);
 
     void setVertices(
@@ -48,8 +50,10 @@ namespace geometrics {
     );
 
     Point getVertice(int index);
-    std::vector<Point>* getVertices() { return &vertices; }
-    Rect* getRect() { return &rect; }
+    int count() { return vertices.size(); }
+
+    std::vector<Point> getVertices() { return vertices; }
+    Rect getRect() { return rect; }
 
     double getFarMin() { return farMin; }
     double getFarMin() { return farMax; }

@@ -7,6 +7,13 @@ namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
 
+  bool Polygon::withinVertices(int index) {
+    if (index >= 0 && index < vertices.size()) {
+      return true;
+    }
+    else return false;
+  }
+
   void Polygon::createRect() {
     for (Point &pt : vertices) {
 
@@ -33,6 +40,12 @@ namespace geometrics {
     );
   }
 
+  void Polygon::editVertices(int index, double val) {
+    if (withinVertices(index)) {
+      vertices.at(index) = val;
+    }
+  }
+
   void Polygon::setVertices(std::vector<Point> *points) {
     vertices = *points;
     createRect();
@@ -56,7 +69,7 @@ namespace geometrics {
   }
 
   Point Polygon::getVertice(int index) {
-    if (index >= 0 && index < vertices.size()) {
+    if (withinVertices(index)) {
       return vertices.at(index);
     }
     else return Point(0, 0);
