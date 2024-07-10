@@ -49,6 +49,10 @@ namespace geometrics {
       std::vector<double> *vec_y
     );
 
+    Point cutVertices(int index);
+    std::vector<Point> cutVertices(int start, int end);
+    std::vector<Point> cutVertices(std::vector<int> indexes);
+
     Point getVertice(int index);
     int count() { return vertices.size(); }
 

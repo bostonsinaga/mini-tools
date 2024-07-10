@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POLYGON_CPP__
 
 #include "polygon.h"
+#include "../../utils/vec-tools.h"
 
 namespace mini_tools {
 namespace algorithms {
@@ -66,6 +67,18 @@ namespace geometrics {
     }
 
     createRect();
+  }
+
+  Point Polygon::cutVertices(int index) {
+    return utils::VecTools::cutSingle(vertices, index);
+  }
+
+  std::vector<Point> Polygon::cutVertices(int start, int end) {
+    return utils::VecTools::cutInterval(vertices, start, end);
+  }
+
+  std::vector<Point> Polygon::cutVertices(std::vector<int> indexes) {
+    return utils::VecTools::cutIndexes(vertices, indexes);
   }
 
   Point Polygon::getVertice(int index) {
