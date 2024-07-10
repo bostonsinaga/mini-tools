@@ -8,30 +8,28 @@ namespace algorithms {
 namespace geometrics {
 
   void Polygon::createRect() {
-    double farX[2] = {0, 0}, farY[2] = {0, 0};
-
     for (Point &pt : vertices) {
 
-      if (std::abs(pt.x) < farX[0]) {
-        farX[0] = pt.x;
+      if (std::abs(pt.x) < farMin.x) {
+        farMin.x = pt.x;
       }
-      else if (std::abs(pt.x) > farX[1]) {
-        farX[1] = pt.x;
+      else if (std::abs(pt.x) > farMax.x) {
+        farMax.x = pt.x;
       }
 
-      if (std::abs(pt.y) < farY[0]) {
-        farY[0] = pt.y;
+      if (std::abs(pt.y) < farMin.y) {
+        farMin.y = pt.y;
       }
-      else if (std::abs(pt.y) > farY[1]) {
-        farY[1] = pt.y;
+      else if (std::abs(pt.y) > farMax.y) {
+        farMax.y = pt.y;
       }
     }
 
     rect = Rect(
-      (farX[0] + farX[1]) / 2,
-      (farY[0] + farY[1]) / 2,
-      std::abs(farX[0] - farX[1]),
-      std::abs(farY[0] - farY[1])
+      (farMin.x + farMax.x) / 2,
+      (farMin.y + farMax.y) / 2,
+      std::abs(farMin.x - farMax.x),
+      std::abs(farMin.y - farMax.y)
     );
   }
 

@@ -12,6 +12,7 @@ namespace geometrics {
   private:
     Rect rect;
     std::vector<Point> vertices;
+    Point farMin, farMax;
 
   public:
     Polygon() {}
@@ -49,6 +50,9 @@ namespace geometrics {
     Point getVertice(int index);
     std::vector<Point>* getVertices() { return &vertices; }
     Rect* getRect() { return &rect; }
+
+    double getFarMin() { return farMin; }
+    double getFarMin() { return farMax; }
   };
 }}}
 
