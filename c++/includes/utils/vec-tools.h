@@ -44,11 +44,17 @@ namespace utils {
       bool needDelete = false
     );
 
+    /**
+     * Set the 'lockedIndex' to true will maintain
+     * truncation targeting the initial member
+     * (the target index will not point to another member
+     * when one of the smaller indexes has finished truncating)
+     */
     static void cutIndexes(
       std::vector<T> &vec,
       std::vector<T> &wasted,
       VEC_INT idxs,
-      bool lockedIndex = false,
+      bool lockedIndex = true,
       bool onlyWasted = false,
       bool needDelete = false
     );
@@ -56,7 +62,7 @@ namespace utils {
     static std::vector<T> cutIndexes(
       std::vector<T> &vec,
       VEC_INT idxs,
-      bool lockedIndex = false,
+      bool lockedIndex = true,
       bool onlyWasted = false,
       bool needDelete = false
     );
