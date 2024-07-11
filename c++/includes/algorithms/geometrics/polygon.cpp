@@ -11,7 +11,7 @@ namespace geometrics {
   // RECT |
   //______|
 
-  void Polygon::createRect() {
+  void Polygon::createRect(Point *anchor) {
     for (Point &pt : vertices) {
 
       if (std::abs(pt.x) < farMin.x) {
@@ -35,6 +35,8 @@ namespace geometrics {
       std::abs(farMin.x - farMax.x),
       std::abs(farMin.y - farMax.y)
     );
+
+    if (anchor) rect.setAnchor(*anchor);
   }
 
   void Polygon::setPosition(Point *pt) {
@@ -44,7 +46,7 @@ namespace geometrics {
   }
 
   void Polygon::setPosition(double x, double y) {
-    Pont pt = Point(x, y);
+    Point pt = Point(x, y);
     setPosition(&pt);
   }
 
@@ -60,31 +62,36 @@ namespace geometrics {
   }
 
   void Polygon::editVertices(int index, double val) {
-    if (withinVertices(index)) {
+    if (withinVertices(index) && vertices.at(index) != val) {
       vertices.at(index) = val;
+      createRect();
     }
   }
 
-  void Polygon::setVertices(std::vector<Point> *points) {
+  void Polygon::setVertices(
+    std::vector<Point> *points,
+    Point *anchor
+  ) {
     vertices = *points;
-    createRect();
+    createRect(anchor);
   }
 
   void Polygon::setVertices(
     std::vector<double> *vec_x,
-    std::vector<double> *vec_y
+    std::vector<double> *vec_y,
+    Point *anchor
   ) {
     int size = vec_x->size();
     if (vec_y->size() < size) size = vec_y->size();
     vertices = {};
-    
+
     for (int i = 0; i < size; i++) {
       vertices.push_back(
         Point(vec_x->at(i), vec_y->at(i))
       );
     }
 
-    createRect();
+    createRect(anchor);
   }
 
   Point Polygon::cutVertices(int index) {
