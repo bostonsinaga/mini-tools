@@ -15,14 +15,13 @@ namespace geometrics {
     void Rect::init(
       Point *position_in,
       Size *size_in,
-      Point *anchor_in = nullptr
+      Point *anchor_in
     );
 
     void Rect::init(
       double *x, double *y,
       double *w, double *h,
-      double *anc_x = nullptr,
-      double *anc_y = nullptr
+      double *anc_x, double *anc_y
     );
 
   public:
@@ -30,30 +29,17 @@ namespace geometrics {
 
     Rect(
       Point position_in,
-      Size size_in
-    ) {
-      init(&position_in, &size_in);
-    }
-
-    Rect(
-      Point position_in,
       Size size_in,
-      Point anchor_in
+      Point anchor_in = Point(0.5, 0.5)
     ) {
       init(&position_in, &size_in, &anchor_in);
     }
 
     Rect(
       double x, double y,
-      double w, double h
-    ) {
-      init(&x, &y, &w, &h);
-    }
-
-    Rect(
-      double x, double y,
       double w, double h,
-      double anc_x, double anc_y
+      double anc_x = 0.5,
+      double anc_y = 0.5
     ) {
       init(&x, &y, &w, &h, &anc_x, &anc_y);
     }
