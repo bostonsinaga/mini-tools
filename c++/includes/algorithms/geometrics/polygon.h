@@ -17,7 +17,6 @@ namespace geometrics {
     void createRect(Point *anc = nullptr);
     void setPosition(Point *pt);
     bool withinVertices(int index);
-    bool isFarPoint(Point &pt);
 
     void setVertices(
       std::vector<Point> *points,
