@@ -54,16 +54,16 @@ namespace geometrics {
   //VERTICES |
   //_________|
 
-  bool Polygon::withinVertices(int index) {
-    if (index >= 0 && index < vertices.size()) {
+  bool Polygon::withinVertices(int idx) {
+    if (idx >= 0 && idx < vertices.size()) {
       return true;
     }
     else return false;
   }
 
-  void Polygon::editVertices(int index, double val) {
-    if (withinVertices(index) && vertices.at(index) != val) {
-      vertices.at(index) = val;
+  void Polygon::editVertices(int idx, double val) {
+    if (withinVertices(idx) && vertices.at(idx) != val) {
+      vertices.at(idx) = val;
       createRect();
     }
   }
@@ -94,10 +94,10 @@ namespace geometrics {
     createRect(anchor);
   }
 
-  Point Polygon::cutVertices(int index) {
+  Point Polygon::cutVertices(int idx) {
     Point wasted;
     int prevCount = count();
-    utils::VecTools::cutSingle(vertices, wasted, index);
+    utils::VecTools::cutSingle(vertices, wasted, idx);
     if (count() < prevCount) createRect();
     return wasted;
   }
@@ -109,16 +109,16 @@ namespace geometrics {
     return wasted;
   }
 
-  std::vector<Point> Polygon::cutVertices(std::vector<int> indexes) {
+  std::vector<Point> Polygon::cutVertices(std::vector<int> idxes) {
     std::vector<Point> wasted;
-    utils::VecTools::cutIndexes(vertices, wasted, indexes);
+    utils::VecTools::cutIndexes(vertices, wasted, idxes);
     if (wasted.size() > 0) createRect();
     return wasted;
   }
 
-  Point Polygon::getVertice(int index) {
-    if (withinVertices(index)) {
-      return vertices.at(index);
+  Point Polygon::getVertice(int idx) {
+    if (withinVertices(idx)) {
+      return vertices.at(idx);
     }
     else return Point(0, 0);
   }

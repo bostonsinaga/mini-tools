@@ -14,19 +14,20 @@ namespace geometrics {
     std::vector<Point> vertices;
     Point farMin, farMax;
 
-    void createRect(Point *anchor = nullptr);
+    void createRect(Point *anc = nullptr);
     void setPosition(Point *pt);
     bool withinVertices(int index);
+    bool isFarPoint(Point &pt);
 
     void setVertices(
       std::vector<Point> *points,
-      Point *anchor = nullptr
+      Point *anc = nullptr
     );
 
     void setVertices(
       std::vector<double> *vec_x,
       std::vector<double> *vec_y,
-      Point *anchor = nullptr
+      Point *anc = nullptr
     );
 
   public:
@@ -34,32 +35,32 @@ namespace geometrics {
 
     Polygon(
       std::vector<Point> &points,
-      Point anchor = Point(0.5, 0.5)
+      Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&points, &anchor);
+      setVertices(&points, &anc);
     }
 
     Polygon(
       const std::vector<Point> &points,
-      Point anchor = Point(0.5, 0.5)
+      Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&points, &anchor);
+      setVertices(&points, &anc);
     }
 
     Polygon(
       std::vector<double> &vec_x,
       std::vector<double> &vec_y,
-      Point anchor = Point(0.5, 0.5)
+      Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&vec_x, &vec_y, &anchor);
+      setVertices(&vec_x, &vec_y, &anc);
     }
 
     Polygon(
       const std::vector<double> &vec_x,
       const std::vector<double> &vec_y,
-      Point anchor = Point(0.5, 0.5)
+      Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&vec_x, &vec_y, &anchor);
+      setVertices(&vec_x, &vec_y, &anc);
     }
 
     /** RECT */
