@@ -7,59 +7,27 @@ namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
 
-  Rect::Rect(
-    Point &position_in,
-    Size &size_in
+  void Rect::init(
+    Point *position_in,
+    Size *size_in,
+    Point *anchor_in
   ) {
-    position = position_in;
-    size = size_in;
+    position = *position_in;
+    size = *size_in;
+    if (anchor_in) anchor = *anchor_in;
   }
 
-  Rect::Rect(
-    const Point &position_in,
-    const Size &size_in
+  void Rect::init(
+    double *x, double *y,
+    double *w, double *h,
+    double *anc_x, double *anc_y
   ) {
-    position = position_in;
-    size = size_in;
+    position = Point(*x, *y);
+    size = Size(*w, *h);
+    if (anc_x && anc_y) anchor = Point(*anc_x, *anc_y);
   }
 
-  Rect::Rect(
-    Point &position_in,
-    Size &size_in,
-    Point &anchor_in
-  ) {
-    position = position_in;
-    size = size_in;
-    anchor = anchor_in;
-  }
-
-  Rect::Rect(
-    const Point &position_in,
-    const Size &size_in,
-    const Point &anchor_in
-  ) {
-    position = position_in;
-    size = size_in;
-    anchor = anchor_in;
-  }
-
-  Rect::Rect(
-    double &x, double &y,
-    double &w, double &h
-  ) {
-    position = Point(x, y);
-    size = Size(w, h);
-  }
-
-  Rect::Rect(
-    const double &x, const double &y,
-    const double &w, const double &h
-  ) {
-    position = Point(x, y);
-    size = Size(w, h);
-  }
-
-  /** Values */
+  /** VALUES */
 
   Point Rect::getPosition() { return position; }
   Size Rect::getSize() { return size; }
@@ -79,7 +47,7 @@ namespace geometrics {
   double Rect::getBottom() { return position.y - size.h * anchor.y; }
   double Rect::getTop() { return position.y + size.h * (1 - anchor.y); }
 
-  /** Relations */
+  /** RELATIONS */
 
   bool Rect::contains(Point *pt) {
     if (pt->x >= getLeft() && pt->x <= getRight() &&

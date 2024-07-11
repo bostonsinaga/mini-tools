@@ -12,42 +12,53 @@ namespace geometrics {
     Point position, anchor = Point(0.5, 0.5);
     Size size;
 
+    void Rect::init(
+      Point *position_in,
+      Size *size_in,
+      Point *anchor_in = nullptr
+    );
+
+    void Rect::init(
+      double *x, double *y,
+      double *w, double *h,
+      double *anc_x = nullptr,
+      double *anc_y = nullptr
+    );
+
   public:
     Rect() {}
 
     Rect(
-      Point &position_in,
-      Size &size_in
-    );
+      Point position_in,
+      Size size_in
+    ) {
+      init(&position_in, &size_in);
+    }
 
     Rect(
-      const Point &position_in,
-      const Size &size_in
-    );
+      Point position_in,
+      Size size_in,
+      Point anchor_in
+    ) {
+      init(&position_in, &size_in, &anchor_in);
+    }
 
     Rect(
-      Point &position_in,
-      Size &size_in,
-      Point &anchor_in
-    );
+      double x, double y,
+      double w, double h
+    ) {
+      init(&x, &y, &w, &h);
+    }
 
     Rect(
-      const Point &position_in,
-      const Size &size_in,
-      const Point &anchor_in
-    );
+      double x, double y,
+      double w, double h,
+      double anc_x, double anc_y
+    ) {
+      init(&x, &y, &w, &h, &anc_x, &anc_y);
+    }
 
-    Rect(
-      double &x, double &y,
-      double &w, double &h
-    );
-
-    Rect(
-      const double &x, const double &y,
-      const double &w, const double &h
-    );
-
-    /** Values */
+    /** VALUES */
 
     Point getPosition();
     Size getSize();
@@ -67,7 +78,7 @@ namespace geometrics {
     double getBottom();
     double getTop();
 
-    /** Relations */
+    /** RELATIONS */
 
     bool contains(Point *pt);
     bool contains(Point pt);
