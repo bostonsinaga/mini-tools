@@ -68,6 +68,12 @@ namespace geometrics {
     }
   }
 
+  void insertVertices(int idx, double val) {
+    if (idx < 0) idx = 0;
+    else if (idx >= vertices.size()) idx = vertices.size() - 1;
+    vertices.insert(idx, val);
+  }
+
   void Polygon::setVertices(
     std::vector<Point> *pts,
     Point *anchor

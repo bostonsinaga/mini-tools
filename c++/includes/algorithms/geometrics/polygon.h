@@ -83,7 +83,7 @@ namespace geometrics {
     /** VERTICES */
 
     void editVertices(int idx, double val);
-    Point cutVertices(int idx);
+    void insertVertices(int idx, double val);
 
     void setVertices(std::vector<Point> &pts) {
       setVertices(&pts);
@@ -107,6 +107,7 @@ namespace geometrics {
       setVertices(&vec_x, &vec_y);
     }
 
+    Point cutVertices(int idx);
     std::vector<Point> cutVertices(int start, int end);
     std::vector<Point> cutVertices(std::vector<int> idxes);
 
