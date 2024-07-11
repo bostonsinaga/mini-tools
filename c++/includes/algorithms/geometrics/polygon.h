@@ -13,7 +13,9 @@ namespace geometrics {
     Rect rect;
     std::vector<Point> vertices;
     Point farMin, farMax;
+
     bool withinVertices(int index);
+    void setPosition(Point *pt);
 
   public:
     Polygon() {}
@@ -40,7 +42,28 @@ namespace geometrics {
       setVertices(&vec_x, &vec_y);
     }
 
+    /** RECT */
+
     void createRect();
+
+    void setPosition(Point &pt) { setPosition(&pt); }
+    void setPosition(const Point &pt) { setPosition(&pt); }
+    void setPosition(double x, double y);
+
+    void setAnchor(Point &pt) { rect.setAnchor(pt); }
+    void setAnchor(const Point &pt) { rect.setAnchor(pt); }
+    void setAnchor(double x, double y) { rect.setAnchor(Point(x, y)); }
+
+    Point getPosition() { return rect.getPosition(); }
+    Point getAnchor() { return rect.getAnchor(); }
+    Size getSize() { return rect.getSize(); }
+
+    Rect getRect() { return rect; }  // returns the copy
+    Point getFarMin() { return farMin; }
+    Point getFarMax() { return farMax; }
+
+    /** VERTICES */
+
     void editVertices(int index, double val);
     void setVertices(std::vector<Point> *points);
 
@@ -54,13 +77,8 @@ namespace geometrics {
     std::vector<Point> cutVertices(std::vector<int> indexes);
 
     Point getVertice(int index);
-    int count() { return vertices.size(); }
-
-    std::vector<Point> getVertices() { return vertices; }
-    Rect getRect() { return rect; }
-
-    double getFarMin() { return farMin; }
-    double getFarMin() { return farMax; }
+    std::vector<Point> getVertices() { return vertices; }  // returns the copy
+    int verticesCount() { return vertices.size(); }
   };
 }}}
 

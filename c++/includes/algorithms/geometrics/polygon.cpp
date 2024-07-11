@@ -7,13 +7,9 @@
 namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
-
-  bool Polygon::withinVertices(int index) {
-    if (index >= 0 && index < vertices.size()) {
-      return true;
-    }
-    else return false;
-  }
+  //______|
+  // RECT |
+  //______|
 
   void Polygon::createRect() {
     for (Point &pt : vertices) {
@@ -39,6 +35,28 @@ namespace geometrics {
       std::abs(farMin.x - farMax.x),
       std::abs(farMin.y - farMax.y)
     );
+  }
+
+  void Polygon::setPosition(Point *pt) {
+    Point diff = *pt - rect.getPosition();
+    rect.setPosition(*pt);
+    for (Point &v : vertices) v += dif;
+  }
+
+  void Polygon::setPosition(double x, double y) {
+    Pont pt = Point(x, y);
+    setPosition(&pt);
+  }
+
+  //_________|
+  //VERTICES |
+  //_________|
+
+  bool Polygon::withinVertices(int index) {
+    if (index >= 0 && index < vertices.size()) {
+      return true;
+    }
+    else return false;
   }
 
   void Polygon::editVertices(int index, double val) {
@@ -70,15 +88,25 @@ namespace geometrics {
   }
 
   Point Polygon::cutVertices(int index) {
-    return utils::VecTools::cutSingle(vertices, index);
+    Point wasted;
+    int prevCount = count();
+    utils::VecTools::cutSingle(vertices, wasted, index);
+    if (count() < prevCount) createRect();
+    return wasted;
   }
 
   std::vector<Point> Polygon::cutVertices(int start, int end) {
-    return utils::VecTools::cutInterval(vertices, start, end);
+    std::vector<Point> wasted;
+    utils::VecTools::cutInterval(vertices, wasted, start, end);
+    if (wasted.size() > 0) createRect();
+    return wasted;
   }
 
   std::vector<Point> Polygon::cutVertices(std::vector<int> indexes) {
-    return utils::VecTools::cutIndexes(vertices, indexes);
+    std::vector<Point> wasted;
+    utils::VecTools::cutIndexes(vertices, wasted, indexes);
+    if (wasted.size() > 0) createRect();
+    return wasted;
   }
 
   Point Polygon::getVertice(int index) {
