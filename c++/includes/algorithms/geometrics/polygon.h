@@ -16,10 +16,10 @@ namespace geometrics {
 
     void createRect(Point *anc = nullptr);
     void setPosition(Point *pt);
-    bool withinVertices(int index);
+    bool withinVertices(int idx);
 
     void setVertices(
-      std::vector<Point> *points,
+      std::vector<Point> *pts,
       Point *anc = nullptr
     );
 
@@ -33,17 +33,17 @@ namespace geometrics {
     Polygon() {}
 
     Polygon(
-      std::vector<Point> &points,
+      std::vector<Point> &pts,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&points, &anc);
+      setVertices(&pts, &anc);
     }
 
     Polygon(
-      const std::vector<Point> &points,
+      const std::vector<Point> &pts,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&points, &anc);
+      setVertices(&pts, &anc);
     }
 
     Polygon(
@@ -82,15 +82,15 @@ namespace geometrics {
 
     /** VERTICES */
 
-    void editVertices(int index, double val);
-    Point cutVertices(int index);
+    void editVertices(int idx, double val);
+    Point cutVertices(int idx);
 
-    void setVertices(std::vector<Point> &points) {
-      setVertices(&points);
+    void setVertices(std::vector<Point> &pts) {
+      setVertices(&pts);
     }
 
-    void setVertices(const std::vector<Point> &points) {
-      setVertices(&points);
+    void setVertices(const std::vector<Point> &pts) {
+      setVertices(&pts);
     }
 
     void setVertices(
@@ -108,9 +108,9 @@ namespace geometrics {
     }
 
     std::vector<Point> cutVertices(int start, int end);
-    std::vector<Point> cutVertices(std::vector<int> indexes);
+    std::vector<Point> cutVertices(std::vector<int> idxes);
 
-    Point getVertice(int index);
+    Point getVertice(int idx);
     std::vector<Point> getVertices() { return vertices; }  // returns the copy
     int verticesCount() { return vertices.size(); }
   };

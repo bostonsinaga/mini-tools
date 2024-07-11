@@ -69,10 +69,10 @@ namespace geometrics {
   }
 
   void Polygon::setVertices(
-    std::vector<Point> *points,
+    std::vector<Point> *pts,
     Point *anchor
   ) {
-    vertices = *points;
+    vertices = *pts;
     createRect(anchor);
   }
 
