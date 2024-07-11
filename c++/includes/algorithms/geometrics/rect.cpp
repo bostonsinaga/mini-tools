@@ -14,7 +14,7 @@ namespace geometrics {
   ) {
     position = *position_in;
     size = *size_in;
-    if (anchor_in) anchor = *anchor_in;
+    anchor = *anchor_in;
   }
 
   void Rect::init(
@@ -24,7 +24,7 @@ namespace geometrics {
   ) {
     position = Point(*x, *y);
     size = Size(*w, *h);
-    if (anc_x && anc_y) anchor = Point(*anc_x, *anc_y);
+    anchor = Point(*anc_x, *anc_y);
   }
 
   /** VALUES */
