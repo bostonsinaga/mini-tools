@@ -39,15 +39,14 @@ namespace geometrics {
     if (anchor) rect.setAnchor(*anchor);
   }
 
-  void Polygon::setPosition(Point *pt) {
-    Point diff = *pt - rect.getPosition();
-    rect.setPosition(*pt);
+  void Polygon::setPosition(Point pt) {
+    Point diff = pt - rect.getPosition();
+    rect.setPosition(pt);
     for (Point &v : vertices) v += dif;
   }
 
   void Polygon::setPosition(double x, double y) {
-    Point pt = Point(x, y);
-    setPosition(&pt);
+    setPosition(Point(x, y));
   }
 
   //_________|
@@ -75,29 +74,29 @@ namespace geometrics {
   }
 
   void Polygon::setVertices(
-    std::vector<Point> *pts,
-    Point *anchor
+    std::vector<Point> pts,
+    Point anchor
   ) {
-    vertices = *pts;
-    createRect(anchor);
+    vertices = pts;
+    createRect(&anchor);
   }
 
   void Polygon::setVertices(
-    std::vector<double> *vec_x,
-    std::vector<double> *vec_y,
-    Point *anchor
+    std::vector<double> vec_x,
+    std::vector<double> vec_y,
+    Point anchor
   ) {
-    int size = vec_x->size();
-    if (vec_y->size() < size) size = vec_y->size();
+    int size = vec_x.size();
+    if (vec_y.size() < size) size = vec_y.size();
     vertices = {};
 
     for (int i = 0; i < size; i++) {
       vertices.push_back(
-        Point(vec_x->at(i), vec_y->at(i))
+        Point(vec_x.at(i), vec_y.at(i))
       );
     }
 
-    createRect(anchor);
+    createRect(&anchor);
   }
 
   Point Polygon::cutVertices(int idx) {

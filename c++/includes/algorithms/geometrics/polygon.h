@@ -15,19 +15,7 @@ namespace geometrics {
     Point farMin, farMax;
 
     void createRect(Point *anc = nullptr);
-    void setPosition(Point *pt);
     bool withinVertices(int idx);
-
-    void setVertices(
-      std::vector<Point> *pts,
-      Point *anc = nullptr
-    );
-
-    void setVertices(
-      std::vector<double> *vec_x,
-      std::vector<double> *vec_y,
-      Point *anc = nullptr
-    );
 
   public:
     Polygon() {}
@@ -36,14 +24,14 @@ namespace geometrics {
       std::vector<Point> &pts,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&pts, &anc);
+      setVertices(pts, anc);
     }
 
     Polygon(
       const std::vector<Point> &pts,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&pts, &anc);
+      setVertices(pts, anc);
     }
 
     Polygon(
@@ -51,7 +39,7 @@ namespace geometrics {
       std::vector<double> &vec_y,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&vec_x, &vec_y, &anc);
+      setVertices(vec_x, vec_y, anc);
     }
 
     Polygon(
@@ -59,17 +47,15 @@ namespace geometrics {
       const std::vector<double> &vec_y,
       Point anc = Point(0.5, 0.5)
     ) {
-      setVertices(&vec_x, &vec_y, &anc);
+      setVertices(vec_x, vec_y, anc);
     }
 
     /** RECT */
 
-    void setPosition(Point &pt) { setPosition(&pt); }
-    void setPosition(const Point &pt) { setPosition(&pt); }
-    void setPosition(double x, double y) { setPosition(&x, &y); }
+    void setPosition(Point pt);
+    void setPosition(double x, double y);
 
-    void setAnchor(Point &pt) { rect.setAnchor(pt); }
-    void setAnchor(const Point &pt) { rect.setAnchor(pt); }
+    void setAnchor(Point pt) { rect.setAnchor(pt); }
     void setAnchor(double x, double y) { rect.setAnchor(Point(x, y)); }
 
     Point getPosition() { return rect.getPosition(); }
@@ -85,27 +71,16 @@ namespace geometrics {
     void editVertices(int idx, double val);
     void insertVertices(int idx, double val);
 
-    void setVertices(std::vector<Point> &pts) {
-      setVertices(&pts);
-    }
-
-    void setVertices(const std::vector<Point> &pts) {
-      setVertices(&pts);
-    }
+    void setVertices(
+      std::vector<Point> pts,
+      Point anc = Point(0.5, 0.5)
+    );
 
     void setVertices(
-      std::vector<double> &vec_x,
-      std::vector<double> &vec_y
-    ) {
-      setVertices(&vec_x, &vec_y);
-    }
-
-    void setVertices(
-      const std::vector<double> &vec_x,
-      const std::vector<double> &vec_y
-    ) {
-      setVertices(&vec_x, &vec_y);
-    }
+      std::vector<double> vec_x,
+      std::vector<double> vec_y,
+      Point anc = Point(0.5, 0.5)
+    );
 
     Point cutVertices(int idx);
     std::vector<Point> cutVertices(int start, int end);
