@@ -8,7 +8,7 @@ namespace geometrics {
   class Point {
   public:
     double x = 0, y = 0;
-    double& w = 0, h = 0;
+    double &w = x, &h = y;
 
     Point() {}
     Point(double &num);
