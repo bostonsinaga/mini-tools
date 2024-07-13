@@ -10,7 +10,7 @@ namespace geometrics {
 
   bool RayCasting::checkInside(
     Point point,
-    Polygon polygon,
+    Polygon &polygon,
     double step
   ) {
     if (step <= 0 ||
@@ -69,6 +69,14 @@ namespace geometrics {
     if (catchCount % 2 == 0) return false;
     // uneven is inside
     return true;
+  }
+
+  bool RayCasting::checkInside(
+    Point point,
+    Polygon &&polygon,
+    double step
+  ) {
+    return checkInside(point, polygon, step);
   }
 }}}
 

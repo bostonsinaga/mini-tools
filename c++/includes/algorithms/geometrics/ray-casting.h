@@ -15,7 +15,13 @@ namespace geometrics {
 
     static bool checkInside(
       Point point,
-      Polygon polygon,
+      Polygon &polygon,
+      double step
+    );
+
+    static bool checkInside(
+      Point point,
+      Polygon &&polygon,
       double step
     );
   };
