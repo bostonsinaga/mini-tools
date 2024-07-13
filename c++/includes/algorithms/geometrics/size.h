@@ -8,12 +8,19 @@ namespace algorithms {
 namespace geometrics {
 
   class Size : public Point {
+  private:
+    double *w, *h;
+    void init() { w = &x; h = &y; }
+
   public:
-    Size() : Point() {}
-    Size(double &side) : Point(side, side) {}
-    Size(const double &side) : Point(side, side) {}
-    Size(double &w_in, double &h_in) : Point(w_in, h_in) {}
-    Size(const double &w_in, const double &h_in) : Point(w_in, h_in) {}
+    double W() { return *w; }
+    double H() { return *h; }
+    void W(double val) { *w = val; }
+    void H(double val) { *h = val; }
+
+    Size() : Point() { init(); }
+    Size(double side) : Point(side, side) { init(); }
+    Size(double w_in, double h_in) : Point(w_in, h_in) { init(); }
   };
 }}}
 

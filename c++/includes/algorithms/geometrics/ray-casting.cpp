@@ -14,10 +14,10 @@ namespace geometrics {
     double step
   ) {
     if (step <= 0 ||
-      !polygon->getRect().contains(point)
+      !polygon.getRect().contains(point)
     ) { return false; }
 
-    int last = polygon->verticesCount() - 1,
+    int last = polygon.verticesCount() - 1,
         catchCount = 0;
 
     bool lastPair = false;
@@ -32,13 +32,13 @@ namespace geometrics {
       if (lastPair) { i = last; j = 0; }
       else j = i + 1;
 
-      double gradient = polygon->getVertice(i).gradientTo(polygon->getVertice(j));
+      double gradient = polygon.getVertice(i).gradientTo(polygon.getVertice(j));
       if (gradient == 0) gradient = 1/1000000;
 
-      laserIntersections.push_back(
-        point->y / gradient,
-        point->y
-      );
+      laserIntersections.push_back(Point(
+        point.Y() / gradient,
+        point.Y()
+      ));
 
       // back to first index once after last index
       if (lastPair) break;
@@ -52,14 +52,14 @@ namespace geometrics {
 
     for (int i = 0; i < laserIntersections.size(); i++) {
       for (
-        double x = polygon->getFarMin().x;
-        x <= point->x;
+        double x = polygon.getFarMin().X();
+        x <= point.X();
         x += step
       ) {
         if (Rect(
-          laserIntersections.getVertice(i),
+          laserIntersections[i],
           Size(step)
-        ).contains(Point(x, point->y))) {
+        ).contains(Point(x, point.Y()))) {
           catchCount++;
         }
       }
@@ -72,4 +72,4 @@ namespace geometrics {
   }
 }}}
 
-#ifndef __MINI_TOOLS__ALGORITHMS__GEOMETRICS__RAY_CASTING_CPP_
+#endif // __MINI_TOOLS__ALGORITHMS__GEOMETRICS__RAY_CASTING_CPP_

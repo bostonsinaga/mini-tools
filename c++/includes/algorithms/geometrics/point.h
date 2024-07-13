@@ -6,109 +6,78 @@ namespace algorithms {
 namespace geometrics {
 
   class Point {
-  public:
+  protected:
     double x = 0, y = 0;
-    double &w = x, &h = y;
+
+  public:
+    double X() { return x; }
+    double Y() { return y; }
+    void X(double val) { x = val; }
+    void Y(double val) { y = val; }
 
     Point() {}
-    Point(double &num);
-    Point(const double &num);
-    Point(double &x_in, double &y_in);
-    Point(const double &x_in, const double &y_in);
 
-    /** Gradient */
+    Point(double num) {
+      x = num; y = num;
+    }
+
+    Point(double x_in, double y_in) {
+      x = x_in; y = y_in;
+    }
+
     double gradient();
-    double gradientTo(Point &pt);
-    double gradientTo(const Point &pt);
+    double gradientTo(Point pt);
 
-    /** Hypotenuse */
     double hypotenuseZero();
-    double hypotenuseTo(Point &pt);
-    double hypotenuseTo(const Point &pt);
+    double hypotenuseTo(Point pt);
 
-    /** Operator '+' */
-    Point operator+(Point &pt);
-    Point operator+(const Point &pt);
-    Point operator+(double &num);
-    Point operator+(const double &num);
+    Point operator+(Point pt);
+    Point operator+(double num);
 
-    /** Operator '-' */
-    Point operator-(Point &pt);
-    Point operator-(const Point &pt);
-    Point operator-(double &num);
-    Point operator-(const double &num);
+    Point operator-(Point pt);
+    Point operator-(double num);
 
-    /** Operator '*' */
-    Point operator*(Point &pt);
-    Point operator*(const Point &pt);
-    Point operator*(double &num);
-    Point operator*(const double &num);
+    Point operator*(Point pt);
+    Point operator*(double num);
 
-    /** Operator '/' */
-    Point operator/(Point &pt);
-    Point operator/(const Point &pt);
-    Point operator/(double &num);
-    Point operator/(const double &num);
+    Point operator/(Point pt);
+    Point operator/(double num);
 
-    /** Operator '+=' */
-    Point operator+=(Point &pt);
-    Point operator+=(const Point &pt);
-    Point operator+=(double &num);
-    Point operator+=(const double &num);
+    void operator+=(Point pt);
+    void operator+=(double num);
 
-    /** Operator '-=' */
-    Point operator-=(Point &pt);
-    Point operator-=(const Point &pt);
-    Point operator-=(double &num);
-    Point operator-=(const double &num);
+    void operator-=(Point pt);
+    void operator-=(double num);
 
-    /** Operator '*=' */
-    Point operator*=(Point &pt);
-    Point operator*=(const Point &pt);
-    Point operator*=(double &num);
-    Point operator*=(const double &num);
+    void operator*=(Point pt);
+    void operator*=(double num);
 
-    /** Operator '/=' */
-    Point operator/=(Point &pt);
-    Point operator/=(const Point &pt);
-    Point operator/=(double &num);
-    Point operator/=(const double &num);
+    void operator/=(Point pt);
+    void operator/=(double num);
 
-    /** Operator '==' */
-    Point operator==(Point &pt);
-    Point operator==(const Point &pt);
-    Point operator==(double &num);
-    Point operator==(const double &num);
+    bool operator==(Point pt);
+    bool operator==(double num);
 
-    /** Operator '<' */
-    Point operator<(Point &pt);
-    Point operator<(const Point &pt);
-    Point operator<(double &num);
-    Point operator<(const double &num);
+    bool operator!=(Point pt);
+    bool operator!=(double num);
 
-    /** Operator '<=' */
-    Point operator<=(Point &pt);
-    Point operator<=(const Point &pt);
-    Point operator<=(double &num);
-    Point operator<=(const double &num);
+    bool operator<(Point pt);
+    bool operator<(double num);
 
-    /** Operator '>' */
-    Point operator>(Point &pt);
-    Point operator>(const Point &pt);
-    Point operator>(double &num);
-    Point operator>(const double &num);
+    bool operator<=(Point pt);
+    bool operator<=(double num);
 
-    /** Operator '>=' */
-    Point operator>=(Point &pt);
-    Point operator>=(const Point &pt);
-    Point operator>=(double &num);
-    Point operator>=(const double &num);
+    bool operator>(Point pt);
+    bool operator>(double num);
+
+    bool operator>=(Point pt);
+    bool operator>=(double num);
 
   private:
-    Point divideCopy(Point *pt);
-    Point divideCopy(double *num);
-    void divideSelf(Point *pt);
-    void divideSelf(double *num);
+    Point divideCopy(Point &pt);
+    Point divideCopy(double &num);
+    void divideSelf(Point &pt);
+    void divideSelf(double &num);
   };
 }}}
 

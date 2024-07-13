@@ -14,26 +14,26 @@ namespace geometrics {
   void Polygon::createRect(Point *anchor) {
     for (Point &pt : vertices) {
 
-      if (std::abs(pt.x) < farMin.x) {
-        farMin.x = pt.x;
+      if (std::abs(pt.X()) < farMin.X()) {
+        farMin.X(pt.X());
       }
-      else if (std::abs(pt.x) > farMax.x) {
-        farMax.x = pt.x;
+      else if (std::abs(pt.X()) > farMax.X()) {
+        farMax.X(pt.X());
       }
 
-      if (std::abs(pt.y) < farMin.y) {
-        farMin.y = pt.y;
+      if (std::abs(pt.Y()) < farMin.Y()) {
+        farMin.Y(pt.Y());
       }
-      else if (std::abs(pt.y) > farMax.y) {
-        farMax.y = pt.y;
+      else if (std::abs(pt.Y()) > farMax.Y()) {
+        farMax.Y(pt.Y());
       }
     }
 
     rect = Rect(
-      (farMin.x + farMax.x) / 2,
-      (farMin.y + farMax.y) / 2,
-      std::abs(farMin.x - farMax.x),
-      std::abs(farMin.y - farMax.y)
+      (farMin.X() + farMax.X()) / 2,
+      (farMin.Y() + farMax.Y()) / 2,
+      std::abs(farMin.X() - farMax.X()),
+      std::abs(farMin.Y() - farMax.Y())
     );
 
     if (anchor) rect.setAnchor(*anchor);
@@ -42,7 +42,7 @@ namespace geometrics {
   void Polygon::setPosition(Point pt) {
     Point diff = pt - rect.getPosition();
     rect.setPosition(pt);
-    for (Point &v : vertices) v += dif;
+    for (Point &v : vertices) v += diff;
   }
 
   void Polygon::setPosition(double x, double y) {
@@ -60,21 +60,21 @@ namespace geometrics {
     else return false;
   }
 
-  void Polygon::editVertices(int idx, double val) {
-    if (withinVertices(idx) && vertices.at(idx) != val) {
-      vertices.at(idx) = val;
+  void Polygon::editVertices(int idx, Point pt) {
+    if (withinVertices(idx) && vertices[idx] != pt) {
+      vertices[idx] = pt;
       createRect();
     }
   }
 
-  void insertVertices(int idx, double val) {
+  void Polygon::insertVertices(int idx, Point pt) {
     if (idx < 0) idx = 0;
     else if (idx >= vertices.size()) idx = vertices.size() - 1;
-    vertices.insert(idx, val);
+    vertices.insert(vertices.begin() + idx, pt);
   }
 
   void Polygon::setVertices(
-    std::vector<Point> pts,
+    std::vector<Point> &pts,
     Point anchor
   ) {
     vertices = pts;
@@ -82,8 +82,8 @@ namespace geometrics {
   }
 
   void Polygon::setVertices(
-    std::vector<double> vec_x,
-    std::vector<double> vec_y,
+    std::vector<double> &vec_x,
+    std::vector<double> &vec_y,
     Point anchor
   ) {
     int size = vec_x.size();
@@ -92,7 +92,7 @@ namespace geometrics {
 
     for (int i = 0; i < size; i++) {
       vertices.push_back(
-        Point(vec_x.at(i), vec_y.at(i))
+        Point(vec_x[i], vec_y[i])
       );
     }
 
@@ -101,29 +101,35 @@ namespace geometrics {
 
   Point Polygon::cutVertices(int idx) {
     Point wasted;
-    int prevCount = count();
-    utils::VecTools::cutSingle(vertices, wasted, idx);
-    if (count() < prevCount) createRect();
+    int prevCount = verticesCount();
+
+    utils::VecTools<Point>::cutSingle(vertices, wasted, idx);
+
+    if (verticesCount() < prevCount) createRect();
     return wasted;
   }
 
   std::vector<Point> Polygon::cutVertices(int start, int end) {
     std::vector<Point> wasted;
-    utils::VecTools::cutInterval(vertices, wasted, start, end);
+
+    utils::VecTools<Point>::cutInterval(vertices, wasted, start, end);
+
     if (wasted.size() > 0) createRect();
     return wasted;
   }
 
-  std::vector<Point> Polygon::cutVertices(std::vector<int> idxes) {
+  std::vector<Point> Polygon::cutVertices(std::vector<int> &idxes) {
     std::vector<Point> wasted;
-    utils::VecTools::cutIndexes(vertices, wasted, idxes);
+
+    utils::VecTools<Point>::cutIndexes(vertices, wasted, idxes);
+
     if (wasted.size() > 0) createRect();
     return wasted;
   }
 
   Point Polygon::getVertice(int idx) {
     if (withinVertices(idx)) {
-      return vertices.at(idx);
+      return vertices[idx];
     }
     else return Point(0, 0);
   }

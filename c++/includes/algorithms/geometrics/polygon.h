@@ -28,7 +28,7 @@ namespace geometrics {
     }
 
     Polygon(
-      const std::vector<Point> &pts,
+      std::vector<Point> &&pts,
       Point anc = Point(0.5, 0.5)
     ) {
       setVertices(pts, anc);
@@ -43,8 +43,24 @@ namespace geometrics {
     }
 
     Polygon(
-      const std::vector<double> &vec_x,
-      const std::vector<double> &vec_y,
+      std::vector<double> &&vec_x,
+      std::vector<double> &vec_y,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(vec_x, vec_y, anc);
+    }
+
+    Polygon(
+      std::vector<double> &vec_x,
+      std::vector<double> &&vec_y,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(vec_x, vec_y, anc);
+    }
+
+    Polygon(
+      std::vector<double> &&vec_x,
+      std::vector<double> &&vec_y,
       Point anc = Point(0.5, 0.5)
     ) {
       setVertices(vec_x, vec_y, anc);
@@ -68,23 +84,58 @@ namespace geometrics {
 
     /** VERTICES */
 
-    void editVertices(int idx, double val);
-    void insertVertices(int idx, double val);
+    void editVertices(int idx, Point pt);
+    void insertVertices(int idx, Point pt);
 
     void setVertices(
-      std::vector<Point> pts,
+      std::vector<Point> &pts,
       Point anc = Point(0.5, 0.5)
     );
 
     void setVertices(
-      std::vector<double> vec_x,
-      std::vector<double> vec_y,
+      std::vector<Point> &&pts,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(pts, anc);
+    }
+
+    void setVertices(
+      std::vector<double> &vec_x,
+      std::vector<double> &vec_y,
       Point anc = Point(0.5, 0.5)
     );
+
+    void setVertices(
+      std::vector<double> &&vec_x,
+      std::vector<double> &vec_y,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(vec_x, vec_y, anc);
+    }
+
+    void setVertices(
+      std::vector<double> &vec_x,
+      std::vector<double> &&vec_y,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(vec_x, vec_y, anc);
+    }
+
+    void setVertices(
+      std::vector<double> &&vec_x,
+      std::vector<double> &&vec_y,
+      Point anc = Point(0.5, 0.5)
+    ) {
+      setVertices(vec_x, vec_y, anc);
+    }
 
     Point cutVertices(int idx);
     std::vector<Point> cutVertices(int start, int end);
-    std::vector<Point> cutVertices(std::vector<int> idxes);
+
+    std::vector<Point> cutVertices(std::vector<int> &idxes);
+    std::vector<Point> cutVertices(std::vector<int> &&idxes) {
+      return cutVertices(idxes);
+    }
 
     Point getVertice(int idx);
     std::vector<Point> getVertices() { return vertices; }  // returns the copy
