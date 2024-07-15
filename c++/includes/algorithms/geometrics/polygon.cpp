@@ -12,19 +12,24 @@ namespace geometrics {
   //______|
 
   void Polygon::createRect(Point *anchor) {
+    if (vertices.size() == 0) return;
+
+    farMin = vertices[0];
+    farMax = vertices[0];
+
     for (Point &pt : vertices) {
 
-      if (std::abs(pt.X()) < farMin.X()) {
+      if (pt.X() < farMin.X()) {
         farMin.X(pt.X());
       }
-      else if (std::abs(pt.X()) > farMax.X()) {
+      else if (pt.X() > farMax.X()) {
         farMax.X(pt.X());
       }
 
-      if (std::abs(pt.Y()) < farMin.Y()) {
+      if (pt.Y() < farMin.Y()) {
         farMin.Y(pt.Y());
       }
-      else if (std::abs(pt.Y()) > farMax.Y()) {
+      else if (pt.Y() > farMax.Y()) {
         farMax.Y(pt.Y());
       }
     }
@@ -32,8 +37,8 @@ namespace geometrics {
     rect = Rect(
       (farMin.X() + farMax.X()) / 2,
       (farMin.Y() + farMax.Y()) / 2,
-      std::abs(farMin.X() - farMax.X()),
-      std::abs(farMin.Y() - farMax.Y())
+      farMax.X() - farMin.X(),
+      farMax.Y() - farMin.Y()
     );
 
     if (anchor) rect.setAnchor(*anchor);
