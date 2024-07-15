@@ -2,6 +2,8 @@
 #define __ALGORITHMS_H__
 
 #include "calculators.h"
+#include "geometrics/geometrics.h"
 #include "sorters/sorters.h"
+#include "structures/structures.h"
 
 #endif // __ALGORITHMS_H__
