@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include "ray-casting.h"
+#include "../../utils/vec-tools.h"
 
 namespace mini_tools {
 namespace algorithms {
@@ -13,9 +14,9 @@ namespace geometrics {
     Polygon &polygon,
     double step
   ) {
-    if (step <= 0 ||
-      !polygon.getRect().contains(point)
-    ) { return false; }
+    if (step <= 0 || !polygon.getRect().contains(point)) {
+      return false;
+    }
 
     int last = polygon.verticesCount() - 1,
         catchCount = 0;
@@ -32,13 +33,36 @@ namespace geometrics {
       if (lastPair) { i = last; j = 0; }
       else j = i + 1;
 
-      double gradient = polygon.getVertice(i).gradientTo(polygon.getVertice(j));
-      if (gradient == 0) gradient = 1/1000000;
+      Point currentVer = polygon.getVertice(i),
+            nextVer = polygon.getVertice(j);
 
-      laserIntersections.push_back(Point(
-        point.Y() / gradient,
-        point.Y()
-      ));
+      if ((point.Y() < currentVer.Y() && point.Y() < nextVer.Y()) ||
+        (point.Y() > currentVer.Y() && point.Y() > nextVer.Y())
+      ) {
+        continue; // only for potential segments
+      }
+
+      // nearly horizontal line
+      if (currentVer.X() - nextVer.X() != 0) {
+
+        double gradient = currentVer.gradientTo(nextVer);
+
+        // skip point with zero gradient
+        if (gradient != 0) {
+          double constant = currentVer.X() - currentVer.Y() / gradient;
+
+          laserIntersections.push_back(Point(
+            (point.Y() - constant) / gradient,
+            point.Y()
+          ));
+        }
+      }
+      // infinite gradient (vertical line)
+      else {
+        laserIntersections.push_back(Point(
+          currentVer.X(), point.Y()
+        ));
+      }
 
       // back to first index once after last index
       if (lastPair) break;
@@ -50,16 +74,18 @@ namespace geometrics {
 
     /** Check 'laserIntersections' */
 
+    utils::VecTools<Point>::cleanDuplicateInside(laserIntersections);
+
     for (int i = 0; i < laserIntersections.size(); i++) {
+
+      Rect verRect = Rect(laserIntersections[i], Size(step));
+
       for (
         double x = polygon.getFarMin().X();
         x <= point.X();
         x += step
       ) {
-        if (Rect(
-          laserIntersections[i],
-          Size(step)
-        ).contains(Point(x, point.Y()))) {
+        if (verRect.contains(Point(x, point.Y()))) {
           catchCount++;
         }
       }
