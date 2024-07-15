@@ -129,12 +129,12 @@ namespace geometrics {
       setVertices(vec_x, vec_y, anc);
     }
 
-    Point cutVertices(int idx);
-    std::vector<Point> cutVertices(int start, int end);
+    Point removeVertices(int idx);
+    std::vector<Point> removeVertices(int start, int end);
 
-    std::vector<Point> cutVertices(std::vector<int> &idxes);
-    std::vector<Point> cutVertices(std::vector<int> &&idxes) {
-      return cutVertices(idxes);
+    std::vector<Point> removeVertices(std::vector<int> &idxes);
+    std::vector<Point> removeVertices(std::vector<int> &&idxes) {
+      return removeVertices(idxes);
     }
 
     Point getVertice(int idx);
