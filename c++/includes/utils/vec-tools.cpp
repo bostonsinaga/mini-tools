@@ -8,13 +8,13 @@ namespace utils {
 
   template <typename T>
   bool VecTools<T>::isIndexOf(std::vector<T> &vec, int idx) {
-    if (idx < vec->size() && idx >= 0) return true;
+    if (idx < vec.size() && idx >= 0) return true;
     return false;
   }
 
   template <typename T>
   T VecTools<T>::getIndexOf(std::vector<T> &vec, int idx, T defaultReturn) {
-    if (VecTools<T>::isIndexOf(vec, idx)) return vec->at(idx);
+    if (VecTools<T>::isIndexOf(vec, idx)) return vec.at(idx);
     return defaultReturn;
   }
 
@@ -167,8 +167,8 @@ namespace utils {
     return wasted;
   }
 
-  template<>
-  VEC_UI VecTools<>::getDifferencesToSize(
+  template <typename T>
+  VEC_UI VecTools<T>::getDifferencesToSize(
     VEC_UI sizes, UI targetSize
   ) {
     UI max = targetSize;
@@ -194,11 +194,11 @@ namespace utils {
     std::vector<T> wastedVec;
     bool first = false;
 
-    for (int i = 0; i < vec->size(); i++) {
-      for (int j = 0; j < vec->size(); j++) {
-        bool isEqual = vec->at(i) == vec->at(j);
+    for (int i = 0; i < vec.size(); i++) {
+      for (int j = 0; j < vec.size(); j++) {
+        bool isEqual = vec.at(i) == vec.at(j);
 
-        if (i != j && (isEqual || equalRule(vec->at(i), vec->at(j)) )) {
+        if (i != j && (isEqual || equalRule(vec.at(i), vec.at(j)) )) {
 
           // same address
           if (isEqual && std::is_pointer<T>::value) {
@@ -223,10 +223,10 @@ namespace utils {
     std::vector<T> wastedVec;
     bool first = false;
 
-    for (int i = 0; i < vec->size(); i++) {
-      bool isEqual = vec->at(i) == mem;
+    for (int i = 0; i < vec.size(); i++) {
+      bool isEqual = vec.at(i) == mem;
 
-      if (isEqual || equalRule(vec->at(i), mem)) {
+      if (isEqual || equalRule(vec.at(i), mem)) {
 
         if (first) {
           // same address
