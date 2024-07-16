@@ -6,6 +6,6 @@
 #include "sorters/sorters.h"
 #include "structures/structures.h"
 
-namespace mt_alg = mt::algorithms;
+namespace mt_alg = mini_tools::algorithms;
 
 #endif // __ALGORITHMS_H__
