@@ -6,6 +6,6 @@
 #include "printer.h"
 #include "timer.h"
 
-namespace mt_uti = mt::utils;
+namespace mt_uti = mini_tools::utils;
 
 #endif // __MINI_TOOLS__UTILS_H__
