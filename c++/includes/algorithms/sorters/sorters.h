@@ -5,7 +5,7 @@
 #include "comb-sort.h"
 #include "insertion-sort.h"
 #include "merge-sort.h"
-#include "selection-sort.h"
 #include "quick-sort.h"
+#include "selection-sort.h"
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS_H__
