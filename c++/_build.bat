@@ -1,1 +1,1 @@
-cmake -B test/build -S .
+cmake -B build -S .
