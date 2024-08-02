@@ -1,9 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_H__
 #define __MINI_TOOLS__UTILS__TIMER_H__
 
-#include <iostream>
-#include <chrono>
-
 namespace mini_tools {
 namespace utils {
 
@@ -14,35 +11,12 @@ namespace utils {
     TP prior;
 
   public:
-    void reset() {
-      prior = std::chrono::high_resolution_clock::now();
-      difference = std::chrono::nanoseconds::zero();
-    }
-
     Timer() { reset(); }
-
-    void check() {
-      TP now = std::chrono::high_resolution_clock::now();
-      difference = now - prior;
-      prior = now;
-    }
-
-    float getSeconds(bool needCheck = true) {
-      if (needCheck) check();
-      return difference.count();
-    }
-
-    float getMilliseconds(bool needCheck = true) {
-      if (needCheck) check();
-      return std::chrono::duration_cast<std::chrono::milliseconds>(difference).count();
-    }
-
-    void print(bool needCheck = true, std::string title = "DURATION:") {
-      if (needCheck) check();
-      std::cout << title << std::endl;
-      std::cout << getSeconds(false) << "s\n";
-      std::cout << getMilliseconds(false) << "ms\n";
-    }
+    void reset();
+    void check();
+    float getSeconds(bool needCheck = true);
+    float getMilliseconds(bool needCheck = true);
+    void print(bool needCheck = true, std::string title = "DURATION:");
   };
 }}
 
