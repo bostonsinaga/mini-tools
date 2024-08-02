@@ -7,14 +7,14 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  bool VecTools<T>::isIndexOf(std::vector<T> &vec, int idx) {
+  bool VecTools<T>::hasIndex(std::vector<T> &vec, int idx) {
     if (idx < vec.size() && idx >= 0) return true;
     return false;
   }
 
   template <typename T>
-  T VecTools<T>::getIndexOf(std::vector<T> &vec, int idx, T defaultReturn) {
-    if (VecTools<T>::isIndexOf(vec, idx)) return vec.at(idx);
+  T VecTools<T>::getAt(std::vector<T> &vec, int idx, T defaultReturn) {
+    if (VecTools<T>::hasIndex(vec, idx)) return vec.at(idx);
     return defaultReturn;
   }
 

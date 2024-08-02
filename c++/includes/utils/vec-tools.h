@@ -10,8 +10,8 @@ namespace utils {
   template <class T = int>
   class VecTools {
   public:
-    static bool isIndexOf(std::vector<T> &vec, int idx);
-    static T getIndexOf(std::vector<T> &vec, int idx, T defaultReturn);
+    static bool hasIndex(std::vector<T> &vec, int idx);
+    static T getAt(std::vector<T> &vec, int idx, T defaultReturn);
     static VEC_UI getDifferencesToSize(VEC_UI sizes, UI targetSize);
 
     static void cutInterval(
