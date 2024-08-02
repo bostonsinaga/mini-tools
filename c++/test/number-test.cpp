@@ -1,11 +1,11 @@
 #include <filesystem>
-#include "../includes/mini-tools.h"
+#include "mini-tools.h"
 
 int main() {
   std::filesystem::create_directory("outputs");
 
   std::string filenames[6] {
-    "../resources/sample.txt",
+    "../../resources/sample.txt",
     "outputs/output-bubble-sort.txt",
     "outputs/output-comb-sort.txt",
     "outputs/output-merge-sort.txt",
