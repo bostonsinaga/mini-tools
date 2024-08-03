@@ -1,5 +1,3 @@
-project(mini-tools)
-
 set (SOURCES
   # HEADERS
   mini-tools.h
