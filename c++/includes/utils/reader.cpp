@@ -1,30 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__READER_CPP__
 #define __MINI_TOOLS__UTILS__READER_CPP__
 
-#include <fstream>
-
 namespace mini_tools {
 namespace utils {
-
-  namespace Reader {
-    bool isSeparator(std::string &text, int &i) {
-      if (text[i] == ' ' || text[i] == ',' ||
-        text[i] == '\n' || i == text.length() - 1
-      ) { return true; }
-      return false;
-    }
-
-    // unable to read '\n' character
-    void getFrom(
-      std::string &filename,
-      std::string &textHook
-    ) {
-      std::string line;
-      std::ifstream reader(filename);
-      while (std::getline(reader, line)) { textHook += line; }
-      reader.close();
-    }
-  }
 
   template <typename T>
   std::vector<T> Scanner<T>::txtToNumbers(std::string filename) {
