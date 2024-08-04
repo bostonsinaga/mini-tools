@@ -19,10 +19,11 @@ namespace utils {
   }
 
   template <typename T>
-  VEC_UI VecTools<T>::getDifferencesToSize(
-    VEC_UI sizes, UI targetSize
+  std::vector<T> VecTools<T>::getDifferencesToSize(
+    const std::vector<T> &sizes,
+    T targetSize
   ) {
-    UI max = targetSize;
+    T max = targetSize;
 
     for (auto &sz : sizes) {
       if (targetSize > 0) {
@@ -31,7 +32,7 @@ namespace utils {
       else if (sz > max) max = sz;
     }
 
-    VEC_UI differences;
+    std::vector<T> differences;
     for (auto &sz : sizes) differences.push_back(max - sz);
     
     return differences;

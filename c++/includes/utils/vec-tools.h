@@ -7,12 +7,12 @@
 namespace mini_tools {
 namespace utils {
 
-  template <class T = int>
+  template <class T>
   class VecTools {
   public:
     static bool hasIndex(std::vector<T> &vec, int idx);
     static T getAt(std::vector<T> &vec, int idx, T defaultReturn);
-    static VEC_UI getDifferencesToSize(VEC_UI sizes, UI targetSize);
+    static std::vector<T> getDifferencesToSize(const std::vector<T> &sizes, T targetSize);
 
     static void concat(
       std::vector<T> &targetVec,
