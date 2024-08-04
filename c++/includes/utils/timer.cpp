@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__UTILS__TIMER_CPP__
 
 #include <iostream>
-#include <chrono>
 #include "timer.h"
 
 namespace mini_tools {

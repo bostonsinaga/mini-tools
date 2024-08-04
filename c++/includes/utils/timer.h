@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_H__
 #define __MINI_TOOLS__UTILS__TIMER_H__
 
+#include <chrono>
+
 namespace mini_tools {
 namespace utils {
 
