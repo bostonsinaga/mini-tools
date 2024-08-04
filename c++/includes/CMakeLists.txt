@@ -1,8 +1,4 @@
 set (SOURCES
-  # HEADERS
-  mini-tools.h
-
-  # SOURCES
   algorithms/geometrics/point.cpp
   algorithms/geometrics/polygon.cpp
   algorithms/geometrics/ray-casting.cpp
