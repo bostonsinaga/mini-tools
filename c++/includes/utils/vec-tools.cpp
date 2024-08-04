@@ -19,6 +19,45 @@ namespace utils {
   }
 
   template <typename T>
+  VEC_UI VecTools<T>::getDifferencesToSize(
+    VEC_UI sizes, UI targetSize
+  ) {
+    UI max = targetSize;
+
+    for (auto &sz : sizes) {
+      if (targetSize > 0) {
+        if (sz > max && sz <= targetSize) max = sz;
+      }
+      else if (sz > max) max = sz;
+    }
+
+    VEC_UI differences;
+    for (auto &sz : sizes) differences.push_back(max - sz);
+    
+    return differences;
+  }
+
+  template <typename T>
+  void VecTools<T>::concat(
+    std::vector<T> &targetVec,
+    const std::vector<T> &additionVec
+  ) {
+    targetVec.reserve(targetVec.size() + additionVec.size());
+    targetVec.insert(targetVec.end(), additionVec.begin(), additionVec.end());
+  }
+
+  template <typename T>
+  std::vector<T> VecTools<T>::join(
+    const std::vector<T> &vecA,
+    const std::vector<T> &vecB
+  ) {
+    std::vector<T> newVec;
+    VecTools<T>::concat(newVec, vecA);
+    VecTools<T>::concat(newVec, vecB);
+    return newVec;
+  }
+
+  template <typename T>
   void VecTools<T>::cutInterval(
     std::vector<T> &vec,
     std::vector<T> &wasted,
@@ -50,9 +89,10 @@ namespace utils {
 
     // change the original
     if (!onlyWasted) {
-      std::vector<T> tail = std::vector<T>(vec.begin() + end + 1, vec.end());
-      vec = std::vector<T>(vec.begin(), vec.begin() + begin);
-      vec.insert(vec.end(), tail.begin(), tail.end());
+      vec = VecTools<T>::join(
+        std::vector<T>(vec.begin(), vec.begin() + begin),
+        std::vector<T>(vec.begin() + end + 1, vec.end())
+      );
     }
 
     if constexpr (std::is_pointer<T>::value) {
@@ -90,9 +130,10 @@ namespace utils {
 
     // change the original
     if (!onlyWasted) {
-      std::vector<T> tail = std::vector<T>(vec.begin() + idx + 1, vec.end());
-      vec = std::vector<T>(vec.begin(), vec.begin() + idx);
-      vec.insert(vec.end(), tail.begin(), tail.end());
+      vec = VecTools<T>::join(
+        std::vector<T>(vec.begin(), vec.begin() + idx),
+        std::vector<T>(vec.begin() + idx + 1, vec.end())
+      );
     }
 
     if constexpr (std::is_pointer<T>::value) {
@@ -165,25 +206,6 @@ namespace utils {
     std::vector<T> wasted;
     VecTools<T>::cutIndexes(vec, wasted, idxs, lockedIndex, onlyWasted, needDelete);
     return wasted;
-  }
-
-  template <typename T>
-  VEC_UI VecTools<T>::getDifferencesToSize(
-    VEC_UI sizes, UI targetSize
-  ) {
-    UI max = targetSize;
-
-    for (auto &sz : sizes) {
-      if (targetSize > 0) {
-        if (sz > max && sz <= targetSize) max = sz;
-      }
-      else if (sz > max) max = sz;
-    }
-
-    VEC_UI differences;
-    for (auto &sz : sizes) differences.push_back(max - sz);
-    
-    return differences;
   }
 
   template <typename T>

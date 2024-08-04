@@ -14,6 +14,16 @@ namespace utils {
     static T getAt(std::vector<T> &vec, int idx, T defaultReturn);
     static VEC_UI getDifferencesToSize(VEC_UI sizes, UI targetSize);
 
+    static void concat(
+      std::vector<T> &targetVec,
+      const std::vector<T> &additionVec
+    );
+
+    static std::vector<T> join(
+      const std::vector<T> &vecA,
+      const std::vector<T> &vecB
+    );
+
     static void cutInterval(
       std::vector<T> &vec,
       std::vector<T> &wasted,
