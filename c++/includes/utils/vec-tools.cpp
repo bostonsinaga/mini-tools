@@ -23,18 +23,21 @@ namespace utils {
     const std::vector<T> &sizes,
     T targetSize
   ) {
-    T max = targetSize;
+    std::vector<T> differences;
 
-    for (auto &sz : sizes) {
-      if (targetSize > 0) {
-        if (sz > max && sz <= targetSize) max = sz;
+    if constexpr (CheckType::isNumber<T>()) {
+      T max = targetSize;
+
+      for (auto &sz : sizes) {
+        if (targetSize > 0) {
+          if (sz > max && sz <= targetSize) max = sz;
+        }
+        else if (sz > max) max = sz;
       }
-      else if (sz > max) max = sz;
+
+      for (auto &sz : sizes) differences.push_back(max - sz);
     }
 
-    std::vector<T> differences;
-    for (auto &sz : sizes) differences.push_back(max - sz);
-    
     return differences;
   }
 
