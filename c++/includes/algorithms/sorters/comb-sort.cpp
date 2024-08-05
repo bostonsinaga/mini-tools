@@ -7,11 +7,10 @@ namespace sorters {
 
   template <typename T>
   void Comb<T>::solve(std::vector<T> *messy, bool ascending) {
-    if constexpr (CheckType::isNumber<T>()) {
 
+    if constexpr (CheckType::isNumber<T>()) {
       int gap = messy->size();
       bool swapped = true;
-      int errCtr = 0;
 
       while (gap != 1 || swapped) {
         /**
