@@ -10,6 +10,7 @@ namespace sorters {
   template <class T>
   class Quick {
   private:
+    /** Slower */
     static int lomutoPartition(
       std::vector<T> *messy,
       CR_INT left,
@@ -17,6 +18,7 @@ namespace sorters {
       bool &ascending
     );
 
+    /** Faster */
     static int hoarePartition(
       std::vector<T> *messy,
       CR_INT left,
@@ -28,14 +30,16 @@ namespace sorters {
       std::vector<T> *messy,
       CR_INT left,
       CR_INT right,
-      bool &ascending
+      bool &ascending,
+      int &scheme
     );
 
     static void recursion(
       std::vector<T> *messy,
       CR_INT left,
       CR_INT right,
-      bool &ascending
+      bool &ascending,
+      int &scheme
     );
 
   public:

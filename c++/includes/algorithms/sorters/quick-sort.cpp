@@ -60,12 +60,17 @@ namespace sorters {
     std::vector<T> *messy,
     CR_INT left,
     CR_INT right,
-    bool &ascending
+    bool &ascending,
+    int &scheme
   ) {
     std::srand(std::time(NULL));
     int random = left + std::rand() % (right - left);
     std::swap(messy->at(random), messy->at(right));
-    return Quick<T>::hoarePartition(messy, left, right, ascending);
+
+    if (scheme == LOMUTO) {
+      return Quick<T>::lomutoPartition(messy, left, right, ascending);
+    }
+    else return Quick<T>::hoarePartition(messy, left, right, ascending);
   }
 
   template <typename T>
@@ -73,12 +78,13 @@ namespace sorters {
     std::vector<T> *messy,
     CR_INT left,
     CR_INT right,
-    bool &ascending
+    bool &ascending,
+    int &scheme
   ) {
     if (left < right) {
-      int piv = randomPartition(messy, left, right, ascending);
-      Quick<T>::recursion(messy, left, piv - 1, ascending);
-      Quick<T>::recursion(messy, piv + 1, right, ascending);
+      int piv = randomPartition(messy, left, right, ascending, scheme);
+      Quick<T>::recursion(messy, left, piv - 1, ascending, scheme);
+      Quick<T>::recursion(messy, piv + 1, right, ascending, scheme);
     }
   }
 
@@ -89,7 +95,7 @@ namespace sorters {
     int scheme
   ) {
     if constexpr (CheckType::isNumber<T>()) {
-      Quick<T>::recursion(messy, 0, messy->size() - 1, ascending);
+      Quick<T>::recursion(messy, 0, messy->size() - 1, ascending, scheme);
     }
   }
 
@@ -99,7 +105,7 @@ namespace sorters {
     bool ascending,
     int scheme
   ) {
-    solve(&messy, ascending);
+    solve(&messy, ascending, scheme);
     return messy;
   }
 }}}
