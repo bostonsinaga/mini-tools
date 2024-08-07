@@ -8,6 +8,7 @@ namespace mini_tools {
 namespace utils {
 
   class Reader {
+  public:
     static bool isSeparator(CR_CHR ch) {
       if (ch == ' ' || ch == ',' || ch == '\n') return true;
       return false;
