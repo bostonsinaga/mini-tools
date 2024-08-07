@@ -88,6 +88,8 @@ namespace utils {
       // repeated and compared 'T' parameters
       std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
     );
+
+    static std::vector<T> swap(T &A, T &B);
   };
 }}
 

@@ -268,6 +268,13 @@ namespace utils {
 
     return wastedVec;
   }
+
+  template <typename T>
+  std::vector<T> VecTools<T>::swap(T &A, T &B) {
+    T temp = A;
+    A = B;
+    B = temp;
+  }
 }}
 
 #endif // __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
