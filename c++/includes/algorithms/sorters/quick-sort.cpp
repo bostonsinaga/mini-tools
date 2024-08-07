@@ -8,6 +8,29 @@ namespace algorithms {
 namespace sorters {
 
   template <typename T>
+  int Quick<T>::lomutoPartition(
+    std::vector<T> *messy,
+    CR_INT left,
+    CR_INT right,
+    bool &ascending
+  ) {
+    T pivot = messy->at(right);
+    int i = left - 1;
+
+    for (int j = left; j <= right - 1; j++) {
+      if ((ascending && messy->at(j) <= pivot) ||
+        (!ascending && messy->at(j) >= pivot)
+      ) {
+        i++;
+        std::swap(messy->at(i), messy->at(j));
+      }
+    }
+
+    std::swap(messy->at(i + 1), messy->at(right));
+    return i + 1;
+  }
+
+  template <typename T>
   int Quick<T>::hoarePartition(
     std::vector<T> *messy,
     CR_INT left,
@@ -60,14 +83,22 @@ namespace sorters {
   }
 
   template <typename T>
-  void Quick<T>::solve(std::vector<T> *messy, bool ascending) {
+  void Quick<T>::solve(
+    std::vector<T> *messy,
+    bool ascending,
+    int scheme
+  ) {
     if constexpr (CheckType::isNumber<T>()) {
       Quick<T>::recursion(messy, 0, messy->size() - 1, ascending);
     }
   }
 
   template <typename T>
-  std::vector<T> Quick<T>::solve(std::vector<T> messy, bool ascending) {
+  std::vector<T> Quick<T>::solve(
+    std::vector<T> messy,
+    bool ascending,
+    int scheme
+  ) {
     solve(&messy, ascending);
     return messy;
   }

@@ -10,7 +10,12 @@ namespace sorters {
   template <class T>
   class Quick {
   private:
-    /** The 'left' and 'right' are indexes of 'messy' */
+    static int lomutoPartition(
+      std::vector<T> *messy,
+      CR_INT left,
+      CR_INT right,
+      bool &ascending
+    );
 
     static int hoarePartition(
       std::vector<T> *messy,
@@ -34,14 +39,18 @@ namespace sorters {
     );
 
   public:
+    enum {HOARE, LOMUTO};
+
     static void solve(
       std::vector<T> *messy,
-      bool ascending = true
+      bool ascending = true,
+      int scheme = HOARE
     );
 
     static std::vector<T> solve(
       std::vector<T> messy,
-      bool ascending = true
+      bool ascending = true,
+      int scheme = HOARE
     );
   };
 }}}
