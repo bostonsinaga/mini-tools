@@ -4,25 +4,46 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+  using namespace CheckType;
 
-  template <typename T>
-  void Bubble<T>::solve(std::vector<T> *messy, bool ascending) {
-    int i, j;
-    for (i = 0; i < messy->size() - 1; i++) {
-      for (j = 0; j < messy->size() - i - 1; j++) {
-        if ((ascending && messy->at(j) > messy->at(j + 1)) ||
-          (!ascending && messy->at(j) < messy->at(j + 1))
-        ) {
-          std::swap(messy->at(j), messy->at(j + 1));
+  template <typename T, typename U>
+  void Bubble<T, U>::process(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
+    bool &ascending
+  ) {
+    if constexpr (isNumber<T>()) {
+      for (int i = 0; i < messy.size() - 1; i++) {
+        for (int j = 0; j < messy.size() - i - 1; j++) {
+          if ((ascending && messy[j] > messy[j + 1]) ||
+            (!ascending && messy[j] < messy[j + 1])
+          ) {
+            std::swap(messy[j], messy[j + 1]);
+
+            if constexpr (notNullptr<U>()) {
+              if (attached) std::swap(attached->at(j), attached->at(j + 1));
+            }
+          }
         }
       }
     }
   }
 
-  template <typename T>
-  std::vector<T> Bubble<T>::solve(std::vector<T> messy, bool ascending) {
-    Bubble<T>::solve(&messy, ascending);
-    return messy;
+  template <typename T, typename U>
+  void Bubble<T, U>::solve(
+    std::vector<T> &messy,
+    std::vector<U> &attached,
+    bool ascending
+  ) {
+    Bubble<T, U>::process(messy, &attached, ascending);
+  }
+
+  template <typename T, typename U>
+  void Bubble<T, U>::solve(
+    std::vector<T> &messy,
+    bool ascending
+  ) {
+    Bubble<T, U>::process(messy, nullptr, ascending);
   }
 }}}
 

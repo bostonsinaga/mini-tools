@@ -7,32 +7,35 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T>
+  template <class T, class U = std::nullptr_t>
   class Merge {
   private:
     static void merge(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT left,
       CR_INT mid,
       CR_INT right,
-      bool ascending
+      bool &ascending
     );
 
     static void partition(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT begin,
       CR_INT end,
-      bool ascending
+      bool &ascending
     );
 
   public:
     static void solve(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> &attached,
       bool ascending = true
     );
 
-    static std::vector<T> solve(
-      std::vector<T> messy,
+    static void solve(
+      std::vector<T> &messy,
       bool ascending = true
     );
   };

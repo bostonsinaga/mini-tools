@@ -7,12 +7,13 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T>
+  template <class T, class U = std::nullptr_t>
   class Quick {
   private:
     /** Slower */
     static int lomutoPartition(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending
@@ -20,14 +21,16 @@ namespace sorters {
 
     /** Faster */
     static int hoarePartition(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending
     );
 
     static int randomPartition(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending,
@@ -35,7 +38,8 @@ namespace sorters {
     );
 
     static void recursion(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending,
@@ -46,13 +50,14 @@ namespace sorters {
     enum {HOARE, LOMUTO};
 
     static void solve(
-      std::vector<T> *messy,
+      std::vector<T> &messy,
+      std::vector<U> &attached,
       bool ascending = true,
       int scheme = HOARE
     );
 
-    static std::vector<T> solve(
-      std::vector<T> messy,
+    static void solve(
+      std::vector<T> &messy,
       bool ascending = true,
       int scheme = HOARE
     );

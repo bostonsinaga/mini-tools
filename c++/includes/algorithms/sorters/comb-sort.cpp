@@ -4,12 +4,16 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+  using namespace CheckType;
 
-  template <typename T>
-  void Comb<T>::solve(std::vector<T> *messy, bool ascending) {
-
-    if constexpr (CheckType::isNumber<T>()) {
-      int gap = messy->size();
+  template <typename T, typename U>
+  void Comb<T, U>::process(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
+    bool &ascending
+  ) {
+    if constexpr (isNumber<T>()) {
+      int gap = messy.size();
       bool swapped = true;
 
       while (gap != 1 || swapped) {
@@ -22,22 +26,37 @@ namespace sorters {
         if (gap < 1) gap = 1;
         swapped = false;
 
-        for (int i = 0; i < messy->size() - gap; i++) {
-          if ((ascending && messy->at(i) > messy->at(i + gap)) ||
-            (!ascending && messy->at(i) < messy->at(i + gap))
+        for (int i = 0; i < messy.size() - gap; i++) {
+          if ((ascending && messy[i] > messy[i + gap]) ||
+            (!ascending && messy[i] < messy[i + gap])
           ) {
-            std::swap(messy->at(i), messy->at(i + gap));
+            std::swap(messy[i], messy[i + gap]);
             swapped = true;
+
+            if constexpr (notNullptr<U>()) {
+              if (attached) std::swap(attached->at(i), attached->at(i + gap));
+            }
           }
         }
       }
     }
   }
 
-  template <typename T>
-  std::vector<T> Comb<T>::solve(std::vector<T> messy, bool ascending) {
-    Comb<T>::solve(&messy, ascending);
-    return messy;
+  template <typename T, typename U>
+  void Comb<T, U>::solve(
+    std::vector<T> &messy,
+    std::vector<U> &attached,
+    bool ascending
+  ) {
+    Comb<T, U>::process(messy, &attached, ascending);
+  }
+
+  template <typename T, typename U>
+  void Comb<T, U>::solve(
+    std::vector<T> &messy,
+    bool ascending
+  ) {
+    Comb<T, U>::process(messy, nullptr, ascending);
   }
 }}}
 

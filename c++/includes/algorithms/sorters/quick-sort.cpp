@@ -6,33 +6,45 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+  using namespace CheckType;
 
-  template <typename T>
-  int Quick<T>::lomutoPartition(
-    std::vector<T> *messy,
+  template <typename T, typename U>
+  int Quick<T, U>::lomutoPartition(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending
   ) {
-    T pivot = messy->at(right);
+    T pivot = messy[right];
     int i = left - 1;
 
     for (int j = left; j <= right - 1; j++) {
-      if ((ascending && messy->at(j) <= pivot) ||
-        (!ascending && messy->at(j) >= pivot)
+      if ((ascending && messy[j] <= pivot) ||
+        (!ascending && messy[j] >= pivot)
       ) {
         i++;
-        std::swap(messy->at(i), messy->at(j));
+        std::swap(messy[i], messy[j]);
+
+        if constexpr (notNullptr<U>()) {
+          if (attached) std::swap(attached->at(i), attached->at(j));
+        }
       }
     }
 
-    std::swap(messy->at(i + 1), messy->at(right));
+    std::swap(messy[i + 1], messy[right]);
+
+    if constexpr (notNullptr<U>()) {
+      if (attached) std::swap(attached->at(i + 1), attached->at(right));
+    }
+
     return i + 1;
   }
 
-  template <typename T>
-  int Quick<T>::hoarePartition(
-    std::vector<T> *messy,
+  template <typename T, typename U>
+  int Quick<T, U>::hoarePartition(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending
@@ -42,22 +54,27 @@ namespace sorters {
     while (true) {
 
       if (ascending) {
-        do { i++; } while (messy->at(i) < messy->at(left));
-        do { j--; } while (messy->at(j) > messy->at(left));
+        do { i++; } while (messy[i] < messy[left]);
+        do { j--; } while (messy[j] > messy[left]);
       }
       else {
-        do { i++; } while (messy->at(i) > messy->at(left));
-        do { j--; } while (messy->at(j) < messy->at(left));
+        do { i++; } while (messy[i] > messy[left]);
+        do { j--; } while (messy[j] < messy[left]);
       }
 
       if (i >= j) return j;
-      std::swap(messy->at(i), messy->at(j));
+      std::swap(messy[i], messy[j]);
+
+      if constexpr (notNullptr<U>()) {
+        if (attached) std::swap(attached->at(i), attached->at(j));
+      }
     }
   }
 
-  template <typename T>
-  int Quick<T>::randomPartition(
-    std::vector<T> *messy,
+  template <typename T, typename U>
+  int Quick<T, U>::randomPartition(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending,
@@ -65,48 +82,53 @@ namespace sorters {
   ) {
     std::srand(std::time(NULL));
     int random = left + std::rand() % (right - left);
-    std::swap(messy->at(random), messy->at(right));
+    std::swap(messy[random], messy[right]);
+
+    if constexpr (notNullptr<U>()) {
+      if (attached) std::swap(attached->at(random), attached->at(right));
+    }
 
     if (scheme == LOMUTO) {
-      return Quick<T>::lomutoPartition(messy, left, right, ascending);
+      return Quick<T, U>::lomutoPartition(messy, attached, left, right, ascending);
     }
-    else return Quick<T>::hoarePartition(messy, left, right, ascending);
+    else return Quick<T, U>::hoarePartition(messy, attached, left, right, ascending);
   }
 
-  template <typename T>
-  void Quick<T>::recursion(
-    std::vector<T> *messy,
+  template <typename T, typename U>
+  void Quick<T, U>::recursion(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending,
     int &scheme
   ) {
-    if (left < right) {
-      int piv = randomPartition(messy, left, right, ascending, scheme);
-      Quick<T>::recursion(messy, left, piv - 1, ascending, scheme);
-      Quick<T>::recursion(messy, piv + 1, right, ascending, scheme);
+    if constexpr (isNumber<T>()) {
+      if (left < right) {
+        int piv = randomPartition(messy, attached, left, right, ascending, scheme);
+        Quick<T, U>::recursion(messy, attached, left, piv - 1, ascending, scheme);
+        Quick<T, U>::recursion(messy, attached, piv + 1, right, ascending, scheme);
+      }
     }
   }
 
-  template <typename T>
-  void Quick<T>::solve(
-    std::vector<T> *messy,
+  template <typename T, typename U>
+  void Quick<T, U>::solve(
+    std::vector<T> &messy,
+    std::vector<U> &attached,
     bool ascending,
     int scheme
   ) {
-    if constexpr (CheckType::isNumber<T>()) {
-      Quick<T>::recursion(messy, 0, messy->size() - 1, ascending, scheme);
-    }
+    Quick<T, U>::recursion(messy, &attached, 0, messy.size() - 1, ascending, scheme);
   }
 
-  template <typename T>
-  std::vector<T> Quick<T>::solve(
-    std::vector<T> messy,
+  template <typename T, typename U>
+  void Quick<T, U>::solve(
+    std::vector<T> &messy,
     bool ascending,
     int scheme
   ) {
-    solve(&messy, ascending, scheme);
-    return messy;
+    Quick<T, U>::recursion(messy, nullptr, 0, messy.size() - 1, ascending, scheme);
   }
 }}}
 

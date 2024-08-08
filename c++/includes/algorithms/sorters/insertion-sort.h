@@ -7,19 +7,25 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T>
+  template <class T, class U = std::nullptr_t>
   class Insertion {
-  public:
-    static void solve(
-      std::vector<T> *messy,
-      bool ascending = true,
-      int start = 1, int end = -1
+  private:
+    static void process(
+      std::vector<T> &messy,
+      std::vector<U> *attached,
+      bool &ascending
     );
 
-    static std::vector<T> solve(
-      std::vector<T> messy,
-      bool ascending = true,
-      int start = 1, int end = -1
+  public:
+    static void solve(
+      std::vector<T> &messy,
+      std::vector<U> &attached,
+      bool ascending = true
+    );
+
+    static void solve(
+      std::vector<T> &messy,
+      bool ascending = true
     );
   };
 }}}

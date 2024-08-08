@@ -4,43 +4,63 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+  using namespace CheckType;
 
-  template <typename T>
-  void Insertion<T>::solve(
-    std::vector<T> *messy,
-    bool ascending,
-    int start, int end
+  template <typename T, typename U>
+  void Insertion<T, U>::process(
+    std::vector<T> &messy,
+    std::vector<U> *attached,
+    bool &ascending
   ) {
-    int i, j;
-    T key;
+    if constexpr (isNumber<T>()) {
+      int i, j;
+      T key_messy, key_attached;
 
-    if (start < 0) start = 0;
-    if (end == -1 || end > messy->size()) end = messy->size();
+      for (i = 0; i < messy.size(); i++) {
+        j = i - 1;
+        key_messy = messy[i];
 
-    for (i = start + 1; i < end; i++) {
-      j = i - 1;
-      key = messy->at(i);
+        if constexpr (notNullptr<U>()) {
+          key_attached = attached->at(i);
+        }
 
-      while (j >= start && (
-        (ascending && messy->at(j) > key) ||
-        (!ascending && messy->at(j) < key)
-      )) {
-        messy->at(j + 1) = messy->at(j);
-        j--;
+        while (j >= 0 && (
+          (ascending && messy[j] > key_messy) ||
+          (!ascending && messy[j] < key_messy)
+        )) {
+          messy[j + 1] = messy[j];
+
+          if constexpr (notNullptr<U>()) {
+            attached->at(j + 1) = attached->at(j);
+          }
+
+          j--;
+        }
+
+        messy[j + 1] = key_messy;
+
+        if constexpr (notNullptr<U>()) {
+          attached->at(j + 1) = key_attached;
+        }
       }
-
-      messy->at(j + 1) = key;
     }
   }
   
-  template <typename T>
-  std::vector<T> Insertion<T>::solve(
-    std::vector<T> messy,
-    bool ascending,
-    int start, int end
+  template <typename T, typename U>
+  void Insertion<T, U>::solve(
+    std::vector<T> &messy,
+    std::vector<U> &attached,
+    bool ascending
   ) {
-    Insertion<T>::solve(&messy, ascending, start, end);
-    return messy;
+    Insertion<T, U>::process(messy, &attached, ascending);
+  }
+
+  template <typename T, typename U>
+  void Insertion<T, U>::solve(
+    std::vector<T> &messy,
+    bool ascending
+  ) {
+    Insertion<T, U>::process(messy, nullptr, ascending);
   }
 }}}
 
