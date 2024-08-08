@@ -33,6 +33,11 @@ namespace mini_tools {
       }
       return false;
     }
+
+    template <typename T>
+    constexpr bool notNullptr() {
+      return !std::is_same<T, std::nullptr_t>::value;
+    }
   }
 
   /** SHORTENED TYPES */
