@@ -9,24 +9,27 @@ namespace sorters {
 
   template <class T, class U = std::nullptr_t>
   class Insertion {
-  private:
+  protected:
     static void process(
       std::vector<T> &messy,
       std::vector<U> *attached,
-      bool &ascending
+      bool &ascending,
+      CR_INT start, CR_INT end
     );
 
   public:
     static void solve(
       std::vector<T> &messy,
       std::vector<U> &attached,
-      bool ascending = true
+      CR_BOL ascending = true
     );
 
     static void solve(
       std::vector<T> &messy,
-      bool ascending = true
+      CR_BOL ascending = true
     );
+
+    friend class Quick;
   };
 }}}
 

@@ -10,21 +10,21 @@ namespace sorters {
   void Insertion<T, U>::process(
     std::vector<T> &messy,
     std::vector<U> *attached,
-    bool &ascending
+    bool &ascending,
+    CR_INT start, CR_INT end
   ) {
     if constexpr (isNumber<T>()) {
-      int i, j;
       T key_messy, key_attached;
 
-      for (i = 0; i < messy.size(); i++) {
-        j = i - 1;
+      for (int i = start + 1; i < end; i++) {
+        int j = i - 1;
         key_messy = messy[i];
 
         if constexpr (notNullptr<U>()) {
           key_attached = attached->at(i);
         }
 
-        while (j >= 0 && (
+        while (j >= start && (
           (ascending && messy[j] > key_messy) ||
           (!ascending && messy[j] < key_messy)
         )) {
@@ -50,17 +50,19 @@ namespace sorters {
   void Insertion<T, U>::solve(
     std::vector<T> &messy,
     std::vector<U> &attached,
-    bool ascending
+    CR_BOL ascending
   ) {
-    Insertion<T, U>::process(messy, &attached, ascending);
+    std::vector<U> *attached_p = nullptr;
+    if (attached.size() >= messy.size()) attached_p = &attached;
+    Insertion<T, U>::process(messy, attached_p, ascending, 0, messy.size());
   }
 
   template <typename T, typename U>
   void Insertion<T, U>::solve(
     std::vector<T> &messy,
-    bool ascending
+    CR_BOL ascending
   ) {
-    Insertion<T, U>::process(messy, nullptr, ascending);
+    Insertion<T, U>::solve(messy, nullptr, ascending, 0, messy.size());
   }
 }}}
 
