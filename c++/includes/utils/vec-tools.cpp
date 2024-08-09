@@ -270,10 +270,19 @@ namespace utils {
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::swap(T &A, T &B) {
-    T temp = A;
-    A = B;
-    B = temp;
+  void VecTools<T>::fixIndexInterval(int &begin, int &end, T &vec) {
+    if (begin > end) std::swap(begin, end);
+    if (begin < 0 || begin > vec.size()) begin = 0;
+    if (end < 0 || end > vec.size()) end = vec.size();
+  }
+
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(CR_INT start, CR_INT end, T &vec) {
+    if (begin < end &&
+      begin >= 0 && begin <= vec.size() &&
+      end >= 0 || end <= vec.size()
+    ) { return true; }
+    return false;
   }
 }}
 

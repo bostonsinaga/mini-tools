@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
 #include <functional>
-#include "../types.h"
 
 namespace mini_tools {
 namespace utils {
@@ -89,7 +88,9 @@ namespace utils {
       std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
     );
 
-    static std::vector<T> swap(T &A, T &B);
+    // the 'end' usually 1 index after latest included index
+    static void fixIndexInterval(int &begin, int &end, T &vec);
+    static bool isIndexIntervalValid(CR_INT start, CR_INT end, T &vec);
   };
 }}
 
