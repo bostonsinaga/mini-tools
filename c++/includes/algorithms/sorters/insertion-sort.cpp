@@ -10,13 +10,13 @@ namespace sorters {
   void Insertion<T, U>::process(
     std::vector<T> &messy,
     std::vector<U> *attached,
-    bool &ascending,
+    CR_BOL ascending,
     CR_INT start, CR_INT end
   ) {
     if constexpr (isNumber<T>()) {
       T key_messy, key_attached;
 
-      for (int i = start + 1; i < end; i++) {
+      for (int i = start + 1; i <= end; i++) {
         int j = i - 1;
         key_messy = messy[i];
 

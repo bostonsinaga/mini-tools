@@ -13,7 +13,7 @@ namespace sorters {
     static void process(
       std::vector<T> &messy,
       std::vector<U> *attached,
-      bool &ascending,
+      CR_BOL ascending,
       CR_INT start, CR_INT end
     );
 
@@ -29,6 +29,7 @@ namespace sorters {
       CR_BOL ascending = true
     );
 
+    template<typename, typename>
     friend class Quick;
   };
 }}}
