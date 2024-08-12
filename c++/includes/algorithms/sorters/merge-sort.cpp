@@ -109,7 +109,9 @@ namespace sorters {
     std::vector<U> &attached,
     bool ascending
   ) {
-    Merge<T, U>::partition(messy, &attached, 0, messy.size() - 1, ascending);
+    std::vector<U> *attached_p = nullptr;
+    if (attached.size() >= messy.size()) attached_p = &attached;
+    Merge<T, U>::partition(messy, attached_p, 0, messy.size() - 1, ascending);
   }
 
   template <typename T, typename U>

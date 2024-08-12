@@ -39,7 +39,9 @@ namespace sorters {
     std::vector<U> &attached,
     bool ascending
   ) {
-    Selection<T, U>::process(messy, &attached, ascending);
+    std::vector<U> *attached_p = nullptr;
+    if (attached.size() >= messy.size()) attached_p = &attached;
+    Selection<T, U>::process(messy, attached_p, ascending);
   }
 
   template <typename T, typename U>

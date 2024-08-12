@@ -124,7 +124,9 @@ namespace sorters {
     bool ascending,
     int scheme
   ) {
-    Quick<T, U>::recursion(messy, &attached, 0, messy.size() - 1, ascending, scheme);
+    std::vector<U> *attached_p = nullptr;
+    if (attached.size() >= messy.size()) attached_p = &attached;
+    Quick<T, U>::recursion(messy, attached_p, 0, messy.size() - 1, ascending, scheme);
   }
 
   template <typename T, typename U>
