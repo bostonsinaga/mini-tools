@@ -54,7 +54,7 @@ namespace sorters {
   ) {
     std::vector<U> *attached_p = nullptr;
     if (attached.size() >= messy.size()) attached_p = &attached;
-    Insertion<T, U>::process(messy, attached_p, ascending, 0, messy.size());
+    Insertion<T, U>::process(messy, &attached, ascending, 0, messy.size() - 1);
   }
 
   template <typename T, typename U>
@@ -62,7 +62,7 @@ namespace sorters {
     std::vector<T> &messy,
     CR_BOL ascending
   ) {
-    Insertion<T, U>::solve(messy, nullptr, ascending, 0, messy.size());
+    Insertion<T, U>::solve(messy, nullptr, ascending, 0, messy.size() - 1);
   }
 }}}
 
