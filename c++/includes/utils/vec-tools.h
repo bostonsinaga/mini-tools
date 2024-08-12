@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
 #include <functional>
+#include "../types.h"
 
 namespace mini_tools {
 namespace utils {
@@ -90,7 +91,7 @@ namespace utils {
 
     // the 'end' usually 1 index after latest included index
     static void fixIndexInterval(int &begin, int &end, T &vec);
-    static bool isIndexIntervalValid(CR_INT start, CR_INT end, T &vec);
+    static bool isIndexIntervalValid(CR_INT begin, CR_INT end, T &vec);
   };
 }}
 

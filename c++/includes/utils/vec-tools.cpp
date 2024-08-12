@@ -277,7 +277,7 @@ namespace utils {
   }
 
   template <typename T>
-  bool VecTools<T>::isIndexIntervalValid(CR_INT start, CR_INT end, T &vec) {
+  bool VecTools<T>::isIndexIntervalValid(CR_INT begin, CR_INT end, T &vec) {
     if (begin < end &&
       begin >= 0 && begin <= vec.size() &&
       end >= 0 || end <= vec.size()
