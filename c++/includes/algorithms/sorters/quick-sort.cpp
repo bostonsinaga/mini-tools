@@ -50,16 +50,16 @@ namespace sorters {
     bool &ascending
   ) {
     int i = left - 1, j = right + 1;
+    int pivot = messy[(left + right) / 2];
 
     while (true) {
-
       if (ascending) {
-        do { i++; } while (messy[i] < messy[left]);
-        do { j--; } while (messy[j] > messy[left]);
+        do { i++; } while (messy[i] < pivot);
+        do { j--; } while (messy[j] > pivot);
       }
       else {
-        do { i++; } while (messy[i] > messy[left]);
-        do { j--; } while (messy[j] < messy[left]);
+        do { i++; } while (messy[i] > pivot);
+        do { j--; } while (messy[j] < pivot);
       }
 
       if (i >= j) return j;
@@ -105,9 +105,14 @@ namespace sorters {
   ) {
     if constexpr (isNumber<T>()) {
       if (left < right) {
-        int piv = randomPartition(messy, attached, left, right, ascending, scheme);
-        Quick<T, U>::recursion(messy, attached, left, piv - 1, ascending, scheme);
-        Quick<T, U>::recursion(messy, attached, piv + 1, right, ascending, scheme);
+        if (right - left <= 100) {
+          Insertion<T, U>::process(messy, attached, ascending, left, right);
+        }
+        else {
+          int piv = randomPartition(messy, attached, left, right, ascending, scheme);
+          Quick<T, U>::recursion(messy, attached, left, piv - 1, ascending, scheme);
+          Quick<T, U>::recursion(messy, attached, piv + 1, right, ascending, scheme);
+        }
       }
     }
   }
