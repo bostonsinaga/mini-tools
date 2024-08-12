@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_CPP__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_CPP__
 
-#include "../../utils/vec-tools.h"
-
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
