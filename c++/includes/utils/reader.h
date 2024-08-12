@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__UTILS__READER_H__
 
 #include <fstream>
+#include "../types.h"
 
 namespace mini_tools {
 namespace utils {
