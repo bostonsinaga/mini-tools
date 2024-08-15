@@ -15,7 +15,12 @@ namespace utils {
     }
 
     static bool isSeparator(CR_STR text, CR_INT i) {
-      if (isSeparator(text[i]) || i == text.length() - 1) return true;
+      if (i >= 0 && i < text.length()) {
+        if (isSeparator(text[i]) || i == text.length() - 1) {
+          return true;
+        }
+        return false;
+      }
       return false;
     }
 
@@ -33,9 +38,19 @@ namespace utils {
 
   template <class T>
   class Scanner {
+  private:
+    static constexpr bool checkNumberType();
+    static constexpr bool checkLetterType();
+
   public:
-    static std::vector<T> txtToNumbers(std::string filename);
-    static std::vector<T> txtToLetters(std::string filename);
+    static void parseNumbers(CR_STR text, std::vector<T> &vecHook);
+    static void parseLetters(CR_STR text, std::vector<T> &vecHook);
+
+    static std::vector<T> parseNumbers(CR_STR text);
+    static std::vector<T> parseLetters(CR_STR text);
+
+    static std::vector<T> txtToNumbers(CR_STR filename);
+    static std::vector<T> txtToLetters(CR_STR filename);
   };
 }}
 
