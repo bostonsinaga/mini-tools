@@ -5,24 +5,24 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  constexpr bool Scanner<T>::checkNumberType() {
+  constexpr bool Scanner<T>::checkNumberType(CR_STR name) {
 
     if constexpr (!CheckType::isNumber<T>()) {
 
       constexpr bool checkNumberType_error = false;
-      static_assert(checkNumberType_error, "only for numbers");
+      static_assert(checkNumberType_error, "at " + name);
       return false;
     }
     else return true;
   }
 
   template <typename T>
-  constexpr bool Scanner<T>::checkLetterType() {
+  constexpr bool Scanner<T>::checkLetterType(CR_STR name) {
 
     if constexpr (!CheckType::isLetter<T>()) {
 
       constexpr bool checkLetterType_error = false;
-      static_assert(checkLetterType_error, "only for letters");
+      static_assert(checkLetterType_error, "at " + name);
       return false;
     }
     else return true;
@@ -33,7 +33,7 @@ namespace utils {
     CR_STR text,
     std::vector<T> &vecHook
   ) {
-    if constexpr (Scanner<T>::checkNumberType()) {
+    if constexpr (Scanner<T>::checkNumberType("parseNumbers(CR_STR, std::vector<T>&)")) {
       bool separated = false;
       std::string numStr;
 
@@ -72,7 +72,7 @@ namespace utils {
     CR_STR text,
     std::vector<T> &vecHook
   ) {
-    if constexpr (Scanner<T>::checkLetterType()) {
+    if constexpr (Scanner<T>::checkLetterType("parseLetters(CR_STR, std::vector<T>&)")) {
       bool separated = false;
       std::string chars;
 
@@ -98,7 +98,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::parseNumbers(CR_STR text) {
 
-    if constexpr (Scanner<T>::checkNumberType()) {
+    if constexpr (Scanner<T>::checkNumberType("parseNumbers(CR_STR)")) {
       std::vector<T> numbers;
       Scanner<T>::parseNumbers(text, numbers);
       return numbers;
@@ -108,7 +108,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::parseLetters(CR_STR text) {
 
-    if constexpr (Scanner<T>::checkLetterType()) {
+    if constexpr (Scanner<T>::checkLetterType("parseLetters(CR_STR)")) {
       std::vector<T> letters;
       Scanner<T>::parseLetters(text, letters);
       return letters;
@@ -118,7 +118,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::txtToNumbers(CR_STR filename) {
 
-    if constexpr (Scanner<T>::checkNumberType()) {
+    if constexpr (Scanner<T>::checkNumberType("txtToNumbers(CR_STR)")) {
       std::string text;
       Reader::getFrom(filename, text);
       return parseNumbers(text);
@@ -128,7 +128,7 @@ namespace utils {
   template <typename T>
   std::vector<T> Scanner<T>::txtToLetters(CR_STR filename) {
 
-    if constexpr (Scanner<T>::checkLetterType()) {
+    if constexpr (Scanner<T>::checkLetterType("txtToLetters(CR_STR)")) {
       std::string text;
       Reader::getFrom(filename, text);
       return parseLetters(text);

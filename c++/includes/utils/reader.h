@@ -39,8 +39,8 @@ namespace utils {
   template <class T>
   class Scanner {
   private:
-    static constexpr bool checkNumberType();
-    static constexpr bool checkLetterType();
+    static constexpr bool checkNumberType(CR_STR name);
+    static constexpr bool checkLetterType(CR_STR name);
 
   public:
     static void parseNumbers(CR_STR text, std::vector<T> &vecHook);
