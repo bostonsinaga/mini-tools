@@ -40,8 +40,8 @@ namespace mini_tools {
     }
   }
 
-  /** SHORTENED TYPES */
-  
+  /** SHORTENED PRIMITIVE DATA TYPES */
+
   typedef short int SI;
   typedef long int LI;
   typedef long long int LLI;
@@ -50,6 +50,23 @@ namespace mini_tools {
   typedef unsigned long int ULI;
   typedef unsigned long long int ULLI;
   typedef long double LD;
+
+  /** SHORTENED TEMPLATES */
+
+  template <typename T>
+  using CR = const T&;
+
+  template <typename T>
+  using VEC = std::vector<T>;
+
+  template <typename T>
+  using VEC2 = std::vector<VEC<T>>;
+
+  template <typename T>
+  using CR_VEC = const VEC<T>&;
+
+  template <typename T>
+  using CR_VEC2 = const VEC2<T>&;
 
   /** SHORTENED VALUE VECTORS */
 
