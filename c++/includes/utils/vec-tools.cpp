@@ -7,38 +7,23 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  bool VecTools<T>::hasIndex(std::vector<T> &vec, int idx) {
+  bool VecTools<T>::hasIndex(std::vector<T> &vec, CR_INT idx) {
     if (idx < vec.size() && idx >= 0) return true;
     return false;
+  }
+
+  template <typename T>
+  bool VecTools<T>::hasIndexes(std::vector<T> &vec, CR_VEC_INT idxs) {
+    for (const int &i : idxs) {
+      if (!hasIndex(vec, i)) return false;
+    }
+    return idxs.size() > 0 ? true : false;
   }
 
   template <typename T>
   T VecTools<T>::getAt(std::vector<T> &vec, int idx, T defaultReturn) {
     if (VecTools<T>::hasIndex(vec, idx)) return vec.at(idx);
     return defaultReturn;
-  }
-
-  template <typename T>
-  std::vector<T> VecTools<T>::getDifferencesToSize(
-    const std::vector<T> &sizes,
-    T targetSize
-  ) {
-    std::vector<T> differences;
-
-    if constexpr (CheckType::isNumber<T>()) {
-      T max = targetSize;
-
-      for (auto &sz : sizes) {
-        if (targetSize > 0) {
-          if (sz > max && sz <= targetSize) max = sz;
-        }
-        else if (sz > max) max = sz;
-      }
-
-      for (auto &sz : sizes) differences.push_back(max - sz);
-    }
-
-    return differences;
   }
 
   template <typename T>

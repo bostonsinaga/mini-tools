@@ -10,9 +10,14 @@ namespace utils {
   template <class T>
   class VecTools {
   public:
-    static bool hasIndex(std::vector<T> &vec, int idx);
-    static T getAt(std::vector<T> &vec, int idx, T defaultReturn);
-    static std::vector<T> getDifferencesToSize(const std::vector<T> &sizes, T targetSize);
+    static bool hasIndex(std::vector<T> &vec, CR_INT idx);
+    static bool hasIndexes(std::vector<T> &vec, CR_VEC_INT idxs);
+
+    static T getAt(
+      std::vector<T> &vec,
+      CR_INT idx,
+      const T &defaultReturn
+    );
 
     static void concat(
       std::vector<T> &targetVec,
@@ -42,14 +47,14 @@ namespace utils {
     static void cutSingle(
       std::vector<T> &vec,
       T &wasted,
-      int idx,
+      CR_INT idx,
       bool onlyWasted = false,
       bool needDelete = false
     );
 
     static T cutSingle(
       std::vector<T> &vec,
-      int idx,
+      CR_INT idx,
       bool onlyWasted = false,
       bool needDelete = false
     );
