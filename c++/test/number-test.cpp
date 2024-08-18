@@ -15,7 +15,7 @@ int main() {
   };
 
   // read input
-  mt::VEC_INT numbers = mt_uti::Scanner<int>::txtToNumbers(filenames[0]);
+  mt::VEC_INT numbers = mt_uti::Reader::txtToNumbers<int>(filenames[0]);
   mt::VEC_INT numbers_copy = numbers;
   std::cout << std::endl;
 
