@@ -7,13 +7,13 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  bool VecTools<T>::hasIndex(std::vector<T> &vec, CR_INT idx) {
+  bool VecTools<T>::hasIndex(VEC<T> &vec, CR_INT idx) {
     if (idx < vec.size() && idx >= 0) return true;
     return false;
   }
 
   template <typename T>
-  bool VecTools<T>::hasIndexes(std::vector<T> &vec, CR_VEC_INT idxs) {
+  bool VecTools<T>::hasIndexes(VEC<T> &vec, CR_VEC_INT idxs) {
     for (const int &i : idxs) {
       if (!hasIndex(vec, i)) return false;
     }
@@ -21,26 +21,26 @@ namespace utils {
   }
 
   template <typename T>
-  T VecTools<T>::getAt(std::vector<T> &vec, int idx, T defaultReturn) {
+  T VecTools<T>::getAt(VEC<T> &vec, CR_INT idx, CR<T> defaultReturn) {
     if (VecTools<T>::hasIndex(vec, idx)) return vec.at(idx);
     return defaultReturn;
   }
 
   template <typename T>
   void VecTools<T>::concat(
-    std::vector<T> &targetVec,
-    const std::vector<T> &additionVec
+    VEC<T> &targetVec,
+    CR_VEC<T> additionVec
   ) {
     targetVec.reserve(targetVec.size() + additionVec.size());
     targetVec.insert(targetVec.end(), additionVec.begin(), additionVec.end());
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::join(
-    const std::vector<T> &vecA,
-    const std::vector<T> &vecB
+  VEC<T> VecTools<T>::join(
+    CR_VEC<T> vecA,
+    CR_VEC<T> vecB
   ) {
-    std::vector<T> newVec;
+    VEC<T> newVec;
     VecTools<T>::concat(newVec, vecA);
     VecTools<T>::concat(newVec, vecB);
     return newVec;
@@ -48,11 +48,11 @@ namespace utils {
 
   template <typename T>
   void VecTools<T>::cutInterval(
-    std::vector<T> &vec,
-    std::vector<T> &wasted,
+    VEC<T> &vec,
+    VEC<T> &wasted,
     int begin, int end,
-    bool onlyWasted,
-    bool needDelete
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
     int sz = vec.size();
 
@@ -74,13 +74,13 @@ namespace utils {
     if (end >= sz) end = sz - 1;
 
     // separated
-    wasted = std::vector<T>(vec.begin() + begin, vec.begin() + end + 1);
+    wasted = VEC<T>(vec.begin() + begin, vec.begin() + end + 1);
 
     // change the original
     if (!onlyWasted) {
       vec = VecTools<T>::join(
-        std::vector<T>(vec.begin(), vec.begin() + begin),
-        std::vector<T>(vec.begin() + end + 1, vec.end())
+        VEC<T>(vec.begin(), vec.begin() + begin),
+        VEC<T>(vec.begin() + end + 1, vec.end())
       );
     }
 
@@ -90,24 +90,24 @@ namespace utils {
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::cutInterval(
-    std::vector<T> &vec,
-    int begin, int end,
-    bool onlyWasted,
-    bool needDelete
+  VEC<T> VecTools<T>::cutInterval(
+    VEC<T> &vec,
+    CR_INT begin, CR_INT end,
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
-    std::vector<T> wasted;
+    VEC<T> wasted;
     VecTools<T>::cutInterval(vec, wasted, begin, end, onlyWasted, needDelete);
     return wasted;
   }
 
   template <typename T>
   void VecTools<T>::cutSingle(
-    std::vector<T> &vec,
+    VEC<T> &vec,
     T &wasted,
     int idx,
-    bool onlyWasted,
-    bool needDelete
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
     if (vec.size() == 0) return;
 
@@ -120,8 +120,8 @@ namespace utils {
     // change the original
     if (!onlyWasted) {
       vec = VecTools<T>::join(
-        std::vector<T>(vec.begin(), vec.begin() + idx),
-        std::vector<T>(vec.begin() + idx + 1, vec.end())
+        VEC<T>(vec.begin(), vec.begin() + idx),
+        VEC<T>(vec.begin() + idx + 1, vec.end())
       );
     }
 
@@ -132,10 +132,10 @@ namespace utils {
 
   template <typename T>
   T VecTools<T>::cutSingle(
-    std::vector<T> &vec,
-    int idx,
-    bool onlyWasted,
-    bool needDelete
+    VEC<T> &vec,
+    CR_INT idx,
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
     T wasted = vec[idx];
     VecTools<T>::cutSingle(vec, wasted, idx, onlyWasted, needDelete);
@@ -144,12 +144,12 @@ namespace utils {
 
   template <typename T>
   void VecTools<T>::cutIndexes(
-    std::vector<T> &vec,
-    std::vector<T> &wasted,
+    VEC<T> &vec,
+    VEC<T> &wasted,
     VEC_INT idxs,
-    bool lockedIndex,
-    bool onlyWasted,
-    bool needDelete
+    CR_BOL lockedIndex,
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
     if (vec.size() == 0) return;
     int last = idxs.size() - 1;
@@ -185,24 +185,24 @@ namespace utils {
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::cutIndexes(
-    std::vector<T> &vec,
+  VEC<T> VecTools<T>::cutIndexes(
+    VEC<T> &vec,
     VEC_INT idxs,
-    bool lockedIndex,
-    bool onlyWasted,
-    bool needDelete
+    CR_BOL lockedIndex,
+    CR_BOL onlyWasted,
+    CR_BOL needDelete
   ) {
-    std::vector<T> wasted;
+    VEC<T> wasted;
     VecTools<T>::cutIndexes(vec, wasted, idxs, lockedIndex, onlyWasted, needDelete);
     return wasted;
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::cleanDuplicateInside(
-    std::vector<T> &vec,
+  VEC<T> VecTools<T>::cleanDuplicateInside(
+    VEC<T> &vec,
     std::function<bool(T,T)> equalRule
   ) {
-    std::vector<T> wastedVec;
+    VEC<T> wastedVec;
     bool first = false;
 
     for (int i = 0; i < vec.size(); i++) {
@@ -227,11 +227,11 @@ namespace utils {
   }
 
   template <typename T>
-  std::vector<T> VecTools<T>::cleanDuplicateToMember(
-    std::vector<T> &vec, T mem,
+  VEC<T> VecTools<T>::cleanDuplicateToMember(
+    VEC<T> &vec, T mem,
     std::function<bool(T,T)> equalRule
   ) {
-    std::vector<T> wastedVec;
+    VEC<T> wastedVec;
     bool first = false;
 
     for (int i = 0; i < vec.size(); i++) {
