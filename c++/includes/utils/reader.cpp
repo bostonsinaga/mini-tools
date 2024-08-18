@@ -1,28 +1,63 @@
 #ifndef __MINI_TOOLS__UTILS__READER_CPP__
 #define __MINI_TOOLS__UTILS__READER_CPP__
 
+#include <fstream>
+
 namespace mini_tools {
 namespace utils {
 
+  bool Reader::isSeparator(CR_CHR ch) {
+    if (ch == ' ' || ch == ',' || ch == '\n') return true;
+    return false;
+  }
+
+  bool Reader::isSeparator(CR_STR text, CR_INT i) {
+    if (i >= 0 && i < text.length()) {
+      if (isSeparator(text[i]) || i == text.length() - 1) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  void Reader::getFile(
+    CR_STR name,
+    std::string &textHook
+  ) {
+    std::string line;
+    std::ifstream reader(name);
+    while (std::getline(reader, line)) { textHook += line; }
+    reader.close();
+  }
+
   template <typename T>
-  void Scanner<T>::parseNumbers(
+  void Reader::parseNumbers(
     CR_STR text,
     VEC<T> &vecHook
   ) {
     if constexpr (CheckType::isNumber<T>()) {
-      bool separated = false, skip = false;
       std::string numStr;
 
+      bool separated = false,
+        hasDecimalPoint = false,
+        skip = false;
+
       for (int i = 0; i < text.length(); i++) {
-        
+
         if (separated && std::isdigit(text[i])) {
           separated = false;
         }
 
         if (!separated) {
+          bool isDecimalPoint = numStr.length() > 0 && text[i] == '.';
 
-          if (std::isdigit(text[i])) {
+          if (std::isdigit(text[i]) || (
+            !hasDecimalPoint && isDecimalPoint
+          )) {
             numStr += text[i];
+            if (isDecimalPoint) hasDecimalPoint = true;
+
             if (i == text.length() - 1) skip = false;
             else skip = true;
           }
@@ -44,6 +79,7 @@ namespace utils {
             else vecHook.push_back(std::stoi(numStr));
 
             numStr = "";
+            hasDecimalPoint = false;
           }
         }
       }
@@ -52,7 +88,7 @@ namespace utils {
   }
 
   template <typename T>
-  void Scanner<T>::parseLetters(
+  void Reader::parseLetters(
     CR_STR text,
     VEC<T> &vecHook
   ) {
@@ -81,11 +117,11 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::parseNumbers(CR_STR text) {
+  VEC<T> Reader::parseNumbers(CR_STR text) {
 
     if constexpr (CheckType::isNumber<T>()) {
       VEC<T> numbers;
-      Scanner<T>::parseNumbers(text, numbers);
+      Reader::parseNumbers<T>(text, numbers);
       return numbers;
     }
     else {
@@ -95,11 +131,11 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::parseLetters(CR_STR text) {
+  VEC<T> Reader::parseLetters(CR_STR text) {
 
     if constexpr (CheckType::isLetter<T>()) {
       VEC<T> letters;
-      Scanner<T>::parseLetters(text, letters);
+      Reader::parseLetters<T>(text, letters);
       return letters;
     }
     else {
@@ -109,12 +145,12 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::txtToNumbers(CR_STR filename) {
+  VEC<T> Reader::txtToNumbers(CR_STR filename) {
 
     if constexpr (CheckType::isNumber<T>()) {
       std::string text;
-      Reader::getFrom(filename, text);
-      return Scanner<T>::parseNumbers(text);
+      Reader::getFile(filename, text);
+      return Reader::parseNumbers<T>(text);
     }
     else {
       static_assert(0, "template type");
@@ -123,12 +159,12 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::txtToLetters(CR_STR filename) {
+  VEC<T> Reader::txtToLetters(CR_STR filename) {
 
     if constexpr (CheckType::isLetter<T>()) {
       std::string text;
-      Reader::getFrom(filename, text);
-      return Scanner<T>::parseLetters(text);
+      Reader::getFile(filename, text);
+      return Reader::parseLetters<T>(text);
     }
     else {
       static_assert(0, "template type");
