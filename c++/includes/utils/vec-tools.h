@@ -10,53 +10,53 @@ namespace utils {
   template <class T>
   class VecTools {
   public:
-    static bool hasIndex(std::vector<T> &vec, CR_INT idx);
-    static bool hasIndexes(std::vector<T> &vec, CR_VEC_INT idxs);
+    static bool hasIndex(VEC<T> &vec, CR_INT idx);
+    static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
 
     static T getAt(
-      std::vector<T> &vec,
+      VEC<T> &vec,
       CR_INT idx,
-      const T &defaultReturn
+      CR<T> defaultReturn
     );
 
     static void concat(
-      std::vector<T> &targetVec,
-      const std::vector<T> &additionVec
+      VEC<T> &targetVec,
+      CR_VEC<T> additionVec
     );
 
-    static std::vector<T> join(
-      const std::vector<T> &vecA,
-      const std::vector<T> &vecB
+    static VEC<T> join(
+      CR_VEC<T> vecA,
+      CR_VEC<T> vecB
     );
 
     static void cutInterval(
-      std::vector<T> &vec,
-      std::vector<T> &wasted,
+      VEC<T> &vec,
+      VEC<T> &wasted,
       int begin, int end,
-      bool onlyWasted = false,
-      bool needDelete = false
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
-    static std::vector<T> cutInterval(
-      std::vector<T> &vec,
-      int begin, int end,
-      bool onlyWasted = false,
-      bool needDelete = false
+    static VEC<T> cutInterval(
+      VEC<T> &vec,
+      CR_INT begin, CR_INT end,
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
     static void cutSingle(
-      std::vector<T> &vec,
+      VEC<T> &vec,
       T &wasted,
-      CR_INT idx,
-      bool onlyWasted = false,
-      bool needDelete = false
+      int idx,
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
     static T cutSingle(
-      std::vector<T> &vec,
+      VEC<T> &vec,
       CR_INT idx,
-      bool onlyWasted = false,
-      bool needDelete = false
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
     /**
@@ -66,30 +66,30 @@ namespace utils {
      * when one of the smaller indexes has finished truncating)
      */
     static void cutIndexes(
-      std::vector<T> &vec,
-      std::vector<T> &wasted,
+      VEC<T> &vec,
+      VEC<T> &wasted,
       VEC_INT idxs,
-      bool lockedIndex = true,
-      bool onlyWasted = false,
-      bool needDelete = false
+      CR_BOL lockedIndex = true,
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
-    static std::vector<T> cutIndexes(
-      std::vector<T> &vec,
+    static VEC<T> cutIndexes(
+      VEC<T> &vec,
       VEC_INT idxs,
-      bool lockedIndex = true,
-      bool onlyWasted = false,
-      bool needDelete = false
+      CR_BOL lockedIndex = true,
+      CR_BOL onlyWasted = false,
+      CR_BOL needDelete = false
     );
 
-    static std::vector<T> cleanDuplicateInside(
-      std::vector<T> &vec,
+    static VEC<T> cleanDuplicateInside(
+      VEC<T> &vec,
       // repeated and compared 'T' parameters
       std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
     );
 
-    static std::vector<T> cleanDuplicateToMember(
-      std::vector<T> &vec, T mem,
+    static VEC<T> cleanDuplicateToMember(
+      VEC<T> &vec, T mem,
       // repeated and compared 'T' parameters
       std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
     );
