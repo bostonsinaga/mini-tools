@@ -38,19 +38,15 @@ namespace utils {
 
   template <class T>
   class Scanner {
-  private:
-    static constexpr bool checkNumberType(CR_STR name);
-    static constexpr bool checkLetterType(CR_STR name);
-
   public:
-    static void parseNumbers(CR_STR text, std::vector<T> &vecHook);
-    static void parseLetters(CR_STR text, std::vector<T> &vecHook);
+    static void parseNumbers(CR_STR text, VEC<T> &vecHook);
+    static void parseLetters(CR_STR text, VEC<T> &vecHook);
 
-    static std::vector<T> parseNumbers(CR_STR text);
-    static std::vector<T> parseLetters(CR_STR text);
+    static VEC<T> parseNumbers(CR_STR text);
+    static VEC<T> parseLetters(CR_STR text);
 
-    static std::vector<T> txtToNumbers(CR_STR filename);
-    static std::vector<T> txtToLetters(CR_STR filename);
+    static VEC<T> txtToNumbers(CR_STR filename);
+    static VEC<T> txtToLetters(CR_STR filename);
   };
 }}
 
