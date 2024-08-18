@@ -10,7 +10,7 @@ namespace utils {
     VEC<T> &vecHook
   ) {
     if constexpr (CheckType::isNumber<T>()) {
-      bool separated = false;
+      bool separated = false, skip = false;
       std::string numStr;
 
       for (int i = 0; i < text.length(); i++) {
@@ -20,11 +20,18 @@ namespace utils {
         }
 
         if (!separated) {
+
           if (std::isdigit(text[i])) {
             numStr += text[i];
+            if (i == text.length() - 1) skip = false;
+            else skip = true;
           }
-          else if (Reader::isSeparator(text, i)) {
+          else skip = false;
 
+          if (!skip &&
+            Reader::isSeparator(text, i) &&
+            numStr.length() > 0
+          ) {
             if constexpr (std::is_same<T, float>::value) {
               vecHook.push_back(std::stof(numStr));
             }
@@ -113,7 +120,7 @@ namespace utils {
     if constexpr (CheckType::isNumber<T>()) {
       std::string text;
       Reader::getFrom(filename, text);
-      return parseNumbers(text);
+      return Scanner<T>::parseNumbers(text);
     }
     else {
       constexpr bool ERROR = false;
@@ -127,7 +134,7 @@ namespace utils {
     if constexpr (CheckType::isLetter<T>()) {
       std::string text;
       Reader::getFrom(filename, text);
-      return parseLetters(text);
+      return Scanner<T>::parseLetters(text);
     }
     else {
       constexpr bool ERROR = false;
