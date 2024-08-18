@@ -18,6 +18,9 @@ namespace utils {
     );
 
     template <typename T>
+    static T stringToNumber(CR_STR numStr);
+
+    template <typename T>
     static void parseNumbers(CR_STR text, VEC<T> &vecHook);
 
     template <typename T>

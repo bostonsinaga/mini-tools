@@ -32,6 +32,41 @@ namespace utils {
   }
 
   template <typename T>
+  T Reader::stringToNumber(CR_STR numStr) {
+    if constexpr (
+      std::is_same<T, int>::value ||
+      std::is_same<T, UI>::value ||
+      std::is_same<T, SI>::value ||
+      std::is_same<T, USI>::value
+    ) {
+      return std::stoi(numStr);
+    }
+    else if constexpr (std::is_same<T, float>::value) {
+      return std::stof(numStr);
+    }
+    else if constexpr (std::is_same<T, double>::value) {
+      return std::stod(numStr);
+    }
+    else if constexpr (std::is_same<T, LD>::value) {
+      return std::stold(numStr);
+    }
+    else if constexpr (
+      std::is_same<T, LI>::value ||
+      std::is_same<T, ULI>::value
+    ) {
+      return std::stol(numStr);
+    }
+    else if constexpr (
+      std::is_same<T, LLI>::value ||
+      std::is_same<T, ULLI>::value ||
+      std::is_same<T, size_t>::value ||
+      std::is_same<T, time_t>::value
+    ) {
+      return std::stoll(numStr);
+    }
+  }
+
+  template <typename T>
   void Reader::parseNumbers(
     CR_STR text,
     VEC<T> &vecHook
@@ -67,19 +102,9 @@ namespace utils {
             Reader::isSeparator(text, i) &&
             numStr.length() > 0
           ) {
-            if constexpr (std::is_same<T, float>::value) {
-              vecHook.push_back(std::stof(numStr));
-            }
-            else if constexpr (std::is_same<T, double>::value) {
-              vecHook.push_back(std::stod(numStr));
-            }
-            else if constexpr (std::is_same<T, LD>::value) {
-              vecHook.push_back(std::stold(numStr));
-            }
-            else vecHook.push_back(std::stoi(numStr));
-
-            numStr = "";
+            vecHook.push_back(Reader::stringToNumber<T>(numStr));
             hasDecimalPoint = false;
+            numStr = "";
           }
         }
       }
