@@ -14,7 +14,7 @@ namespace utils {
 
   template <typename T>
   bool VecTools<T>::hasIndexes(VEC<T> &vec, CR_VEC_INT idxs) {
-    for (const int &i : idxs) {
+    for (CR_INT i : idxs) {
       if (!hasIndex(vec, i)) return false;
     }
     return idxs.size() > 0 ? true : false;

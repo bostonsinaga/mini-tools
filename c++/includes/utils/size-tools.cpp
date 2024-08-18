@@ -7,7 +7,7 @@ namespace utils {
   template <typename T>
   VEC_SZ SizeTools<T>::generateSizes(CR_VEC2<T> vecs) {
     VEC_SZ sizes;
-    for (const std::vector<T> &v : vecs) {
+    for (CR_VEC<T> v : vecs) {
       sizes.push_back(v.size());
     }
     return sizes;
@@ -17,7 +17,7 @@ namespace utils {
   size_t SizeTools<T>::getMax(VEC_SZ &sizes) {
     size_t max = 0;
 
-    for (const LLI &sz : sizes) {
+    for (CR_LLI sz : sizes) {
       if (sz > max) max = sz;
     }
 
@@ -36,7 +36,7 @@ namespace utils {
     VEC_SZ differences;
     size_t max = SizeTools<T>::getMax(sizes);
 
-    for (const size_t &sz : sizes) {
+    for (CR_SZ sz : sizes) {
       differences.push_back(max - sz);
     }
 
@@ -49,7 +49,7 @@ namespace utils {
   ) {
     VEC_LLI differences;
 
-    for (const size_t &sz : sizes) {
+    for (CR_SZ sz : sizes) {
       differences.push_back(targetSize - sz);
     }
 
