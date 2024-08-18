@@ -48,10 +48,7 @@ namespace utils {
         }
       }
     }
-    else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'parseNumbers(CR_STR, VEC<T>&)' template type");
-    }
+    else static_assert(0, "template type");
   }
 
   template <typename T>
@@ -80,10 +77,7 @@ namespace utils {
         }
       }
     }
-    else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'parseLetters(CR_STR, VEC<T>&)' template type");
-    }
+    else static_assert(0, "template type");
   }
 
   template <typename T>
@@ -95,8 +89,8 @@ namespace utils {
       return numbers;
     }
     else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'parseNumbers(CR_STR)' template type");
+      static_assert(0, "template type");
+      return {};
     }
   }
 
@@ -109,8 +103,8 @@ namespace utils {
       return letters;
     }
     else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'parseLetters(CR_STR)' template type");
+      static_assert(0, "template type");
+      return {};
     }
   }
 
@@ -123,8 +117,8 @@ namespace utils {
       return Scanner<T>::parseNumbers(text);
     }
     else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'txtToNumbers(CR_STR)' template type");
+      static_assert(0, "template type");
+      return {};
     }
   }
 
@@ -137,8 +131,8 @@ namespace utils {
       return Scanner<T>::parseLetters(text);
     }
     else {
-      constexpr bool ERROR = false;
-      static_assert(ERROR, "'txtToLetters(CR_STR)' template type");
+      static_assert(0, "template type");
+      return {};
     }
   }
 }}
