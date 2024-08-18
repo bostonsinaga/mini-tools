@@ -10,20 +10,20 @@ namespace sorters {
   template <class T, class U = std::nullptr_t>
   class Comb {
     static void process(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       bool &ascending
     );
 
   public:
     static void solve(
-      std::vector<T> &messy,
-      std::vector<U> &attached,
+      VEC<T> &messy,
+      VEC<U> &attached,
       bool ascending = true
     );
 
     static void solve(
-      std::vector<T> &messy,
+      VEC<T> &messy,
       bool ascending = true
     );
   };

@@ -11,20 +11,20 @@ namespace sorters {
   class Bubble {
   private:
     static void process(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       bool &ascending
     );
 
   public:
     static void solve(
-      std::vector<T> &messy,
-      std::vector<U> &attached,
+      VEC<T> &messy,
+      VEC<U> &attached,
       bool ascending = true
     );
 
     static void solve(
-      std::vector<T> &messy,
+      VEC<T> &messy,
       bool ascending = true
     );
   };

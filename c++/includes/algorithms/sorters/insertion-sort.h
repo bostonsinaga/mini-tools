@@ -11,21 +11,21 @@ namespace sorters {
   class Insertion {
   protected:
     static void process(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_BOL ascending,
       CR_INT start, CR_INT end
     );
 
   public:
     static void solve(
-      std::vector<T> &messy,
-      std::vector<U> &attached,
+      VEC<T> &messy,
+      VEC<U> &attached,
       CR_BOL ascending = true
     );
 
     static void solve(
-      std::vector<T> &messy,
+      VEC<T> &messy,
       CR_BOL ascending = true
     );
 

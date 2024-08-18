@@ -8,8 +8,8 @@ namespace sorters {
 
   template <typename T, typename U>
   void Insertion<T, U>::process(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_BOL ascending,
     CR_INT start, CR_INT end
   ) {
@@ -48,18 +48,18 @@ namespace sorters {
   
   template <typename T, typename U>
   void Insertion<T, U>::solve(
-    std::vector<T> &messy,
-    std::vector<U> &attached,
+    VEC<T> &messy,
+    VEC<U> &attached,
     CR_BOL ascending
   ) {
-    std::vector<U> *attached_p = nullptr;
+    VEC<U> *attached_p = nullptr;
     if (attached.size() >= messy.size()) attached_p = &attached;
     Insertion<T, U>::process(messy, &attached, ascending, 0, messy.size() - 1);
   }
 
   template <typename T, typename U>
   void Insertion<T, U>::solve(
-    std::vector<T> &messy,
+    VEC<T> &messy,
     CR_BOL ascending
   ) {
     Insertion<T, U>::solve(messy, nullptr, ascending, 0, messy.size() - 1);

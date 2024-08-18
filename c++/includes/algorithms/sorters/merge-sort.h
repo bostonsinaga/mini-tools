@@ -11,8 +11,8 @@ namespace sorters {
   class Merge {
   private:
     static void merge(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT left,
       CR_INT mid,
       CR_INT right,
@@ -20,8 +20,8 @@ namespace sorters {
     );
 
     static void partition(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT begin,
       CR_INT end,
       bool &ascending
@@ -29,13 +29,13 @@ namespace sorters {
 
   public:
     static void solve(
-      std::vector<T> &messy,
-      std::vector<U> &attached,
+      VEC<T> &messy,
+      VEC<U> &attached,
       bool ascending = true
     );
 
     static void solve(
-      std::vector<T> &messy,
+      VEC<T> &messy,
       bool ascending = true
     );
   };

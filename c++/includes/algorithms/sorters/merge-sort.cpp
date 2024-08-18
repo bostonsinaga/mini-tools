@@ -8,8 +8,8 @@ namespace sorters {
 
   template <typename T, typename U>
   void Merge<T, U>::merge(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT left,
     CR_INT mid,
     CR_INT right,
@@ -17,7 +17,7 @@ namespace sorters {
   ) {
     int subSize[2] = {mid - left + 1, right - mid};
 
-    std::vector<T> subVec_messy[2] = {
+    VEC<T> subVec_messy[2] = {
       utils::VecTools<T>::cutInterval(
         messy, left, left + subSize[0] - 1, true
       ),
@@ -26,7 +26,7 @@ namespace sorters {
       )
     };
 
-    std::vector<T> subVec_attached[2];
+    VEC<T> subVec_attached[2];
 
     if constexpr (notNullptr<U>()) {
       if (attached) {
@@ -87,8 +87,8 @@ namespace sorters {
 
   template <typename T, typename U>
   void Merge<T, U>::partition(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT begin,
     CR_INT end,
     bool &ascending
@@ -105,18 +105,18 @@ namespace sorters {
 
   template <typename T, typename U>
   void Merge<T, U>::solve(
-    std::vector<T> &messy,
-    std::vector<U> &attached,
+    VEC<T> &messy,
+    VEC<U> &attached,
     bool ascending
   ) {
-    std::vector<U> *attached_p = nullptr;
+    VEC<U> *attached_p = nullptr;
     if (attached.size() >= messy.size()) attached_p = &attached;
     Merge<T, U>::partition(messy, attached_p, 0, messy.size() - 1, ascending);
   }
 
   template <typename T, typename U>
   void Merge<T, U>::solve(
-    std::vector<T> &messy,
+    VEC<T> &messy,
     bool ascending
   ) {
     Merge<T, U>::partition(messy, nullptr, 0, messy.size() - 1, ascending);

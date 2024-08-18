@@ -12,8 +12,8 @@ namespace sorters {
   private:
     /** Slower */
     static int lomutoPartition(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending
@@ -21,16 +21,16 @@ namespace sorters {
 
     /** Faster */
     static int hoarePartition(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending
     );
 
     static int randomPartition(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending,
@@ -38,8 +38,8 @@ namespace sorters {
     );
 
     static void recursion(
-      std::vector<T> &messy,
-      std::vector<U> *attached,
+      VEC<T> &messy,
+      VEC<U> *attached,
       CR_INT left,
       CR_INT right,
       bool &ascending,
@@ -50,14 +50,14 @@ namespace sorters {
     enum {HOARE, LOMUTO};
 
     static void solve(
-      std::vector<T> &messy,
-      std::vector<U> &attached,
+      VEC<T> &messy,
+      VEC<U> &attached,
       bool ascending = true,
       int scheme = HOARE
     );
 
     static void solve(
-      std::vector<T> &messy,
+      VEC<T> &messy,
       bool ascending = true,
       int scheme = HOARE
     );

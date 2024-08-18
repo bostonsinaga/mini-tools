@@ -8,8 +8,8 @@ namespace sorters {
 
   template <typename T, typename U>
   void Comb<T, U>::process(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     bool &ascending
   ) {
     if constexpr (isNumber<T>()) {
@@ -44,18 +44,18 @@ namespace sorters {
 
   template <typename T, typename U>
   void Comb<T, U>::solve(
-    std::vector<T> &messy,
-    std::vector<U> &attached,
+    VEC<T> &messy,
+    VEC<U> &attached,
     bool ascending
   ) {
-    std::vector<U> *attached_p = nullptr;
+    VEC<U> *attached_p = nullptr;
     if (attached.size() >= messy.size()) attached_p = &attached;
     Comb<T, U>::process(messy, attached_p, ascending);
   }
 
   template <typename T, typename U>
   void Comb<T, U>::solve(
-    std::vector<T> &messy,
+    VEC<T> &messy,
     bool ascending
   ) {
     Comb<T, U>::process(messy, nullptr, ascending);

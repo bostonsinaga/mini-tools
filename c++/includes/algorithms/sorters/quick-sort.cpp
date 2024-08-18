@@ -10,8 +10,8 @@ namespace sorters {
 
   template <typename T, typename U>
   int Quick<T, U>::lomutoPartition(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending
@@ -43,8 +43,8 @@ namespace sorters {
 
   template <typename T, typename U>
   int Quick<T, U>::hoarePartition(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending
@@ -73,8 +73,8 @@ namespace sorters {
 
   template <typename T, typename U>
   int Quick<T, U>::randomPartition(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending,
@@ -96,8 +96,8 @@ namespace sorters {
 
   template <typename T, typename U>
   void Quick<T, U>::recursion(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC<T> &messy,
+    VEC<U> *attached,
     CR_INT left,
     CR_INT right,
     bool &ascending,
@@ -119,19 +119,19 @@ namespace sorters {
 
   template <typename T, typename U>
   void Quick<T, U>::solve(
-    std::vector<T> &messy,
-    std::vector<U> &attached,
+    VEC<T> &messy,
+    VEC<U> &attached,
     bool ascending,
     int scheme
   ) {
-    std::vector<U> *attached_p = nullptr;
+    VEC<U> *attached_p = nullptr;
     if (attached.size() >= messy.size()) attached_p = &attached;
     Quick<T, U>::recursion(messy, attached_p, 0, messy.size() - 1, ascending, scheme);
   }
 
   template <typename T, typename U>
   void Quick<T, U>::solve(
-    std::vector<T> &messy,
+    VEC<T> &messy,
     bool ascending,
     int scheme
   ) {
