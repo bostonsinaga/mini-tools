@@ -3,6 +3,7 @@ set (SOURCES
   algorithms/geometrics/polygon.cpp
   algorithms/geometrics/ray-casting.cpp
   algorithms/geometrics/rect.cpp
+  utils/reader.cpp
   utils/str-tools.cpp
   utils/timer.cpp
 )
