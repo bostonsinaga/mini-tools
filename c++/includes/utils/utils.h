@@ -3,6 +3,7 @@
 
 #include "printer.h"
 #include "reader.h"
+#include "scanner.h"
 #include "size-tools.h"
 #include "str-tools.h"
 #include "timer.h"
