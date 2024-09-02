@@ -91,6 +91,9 @@ namespace utils {
     // the 'end' usually 1 index after latest included index
     static void fixIndexInterval(int &begin, int &end, T &vec);
     static bool isIndexIntervalValid(CR_INT begin, CR_INT end, T &vec);
+
+    // 'T' can also be a vector for multidimensional
+    static VEC<T> collapse(VEC2<T> vec);
   };
 }}
 

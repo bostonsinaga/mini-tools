@@ -255,6 +255,17 @@ namespace utils {
     ) { return true; }
     return false;
   }
+
+  template <typename T>
+  VEC<T> VecTools<T>::collapse(VEC2<T> vec) {
+    VEC<T> reduction;
+
+    for (VEC<T> &red: vec) {
+      VecTools<T>::concat(reduction, red);
+    }
+
+    return reduction;
+  }
 }}
 
 #endif // __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
