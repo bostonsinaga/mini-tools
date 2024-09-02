@@ -7,7 +7,7 @@
 namespace mini_tools {
 namespace utils {
 
-  void StrTools::changeStringCase(std::string &str, bool isUpper) {
+  void StrTools::changeStringCase(std::string &str, CR_BOL isUpper) {
     std::transform(
       str.begin(),
       str.end(),
@@ -19,9 +19,9 @@ namespace utils {
     );
   }
 
-  void StrTools::changeStringsCase(std::vector<std::string> *vecStr, bool isUpper) {
-    for (int i = 0; i < vecStr->size(); i++) {
-      changeStringCase(vecStr->at(i), isUpper);
+  void StrTools::changeStringsCase(VEC_STR &vecStr, CR_BOL isUpper) {
+    for (int i = 0; i < vecStr.size(); i++) {
+      changeStringCase(vecStr.at(i), isUpper);
     }
   }
 
@@ -43,12 +43,25 @@ namespace utils {
     return str;
   }
 
-  void StrTools::stringsToLowercase(VEC_STR *vecStr) {
+  void StrTools::stringsToLowercase(VEC_STR &vecStr) {
     changeStringsCase(vecStr, false);
   }
 
-  void StrTools::stringsToUppercase(VEC_STR *vecStr) {
+  void StrTools::stringsToUppercase(VEC_STR &vecStr) {
     changeStringsCase(vecStr, true);
+  }
+
+  std::string StrTools::uniteVector(
+    CR_VEC_STR &vecStr,
+    CR_STR separator
+  ) {
+    std::string text;
+
+    for (const std::string &str : vecStr) {
+      text += str + separator;
+    }
+
+    return text;
   }
 }}
 

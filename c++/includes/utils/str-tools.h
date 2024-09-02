@@ -8,8 +8,8 @@ namespace utils {
 
   class StrTools {
   private:
-    static void changeStringCase(std::string &str, bool isUpper);
-    static void changeStringsCase(std::vector<std::string> *vecStr, bool isUpper);
+    static void changeStringCase(std::string &str, CR_BOL isUpper);
+    static void changeStringsCase(VEC_STR &vecStr, CR_BOL isUpper);
 
   public:
     static void changeStringToLowercase(std::string &str);
@@ -18,8 +18,13 @@ namespace utils {
     static std::string getStringToLowercase(std::string str);
     static std::string getStringToUppercase(std::string str);
 
-    static void stringsToLowercase(VEC_STR *vecStr);
-    static void stringsToUppercase(VEC_STR *vecStr);
+    static void stringsToLowercase(VEC_STR &vecStr);
+    static void stringsToUppercase(VEC_STR &vecStr);
+
+    static std::string uniteVector(
+      CR_VEC_STR &vecStr,
+      CR_STR separator = " "
+    );
   };
 }}
 
