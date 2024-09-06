@@ -8,7 +8,7 @@ namespace utils {
 
   class Reader {
   public:
-    static bool isSeparator(CR_CHR ch);
+    static bool isSeparator(CR_CH ch);
     static bool isSeparator(CR_STR text, CR_INT i);
 
     static void getFile(

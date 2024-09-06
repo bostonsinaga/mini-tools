@@ -7,7 +7,7 @@
 namespace mini_tools {
 namespace utils {
 
-  bool Reader::isSeparator(CR_CHR ch) {
+  bool Reader::isSeparator(CR_CH ch) {
     if (ch == ' ' || ch == ',' || ch == '\n') return true;
     return false;
   }

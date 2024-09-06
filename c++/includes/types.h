@@ -72,7 +72,7 @@ namespace mini_tools {
 
   typedef std::vector<bool> VEC_BOL;
   typedef std::vector<std::string> VEC_STR;
-  typedef std::vector<char> VEC_CHR;
+  typedef std::vector<char> VEC_CH;
   typedef std::vector<wchar_t> VEC_WCH;
   typedef std::vector<int> VEC_INT;
   typedef std::vector<SI> VEC_SI;
@@ -90,7 +90,7 @@ namespace mini_tools {
 
   typedef std::vector<VEC_BOL> VEC2_BOL;
   typedef std::vector<VEC_STR> VEC2_STR;
-  typedef std::vector<VEC_CHR> VEC2_CHR;
+  typedef std::vector<VEC_CH> VEC2_CH;
   typedef std::vector<VEC_WCH> VEC2_WCH;
   typedef std::vector<VEC_INT> VEC2_INT;
   typedef std::vector<VEC_SI> VEC2_SI;
@@ -110,7 +110,7 @@ namespace mini_tools {
 
   typedef std::vector<bool*> VEC_BOL_P;
   typedef std::vector<std::string*> VEC_STR_P;
-  typedef std::vector<char*> VEC_CHR_P;
+  typedef std::vector<char*> VEC_CH_P;
   typedef std::vector<wchar_t*> VEC_WCH_P;
   typedef std::vector<int*> VEC_INT_P;
   typedef std::vector<SI*> VEC_SI_P;
@@ -128,7 +128,7 @@ namespace mini_tools {
 
   typedef std::vector<VEC_BOL_P> VEC2_BOL_P;
   typedef std::vector<VEC_STR_P> VEC2_STR_P;
-  typedef std::vector<VEC_CHR_P> VEC2_CHR_P;
+  typedef std::vector<VEC_CH_P> VEC2_CH_P;
   typedef std::vector<VEC_WCH_P> VEC2_WCH_P;
   typedef std::vector<VEC_INT_P> VEC2_INT_P;
   typedef std::vector<VEC_SI_P> VEC2_SI_P;
@@ -148,7 +148,7 @@ namespace mini_tools {
 
   typedef const bool& CR_BOL;
   typedef const std::string& CR_STR;
-  typedef const char& CR_CHR;
+  typedef const char& CR_CH;
   typedef const wchar_t& CR_WCH;
   typedef const int& CR_INT;
   typedef const SI& CR_SI;
@@ -168,7 +168,7 @@ namespace mini_tools {
 
   typedef const VEC_BOL& CR_VEC_BOL;
   typedef const VEC_STR& CR_VEC_STR;
-  typedef const VEC_CHR& CR_VEC_CHR;
+  typedef const VEC_CH& CR_VEC_CH;
   typedef const VEC_WCH& CR_VEC_WCH;
   typedef const VEC_INT& CR_VEC_INT;
   typedef const VEC_SI& CR_VEC_SI;
@@ -186,7 +186,7 @@ namespace mini_tools {
 
   typedef const VEC2_BOL& CR_VEC2_BOL;
   typedef const VEC2_STR& CR_VEC2_STR;
-  typedef const VEC2_CHR& CR_VEC2_CHR;
+  typedef const VEC2_CH& CR_VEC2_CH;
   typedef const VEC2_WCH& CR_VEC2_WCH;
   typedef const VEC2_INT& CR_VEC2_INT;
   typedef const VEC2_SI& CR_VEC2_SI;
@@ -206,7 +206,7 @@ namespace mini_tools {
 
   typedef const VEC_BOL_P& CR_VEC_BOL_P;
   typedef const VEC_STR_P& CR_VEC_STR_P;
-  typedef const VEC_CHR_P& CR_VEC_CHR_P;
+  typedef const VEC_CH_P& CR_VEC_CH_P;
   typedef const VEC_WCH_P& CR_VEC_WCH_P;
   typedef const VEC_INT_P& CR_VEC_INT_P;
   typedef const VEC_SI_P& CR_VEC_SI_P;
@@ -224,7 +224,7 @@ namespace mini_tools {
 
   typedef const VEC2_BOL_P& CR_VEC2_BOL_P;
   typedef const VEC2_STR_P& CR_VEC2_STR_P;
-  typedef const VEC2_CHR_P& CR_VEC2_CHR_P;
+  typedef const VEC2_CH_P& CR_VEC2_CH_P;
   typedef const VEC2_WCH_P& CR_VEC2_WCH_P;
   typedef const VEC2_INT_P& CR_VEC2_INT_P;
   typedef const VEC2_SI_P& CR_VEC2_SI_P;
