@@ -21,6 +21,14 @@ namespace utils {
   }
 
   template <typename T>
+  LLI VecTools<T>::getIndex(VEC<T> &vec, T data) {
+    for (int i = 0; i < vec.size(); i++) {
+      if (data == vec[i]) return i;
+    }
+    return -1;
+  }
+
+  template <typename T>
   T VecTools<T>::getAt(VEC<T> &vec, CR_INT idx, CR<T> defaultReturn) {
     if (VecTools<T>::hasIndex(vec, idx)) return vec.at(idx);
     return defaultReturn;
