@@ -14,7 +14,7 @@ namespace utils {
     static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
 
     // return -1 if not found
-    LLI getIndex(VEC<T> &vec, T data);
+    static LLI getIndex(VEC<T> &vec, T data);
 
     static T getAt(
       VEC<T> &vec,
