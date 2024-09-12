@@ -10,11 +10,13 @@ namespace utils {
   template <class T>
   class VecTools {
   public:
+    typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
+
     static bool hasIndex(VEC<T> &vec, CR_INT idx);
     static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
 
     // return -1 if not found
-    static LLI getIndex(VEC<T> &vec, T data);
+    static LLI getIndex(VEC<T> &vec, T &data);
 
     static T getAt(
       VEC<T> &vec,
@@ -79,16 +81,26 @@ namespace utils {
       CR_BOL onlyWasted = false
     );
 
+    static bool cleanDuplicate(
+      VEC<T> &vec,
+      T &a, T &b,
+      CR_UI cutIdx,
+      VEC<T> &wastedVec,
+      EQUAL_RULE &equalRule
+    );
+
     static VEC<T> cleanDuplicateInside(
       VEC<T> &vec,
+      CR_BOL ascending = true,
       // repeated and compared 'T' parameters
-      std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
+      EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     static VEC<T> cleanDuplicateToMember(
-      VEC<T> &vec, T mem,
+      VEC<T> &vec, CR<T> mem,
+      CR_BOL ascending = true,
       // repeated and compared 'T' parameters
-      std::function<bool(T,T)> equalRule = [](T rep, T com)->bool { return false; }
+      EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     // the 'end' usually 1 index after latest included index
