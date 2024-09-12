@@ -14,7 +14,7 @@ namespace geometrics {
     return y / x;
   }
 
-  double Point::gradientTo(Point pt) {
+  double Point::gradientTo(CR_PT pt) {
     double h = y - pt.y;
     if (x - pt.x == 0) return DBL_MAX * h / std::abs(h);
     return h / (x - pt.x);
@@ -24,38 +24,38 @@ namespace geometrics {
     return std::sqrt(x * x + y * y);
   }
 
-  double Point::hypotenuseTo(Point pt) {
+  double Point::hypotenuseTo(CR_PT pt) {
     return std::sqrt(
       std::pow(x - pt.x, 2) +
       std::pow(y - pt.y, 2)
     );
   }
 
-  Point Point::operator+(Point pt) {
+  Point Point::operator+(CR_PT pt) {
     return Point(x + pt.x, y + pt.y);
   }
 
-  Point Point::operator+(double num) {
+  Point Point::operator+(CR_DBL num) {
     return Point(x + num, y + num);
   }
 
-  Point Point::operator-(Point pt) {
+  Point Point::operator-(CR_PT pt) {
     return Point(x - pt.x, y - pt.y);
   }
 
-  Point Point::operator-(double num) {
+  Point Point::operator-(CR_DBL num) {
     return Point(x - num, y - num);
   }
 
-  Point Point::operator*(Point pt) {
+  Point Point::operator*(CR_PT pt) {
     return Point(x * pt.x, y * pt.y);
   }
   
-  Point Point::operator*(double num) {
+  Point Point::operator*(CR_DBL num) {
     return Point(x * num, y * num);
   }
 
-  Point Point::divideCopy(Point &pt) {
+  Point Point::divideCopy(CR_PT pt) {
     Point newPt;
     bool anyZero[2] = {false, false};
 
@@ -75,44 +75,44 @@ namespace geometrics {
     return newPt;
   }
 
-  Point Point::divideCopy(double &num) {
+  Point Point::divideCopy(CR_DBL num) {
     Point tempPt(num, num);
     return divideCopy(tempPt);
   }
 
-  Point Point::operator/(Point pt) {
+  Point Point::operator/(CR_PT pt) {
     return divideCopy(pt);
   }
 
-  Point Point::operator/(double num) {
+  Point Point::operator/(CR_DBL num) {
     return divideCopy(num);
   }
 
-  void Point::operator+=(Point pt) {
+  void Point::operator+=(CR_PT pt) {
     x += pt.x; y += pt.y;
   }
 
-  void Point::operator+=(double num) {
+  void Point::operator+=(CR_DBL num) {
     x += num; y += num;
   }
 
-  void Point::operator-=(Point pt) {
+  void Point::operator-=(CR_PT pt) {
     x -= pt.x; y -= pt.y;
   }
 
-  void Point::operator-=(double num) {
+  void Point::operator-=(CR_DBL num) {
     x -= num; y -= num;
   }
 
-  void Point::operator*=(Point pt) {
+  void Point::operator*=(CR_PT pt) {
     x *= pt.x; y *= pt.y;
   }
 
-  void Point::operator*=(double num) {
+  void Point::operator*=(CR_DBL num) {
     x *= num; y *= num;
   }
 
-  void Point::divideSelf(Point &pt) {
+  void Point::divideSelf(CR_PT pt) {
     bool anyZero[2] = {false, false};
 
     if (pt.x == 0) {
@@ -129,64 +129,64 @@ namespace geometrics {
     if (!anyZero[1]) y /= pt.y;
   }
 
-  void Point::divideSelf(double &num) {
+  void Point::divideSelf(CR_DBL num) {
     Point tempPt(num, num);
     divideSelf(tempPt);
   }
 
-  void Point::operator/=(Point pt) {
+  void Point::operator/=(CR_PT pt) {
     divideSelf(pt);
   }
 
-  void Point::operator/=(double num) {
+  void Point::operator/=(CR_DBL num) {
     divideSelf(num);
   }
 
-  bool Point::operator==(Point pt) {
+  bool Point::operator==(CR_PT pt) const {
     return x == pt.x && y == pt.y;
   }
 
-  bool Point::operator==(double num) {
+  bool Point::operator==(CR_DBL num) const {
     return x == num && y == num;
   }
 
-  bool Point::operator!=(Point pt) {
+  bool Point::operator!=(CR_PT pt) {
     return x != pt.x || y != pt.y;
   }
 
-  bool Point::operator!=(double num) {
+  bool Point::operator!=(CR_DBL num) {
     return x != num || y != num;
   }
 
-  bool Point::operator<(Point pt) {
+  bool Point::operator<(CR_PT pt) {
     return x < pt.x && y < pt.y;
   }
 
-  bool Point::operator<(double num) {
+  bool Point::operator<(CR_DBL num) {
     return x < num && y < num;
   }
 
-  bool Point::operator<=(Point pt) {
+  bool Point::operator<=(CR_PT pt) {
     return x <= pt.x && y <= pt.y;
   }
 
-  bool Point::operator<=(double num) {
+  bool Point::operator<=(CR_DBL num) {
     return x <= num && y <= num;
   }
 
-  bool Point::operator>(Point pt) {
+  bool Point::operator>(CR_PT pt) {
     return x > pt.x && y > pt.y;
   }
 
-  bool Point::operator>(double num) {
+  bool Point::operator>(CR_DBL num) {
     return x > num && y > num;
   }
 
-  bool Point::operator>=(Point pt) {
+  bool Point::operator>=(CR_PT pt) {
     return x >= pt.x && y >= pt.y;
   }
 
-  bool Point::operator>=(double num) {
+  bool Point::operator>=(CR_DBL num) {
     return x >= num && y >= num;
   }
 }}}
