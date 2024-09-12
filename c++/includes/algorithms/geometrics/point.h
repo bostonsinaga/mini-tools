@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_H__
 #define __MINI_TOOLS__ALGORITHMS__GEOMETRICS__POINT_H__
 
+#include "../../types.h"
+
 namespace mini_tools {
 namespace algorithms {
 namespace geometrics {
@@ -10,74 +12,75 @@ namespace geometrics {
     double x = 0, y = 0;
 
   public:
+    typedef const Point& CR_PT;
     double X() { return x; }
     double Y() { return y; }
-    void X(double val) { x = val; }
-    void Y(double val) { y = val; }
+    void X(CR_DBL val) { x = val; }
+    void Y(CR_DBL val) { y = val; }
 
     Point() {}
 
-    Point(double num) {
+    Point(CR_DBL num) {
       x = num; y = num;
     }
 
-    Point(double x_in, double y_in) {
+    Point(CR_DBL x_in, CR_DBL y_in) {
       x = x_in; y = y_in;
     }
 
     double gradient();
-    double gradientTo(Point pt);
+    double gradientTo(CR_PT pt);
 
     double hypotenuseZero();
-    double hypotenuseTo(Point pt);
+    double hypotenuseTo(CR_PT pt);
 
-    Point operator+(Point pt);
-    Point operator+(double num);
+    Point operator+(CR_PT pt);
+    Point operator+(CR_DBL num);
 
-    Point operator-(Point pt);
-    Point operator-(double num);
+    Point operator-(CR_PT pt);
+    Point operator-(CR_DBL num);
 
-    Point operator*(Point pt);
-    Point operator*(double num);
+    Point operator*(CR_PT pt);
+    Point operator*(CR_DBL num);
 
-    Point operator/(Point pt);
-    Point operator/(double num);
+    Point operator/(CR_PT pt);
+    Point operator/(CR_DBL num);
 
-    void operator+=(Point pt);
-    void operator+=(double num);
+    void operator+=(CR_PT pt);
+    void operator+=(CR_DBL num);
 
-    void operator-=(Point pt);
-    void operator-=(double num);
+    void operator-=(CR_PT pt);
+    void operator-=(CR_DBL num);
 
-    void operator*=(Point pt);
-    void operator*=(double num);
+    void operator*=(CR_PT pt);
+    void operator*=(CR_DBL num);
 
-    void operator/=(Point pt);
-    void operator/=(double num);
+    void operator/=(CR_PT pt);
+    void operator/=(CR_DBL num);
 
-    bool operator==(Point pt);
-    bool operator==(double num);
+    bool operator==(CR_PT pt) const;
+    bool operator==(CR_DBL num) const;
 
-    bool operator!=(Point pt);
-    bool operator!=(double num);
+    bool operator!=(CR_PT pt);
+    bool operator!=(CR_DBL num);
 
-    bool operator<(Point pt);
-    bool operator<(double num);
+    bool operator<(CR_PT pt);
+    bool operator<(CR_DBL num);
 
-    bool operator<=(Point pt);
-    bool operator<=(double num);
+    bool operator<=(CR_PT pt);
+    bool operator<=(CR_DBL num);
 
-    bool operator>(Point pt);
-    bool operator>(double num);
+    bool operator>(CR_PT pt);
+    bool operator>(CR_DBL num);
 
-    bool operator>=(Point pt);
-    bool operator>=(double num);
+    bool operator>=(CR_PT pt);
+    bool operator>=(CR_DBL num);
 
   private:
-    Point divideCopy(Point &pt);
-    Point divideCopy(double &num);
-    void divideSelf(Point &pt);
-    void divideSelf(double &num);
+    Point divideCopy(CR_PT pt);
+    Point divideCopy(CR_DBL num);
+    void divideSelf(CR_PT pt);
+    void divideSelf(CR_DBL num);
   };
 }}}
 
