@@ -192,53 +192,47 @@ namespace utils {
   }
 
   template <typename T>
-  bool VecTools<T>::cleanDuplicate(
-    VEC<T> &vec,
-    T &a, T &b,
-    CR_UI cutIdx,
-    VEC<T> &wastedVec,
-    EQUAL_RULE &equalRule
-  ) {
-    // same address
-    if constexpr (std::is_pointer<T>::value) {
-      if (a == b) {
-        VecTools<T>::cutSingle(vec, cutIdx);
-        return true;
-      }
-    }
-    else { // same value or property
-      if (a == b || equalRule(a, b)) {
-        wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  template <typename T>
   VEC<T> VecTools<T>::cleanDuplicateInside(
     VEC<T> &vec,
-    CR_BOL ascending,
+    CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
     VEC<T> wastedVec;
-    int j;
 
-    if (ascending) {
+    static std::function<bool(
+      CR<T>&, CR<T>&, CR_UI
+    )> lambda = [&](
+      CR<T> &a,
+      CR<T> &b,
+      CR_UI cutIdx
+    )->bool {
+      // same address
+      if constexpr (std::is_pointer<T>::value) {
+        if (a == b) {
+          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
+      }
+      else { // same value or property
+        if (a == b || equalRule(a, b)) {
+          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
+      }
+
+      return false;
+    };
+
+    if (originalAscending) {
       for (int i = 0; i < vec.size() - 1; i++) {
-        for (j = i+1; j < vec.size(); j++) {
-          if (VecTools<T>::cleanDuplicate(
-            vec, vec[i], vec[j], j, wastedVec, equalRule
-          )) { j--; }
+        for (int j = i+1; j < vec.size(); j++) {
+          if (lambda(vec[i], vec[j], j)) j--;
         }
       }
     }
     else for (int i = vec.size() - 1; i > 0; i--) {
-      for (j = vec.size() - 2; j >= 0; j--) {
-        VecTools<T>::cleanDuplicate(
-          vec, vec[i], vec[j], j, wastedVec, equalRule
-        );
+      for (int j = i - 1; j >= 0; j--) {
+        if (lambda(vec[i], vec[j], j)) i--;
       }
     }
 
@@ -248,29 +242,49 @@ namespace utils {
   template <typename T>
   VEC<T> VecTools<T>::cleanDuplicateToMember(
     VEC<T> &vec, CR<T> mem,
-    CR_BOL ascending,
+    CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
     VEC<T> wastedVec;
     bool firstIgnored = false;
 
-    if (ascending) {
-      for (int i = 0; i < vec.size(); i++) {
-        if (firstIgnored) {
-          if(VecTools<T>::cleanDuplicate(
-            vec, mem, vec[i], i, wastedVec, equalRule
-          )) { i--; }
+    static std::function<bool(
+      CR<T>&, CR<T>&, CR_UI
+    )> lambda = [&](
+      CR<T> &a,
+      CR<T> &b,
+      CR_UI cutIdx
+    )->bool {
+      // same address
+      if constexpr (std::is_pointer<T>::value) {
+        if (a == b) {
+          if (firstIgnored) {
+            wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+            return true;
+          }
+          else firstIgnored = true;
         }
-        else firstIgnored = true;
+      }
+      else { // same value or property
+        if (a == b || equalRule(a, b)) {
+          if (firstIgnored) {
+            wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+            return true;
+          }
+          else firstIgnored = true;
+        }
+      }
+
+      return false;
+    };
+
+    if (originalAscending) {
+      for (int i = 0; i < vec.size(); i++) {
+        if (lambda(mem, vec[i], i)) i--;
       }
     }
     else for (int i = vec.size() - 1; i >= 0; i--) {
-      if (firstIgnored) {
-        VecTools<T>::cleanDuplicate(
-          vec, mem, vec[i], i, wastedVec, equalRule
-        );
-      }
-      else firstIgnored = true;
+      lambda(mem, vec[i], i);
     }
 
     return wastedVec;

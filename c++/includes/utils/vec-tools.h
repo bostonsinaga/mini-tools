@@ -81,24 +81,16 @@ namespace utils {
       CR_BOL onlyWasted = false
     );
 
-    static bool cleanDuplicate(
-      VEC<T> &vec,
-      T &a, T &b,
-      CR_UI cutIdx,
-      VEC<T> &wastedVec,
-      EQUAL_RULE &equalRule
-    );
-
     static VEC<T> cleanDuplicateInside(
       VEC<T> &vec,
-      CR_BOL ascending = true,
+      CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     static VEC<T> cleanDuplicateToMember(
       VEC<T> &vec, CR<T> mem,
-      CR_BOL ascending = true,
+      CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
