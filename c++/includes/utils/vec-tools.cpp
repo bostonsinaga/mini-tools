@@ -202,24 +202,12 @@ namespace utils {
     static std::function<bool(
       CR<T>&, CR<T>&, CR_UI
     )> lambda = [&](
-      CR<T> &a,
-      CR<T> &b,
-      CR_UI cutIdx
+      CR<T> &a, CR<T> &b, CR_UI cutIdx
     )->bool {
-      // same address
-      if constexpr (std::is_pointer<T>::value) {
-        if (a == b) {
-          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-          return true;
-        }
+      if (a == b || equalRule(a, b)) {
+        wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+        return true;
       }
-      else { // same value or property
-        if (a == b || equalRule(a, b)) {
-          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-          return true;
-        }
-      }
-
       return false;
     };
 
@@ -251,30 +239,15 @@ namespace utils {
     static std::function<bool(
       CR<T>&, CR<T>&, CR_UI
     )> lambda = [&](
-      CR<T> &a,
-      CR<T> &b,
-      CR_UI cutIdx
+      CR<T> &a, CR<T> &b, CR_UI cutIdx
     )->bool {
-      // same address
-      if constexpr (std::is_pointer<T>::value) {
-        if (a == b) {
-          if (firstIgnored) {
-            wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-            return true;
-          }
-          else firstIgnored = true;
+      if (a == b || equalRule(a, b)) {
+        if (firstIgnored) {
+          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
         }
+        else firstIgnored = true;
       }
-      else { // same value or property
-        if (a == b || equalRule(a, b)) {
-          if (firstIgnored) {
-            wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-            return true;
-          }
-          else firstIgnored = true;
-        }
-      }
-
       return false;
     };
 
