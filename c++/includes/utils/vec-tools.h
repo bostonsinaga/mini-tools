@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
+#include <tuple>
 #include <functional>
 #include "../types.h"
 
@@ -81,14 +82,20 @@ namespace utils {
       CR_BOL onlyWasted = false
     );
 
-    static VEC<T> cleanDuplicateInside(
+    /**
+     * Returns 2 different values.
+     * One based on 'pointer' equality
+     * and the other based on value equality
+     */
+    static std::tuple<VEC<T>, VEC<T>> cleanDuplicateInside(
       VEC<T> &vec,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
-    static VEC<T> cleanDuplicateToMember(
+    // Returns the same as 'cleanDuplicateInside'
+    static std::tuple<VEC<T>, VEC<T>> cleanDuplicateToMember(
       VEC<T> &vec, CR<T> mem,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters

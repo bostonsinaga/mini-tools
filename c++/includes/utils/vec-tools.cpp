@@ -192,21 +192,30 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> VecTools<T>::cleanDuplicateInside(
+  std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateInside(
     VEC<T> &vec,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    VEC<T> wastedVec;
+    std::tuple<VEC<T>, VEC<T>> wastedTuple({}, {});
 
     static std::function<bool(
       CR<T>&, CR<T>&, CR_UI
     )> lambda = [&](
       CR<T> &a, CR<T> &b, CR_UI cutIdx
     )->bool {
-      if (a == b || equalRule(a, b)) {
-        wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-        return true;
+      // equal based on pointer
+      if constexpr (std::is_pointer<T>::value) {
+        if (a == b) {
+          std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
+      }
+      else { // equal based on value
+        if (a == b || equalRule(a, b)) {
+          std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
       }
       return false;
     };
@@ -224,16 +233,16 @@ namespace utils {
       }
     }
 
-    return wastedVec;
+    return wastedTuple;
   }
 
   template <typename T>
-  VEC<T> VecTools<T>::cleanDuplicateToMember(
+  std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateToMember(
     VEC<T> &vec, CR<T> mem,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    VEC<T> wastedVec;
+    std::tuple<VEC<T>, VEC<T>> wastedTuple({}, {});
     bool firstIgnored = false;
 
     static std::function<bool(
@@ -241,12 +250,24 @@ namespace utils {
     )> lambda = [&](
       CR<T> &a, CR<T> &b, CR_UI cutIdx
     )->bool {
-      if (a == b || equalRule(a, b)) {
-        if (firstIgnored) {
-          wastedVec.push_back(VecTools<T>::cutSingle(vec, cutIdx));
-          return true;
+      // equal based on pointer
+      if constexpr (std::is_pointer<T>::value) {
+        if (a == b) {
+          if (firstIgnored) {
+            std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+            return true;
+          }
+          else firstIgnored = true;
         }
-        else firstIgnored = true;
+      }
+      else { // equal based on value
+        if (a == b || equalRule(a, b)) {
+          if (firstIgnored) {
+            std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+            return true;
+          }
+          else firstIgnored = true;
+        }
       }
       return false;
     };
@@ -260,7 +281,7 @@ namespace utils {
       lambda(mem, vec[i], i);
     }
 
-    return wastedVec;
+    return wastedTuple;
   }
 
   template <typename T>
