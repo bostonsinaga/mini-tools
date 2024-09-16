@@ -1,2 +1,2 @@
 # sorters
-Collection of sorting algorithms
+A collection of frequently reused algorithms
