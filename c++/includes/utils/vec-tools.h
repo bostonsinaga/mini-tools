@@ -17,7 +17,12 @@ namespace utils {
     static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
 
     // return -1 if not found
-    static LLI getIndex(VEC<T> &vec, CR<T> data);
+    static LLI getIndex(
+      VEC<T> &vec,
+      CR<T> data,
+      // repeated and compared 'T' parameters
+      EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
+    );
 
     static T getAt(
       VEC<T> &vec,

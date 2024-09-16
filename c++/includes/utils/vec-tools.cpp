@@ -21,9 +21,13 @@ namespace utils {
   }
 
   template <typename T>
-  LLI VecTools<T>::getIndex(VEC<T> &vec, CR<T> data) {
+  LLI VecTools<T>::getIndex(
+    VEC<T> &vec,
+    CR<T> data,
+    EQUAL_RULE equalRule
+  ) {
     for (int i = 0; i < vec.size(); i++) {
-      if (data == vec[i]) return i;
+      if (data == vec[i] || equalRule(data, vec[i])) return i;
     }
     return -1;
   }
