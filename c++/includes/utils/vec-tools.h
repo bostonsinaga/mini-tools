@@ -44,26 +44,30 @@ namespace utils {
       VEC<T> *vec,
       VEC<T> *wasted,
       int begin, int end,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false
     );
 
     static VEC<T> cutInterval(
       VEC<T> *vec,
       CR_INT begin, CR_INT end,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false
     );
 
     static void cutSingle(
       VEC<T> *vec,
       T *wasted,
       int idx,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false
     );
 
     static T cutSingle(
       VEC<T> *vec,
       CR_INT idx,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false
     );
 
     /**
@@ -77,14 +81,18 @@ namespace utils {
       VEC<T> *wasted,
       VEC_INT idxs,
       CR_BOL lockedIndex = true,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false,
+      CR_BOL removingExceededIndexes = true
     );
 
     static VEC<T> cutIndexes(
       VEC<T> *vec,
       CR_VEC_INT idxs,
       CR_BOL lockedIndex = true,
-      CR_BOL onlyWasted = false
+      CR_BOL onlyWasted = false,
+      CR_BOL validatingIndex = false,
+      CR_BOL removingExceededIndexes = true
     );
 
     /**

@@ -65,17 +65,21 @@ namespace utils {
     VEC<T> *vec,
     VEC<T> *wasted,
     int begin, int end,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex
   ) {
-    int sz = vec->size();
+    if (vec->empty()) return;
 
-    // bad interval
-    if (sz == 0 || 
-      (begin < 0 && end < 0) ||
-      (begin >= sz && end >= sz)
-    ) { return; }
+    // slower
+    if (validatingIndex) {
 
-    VecTools<T>::fixIndexInterval(vec, begin, end);
+      // bad interval
+      if ((begin < 0 && end < 0) ||
+        (begin >= vec->size() && end >= vec->size())
+      ) { return; }
+
+      VecTools<T>::fixIndexInterval(vec, begin, end);
+    }
 
     // separated
     *wasted = VEC<T>(vec->begin() + begin, vec->begin() + end + 1);
@@ -93,10 +97,17 @@ namespace utils {
   VEC<T> VecTools<T>::cutInterval(
     VEC<T> *vec,
     CR_INT begin, CR_INT end,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex
   ) {
     VEC<T> wasted;
-    VecTools<T>::cutInterval(vec, &wasted, begin, end, onlyWasted);
+
+    VecTools<T>::cutInterval(
+      vec, &wasted,
+      begin, end,
+      onlyWasted, validatingIndex
+    );
+
     return wasted;
   }
 
@@ -105,12 +116,16 @@ namespace utils {
     VEC<T> *vec,
     T *wasted,
     int idx,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex
   ) {
-    if (vec->size() == 0) return;
+    if (vec->empty()) return;
 
-    if (idx < 0) idx = 0;
-    else if (idx >= vec->size()) idx = vec->size() - 1;
+    // slower
+    if (validatingIndex) {
+      if (idx < 0) idx = 0;
+      else if (idx >= vec->size()) idx = vec->size() - 1;
+    }
 
     // separated
     *wasted = vec->at(idx);
@@ -128,10 +143,17 @@ namespace utils {
   T VecTools<T>::cutSingle(
     VEC<T> *vec,
     CR_INT idx,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex
   ) {
     T wasted = vec->at(idx);
-    VecTools<T>::cutSingle(vec, &wasted, idx, onlyWasted);
+
+    VecTools<T>::cutSingle(
+      vec, &wasted,
+      idx, onlyWasted,
+      validatingIndex
+    );
+
     return wasted;
   }
 
@@ -141,29 +163,40 @@ namespace utils {
     VEC<T> *wasted,
     VEC_INT idxs,
     CR_BOL lockedIndex,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex,
+    CR_BOL removingExceededIndexes
   ) {
-    if (vec->size() == 0) return;
-    int last = idxs.size() - 1;
+    if (vec->empty()) return;
 
     // ascending
     if (algorithms::Calc::isArithmeticSequence(idxs, 1)) {
-      VecTools<T>::cutInterval(vec, wasted, idxs[0], idxs[last], onlyWasted);
+      VecTools<T>::cutInterval(
+        vec, wasted,
+        idxs[0], idxs[idxs.size() - 1],
+        onlyWasted, validatingIndex
+      );
     }
     // descending
     else if (algorithms::Calc::isArithmeticSequence(idxs, -1)) {
-      VecTools<T>::cutInterval(vec, wasted, idxs[last], idxs[0], onlyWasted);
+      VecTools<T>::cutInterval(
+        vec, wasted,
+        idxs[idxs.size() - 1], idxs[0],
+        onlyWasted, validatingIndex
+      );
     }
     // one by one
     else {
-      *wasted = {};
-      VecTools<T>::fixIndexes(vec, &idxs);
+      // slower
+      if (validatingIndex) {
+        VecTools<T>::fixIndexes(vec, &idxs, removingExceededIndexes);
+      }
 
       for (int i = 0; i < idxs.size(); i++) {
 
         wasted->push_back(VecTools<T>::cutSingle(
-          vec, idxs[i], onlyWasted)
-        );
+          vec, idxs[i], onlyWasted, validatingIndex
+        ));
 
         if (lockedIndex) {
           for (int j = i+1; j < idxs.size(); j++) {
@@ -179,10 +212,19 @@ namespace utils {
     VEC<T> *vec,
     CR_VEC_INT idxs,
     CR_BOL lockedIndex,
-    CR_BOL onlyWasted
+    CR_BOL onlyWasted,
+    CR_BOL validatingIndex,
+    CR_BOL removingExceededIndexes
   ) {
     VEC<T> wasted;
-    VecTools<T>::cutIndexes(vec, &wasted, idxs, lockedIndex, onlyWasted);
+
+    VecTools<T>::cutIndexes(
+      vec, &wasted,
+      idxs, lockedIndex,
+      onlyWasted, validatingIndex,
+      removingExceededIndexes
+    );
+
     return wasted;
   }
 
