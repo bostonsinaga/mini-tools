@@ -19,10 +19,10 @@ namespace sorters {
 
     VEC<T> subVec_messy[2] = {
       utils::VecTools<T>::cutInterval(
-        &messy, left, left + subSize[0] - 1, true
+        messy, left, left + subSize[0] - 1, true
       ),
       utils::VecTools<T>::cutInterval(
-        &messy, left + subSize[0], left + mid + subSize[1], true
+        messy, left + subSize[0], left + mid + subSize[1], true
       )
     };
 
@@ -31,11 +31,11 @@ namespace sorters {
     if constexpr (notNullptr<U>()) {
       if (attached) {
         subVec_attached[0] = utils::VecTools<T>::cutInterval(
-          attached, left, left + subSize[0] - 1, true
+          *attached, left, left + subSize[0] - 1, true
         );
 
         subVec_attached[1] = utils::VecTools<T>::cutInterval(
-          attached, left + subSize[0], left + mid + subSize[1], true
+          *attached, left + subSize[0], left + mid + subSize[1], true
         );
       }
     }

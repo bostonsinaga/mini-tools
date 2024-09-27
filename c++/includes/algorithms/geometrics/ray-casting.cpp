@@ -74,7 +74,7 @@ namespace geometrics {
 
     /** Check 'laserIntersections' */
 
-    utils::VecTools<Point>::cleanDuplicateInside(&laserIntersections);
+    utils::VecTools<Point>::cleanDuplicateInside(laserIntersections);
 
     for (int i = 0; i < laserIntersections.size(); i++) {
 

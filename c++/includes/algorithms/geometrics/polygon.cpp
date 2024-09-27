@@ -108,7 +108,7 @@ namespace geometrics {
     Point wasted;
     int prevCount = verticesCount();
 
-    utils::VecTools<Point>::cutSingle(&vertices, &wasted, idx);
+    utils::VecTools<Point>::cutSingle(vertices, wasted, idx);
 
     if (verticesCount() < prevCount) createRect();
     return wasted;
@@ -117,7 +117,7 @@ namespace geometrics {
   std::vector<Point> Polygon::removeVertices(int start, int end) {
     std::vector<Point> wasted;
 
-    utils::VecTools<Point>::cutInterval(&vertices, &wasted, start, end);
+    utils::VecTools<Point>::cutInterval(vertices, wasted, start, end);
 
     if (wasted.size() > 0) createRect();
     return wasted;
@@ -126,7 +126,7 @@ namespace geometrics {
   std::vector<Point> Polygon::removeVertices(std::vector<int> &idxes) {
     std::vector<Point> wasted;
 
-    utils::VecTools<Point>::cutIndexes(&vertices, &wasted, idxes);
+    utils::VecTools<Point>::cutIndexes(vertices, wasted, idxes);
 
     if (wasted.size() > 0) createRect();
     return wasted;
