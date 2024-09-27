@@ -1,19 +1,21 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
 
+#include <iostream>
+
 #include "../algorithms/calculators.h"
 
 namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  bool VecTools<T>::hasIndex(VEC<T> &vec, CR_INT idx) {
-    if (idx < vec.size() && idx >= 0) return true;
+  bool VecTools<T>::hasIndex(VEC<T> *vec, CR_INT idx) {
+    if (idx < vec->size() && idx >= 0) return true;
     return false;
   }
 
   template <typename T>
-  bool VecTools<T>::hasIndexes(VEC<T> &vec, CR_VEC_INT idxs) {
+  bool VecTools<T>::hasIndexes(VEC<T> *vec, CR_VEC_INT idxs) {
     for (CR_INT i : idxs) {
       if (!hasIndex(vec, i)) return false;
     }
@@ -22,29 +24,29 @@ namespace utils {
 
   template <typename T>
   LLI VecTools<T>::getIndex(
-    VEC<T> &vec,
+    VEC<T> *vec,
     CR<T> data,
     EQUAL_RULE equalRule
   ) {
-    for (int i = 0; i < vec.size(); i++) {
-      if (data == vec[i] || equalRule(data, vec[i])) return i;
+    for (int i = 0; i < vec->size(); i++) {
+      if (data == vec->at(i) || equalRule(data, vec->at(i))) return i;
     }
     return -1;
   }
 
   template <typename T>
-  T VecTools<T>::getAt(VEC<T> &vec, CR_INT idx, CR<T> defaultReturn) {
-    if (VecTools<T>::hasIndex(vec, idx)) return vec.at(idx);
+  T VecTools<T>::getAt(VEC<T> *vec, CR_INT idx, CR<T> defaultReturn) {
+    if (VecTools<T>::hasIndex(vec, idx)) return vec->at(idx);
     return defaultReturn;
   }
 
   template <typename T>
   void VecTools<T>::concat(
-    VEC<T> &targetVec,
+    VEC<T> *targetVec,
     CR_VEC<T> additionVec
   ) {
-    targetVec.reserve(targetVec.size() + additionVec.size());
-    targetVec.insert(targetVec.end(), additionVec.begin(), additionVec.end());
+    targetVec->reserve(targetVec->size() + additionVec.size());
+    targetVec->insert(targetVec->end(), additionVec.begin(), additionVec.end());
   }
 
   template <typename T>
@@ -53,19 +55,19 @@ namespace utils {
     CR_VEC<T> vecB
   ) {
     VEC<T> newVec;
-    VecTools<T>::concat(newVec, vecA);
-    VecTools<T>::concat(newVec, vecB);
+    VecTools<T>::concat(&newVec, vecA);
+    VecTools<T>::concat(&newVec, vecB);
     return newVec;
   }
 
   template <typename T>
   void VecTools<T>::cutInterval(
-    VEC<T> &vec,
-    VEC<T> &wasted,
+    VEC<T> *vec,
+    VEC<T> *wasted,
     int begin, int end,
     CR_BOL onlyWasted
   ) {
-    int sz = vec.size();
+    int sz = vec->size();
 
     // bad interval
     if (sz == 0 || 
@@ -73,84 +75,75 @@ namespace utils {
       (begin >= sz && end >= sz)
     ) { return; }
 
-    // inverted interval
-    if (begin > end) {
-      int buff = begin;
-      begin = end;
-      end = buff;
-    }
-
-    // exceeded interval
-    if (begin < 0) begin = 0;
-    if (end >= sz) end = sz - 1;
+    VecTools<T>::fixIndexInterval(vec, begin, end);
 
     // separated
-    wasted = VEC<T>(vec.begin() + begin, vec.begin() + end + 1);
+    *wasted = VEC<T>(vec->begin() + begin, vec->begin() + end + 1);
 
     // change the original
     if (!onlyWasted) {
-      vec = VecTools<T>::join(
-        VEC<T>(vec.begin(), vec.begin() + begin),
-        VEC<T>(vec.begin() + end + 1, vec.end())
+      *vec = VecTools<T>::join(
+        VEC<T>(vec->begin(), vec->begin() + begin),
+        VEC<T>(vec->begin() + end + 1, vec->end())
       );
     }
   }
 
   template <typename T>
   VEC<T> VecTools<T>::cutInterval(
-    VEC<T> &vec,
+    VEC<T> *vec,
     CR_INT begin, CR_INT end,
     CR_BOL onlyWasted
   ) {
     VEC<T> wasted;
-    VecTools<T>::cutInterval(vec, wasted, begin, end, onlyWasted);
+    VecTools<T>::cutInterval(vec, &wasted, begin, end, onlyWasted);
     return wasted;
   }
 
   template <typename T>
   void VecTools<T>::cutSingle(
-    VEC<T> &vec,
-    T &wasted,
+    VEC<T> *vec,
+    T *wasted,
     int idx,
     CR_BOL onlyWasted
   ) {
-    if (vec.size() == 0) return;
+    if (vec->size() == 0) return;
 
     if (idx < 0) idx = 0;
-    else if (idx >= vec.size()) idx = vec.size() - 1;
+    else if (idx >= vec->size()) idx = vec->size() - 1;
 
     // separated
-    wasted = vec[idx];
+    *wasted = vec->at(idx);
 
     // change the original
     if (!onlyWasted) {
-      vec = VecTools<T>::join(
-        VEC<T>(vec.begin(), vec.begin() + idx),
-        VEC<T>(vec.begin() + idx + 1, vec.end())
+      *vec = VecTools<T>::join(
+        VEC<T>(vec->begin(), vec->begin() + idx),
+        VEC<T>(vec->begin() + idx + 1, vec->end())
       );
     }
   }
 
   template <typename T>
   T VecTools<T>::cutSingle(
-    VEC<T> &vec,
+    VEC<T> *vec,
     CR_INT idx,
     CR_BOL onlyWasted
   ) {
-    T wasted = vec[idx];
-    VecTools<T>::cutSingle(vec, wasted, idx, onlyWasted);
+    T wasted = vec->at(idx);
+    VecTools<T>::cutSingle(vec, &wasted, idx, onlyWasted);
     return wasted;
   }
 
   template <typename T>
   void VecTools<T>::cutIndexes(
-    VEC<T> &vec,
-    VEC<T> &wasted,
+    VEC<T> *vec,
+    VEC<T> *wasted,
     VEC_INT idxs,
     CR_BOL lockedIndex,
     CR_BOL onlyWasted
   ) {
-    if (vec.size() == 0) return;
+    if (vec->size() == 0) return;
     int last = idxs.size() - 1;
 
     // ascending
@@ -163,18 +156,16 @@ namespace utils {
     }
     // one by one
     else {
-      wasted = {};
-      bool prevIndex = -1;
+      *wasted = {};
+      VecTools<T>::fixIndexes(vec, &idxs);
 
       for (int i = 0; i < idxs.size(); i++) {
 
-        if (!lockedIndex || (prevIndex >= 0 && prevIndex != idxs[i])) {
-          wasted.push_back(VecTools<T>::cutSingle(vec, idxs[i], onlyWasted));
-        }
+        wasted->push_back(VecTools<T>::cutSingle(
+          vec, idxs[i], onlyWasted)
+        );
 
         if (lockedIndex) {
-          prevIndex = idxs[i];
-
           for (int j = i+1; j < idxs.size(); j++) {
             if (idxs[i] < idxs[j]) idxs[j]--;
           }
@@ -185,19 +176,19 @@ namespace utils {
 
   template <typename T>
   VEC<T> VecTools<T>::cutIndexes(
-    VEC<T> &vec,
-    VEC_INT idxs,
+    VEC<T> *vec,
+    CR_VEC_INT idxs,
     CR_BOL lockedIndex,
     CR_BOL onlyWasted
   ) {
     VEC<T> wasted;
-    VecTools<T>::cutIndexes(vec, wasted, idxs, lockedIndex, onlyWasted);
+    VecTools<T>::cutIndexes(vec, &wasted, idxs, lockedIndex, onlyWasted);
     return wasted;
   }
 
   template <typename T>
   std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateInside(
-    VEC<T> &vec,
+    VEC<T> *vec,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
@@ -225,15 +216,15 @@ namespace utils {
     };
 
     if (originalAscending) {
-      for (int i = 0; i < vec.size() - 1; i++) {
-        for (int j = i+1; j < vec.size(); j++) {
-          if (lambda(vec[i], vec[j], j)) j--;
+      for (int i = 0; i < vec->size() - 1; i++) {
+        for (int j = i+1; j < vec->size(); j++) {
+          if (lambda(vec->at(i), vec->at(j), j)) j--;
         }
       }
     }
-    else for (int i = vec.size() - 1; i > 0; i--) {
+    else for (int i = vec->size() - 1; i > 0; i--) {
       for (int j = i - 1; j >= 0; j--) {
-        if (lambda(vec[i], vec[j], j)) i--;
+        if (lambda(vec->at(i), vec->at(j), j)) i--;
       }
     }
 
@@ -242,7 +233,7 @@ namespace utils {
 
   template <typename T>
   std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateToMember(
-    VEC<T> &vec, CR<T> mem,
+    VEC<T> *vec, CR<T> mem,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
@@ -277,39 +268,61 @@ namespace utils {
     };
 
     if (originalAscending) {
-      for (int i = 0; i < vec.size(); i++) {
-        if (lambda(mem, vec[i], i)) i--;
+      for (int i = 0; i < vec->size(); i++) {
+        if (lambda(mem, vec->at(i), i)) i--;
       }
     }
-    else for (int i = vec.size() - 1; i >= 0; i--) {
-      lambda(mem, vec[i], i);
+    else for (int i = vec->size() - 1; i >= 0; i--) {
+      lambda(mem, vec->at(i), i);
     }
 
     return wastedTuple;
   }
 
   template <typename T>
-  void VecTools<T>::fixIndexInterval(int &begin, int &end, T &vec) {
-    if (begin > end) std::swap(begin, end);
-    if (begin < 0 || begin > vec.size()) begin = 0;
-    if (end < 0 || end > vec.size()) end = vec.size();
+  void VecTools<T>::fixIndexes(
+    VEC<T> *vec,
+    VEC_INT *idxs,
+    CR_BOL removed
+  ) {
+    if (vec->empty()) return;
+
+    for (int i = 0; i < idxs->size(); i++) {
+      if (!VecTools<T>::hasIndex(vec, idxs->at(i))) {
+        if (removed) {
+          VecTools<int>::cutSingle(idxs, i);
+          i--;
+        }
+        else {
+          if (idxs->at(i) < 0) idxs->at(i) = 0;
+          else if (idxs->at(i) >= vec->size()) idxs->at(i) = vec->size() - 1;
+        }
+      }
+    }
   }
 
   template <typename T>
-  bool VecTools<T>::isIndexIntervalValid(CR_INT begin, CR_INT end, T &vec) {
+  void VecTools<T>::fixIndexInterval(VEC<T> *vec, int &begin, int &end) {
+    if (begin > end) std::swap(begin, end);
+    if (begin < 0 || begin > vec->size()) begin = 0;
+    if (end < 0 || end >= vec->size()) end = vec->size() - 1;
+  }
+
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(VEC<T> *vec, CR_INT begin, CR_INT end) {
     if (begin < end &&
-      begin >= 0 && begin <= vec.size() &&
-      end >= 0 || end <= vec.size()
+      begin >= 0 && begin < vec->size() - 1 &&
+      end > 0 && end < vec->size()
     ) { return true; }
     return false;
   }
 
   template <typename T>
-  VEC<T> VecTools<T>::collapse(VEC2<T> vec) {
+  VEC<T> VecTools<T>::collapse(CR_VEC2<T> vec) {
     VEC<T> reduction;
 
-    for (VEC<T> &red: vec) {
-      VecTools<T>::concat(reduction, red);
+    for (CR_VEC<T> red: vec) {
+      VecTools<T>::concat(&reduction, red);
     }
 
     return reduction;

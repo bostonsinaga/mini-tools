@@ -13,25 +13,25 @@ namespace utils {
   public:
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
-    static bool hasIndex(VEC<T> &vec, CR_INT idx);
-    static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
+    static bool hasIndex(VEC<T> *vec, CR_INT idx);
+    static bool hasIndexes(VEC<T> *vec, CR_VEC_INT idxs);
 
     // return -1 if not found
     static LLI getIndex(
-      VEC<T> &vec,
+      VEC<T> *vec,
       CR<T> data,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     static T getAt(
-      VEC<T> &vec,
+      VEC<T> *vec,
       CR_INT idx,
       CR<T> defaultReturn
     );
 
     static void concat(
-      VEC<T> &targetVec,
+      VEC<T> *targetVec,
       CR_VEC<T> additionVec
     );
 
@@ -41,27 +41,27 @@ namespace utils {
     );
 
     static void cutInterval(
-      VEC<T> &vec,
-      VEC<T> &wasted,
+      VEC<T> *vec,
+      VEC<T> *wasted,
       int begin, int end,
       CR_BOL onlyWasted = false
     );
 
     static VEC<T> cutInterval(
-      VEC<T> &vec,
+      VEC<T> *vec,
       CR_INT begin, CR_INT end,
       CR_BOL onlyWasted = false
     );
 
     static void cutSingle(
-      VEC<T> &vec,
-      T &wasted,
+      VEC<T> *vec,
+      T *wasted,
       int idx,
       CR_BOL onlyWasted = false
     );
 
     static T cutSingle(
-      VEC<T> &vec,
+      VEC<T> *vec,
       CR_INT idx,
       CR_BOL onlyWasted = false
     );
@@ -73,16 +73,16 @@ namespace utils {
      * when one of the smaller indexes has finished truncating)
      */
     static void cutIndexes(
-      VEC<T> &vec,
-      VEC<T> &wasted,
+      VEC<T> *vec,
+      VEC<T> *wasted,
       VEC_INT idxs,
       CR_BOL lockedIndex = true,
       CR_BOL onlyWasted = false
     );
 
     static VEC<T> cutIndexes(
-      VEC<T> &vec,
-      VEC_INT idxs,
+      VEC<T> *vec,
+      CR_VEC_INT idxs,
       CR_BOL lockedIndex = true,
       CR_BOL onlyWasted = false
     );
@@ -93,7 +93,7 @@ namespace utils {
      * and the other based on value equality
      */
     static std::tuple<VEC<T>, VEC<T>> cleanDuplicateInside(
-      VEC<T> &vec,
+      VEC<T> *vec,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
@@ -101,18 +101,24 @@ namespace utils {
 
     // Returns the same as 'cleanDuplicateInside'
     static std::tuple<VEC<T>, VEC<T>> cleanDuplicateToMember(
-      VEC<T> &vec, CR<T> mem,
+      VEC<T> *vec, CR<T> mem,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
-    // the 'end' usually 1 index after latest included index
-    static void fixIndexInterval(int &begin, int &end, T &vec);
-    static bool isIndexIntervalValid(CR_INT begin, CR_INT end, T &vec);
+    static void fixIndexes(
+      VEC<T> *vec,
+      VEC_INT *idxs,
+      CR_BOL removed = true
+    );
+
+    // range of values ​​from 0 to size - 1
+    static void fixIndexInterval(VEC<T> *vec, int &begin, int &end);
+    static bool isIndexIntervalValid(VEC<T> *vec, CR_INT begin, CR_INT end);
 
     // 'T' can also be a vector for multidimensional
-    static VEC<T> collapse(VEC2<T> vec);
+    static VEC<T> collapse(CR_VEC2<T> vec);
   };
 }}
 
