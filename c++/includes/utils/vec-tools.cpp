@@ -347,7 +347,7 @@ namespace utils {
   void VecTools<T>::fixIndexInterval(VEC<T> &vec, int &begin, int &end) {
     if (begin > end) std::swap(begin, end);
     if (begin < 0 || begin > vec.size()) begin = 0;
-    if (end < 0 || end >= vec.size()) end = vec.size() - 1;
+    if (end <= 0 || end >= vec.size()) end = vec.size() - 1;
   }
 
   template <typename T>
