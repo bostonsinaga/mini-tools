@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS__CALCULATORS_H__
-#define __ALGORITHMS__CALCULATORS_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
+#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
 
 #include <cmath>
 #include <algorithm>
@@ -159,4 +159,4 @@ namespace algorithms {
   };
 }}
 
-#endif // __ALGORITHMS__CALCULATORS_H__
+#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__

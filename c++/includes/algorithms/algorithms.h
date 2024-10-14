@@ -1,5 +1,5 @@
-#ifndef __ALGORITHMS_H__
-#define __ALGORITHMS_H__
+#ifndef __MINI_TOOLS__ALGORITHMS_H__
+#define __MINI_TOOLS__ALGORITHMS_H__
 
 #include "calculators.h"
 #include "geometrics/geometrics.h"
@@ -7,4 +7,4 @@
 
 namespace mt_alg = mini_tools::algorithms;
 
-#endif // __ALGORITHMS_H__
+#endif // __MINI_TOOLS__ALGORITHMS_H__
