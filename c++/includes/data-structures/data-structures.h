@@ -1,6 +1,9 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__STRUCTURES_H__
-#define __MINI_TOOLS__ALGORITHMS__STRUCTURES_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES_H__
+#define __MINI_TOOLS__DATA_STRUCTURES_H__
 
-namespace mt_str = mini_tools::structures;
+#include "linked-list.h"
+#include "tree.h"
 
-#endif // __MINI_TOOLS__ALGORITHMS__STRUCTURES_H__
+namespace mt_ds = mini_tools::data_structures;
+
+#endif // __MINI_TOOLS__DATA_STRUCTURES_H__
