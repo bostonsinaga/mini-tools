@@ -1,7 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_CPP__
 #define __MINI_TOOLS__UTILS__TIMER_CPP__
 
-#include <iostream>
 #include "timer.h"
 
 namespace mini_tools {
@@ -18,17 +17,17 @@ namespace utils {
     prior = now;
   }
 
-  float Timer::getSeconds(bool needCheck) {
+  float Timer::getSeconds(CR_BOL needCheck) {
     if (needCheck) check();
     return difference.count();
   }
 
-  float Timer::getMilliseconds(bool needCheck) {
+  float Timer::getMilliseconds(CR_BOL needCheck) {
     if (needCheck) check();
     return std::chrono::duration_cast<std::chrono::milliseconds>(difference).count();
   }
 
-  void Timer::print(bool needCheck, std::string title) {
+  void Timer::print(CR_BOL needCheck, CR_STR title) {
     if (needCheck) check();
     std::cout << title << std::endl;
     std::cout << getSeconds(false) << "s\n";
