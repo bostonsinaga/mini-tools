@@ -1,17 +1,27 @@
 #ifndef __MINI_TOOLS__UTILS__PRINTER_CPP__ 
 #define __MINI_TOOLS__UTILS__PRINTER_CPP__
 
-#include <iostream>
 #include <fstream>
 
 namespace mini_tools {
 namespace utils {
 
   template <typename T>
+  std::string Printer<T>::initText(
+    CR_INT step,
+    CR_STR title
+  ) {
+    if (step >= 0) {
+      return title + ": " + std::to_string(step) + "\n";
+    }
+    return title + ":\n";
+  }
+
+  template <typename T>
   std::string Printer<T>::combine(
-    std::vector<T> &vec,
-    int &step,
-    std::string &title
+    CR_VEC<T> vec,
+    CR_INT step,
+    CR_STR title
   ) {
     if constexpr (!CheckType::isLetter<T>()) {
       constexpr bool stringify_and_combine_error = false;
@@ -30,10 +40,10 @@ namespace utils {
 
   template <typename T>
   std::string Printer<T>::stringify(
-    std::vector<T> &vec,
-    bool &asBar,
-    int &step,
-    std::string &title
+    CR_VEC<T> vec,
+    CR_BOL asBar,
+    CR_INT step,
+    CR_STR title
   ) {
     if constexpr (!CheckType::isNumber<T>()) {
       return Printer<T>::combine(vec, step, title);
@@ -60,32 +70,22 @@ namespace utils {
 
   template <typename T>
   void Printer<T>::log(
-    std::vector<T> *vec,
-    bool asBar,
-    std::string title,
-    int step
+    CR_VEC<T> vec,
+    CR_BOL asBar,
+    CR_STR title,
+    CR_INT step
   ) {
-    std::cout << Printer<T>::stringify(*vec, asBar, step, title);
-  }
-
-  template <typename T>
-  void Printer<T>::log(
-    std::vector<T> vec,
-    bool asBar,
-    std::string title,
-    int step
-  ) {
-    Printer<T>::log(&vec, asBar, title, step);
+    std::cout << Printer<T>::stringify(vec, asBar, step, title);
   }
 
   template <typename T>
   void Printer<T>::logf(
-    std::vector<T> *vec,
-    bool asBar,
-    bool extended,
-    std::string filename,
-    std::string title,
-    int step
+    CR_VEC<T> vec,
+    CR_BOL asBar,
+    CR_BOL extended,
+    CR_STR filename,
+    CR_STR title,
+    CR_INT step
   ) {
     std::ofstream writer;
 
@@ -94,20 +94,8 @@ namespace utils {
     }
     else writer.open(filename);
 
-    writer << Printer<T>::stringify(*vec, asBar, step, title);
+    writer << Printer<T>::stringify(vec, asBar, step, title);
     writer.close();
-  }
-
-  template <typename T>
-  void Printer<T>::logf(
-    std::vector<T> vec,
-    bool asBar,
-    bool extended,
-    std::string filename,
-    std::string title,
-    int step
-  ) {
-    Printer<T>::logf(&vec, asBar, extended, filename, title, step);
   }
 }}
 
