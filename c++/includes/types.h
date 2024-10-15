@@ -2,7 +2,8 @@
 #define __MINI_TOOLS__TYPES_H__
 
 #include <type_traits>
-#include <string>
+#include <functional>
+#include <iostream>
 #include <vector>
 
 namespace mini_tools {
