@@ -24,7 +24,7 @@ namespace linked_list {
     void connect(Node *node);
     void disconnect(Node *node);
     void resign();
-    void remove();
+    virtual void remove();
     void sequentialRemove();
 
     Node *getNext() { return next; }
