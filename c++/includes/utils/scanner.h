@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__SCANNER_H__
 #define __MINI_TOOLS__UTILS__SCANNER_H__
 
-#include "reader.h"
-
 namespace mini_tools {
 namespace utils {
 
