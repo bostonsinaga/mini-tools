@@ -13,7 +13,6 @@ namespace tree {
 
   class Node : public linked_list::Node {
   private:
-    void cleanDuplicatesInChildren();
     void cleanDuplicateToLastAdded(Node *node);
     void cleanChildren();
     void destroy(CR_BOL firstOccurrence);
@@ -32,6 +31,9 @@ namespace tree {
     UI level = 0;
     VEC_NODE children;
     Node *parent = nullptr;
+
+    void cleanDuplicatesInChildren();
+    void setLevel(CR_UI lv) { level = lv; }
 
     // destructor only invoked from 'remove' method
     ~Node() {}
