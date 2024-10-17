@@ -18,15 +18,15 @@ namespace tree {
   }
 
   bool Node::hasChild(Node *node) {
-    for (Node *com : children) {
-      if (com == node) return true;
+    for (Node *nd : children) {
+      if (nd == node) return true;
     }
     return false;
   }
 
   bool Node::hasChild(CR_STR searched) {
-    for (Node *com : children) {
-      if (com->name == searched) return true;
+    for (Node *nd : children) {
+      if (nd->name == searched) return true;
     }
     return false;
   }
@@ -36,8 +36,8 @@ namespace tree {
   }
 
   Node *Node::getChild(CR_STR searched) {
-    for (Node *com : children) {
-      if (com->name == searched) return com;
+    for (Node *nd : children) {
+      if (nd->name == searched) return nd;
     }
     return nullptr;
   }
@@ -60,8 +60,8 @@ namespace tree {
 
     // slower (safe)
     if (validating) {
-      for (Node *com : newChildren) {
-        if (com) children.push_back(com);
+      for (Node *nd : newChildren) {
+        if (nd) children.push_back(nd);
       }
       cleanDuplicatesInChildren();
     }
@@ -138,15 +138,15 @@ namespace tree {
     std::tuple<VEC_NODE, VEC_NODE>
       wastedTuple = utils::VecTools<Node*>::cleanDuplicateInside(
         children, false,
-        [](Node *rep, Node *com)->bool {
-          if (rep->name == com->name) return true;
+        [](Node *rep, Node *nd)->bool {
+          if (rep->name == nd->name) return true;
           return false;
         }
       );
 
     // remove duplicates of same name
-    for (Node *com : std::get<1>(wastedTuple)) {
-      com->remove();
+    for (Node *nd : std::get<1>(wastedTuple)) {
+      nd->remove();
     }
   }
 
@@ -154,21 +154,21 @@ namespace tree {
     std::tuple<VEC_NODE, VEC_NODE>
       wastedTuple = utils::VecTools<Node*>::cleanDuplicateToMember(
         children, node, false,
-        [](Node *rep, Node *com)->bool {
-          if (rep->name == com->name) return true;
+        [](Node *rep, Node *nd)->bool {
+          if (rep->name == nd->name) return true;
           return false;
         }
       );
 
     // remove duplicates of same name
-    for (Node *com : std::get<1>(wastedTuple)) {
-      com->remove();
+    for (Node *nd : std::get<1>(wastedTuple)) {
+      nd->remove();
     }
   }
 
   void Node::cleanChildren() {
-    for (Node *com : children) {
-      com->destroy(false);
+    for (Node *nd : children) {
+      nd->destroy(false);
     }
   }
 
@@ -228,9 +228,9 @@ namespace tree {
   VEC_NODE Node::releaseChildren() {
     VEC_NODE released = children;
 
-    for (Node *com : children) {
-      com->level = 0;
-      com->parent = nullptr;
+    for (Node *nd : children) {
+      nd->level = 0;
+      nd->parent = nullptr;
     }
 
     children = {};
