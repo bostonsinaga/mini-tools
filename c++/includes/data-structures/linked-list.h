@@ -8,12 +8,28 @@ namespace data_structures {
 namespace linked_list {
 
   class Node {
+  private:
+    typedef const std::function<bool(Node*)>& CR_BOOL_CB;
+    typedef const std::function<void(Node*)>& CR_VOID_CB;
+
+    void forEach(
+      CR_VOID_CB callback,
+      Node *start,
+      CR_BOL forwarding
+    );
+
+    void forEach(
+      CR_BOOL_CB callback,
+      Node *start,
+      CR_BOL forwarding
+    );
+
   protected:
     std::string name;
 
-    Node *next = nullptr,
-      *previous = nullptr,
-      *head = nullptr;
+    Node *head = nullptr,
+      *next = nullptr,
+      *previous = nullptr;
 
     ~Node() {}
 
@@ -24,8 +40,19 @@ namespace linked_list {
     void connect(Node *node);
     void disconnect(Node *node);
     void resign();
+
     virtual void remove();
     void sequentialRemove();
+
+    void forEach(
+      CR_VOID_CB callback,
+      CR_BOL forwarding = true
+    );
+
+    void forEach(
+      CR_BOOL_CB callback,
+      CR_BOL forwarding = true
+    );
 
     Node *getNext() { return next; }
     Node *getPrevious() { return previous; }

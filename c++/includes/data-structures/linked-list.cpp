@@ -13,7 +13,17 @@ namespace linked_list {
   }
 
   void Node::connect(Node *node) {
-    if (node) {
+    bool existed = false;
+
+    static const CR_BOOL_CB existStop = [&](Node* nd)->bool {
+      if (nd == node) existed = true;
+      else existed = false;
+      return !existed;
+    };
+
+    forEach(existStop);
+
+    if (node && !existed) {
       Node *third = next;
       node->resign();
 
@@ -85,6 +95,66 @@ namespace linked_list {
       if (willBreak) break;
     }
   }
+
+  void Node::forEach(
+    CR_BOOL_CB callback,
+    Node *start,
+    CR_BOL forwarding
+  ) {
+    bool keepGoing = false;
+
+    if (forwarding) {
+      keepGoing = callback(this);
+
+      if (keepGoing && next && next != start) {
+        next->forEach(callback, start, true);
+      }
+    }
+    else if (!forwarding) {
+      if (previous) {
+        keepGoing = callback(previous);
+
+        if (keepGoing && previous != start) {
+          previous->forEach(callback, start, false);
+        }
+      }
+      else callback(this);
+    }
+  }
+
+  void Node::forEach(
+    CR_VOID_CB callback,
+    Node *start,
+    CR_BOL forwarding
+  ) {
+    if (forwarding) {
+      callback(this);
+
+      if (next && next != start) {
+        next->forEach(callback, start, true);
+      }
+    }
+    else if (!forwarding) {
+      if (previous) {
+        callback(previous);
+
+        if (previous != start) {
+          previous->forEach(callback, start, false);
+        }
+      }
+      else callback(this);
+    }
+  }
+
+  void Node::forEach(
+    CR_BOOL_CB callback,
+    CR_BOL forwarding
+  ) { forEach(callback, this, forwarding); }
+
+  void Node::forEach(
+    CR_VOID_CB callback,
+    CR_BOL forwarding
+  ) { forEach(callback, this, forwarding); }
 }}}
 
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__
