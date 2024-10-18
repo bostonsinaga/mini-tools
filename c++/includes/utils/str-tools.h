@@ -23,7 +23,8 @@ namespace utils {
 
     static std::string uniteVector(
       CR_VEC_STR &vecStr,
-      CR_STR separator = " "
+      CR_STR separator = " ",
+      CR_BOL separatedExceptLast = true
     );
   };
 }}

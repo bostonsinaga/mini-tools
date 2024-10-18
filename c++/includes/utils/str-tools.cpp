@@ -53,13 +53,18 @@ namespace utils {
 
   std::string StrTools::uniteVector(
     CR_VEC_STR &vecStr,
-    CR_STR separator
+    CR_STR separator,
+    CR_BOL separatedExceptLast
   ) {
     std::string text;
 
     for (const std::string &str : vecStr) {
       text += str + separator;
     }
+
+    if (separatedExceptLast &&
+      !(text.empty() || separator.empty())
+    ) { text.pop_back(); }
 
     return text;
   }
