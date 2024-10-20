@@ -53,6 +53,8 @@ namespace tree {
     CR_BOL needEmpty,
     CR_BOL validating
   ) {
+    if (newChildren.empty()) return;
+
     int startIdx = 0;
 
     if (needEmpty) children = {};
@@ -66,7 +68,10 @@ namespace tree {
       cleanDuplicatesInChildren();
     }
     // faster (danger)
-    else children = newChildren;
+    else {
+      if (needEmpty) children = newChildren;
+      else utils::VecTools<Node*>::concat(children, newChildren);
+    }
 
     for (int i = startIdx; i < children.size(); i++) {
       children[i]->setParent(this, false);
