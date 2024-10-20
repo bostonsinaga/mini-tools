@@ -16,14 +16,6 @@ namespace tree {
     void cleanDuplicateToLastAdded(Node *node);
     void cleanChildren();
     void destroy(CR_BOL firstOccurrence);
-
-    void setChildren(
-      CR_VEC_NODE newChildren,
-      CR_BOL needEmpty,
-      CR_BOL validating
-    );
-
-    Node* dismantle(CR_INT index);
     void dismantleDestroy(CR_INT index);
     Node* dismantleRelease(CR_INT index);
 
@@ -32,6 +24,13 @@ namespace tree {
     VEC_NODE children;
     Node *parent = nullptr;
 
+    virtual void setChildren(
+      CR_VEC_NODE newChildren,
+      CR_BOL needEmpty,
+      CR_BOL validating
+    );
+
+    virtual Node* dismantle(CR_INT index);
     void cleanDuplicatesInChildren();
     void setLevel(CR_UI lv) { level = lv; }
 
@@ -74,7 +73,7 @@ namespace tree {
       CR_BOL validating = true
     );
 
-    void addChild(
+    virtual void addChild(
       Node *node,
       CR_BOL reconnected = true
     );
@@ -90,7 +89,7 @@ namespace tree {
     Node *releaseChild(Node *node);
     Node *releaseChild(CR_INT index);
 
-    VEC_NODE releaseChildren();
+    virtual VEC_NODE releaseChildren();
     void remove() override { destroy(true); }
   };
 }}}
