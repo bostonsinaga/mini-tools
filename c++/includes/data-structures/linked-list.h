@@ -12,6 +12,12 @@ namespace linked_list {
     typedef const std::function<bool(Node*)>& CR_BOOL_CB;
     typedef const std::function<void(Node*)>& CR_VOID_CB;
 
+    bool notExist(
+      Node* start,
+      Node* node,
+      Node* test
+    );
+
     void forEach(
       CR_VOID_CB callback,
       Node *start,
