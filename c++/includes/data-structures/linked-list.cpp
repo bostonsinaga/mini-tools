@@ -12,18 +12,21 @@ namespace linked_list {
     head = this;
   }
 
+  bool Node::notExist(
+    Node* start,
+    Node* node,
+    Node* test
+  ) {
+    if (node == test) return false;
+    else if (node->next && node->next != start) {
+      return notExist(start, node->next, test);
+    }
+    return true;
+  }
+
   void Node::connect(Node *node) {
-    bool existed = false;
+    if (node && notExist(this, this, node)) {
 
-    static const CR_BOOL_CB existStop = [&](Node* nd)->bool {
-      if (nd == node) existed = true;
-      else existed = false;
-      return !existed;
-    };
-
-    forEach(existStop);
-
-    if (node && !existed) {
       Node *third = next;
       node->resign();
 
@@ -110,7 +113,8 @@ namespace linked_list {
         next->forEach(callback, start, true);
       }
     }
-    else if (!forwarding) {
+    // reversing
+    else {
       if (previous) {
         keepGoing = callback(previous);
 
