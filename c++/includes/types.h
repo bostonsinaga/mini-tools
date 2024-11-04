@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <vector>
+#include <tuple>
 
 namespace mini_tools {
 
