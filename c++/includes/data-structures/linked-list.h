@@ -284,5 +284,5 @@ namespace linked_list {
   };
 }}}
 
-#include "linked-list.cpp"
+#include "linked-list.tpp"
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
