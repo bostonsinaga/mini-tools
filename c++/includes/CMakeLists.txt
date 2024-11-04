@@ -7,6 +7,7 @@ set (SOURCES
   utils/reader.cpp
   utils/str-tools.cpp
   utils/timer.cpp
+  data-structures/linked-list.cpp
   data-structures/tree.cpp
 )
 
