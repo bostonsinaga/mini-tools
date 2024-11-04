@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
-#include <tuple>
-
 namespace mini_tools {
 namespace utils {
 
