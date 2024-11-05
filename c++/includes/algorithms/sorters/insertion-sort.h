@@ -32,5 +32,5 @@ namespace sorters {
   };
 }}}
 
-#include "insertion-sort.cpp"
+#include "insertion-sort.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__INSERTION_SORT_H__

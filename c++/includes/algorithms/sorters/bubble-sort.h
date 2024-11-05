@@ -28,5 +28,5 @@ namespace sorters {
   };
 }}}
 
-#include "bubble-sort.cpp"
+#include "bubble-sort.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_SORT_H__

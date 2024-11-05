@@ -62,5 +62,5 @@ namespace sorters {
   };
 }}}
 
-#include "quick-sort.cpp"
+#include "quick-sort.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_H__
