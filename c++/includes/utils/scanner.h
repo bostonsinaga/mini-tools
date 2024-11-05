@@ -17,5 +17,5 @@ namespace utils {
   };
 }}
 
-#include "scanner.cpp"
+#include "scanner.tpp"
 #endif // __MINI_TOOLS__UTILS__SCANNER_H__

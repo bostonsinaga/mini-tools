@@ -44,5 +44,5 @@ namespace utils {
   };
 }}
 
-#include "printer.cpp"
+#include "printer.tpp"
 #endif // __MINI_TOOLS__UTILS__PRINTER_H__
