@@ -10,7 +10,9 @@ namespace linked_list {
   template<typename T, typename U, typename V>
   void Node::recurBool(
     CR_BOOL_CB_TUV<T, U, V> callback,
-    CR_TUPLE_TUV<T, U, V> additionalParams,
+    CR<T> addParam_1,
+    CR<U> addParam_2,
+    CR<V> addParam_3,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -18,15 +20,13 @@ namespace linked_list {
 
     if (forwarding) {
       keepGoing = callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams),
-        std::get<2>(additionalParams)
+        this, addParam_1, addParam_2, addParam_3
       );
 
       if (keepGoing && next && next != start) {
         next->recurBool(
-          callback, additionalParams, start, true
+          callback, addParam_1, addParam_2,
+          addParam_3, start, true
         );
       }
     }
@@ -34,23 +34,18 @@ namespace linked_list {
     else {
       if (previous) {
         keepGoing = callback(
-          previous,
-          std::get<0>(additionalParams),
-          std::get<1>(additionalParams),
-          std::get<2>(additionalParams)
+          previous, addParam_1, addParam_2, addParam_3
         );
 
         if (keepGoing && previous != start) {
           previous->recurBool(
-            callback, additionalParams, start, false
+            callback, addParam_1, addParam_2,
+            addParam_3, start, false
           );
         }
       }
       else callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams),
-        std::get<2>(additionalParams)
+        this, addParam_1, addParam_2, addParam_3
       );
     }
   }
@@ -58,78 +53,69 @@ namespace linked_list {
   template<typename T, typename U>
   void Node::recurBool(
     CR_BOOL_CB_TU<T, U> callback,
-    CR_TUPLE_TU<T, U> additionalParams,
+    CR<T> addParam_1,
+    CR<U> addParam_2,
     Node *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
 
     if (forwarding) {
-      keepGoing = callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams)
-      );
+      keepGoing = callback(this, addParam_1, addParam_2);
 
       if (keepGoing && next && next != start) {
         next->recurBool(
-          callback, additionalParams, start, true
+          callback, addParam_1, addParam_2,
+          start, true
         );
       }
     }
     // reversing
     else {
       if (previous) {
-        keepGoing = callback(
-          previous,
-          std::get<0>(additionalParams),
-          std::get<1>(additionalParams)
-        );
+        keepGoing = callback(previous, addParam_1, addParam_2);
 
         if (keepGoing && previous != start) {
           previous->recurBool(
-            callback, additionalParams, start, false
+            callback, addParam_1, addParam_2,
+            start, false
           );
         }
       }
-      else callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams)
-      );
+      else callback(this, addParam_1, addParam_2);
     }
   }
 
   template<typename T>
   void Node::recurBool(
     CR_BOOL_CB_T<T> callback,
-    CR<T> additionalParam,
+    CR<T> addParam_1,
     Node *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
 
     if (forwarding) {
-      keepGoing = callback(this, additionalParam);
+      keepGoing = callback(this, addParam_1);
 
       if (keepGoing && next && next != start) {
         next->recurBool(
-          callback, additionalParam, start, true
+          callback, addParam_1, start, true
         );
       }
     }
     // reversing
     else {
       if (previous) {
-        keepGoing = callback(previous, additionalParam);
+        keepGoing = callback(previous, addParam_1);
 
         if (keepGoing && previous != start) {
           previous->recurBool(
-            callback, additionalParam, start, false
+            callback, addParam_1, start, false
           );
         }
       }
-      else callback(this, additionalParam);
+      else callback(this, addParam_1);
     }
   }
 
@@ -138,44 +124,39 @@ namespace linked_list {
   template<typename T, typename U, typename V>
   void Node::recurVoid(
     CR_VOID_CB_TUV<T, U, V> callback,
-    CR_TUPLE_TUV<T, U, V> additionalParams,
+    CR<T> addParam_1,
+    CR<U> addParam_2,
+    CR<V> addParam_3,
     Node *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
       callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams),
-        std::get<2>(additionalParams)
+        this, addParam_1, addParam_2, addParam_3
       );
 
       if (next && next != start) {
         next->recurVoid(
-          callback, additionalParams, start, true
+          callback, addParam_1, addParam_2,
+          addParam_3, start, true
         );
       }
     }
     else if (!forwarding) {
       if (previous) {
         callback(
-          previous,
-          std::get<0>(additionalParams),
-          std::get<1>(additionalParams),
-          std::get<2>(additionalParams)
+          previous, addParam_1, addParam_2, addParam_3
         );
 
         if (previous != start) {
           previous->recurVoid(
-            callback, additionalParams, start, false
+            callback, addParam_1, addParam_2,
+            addParam_3, start, false
           );
         }
       }
       else callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams),
-        std::get<2>(additionalParams)
+        this, addParam_1, addParam_2, addParam_3
       );
     }
   }
@@ -183,72 +164,63 @@ namespace linked_list {
   template<typename T, typename U>
   void Node::recurVoid(
     CR_VOID_CB_TU<T, U> callback,
-    CR_TUPLE_TU<T, U> additionalParams,
+    CR<T> addParam_1,
+    CR<U> addParam_2,
     Node *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
-      callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams)
-      );
+      callback(this, addParam_1, addParam_2);
 
       if (next && next != start) {
         next->recurVoid(
-          callback, additionalParams, start, true
+          callback, addParam_1, addParam_2,
+          start, true
         );
       }
     }
     else if (!forwarding) {
       if (previous) {
-        callback(
-          previous,
-          std::get<0>(additionalParams),
-          std::get<1>(additionalParams)
-        );
+        callback(previous, addParam_1, addParam_2);
 
         if (previous != start) {
           previous->recurVoid(
-            callback, additionalParams, start, false
+            callback, addParam_1, addParam_2,
+            start, false
           );
         }
       }
-      else callback(
-        this,
-        std::get<0>(additionalParams),
-        std::get<1>(additionalParams)
-      );
+      else callback(this, addParam_1, addParam_2);
     }
   }
 
   template<typename T>
   void Node::recurVoid(
     CR_VOID_CB_T<T> callback,
-    CR<T> additionalParam,
+    CR<T> addParam_1,
     Node *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
-      callback(this, additionalParam);
+      callback(this, addParam_1);
 
       if (next && next != start) {
         next->recurVoid(
-          callback, additionalParam, start, true
+          callback, addParam_1, start, true
         );
       }
     }
     else if (!forwarding) {
       if (previous) {
-        callback(previous, additionalParam);
+        callback(previous, addParam_1);
 
         if (previous != start) {
           previous->recurVoid(
-            callback, additionalParam, start, false
+            callback, addParam_1, start, false
           );
         }
       }
-      else callback(this, additionalParam);
+      else callback(this, addParam_1);
     }
   }
 }}}
