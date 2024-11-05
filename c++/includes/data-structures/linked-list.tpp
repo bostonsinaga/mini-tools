@@ -10,9 +10,9 @@ namespace linked_list {
   template<typename T, typename U, typename V>
   void Node::recurBool(
     CR_BOOL_CB_TUV<T, U, V> callback,
-    CR<T> addParam_1,
-    CR<U> addParam_2,
-    CR<V> addParam_3,
+    T addParam_1,
+    U addParam_2,
+    V addParam_3,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -53,8 +53,8 @@ namespace linked_list {
   template<typename T, typename U>
   void Node::recurBool(
     CR_BOOL_CB_TU<T, U> callback,
-    CR<T> addParam_1,
-    CR<U> addParam_2,
+    T addParam_1,
+    U addParam_2,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -89,7 +89,7 @@ namespace linked_list {
   template<typename T>
   void Node::recurBool(
     CR_BOOL_CB_T<T> callback,
-    CR<T> addParam_1,
+    T addParam_1,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -124,9 +124,9 @@ namespace linked_list {
   template<typename T, typename U, typename V>
   void Node::recurVoid(
     CR_VOID_CB_TUV<T, U, V> callback,
-    CR<T> addParam_1,
-    CR<U> addParam_2,
-    CR<V> addParam_3,
+    T addParam_1,
+    U addParam_2,
+    V addParam_3,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -164,8 +164,8 @@ namespace linked_list {
   template<typename T, typename U>
   void Node::recurVoid(
     CR_VOID_CB_TU<T, U> callback,
-    CR<T> addParam_1,
-    CR<U> addParam_2,
+    T addParam_1,
+    U addParam_2,
     Node *start,
     CR_BOL forwarding
   ) {
@@ -197,7 +197,7 @@ namespace linked_list {
   template<typename T>
   void Node::recurVoid(
     CR_VOID_CB_T<T> callback,
-    CR<T> addParam_1,
+    T addParam_1,
     Node *start,
     CR_BOL forwarding
   ) {

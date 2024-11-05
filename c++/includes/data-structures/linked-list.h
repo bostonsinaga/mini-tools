@@ -46,9 +46,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void recurBool(
       CR_BOOL_CB_TUV<T, U, V> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       Node *start,
       CR_BOL forwarding
     );
@@ -56,8 +56,8 @@ namespace linked_list {
     template<typename T, typename U>
     void recurBool(
       CR_BOOL_CB_TU<T, U> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       Node *start,
       CR_BOL forwarding
     );
@@ -65,7 +65,7 @@ namespace linked_list {
     template<typename T>
     void recurBool(
       CR_BOOL_CB_T<T> callback,
-      CR<T> addParam_1,
+      T addParam_1,
       Node *start,
       CR_BOL forwarding
     );
@@ -81,9 +81,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void recurVoid(
       CR_VOID_CB_TUV<T, U, V> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       Node *start,
       CR_BOL forwarding
     );
@@ -91,8 +91,8 @@ namespace linked_list {
     template<typename T, typename U>
     void recurVoid(
       CR_VOID_CB_TU<T, U> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       Node *start,
       CR_BOL forwarding
     );
@@ -100,7 +100,7 @@ namespace linked_list {
     template<typename T>
     void recurVoid(
       CR_VOID_CB_T<T> callback,
-      CR<T> addParam_1,
+      T addParam_1,
       Node *start,
       CR_BOL forwarding
     );
@@ -141,9 +141,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void iterate(
       bool (*callback)(Node*, T, U, V),
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       CR_BOL forwarding = true
     ) {
       recurBool<T, U, V>(
@@ -155,8 +155,8 @@ namespace linked_list {
     template<typename T, typename U>
     void iterate(
       bool (*callback)(Node*, T, U),
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       CR_BOL forwarding = true
     ) {
       recurBool<T, U>(
@@ -168,7 +168,7 @@ namespace linked_list {
     template<typename T>
     void iterate(
       bool (*callback)(Node*, T),
-      CR<T> addParam_1,
+      T addParam_1,
       CR_BOL forwarding = true
     ) {
       recurBool<T>(
@@ -188,9 +188,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void iterate(
       void (*callback)(Node*, T, U, V),
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       CR_BOL forwarding = true
     ) {
       recurVoid<T, U, V>(
@@ -202,8 +202,8 @@ namespace linked_list {
     template<typename T, typename U>
     void iterate(
       void (*callback)(Node*, T, U),
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       CR_BOL forwarding = true
     ) {
       recurVoid<T, U>(
@@ -215,7 +215,7 @@ namespace linked_list {
     template<typename T>
     void iterate(
       void (*callback)(Node*, T),
-      CR<T> addParam_1,
+      T addParam_1,
       CR_BOL forwarding = true
     ) {
       recurVoid<T>(
@@ -235,9 +235,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void iterate(
       CR_BOOL_CB_TUV<T, U, V> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       CR_BOL forwarding = true
     ) {
       recurBool<T, U, V>(
@@ -249,8 +249,8 @@ namespace linked_list {
     template<typename T, typename U>
     void iterate(
       CR_BOOL_CB_TU<T, U> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       CR_BOL forwarding = true
     ) {
       recurBool<T, U>(
@@ -262,7 +262,7 @@ namespace linked_list {
     template<typename T>
     void iterate(
       CR_BOOL_CB_T<T> callback,
-      CR<T> addParam_1,
+      T addParam_1,
       CR_BOL forwarding = true
     ) {
       recurBool<T>(
@@ -282,9 +282,9 @@ namespace linked_list {
     template<typename T, typename U, typename V>
     void iterate(
       CR_VOID_CB_TUV<T, U, V> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
-      CR<V> addParam_3,
+      T addParam_1,
+      U addParam_2,
+      V addParam_3,
       CR_BOL forwarding = true
     ) {
       recurVoid<T, U, V>(
@@ -296,8 +296,8 @@ namespace linked_list {
     template<typename T, typename U>
     void iterate(
       CR_VOID_CB_TU<T, U> callback,
-      CR<T> addParam_1,
-      CR<U> addParam_2,
+      T addParam_1,
+      U addParam_2,
       CR_BOL forwarding = true
     ) {
       recurVoid<T, U>(
@@ -309,7 +309,7 @@ namespace linked_list {
     template<typename T>
     void iterate(
       CR_VOID_CB_T<T> callback,
-      CR<T> addParam_1,
+      T addParam_1,
       CR_BOL forwarding = true
     ) {
       recurVoid<T>(
