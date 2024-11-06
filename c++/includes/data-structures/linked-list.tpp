@@ -24,7 +24,7 @@ namespace linked_list {
       );
 
       if (keepGoing && next && next != start) {
-        next->recurBool(
+        next->recurBool<T, U, V>(
           callback, addParam_1, addParam_2,
           addParam_3, start, true
         );
@@ -38,7 +38,7 @@ namespace linked_list {
         );
 
         if (keepGoing && previous != start) {
-          previous->recurBool(
+          previous->recurBool<T, U, V>(
             callback, addParam_1, addParam_2,
             addParam_3, start, false
           );
@@ -64,7 +64,7 @@ namespace linked_list {
       keepGoing = callback(this, addParam_1, addParam_2);
 
       if (keepGoing && next && next != start) {
-        next->recurBool(
+        next->recurBool<T, U>(
           callback, addParam_1, addParam_2,
           start, true
         );
@@ -76,7 +76,7 @@ namespace linked_list {
         keepGoing = callback(previous, addParam_1, addParam_2);
 
         if (keepGoing && previous != start) {
-          previous->recurBool(
+          previous->recurBool<T, U>(
             callback, addParam_1, addParam_2,
             start, false
           );
@@ -99,7 +99,7 @@ namespace linked_list {
       keepGoing = callback(this, addParam_1);
 
       if (keepGoing && next && next != start) {
-        next->recurBool(
+        next->recurBool<T>(
           callback, addParam_1, start, true
         );
       }
@@ -110,7 +110,7 @@ namespace linked_list {
         keepGoing = callback(previous, addParam_1);
 
         if (keepGoing && previous != start) {
-          previous->recurBool(
+          previous->recurBool<T>(
             callback, addParam_1, start, false
           );
         }
@@ -136,7 +136,7 @@ namespace linked_list {
       );
 
       if (next && next != start) {
-        next->recurVoid(
+        next->recurVoid<T, U, V>(
           callback, addParam_1, addParam_2,
           addParam_3, start, true
         );
@@ -149,7 +149,7 @@ namespace linked_list {
         );
 
         if (previous != start) {
-          previous->recurVoid(
+          previous->recurVoid<T, U, V>(
             callback, addParam_1, addParam_2,
             addParam_3, start, false
           );
@@ -173,7 +173,7 @@ namespace linked_list {
       callback(this, addParam_1, addParam_2);
 
       if (next && next != start) {
-        next->recurVoid(
+        next->recurVoid<T, U>(
           callback, addParam_1, addParam_2,
           start, true
         );
@@ -184,7 +184,7 @@ namespace linked_list {
         callback(previous, addParam_1, addParam_2);
 
         if (previous != start) {
-          previous->recurVoid(
+          previous->recurVoid<T, U>(
             callback, addParam_1, addParam_2,
             start, false
           );
@@ -205,7 +205,7 @@ namespace linked_list {
       callback(this, addParam_1);
 
       if (next && next != start) {
-        next->recurVoid(
+        next->recurVoid<T>(
           callback, addParam_1, start, true
         );
       }
@@ -215,7 +215,7 @@ namespace linked_list {
         callback(previous, addParam_1);
 
         if (previous != start) {
-          previous->recurVoid(
+          previous->recurVoid<T>(
             callback, addParam_1, start, false
           );
         }
