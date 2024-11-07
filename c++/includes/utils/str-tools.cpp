@@ -133,6 +133,20 @@ namespace utils {
 
     return text;
   }
+
+  bool StrTools::isWhitespace(CR_CH ch) {
+    if (ch == ' ' || ch == '\t') {
+      return true;
+    }
+    return false;
+  }
+
+  bool StrTools::isSpaceLine(CR_CH ch) {
+    if (isWhitespace(ch) || ch == '\n') {
+      return true;
+    }
+    return false;
+  }
 }}
 
 #endif // __MINI_TOOLS__UTILS__STR_TOOLS_CPP__

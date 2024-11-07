@@ -63,6 +63,9 @@ namespace utils {
       CR_STR separator = " ",
       CR_BOL separatedExceptLast = true
     );
+
+    static bool isWhitespace(CR_CH ch);
+    static bool isSpaceLine(CR_CH ch);
   };
 }}
 
