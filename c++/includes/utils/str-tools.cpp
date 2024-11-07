@@ -7,6 +7,71 @@
 namespace mini_tools {
 namespace utils {
 
+  void StrTools::changeCase(char &ch, CR_BOL isUpper) {
+    if (isUpper) {
+      ch = std::toupper(ch);
+    }
+    else ch = std::tolower(ch);
+  }
+
+  void StrTools::toLower(char &ch) {
+    changeCase(ch, false);
+  }
+
+  void StrTools::toUpper(char &ch) {
+    changeCase(ch, true);
+  }
+
+  char StrTools::getLower(char ch) {
+    changeCase(ch, false);
+    return ch;
+  }
+
+  char StrTools::getUpper(char ch) {
+    changeCase(ch, true);
+    return ch;
+  }
+
+  void StrTools::changeCharCase(
+    std::string &str,
+    CR_LI index,
+    CR_BOL isUpper
+  ) {
+    if (index >= 0 && index < str.length()) {
+      changeCase(str[index], isUpper);
+    }
+  }
+
+  void StrTools::changeCharToLowercase(
+    std::string &str,
+    CR_LI index
+  ) {
+    changeCharCase(str, index, false);
+  }
+
+  void StrTools::changeCharToUppercase(
+    std::string &str,
+    CR_LI index
+  ) {
+    changeCharCase(str, index, true);
+  }
+
+  std::string StrTools::getCharToLowercase(
+    std::string str,
+    CR_LI index
+  ) {
+    changeCharCase(str, index, false);
+    return str;
+  }
+
+  std::string StrTools::getCharToUppercase(
+    std::string str,
+    CR_LI index
+  ) {
+    changeCharCase(str, index, true);
+    return str;
+  }
+
   void StrTools::changeStringCase(std::string &str, CR_BOL isUpper) {
     std::transform(
       str.begin(),
