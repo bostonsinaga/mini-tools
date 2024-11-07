@@ -11,10 +11,10 @@ namespace utils {
     static void changeCase(char &ch, CR_BOL isUpper);
 
   public:
-    static void toLower(char &ch);
-    static void toUpper(char &ch);
-    static char getLower(char ch);
-    static char getUpper(char ch);
+    static void changeToLowercase(char &ch);
+    static void changeToUppercase(char &ch);
+    static char getToLowercase(char ch);
+    static char getToUppercase(char ch);
 
   private:
     static void changeCharCase(
@@ -55,8 +55,8 @@ namespace utils {
     static std::string getStringToLowercase(std::string str);
     static std::string getStringToUppercase(std::string str);
 
-    static void stringsToLowercase(VEC_STR &vecStr);
-    static void stringsToUppercase(VEC_STR &vecStr);
+    static void changeStringsToLowercase(VEC_STR &vecStr);
+    static void changeStringsToUppercase(VEC_STR &vecStr);
 
     static std::string uniteVector(
       CR_VEC_STR &vecStr,

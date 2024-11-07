@@ -14,20 +14,20 @@ namespace utils {
     else ch = std::tolower(ch);
   }
 
-  void StrTools::toLower(char &ch) {
+  void StrTools::changeToLowercase(char &ch) {
     changeCase(ch, false);
   }
 
-  void StrTools::toUpper(char &ch) {
+  void StrTools::changeToUppercase(char &ch) {
     changeCase(ch, true);
   }
 
-  char StrTools::getLower(char ch) {
+  char StrTools::getToLowercase(char ch) {
     changeCase(ch, false);
     return ch;
   }
 
-  char StrTools::getUpper(char ch) {
+  char StrTools::getToUppercase(char ch) {
     changeCase(ch, true);
     return ch;
   }
@@ -108,11 +108,11 @@ namespace utils {
     return str;
   }
 
-  void StrTools::stringsToLowercase(VEC_STR &vecStr) {
+  void StrTools::changeStringsToLowercase(VEC_STR &vecStr) {
     changeStringsCase(vecStr, false);
   }
 
-  void StrTools::stringsToUppercase(VEC_STR &vecStr) {
+  void StrTools::changeStringsToUppercase(VEC_STR &vecStr) {
     changeStringsCase(vecStr, true);
   }
 
