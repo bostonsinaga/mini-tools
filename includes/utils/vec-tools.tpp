@@ -227,48 +227,83 @@ namespace utils {
   }
 
   template <typename T>
+  bool VecTools<T>::fillWastedDuplicateInside (
+    VEC<T> &vec, EQUAL_RULE &equalRule,
+    WASTED_TUPLE &wastedTuple,
+    CR<T> &a, CR<T> &b, CR_UI cutIdx
+  ) {
+    // equal based on pointer
+    if constexpr (std::is_pointer<T>::value) {
+      if (a == b) {
+        std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+        return true;
+      }
+    }
+    else { // equal based on value
+      if (a == b || equalRule(a, b)) {
+        std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+        return true;
+      }
+    }
+    return false;
+  }
+
+  template <typename T>
   std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateInside(
     VEC<T> &vec,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    std::tuple<VEC<T>, VEC<T>> wastedTuple({}, {});
-
-    static std::function<bool(
-      CR<T>&, CR<T>&, CR_UI
-    )> lambda = [&](
-      CR<T> &a, CR<T> &b, CR_UI cutIdx
-    )->bool {
-      // equal based on pointer
-      if constexpr (std::is_pointer<T>::value) {
-        if (a == b) {
-          std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
-          return true;
-        }
-      }
-      else { // equal based on value
-        if (a == b || equalRule(a, b)) {
-          std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
-          return true;
-        }
-      }
-      return false;
-    };
+    WASTED_TUPLE wastedTuple({}, {});
 
     if (originalAscending) {
       for (int i = 0; i < vec.size() - 1; i++) {
         for (int j = i+1; j < vec.size(); j++) {
-          if (lambda(vec[i], vec[j], j)) j--;
+          if (VecTools<T>::fillWastedDuplicateInside(
+            vec, equalRule, wastedTuple,
+            vec[i], vec[j], j
+          )) { j--; }
         }
       }
     }
     else for (int i = vec.size() - 1; i > 0; i--) {
       for (int j = i - 1; j >= 0; j--) {
-        if (lambda(vec[i], vec[j], j)) i--;
+        if (VecTools<T>::fillWastedDuplicateInside(
+          vec, equalRule, wastedTuple,
+          vec[i], vec[j], j
+        )) { i--; }
       }
     }
 
     return wastedTuple;
+  }
+
+  template <typename T>
+  bool VecTools<T>::fillWastedDuplicateToMember(
+    VEC<T> &vec, WASTED_TUPLE &wastedTuple,
+    EQUAL_RULE &equalRule, bool &firstIgnored,
+    CR<T> &a, CR<T> &b, CR_UI cutIdx
+  ) {
+    // equal based on pointer
+    if constexpr (std::is_pointer<T>::value) {
+      if (a == b) {
+        if (firstIgnored) {
+          std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
+        else firstIgnored = true;
+      }
+    }
+    else { // equal based on value
+      if (a == b || equalRule(a, b)) {
+        if (firstIgnored) {
+          std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          return true;
+        }
+        else firstIgnored = true;
+      }
+    }
+    return false;
   }
 
   template <typename T>
@@ -277,43 +312,24 @@ namespace utils {
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    std::tuple<VEC<T>, VEC<T>> wastedTuple({}, {});
+    WASTED_TUPLE wastedTuple({}, {});
     bool firstIgnored = false;
-
-    static std::function<bool(
-      CR<T>&, CR<T>&, CR_UI
-    )> lambda = [&](
-      CR<T> &a, CR<T> &b, CR_UI cutIdx
-    )->bool {
-      // equal based on pointer
-      if constexpr (std::is_pointer<T>::value) {
-        if (a == b) {
-          if (firstIgnored) {
-            std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
-            return true;
-          }
-          else firstIgnored = true;
-        }
-      }
-      else { // equal based on value
-        if (a == b || equalRule(a, b)) {
-          if (firstIgnored) {
-            std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
-            return true;
-          }
-          else firstIgnored = true;
-        }
-      }
-      return false;
-    };
 
     if (originalAscending) {
       for (int i = 0; i < vec.size(); i++) {
-        if (lambda(mem, vec[i], i)) i--;
+        if (VecTools<T>::fillWastedDuplicateToMember(
+          vec, wastedTuple,
+          equalRule, firstIgnored,
+          mem, vec[i], i
+        )) { i--; }
       }
     }
     else for (int i = vec.size() - 1; i >= 0; i--) {
-      lambda(mem, vec[i], i);
+      VecTools<T>::fillWastedDuplicateToMember(
+        vec, wastedTuple,
+        equalRule, firstIgnored,
+        mem, vec[i], i
+      );
     }
 
     return wastedTuple;

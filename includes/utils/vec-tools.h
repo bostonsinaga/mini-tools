@@ -7,8 +7,28 @@ namespace utils {
   template <class T>
   class VecTools {
   public:
+    typedef std::tuple<VEC<T>, VEC<T>> WASTED_TUPLE;
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
+  private:
+    // invoked in the loop of 'clean..' method
+    static bool fillWastedDuplicateInside (
+      VEC<T> &vec, EQUAL_RULE &equalRule,
+      WASTED_TUPLE &wastedTuple,
+      CR<T> &a, CR<T> &b, CR_UI cutIdx
+    );
+
+    /**
+     * Could be a lambda but better to be
+     * a separate method to avoid errors.
+     */
+    static bool fillWastedDuplicateToMember(
+      VEC<T> &vec, WASTED_TUPLE &wastedTuple,
+      EQUAL_RULE &equalRule, bool &firstIgnored,
+      CR<T> &a, CR<T> &b, CR_UI cutIdx
+    );
+
+  public:
     static bool hasIndex(VEC<T> &vec, CR_INT idx);
     static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
 
@@ -92,19 +112,26 @@ namespace utils {
     );
 
     /**
+     * Compare each member internally.
+     * 
      * Returns 2 different values.
      * One based on 'pointer' equality
-     * and the other based on value equality
+     * and the other based on value equality.
      */
-    static std::tuple<VEC<T>, VEC<T>> cleanDuplicateInside(
+    static WASTED_TUPLE cleanDuplicateInside(
       VEC<T> &vec,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
-    // Returns the same as 'cleanDuplicateInside'
-    static std::tuple<VEC<T>, VEC<T>> cleanDuplicateToMember(
+    /**
+     * Compare all members with an external value
+     * or with one of its own members.
+     * 
+     * Returns the same as 'cleanDuplicateInside'.
+     */
+    static WASTED_TUPLE cleanDuplicateToMember(
       VEC<T> &vec, CR<T> mem,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
