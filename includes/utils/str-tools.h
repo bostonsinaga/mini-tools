@@ -66,6 +66,22 @@ namespace utils {
 
     static bool isWhitespace(CR_CH ch);
     static bool isSpaceLine(CR_CH ch);
+
+    static bool isDigit(CR_CH ch) {
+      return ch >= '0' && ch <= '9';
+    }
+
+    static bool isUppercaseLetter(CR_CH ch) {
+      return ch >= 'A' && ch <= 'Z';
+    }
+
+    static bool isLowercaseLetter(CR_CH ch) {
+      return ch >= 'a' && ch <= 'z';
+    }
+
+    static bool isLetter(CR_CH ch) {
+      return isUppercaseLetter(ch) || isLowercaseLetter(ch);
+    }
   };
 }}
 
