@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__TYPES_H__
 #define __MINI_TOOLS__TYPES_H__
 
+#include <array>
 #include <fstream>
 #include <functional>
 #include <iostream>
@@ -55,7 +56,7 @@ namespace mini_tools {
   typedef unsigned long long int ULLI;
   typedef long double LD;
 
-  /** SHORTENED TEMPLATES */
+  /** SHORTENED VECTOR TEMPLATES */
 
   template <typename T>
   using CR = const T&;
@@ -72,11 +73,33 @@ namespace mini_tools {
   template <typename T>
   using CR_VEC2 = const VEC2<T>&;
 
-  template <typename T>
-  using PAIR1 = std::pair<T, T>;
+  /** SHORTENED VECTOR ARRAY TEMPLATES */
+
+  template <typename T, size_t N>
+  using ARR = std::array<T, N>;
+
+  template <typename T, size_t N>
+  using CR_ARR = const ARR<T, N>&;
+
+  template <typename T, size_t N>
+  using VECARR = VEC<ARR<T, N>>;
+
+  template <typename T, size_t N>
+  using VECARR2 = VEC<VECARR<T, N>>;
+
+  template <typename T, size_t N>
+  using CR_VECARR = const VECARR<T, N>&;
+
+  template <typename T, size_t N>
+  using CR_VECARR2 = const VECARR2<T, N>&;
+
+  /** SHORTENED PAIR TEMPLATES */
 
   template <typename T>
-  using CR_PAIR1 = const PAIR1<T>&;
+  using PAIR = std::pair<T, T>;
+
+  template <typename T>
+  using CR_PAIR = const PAIR<T>&;
 
   template <typename T, typename U>
   using PAIR2 = std::pair<T, U>;
@@ -86,79 +109,79 @@ namespace mini_tools {
 
   /** SHORTENED VALUE VECTORS */
 
-  typedef std::vector<bool> VEC_BOL;
-  typedef std::vector<std::string> VEC_STR;
-  typedef std::vector<char> VEC_CH;
-  typedef std::vector<wchar_t> VEC_WCH;
-  typedef std::vector<int> VEC_INT;
-  typedef std::vector<SI> VEC_SI;
-  typedef std::vector<LI> VEC_LI;
-  typedef std::vector<LLI> VEC_LLI;
-  typedef std::vector<USI> VEC_USI;
-  typedef std::vector<UI> VEC_UI;
-  typedef std::vector<ULI> VEC_ULI;
-  typedef std::vector<ULLI> VEC_ULLI;
-  typedef std::vector<size_t> VEC_SZ;
-  typedef std::vector<time_t> VEC_TM;
-  typedef std::vector<float> VEC_FLT;
-  typedef std::vector<double> VEC_DBL;
-  typedef std::vector<LD> VEC_LD;
+  typedef VEC<bool> VEC_BOL;
+  typedef VEC<std::string> VEC_STR;
+  typedef VEC<char> VEC_CH;
+  typedef VEC<wchar_t> VEC_WCH;
+  typedef VEC<int> VEC_INT;
+  typedef VEC<SI> VEC_SI;
+  typedef VEC<LI> VEC_LI;
+  typedef VEC<LLI> VEC_LLI;
+  typedef VEC<USI> VEC_USI;
+  typedef VEC<UI> VEC_UI;
+  typedef VEC<ULI> VEC_ULI;
+  typedef VEC<ULLI> VEC_ULLI;
+  typedef VEC<size_t> VEC_SZ;
+  typedef VEC<time_t> VEC_TM;
+  typedef VEC<float> VEC_FLT;
+  typedef VEC<double> VEC_DBL;
+  typedef VEC<LD> VEC_LD;
 
-  typedef std::vector<VEC_BOL> VEC2_BOL;
-  typedef std::vector<VEC_STR> VEC2_STR;
-  typedef std::vector<VEC_CH> VEC2_CH;
-  typedef std::vector<VEC_WCH> VEC2_WCH;
-  typedef std::vector<VEC_INT> VEC2_INT;
-  typedef std::vector<VEC_SI> VEC2_SI;
-  typedef std::vector<VEC_LI> VEC2_LI;
-  typedef std::vector<VEC_LLI> VEC2_LLI;
-  typedef std::vector<VEC_USI> VEC2_USI;
-  typedef std::vector<VEC_UI> VEC2_UI;
-  typedef std::vector<VEC_ULI> VEC2_ULI;
-  typedef std::vector<VEC_ULLI> VEC2_ULLI;
-  typedef std::vector<VEC_SZ> VEC2_SZ;
-  typedef std::vector<VEC_TM> VEC2_TM;
-  typedef std::vector<VEC_FLT> VEC2_FLT;
-  typedef std::vector<VEC_DBL> VEC2_DBL;
-  typedef std::vector<VEC_LD> VEC2_LD;
+  typedef VEC<VEC_BOL> VEC2_BOL;
+  typedef VEC<VEC_STR> VEC2_STR;
+  typedef VEC<VEC_CH> VEC2_CH;
+  typedef VEC<VEC_WCH> VEC2_WCH;
+  typedef VEC<VEC_INT> VEC2_INT;
+  typedef VEC<VEC_SI> VEC2_SI;
+  typedef VEC<VEC_LI> VEC2_LI;
+  typedef VEC<VEC_LLI> VEC2_LLI;
+  typedef VEC<VEC_USI> VEC2_USI;
+  typedef VEC<VEC_UI> VEC2_UI;
+  typedef VEC<VEC_ULI> VEC2_ULI;
+  typedef VEC<VEC_ULLI> VEC2_ULLI;
+  typedef VEC<VEC_SZ> VEC2_SZ;
+  typedef VEC<VEC_TM> VEC2_TM;
+  typedef VEC<VEC_FLT> VEC2_FLT;
+  typedef VEC<VEC_DBL> VEC2_DBL;
+  typedef VEC<VEC_LD> VEC2_LD;
 
   /** SHORTENED POINTER VECTORS */
 
-  typedef std::vector<bool*> VEC_BOL_P;
-  typedef std::vector<std::string*> VEC_STR_P;
-  typedef std::vector<char*> VEC_CH_P;
-  typedef std::vector<wchar_t*> VEC_WCH_P;
-  typedef std::vector<int*> VEC_INT_P;
-  typedef std::vector<SI*> VEC_SI_P;
-  typedef std::vector<LI*> VEC_LI_P;
-  typedef std::vector<LLI*> VEC_LLI_P;
-  typedef std::vector<USI*> VEC_USI_P;
-  typedef std::vector<UI*> VEC_UI_P;
-  typedef std::vector<ULI*> VEC_ULI_P;
-  typedef std::vector<ULLI*> VEC_ULLI_P;
-  typedef std::vector<size_t*> VEC_SZ_P;
-  typedef std::vector<time_t*> VEC_TM_P;
-  typedef std::vector<float*> VEC_FLT_P;
-  typedef std::vector<double*> VEC_DBL_P;
-  typedef std::vector<LD*> VEC_LD_P;
+  typedef VEC<bool*> VEC_BOL_P;
+  typedef VEC<std::string*> VEC_STR_P;
+  typedef VEC<char*> VEC_CH_P;
+  typedef VEC<wchar_t*> VEC_WCH_P;
+  typedef VEC<int*> VEC_INT_P;
+  typedef VEC<SI*> VEC_SI_P;
+  typedef VEC<LI*> VEC_LI_P;
+  typedef VEC<LLI*> VEC_LLI_P;
+  typedef VEC<USI*> VEC_USI_P;
+  typedef VEC<UI*> VEC_UI_P;
+  typedef VEC<ULI*> VEC_ULI_P;
+  typedef VEC<ULLI*> VEC_ULLI_P;
+  typedef VEC<size_t*> VEC_SZ_P;
+  typedef VEC<time_t*> VEC_TM_P;
+  typedef VEC<float*> VEC_FLT_P;
+  typedef VEC<double*> VEC_DBL_P;
+  typedef VEC<LD*> VEC_LD_P;
 
-  typedef std::vector<VEC_BOL_P> VEC2_BOL_P;
-  typedef std::vector<VEC_STR_P> VEC2_STR_P;
-  typedef std::vector<VEC_CH_P> VEC2_CH_P;
-  typedef std::vector<VEC_WCH_P> VEC2_WCH_P;
-  typedef std::vector<VEC_INT_P> VEC2_INT_P;
-  typedef std::vector<VEC_SI_P> VEC2_SI_P;
-  typedef std::vector<VEC_LI_P> VEC2_LI_P;
-  typedef std::vector<VEC_LLI_P> VEC2_LLI_P;
-  typedef std::vector<VEC_USI_P> VEC2_USI_P;
-  typedef std::vector<VEC_UI_P> VEC2_UI_P;
-  typedef std::vector<VEC_ULI_P> VEC2_ULI_P;
-  typedef std::vector<VEC_ULLI_P> VEC2_ULLI_P;
-  typedef std::vector<VEC_SZ_P> VEC2_SZ_P;
-  typedef std::vector<VEC_TM_P> VEC2_TM_P;
-  typedef std::vector<VEC_FLT_P> VEC2_FLT_P;
-  typedef std::vector<VEC_DBL_P> VEC2_DBL_P;
-  typedef std::vector<VEC_LD_P> VEC2_LD_P;
+  typedef VEC<VEC_BOL_P> VEC2_BOL_P;
+  typedef VEC<VEC_STR_P> VEC2_STR_P;
+  typedef VEC<VEC_CH_P> VEC2_CH_P;
+  typedef VEC<VEC_WCH_P> VEC2_WCH_P;
+  typedef VEC<VEC_INT_P> VEC2_INT_P;
+  typedef VEC<VEC_SI_P> VEC2_SI_P;
+  typedef VEC<VEC_LI_P> VEC2_LI_P;
+  typedef VEC<VEC_LLI_P> VEC2_LLI_P;
+  typedef VEC<VEC_USI_P> VEC2_USI_P;
+  typedef VEC<VEC_UI_P> VEC2_UI_P;
+  typedef VEC<VEC_ULI_P> VEC2_ULI_P;
+  typedef VEC<VEC_ULLI_P> VEC2_ULLI_P;
+  typedef VEC<VEC_SZ_P> VEC2_SZ_P;
+  typedef VEC<VEC_TM_P> VEC2_TM_P;
+  typedef VEC<VEC_FLT_P> VEC2_FLT_P;
+  typedef VEC<VEC_DBL_P> VEC2_DBL_P;
+  typedef VEC<VEC_LD_P> VEC2_LD_P;
 
   /** SHORTENED CONSTANT REFERENCES */
 
