@@ -1,12 +1,13 @@
 #ifndef __MINI_TOOLS__TYPES_H__
 #define __MINI_TOOLS__TYPES_H__
 
-#include <type_traits>
+#include <fstream>
 #include <functional>
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include <tuple>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace mini_tools {
 
@@ -70,6 +71,18 @@ namespace mini_tools {
 
   template <typename T>
   using CR_VEC2 = const VEC2<T>&;
+
+  template <typename T>
+  using PAIR1 = std::pair<T, T>;
+
+  template <typename T>
+  using CR_PAIR1 = const PAIR1<T>&;
+
+  template <typename T, typename U>
+  using PAIR2 = std::pair<T, U>;
+
+  template <typename T, typename U>
+  using CR_PAIR2 = const PAIR2<T, U>&;
 
   /** SHORTENED VALUE VECTORS */
 
