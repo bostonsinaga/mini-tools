@@ -114,7 +114,7 @@ namespace mini_tools {
   using CR_VECPAIR = const VECPAIR<T>&;
 
   template <typename T, typename U>
-  using VECPAIR2 = VEC<PAIR<T, U>>;
+  using VECPAIR2 = VEC<PAIR2<T, U>>;
 
   template <typename T, typename U>
   using CR_VECPAIR2 = const VECPAIR2<T, U>&;
