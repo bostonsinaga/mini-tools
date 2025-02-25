@@ -82,16 +82,16 @@ namespace mini_tools {
   using CR_ARR = const ARR<T, N>&;
 
   template <typename T, size_t N>
-  using VECARR = VEC<ARR<T, N>>;
+  using VEC_ARR = VEC<ARR<T, N>>;
 
   template <typename T, size_t N>
-  using VECARR2 = VEC<VECARR<T, N>>;
+  using VEC_ARR2 = VEC<VEC_ARR<T, N>>;
 
   template <typename T, size_t N>
-  using CR_VECARR = const VECARR<T, N>&;
+  using CR_VEC_ARR = const VEC_ARR<T, N>&;
 
   template <typename T, size_t N>
-  using CR_VECARR2 = const VECARR2<T, N>&;
+  using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
 
   /** SHORTENED PAIR TEMPLATES */
 
@@ -108,16 +108,16 @@ namespace mini_tools {
   using CR_PAIR2 = const PAIR2<T, U>&;
 
   template <typename T>
-  using VECPAIR = VEC<PAIR<T>>;
+  using VEC_PAIR = VEC<PAIR<T>>;
 
   template <typename T>
-  using CR_VECPAIR = const VECPAIR<T>&;
+  using CR_VEC_PAIR = const VEC_PAIR<T>&;
 
   template <typename T, typename U>
-  using VECPAIR2 = VEC<PAIR2<T, U>>;
+  using VEC_PAIR2 = VEC<PAIR2<T, U>>;
 
   template <typename T, typename U>
-  using CR_VECPAIR2 = const VECPAIR2<T, U>&;
+  using CR_VEC_PAIR2 = const VEC_PAIR2<T, U>&;
 
   /** SHORTENED VALUE VECTORS */
 
