@@ -107,6 +107,18 @@ namespace mini_tools {
   template <typename T, typename U>
   using CR_PAIR2 = const PAIR2<T, U>&;
 
+  template <typename T>
+  using VECPAIR = VEC<PAIR<T>>;
+
+  template <typename T>
+  using CR_VECPAIR = const VECPAIR<T>&;
+
+  template <typename T, typename U>
+  using VECPAIR2 = VEC<PAIR<T, U>>;
+
+  template <typename T, typename U>
+  using CR_VECPAIR2 = const VECPAIR2<T, U>&;
+
   /** SHORTENED VALUE VECTORS */
 
   typedef VEC<bool> VEC_BOL;
