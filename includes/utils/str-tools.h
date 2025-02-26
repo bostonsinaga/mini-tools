@@ -64,8 +64,9 @@ namespace utils {
       CR_BOL separatedExceptLast = true
     );
 
-    static bool isWhitespace(CR_CH ch);
-    static bool isSpaceLine(CR_CH ch);
+    static bool isWhitespace(CR_CH ch) {
+      return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
+    }
 
     static bool isDigit(CR_CH ch) {
       return ch >= '0' && ch <= '9';
