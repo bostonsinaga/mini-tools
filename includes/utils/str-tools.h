@@ -64,6 +64,22 @@ namespace utils {
       CR_BOL separatedExceptLast = true
     );
 
+    /**
+     * Find the first character index other than
+     * space or newline from left and right.
+     */
+    static void findSpaceBoundaryIndex(
+      std::string &text,
+      int &forwardSpaceBoundaryIndex,
+      int &reverseSpaceBoundaryIndex
+    );
+
+    /**
+     * Change non-capital letters after dots
+     * and reduce excess spaces inside.
+     */
+    static void tidyUp(std::string &text);
+
     static bool isWhitespace(CR_CH ch) {
       return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
     }
