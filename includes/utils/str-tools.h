@@ -78,7 +78,10 @@ namespace utils {
      * Change non-capital letters after dots
      * and reduce excess spaces inside.
      */
-    static void tidyUp(std::string &text);
+    static void tidyUp(
+      std::string &text,
+      CR_BOL noNewline = false
+    );
 
     static bool isWhitespace(CR_CH ch) {
       return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';

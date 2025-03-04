@@ -165,8 +165,10 @@ namespace utils {
     }
   }
 
-  void StrTools::tidyUp(std::string &text) {
-
+  void StrTools::tidyUp(
+    std::string &text,
+    CR_BOL noNewline
+  ) {
     // start with capital letter
     for (int i = 0; i < text.length(); i++) {
       if (!isWhitespace(text[i])) {
@@ -185,17 +187,34 @@ namespace utils {
 
     /** Inner Tidying */
 
-    enum {space, newline};
-    bool willCapitalized = false;
-    VEC_INT excessIndexes[2];
+    enum recently {character, space, newline};
+    PAIR<recently> recent {character, character};
+    size_t sliceIndex = 0, sliceSize = 0;
+
+    bool mayNeedSpace = false,
+      willCapitalized = false;
 
     for (int i = 0; i < text.length(); i++) {
       // dot detected
       if (text[i] == '.') {
+        mayNeedSpace = true;
         willCapitalized = true;
+        recent.second = recent.first;
+        recent.first = character;
       }
       // change to uppercase
       else if (isLetter(text[i])) {
+        recent.second = recent.first;
+        recent.first = character;
+
+        // add space between dot and letter
+        if (mayNeedSpace) {
+          mayNeedSpace = false;
+          text.insert(text.begin() + i, ' ');
+          i++;
+        }
+
+        // letter after the dot changed to uppercase
         if (willCapitalized) {
           changeToUppercase(text[i]);
           willCapitalized = false;
@@ -204,79 +223,60 @@ namespace utils {
       // numbers ignored
       else if (isDigit(text[i])) {
         willCapitalized = false;
+        recent.second = recent.first;
+        recent.first = character;
       }
       // replace tab to space
       else if (text[i] == '\t') {
         text[i] = ' ';
-        excessIndexes[space].push_back(i);
+        recent.second = recent.first;
+        recent.first = space;
       }
       // replace carriage return to newline
       else if (text[i] == '\r') {
-        text[i] = '\n';
-        excessIndexes[newline].push_back(i);
+        if (noNewline) {
+          text[i] = ' ';
+          recent.second = recent.first;
+          recent.first = space;
+        }
+        else {
+          text[i] = '\n';
+          recent.second = recent.first;
+          recent.first = newline;
+        }
       }
       // space detected
       else if (text[i] == ' ') {
-        excessIndexes[space].push_back(i);
+        recent.second = recent.first;
+        recent.first = space;
       }
       // newline detected
       else if (text[i] == '\n') {
-        excessIndexes[newline].push_back(i);
-      }
-    }
-
-    /** Slice Excess Spaces */
-
-    int pivot, duplicateCount, lastIndex;
-    bool isNextEqual;
-    VEC_PAIR<int> boundaries;
-
-    for (int i = 0; i < 2; i++) {
-
-      // reset
-      lastIndex = int(excessIndexes[i].size()) - 1;
-      pivot = 0;
-      duplicateCount = 0;
-
-      // detect index with a difference of one
-      for (int j = 0; j < lastIndex; j++) {
-        isNextEqual = excessIndexes[i][j] + 1 == excessIndexes[i][j+1];
-
-        // yes
-        if (isNextEqual) duplicateCount++;
-
-        // no or the last 'j'
-        if (!isNextEqual || j == lastIndex - 1) {
-
-          // first duplication index marked
-          if (duplicateCount > 0) {
-
-            boundaries.push_back({
-              excessIndexes[i][pivot],
-              duplicateCount
-            });
-
-            duplicateCount = 0;
-          }
-
-          // checkpoint
-          pivot = j+1;
+        if (noNewline) {
+          text[i] = ' ';
+          recent.second = recent.first;
+          recent.first = space;
+        }
+        else {
+          recent.second = recent.first;
+          recent.first = newline;
         }
       }
-    }
 
-    // whitespaces boundary indexes united
-    std::sort(boundaries.begin(), boundaries.end());
+      // non-consecutive whitespace characters detected
+      if (recent.first != character || recent.second != character) {
+        if (recent.first != recent.second) {
 
-    // remove the duplicates
-    for (int i = 0; i < boundaries.size(); i++) {
+          // remove the excess
+          if (sliceSize > 0) {
+            text = text.substr(0, sliceIndex + 1)
+              + text.substr(sliceIndex + sliceSize + 1);
+          }
 
-      text = text.substr(0, boundaries[i].first + 1)
-        + text.substr(boundaries[i].first + boundaries[i].second + 1);
-
-      // adjust to the rest
-      for (int j = i+1; j < boundaries.size(); j++) {
-        boundaries[j].first -= boundaries[i].second - 1;
+          sliceIndex = i;
+          sliceSize = 0;
+        }
+        else sliceSize++;
       }
     }
   }
