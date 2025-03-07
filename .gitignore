@@ -1,4 +1,4 @@
 build/
-resources/generator.exe
-resources/sample.txt
 test/outputs/
+test/res/generator.exe
+test/res/sample.txt
