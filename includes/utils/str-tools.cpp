@@ -167,10 +167,15 @@ namespace utils {
 
   void StrTools::tidyUp(
     std::string &text,
-    CR_BOL noNewline
+    CR_BOL noNewline,
+    CR_INT forwardSpaceBoundaryIndex,
+    CR_INT reverseSpaceBoundaryIndex
   ) {
     // start with capital letter
-    for (int i = 0; i < text.length(); i++) {
+    for (int i = forwardSpaceBoundaryIndex < 0 ?
+      0 : forwardSpaceBoundaryIndex;
+      i < text.length(); i++
+    ) {
       if (!isWhitespace(text[i])) {
         changeCharToUppercase(text, i);
         break;
@@ -178,7 +183,10 @@ namespace utils {
     }
 
     // end with period
-    for (int i = text.length(); i >= 0; i--) {
+    for (int i = reverseSpaceBoundaryIndex >= text.length() ?
+      text.length() - 1 : reverseSpaceBoundaryIndex;
+      i >= 0; i--
+    ) {
       if (!isWhitespace(text[i])) {
         text.insert(i, ".");
         break;

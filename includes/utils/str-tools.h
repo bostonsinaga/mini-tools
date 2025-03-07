@@ -80,7 +80,9 @@ namespace utils {
      */
     static void tidyUp(
       std::string &text,
-      CR_BOL noNewline = false
+      CR_BOL noNewline = false,
+      CR_INT forwardSpaceBoundaryIndex = -1,
+      CR_INT reverseSpaceBoundaryIndex = -1
     );
 
     static bool isWhitespace(CR_CH ch) {
