@@ -7,6 +7,9 @@ namespace mini_tools {
 namespace data_structures {
 namespace linked_list {
 
+  //______________________|
+  // CIRCULAR LINKED LIST |
+  //______________________|
   class Node {
   private:
     bool notExist(
