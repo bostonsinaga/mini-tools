@@ -11,6 +11,9 @@ namespace tree {
   typedef std::vector<Node*> VEC_NODE;
   typedef const VEC_NODE& CR_VEC_NODE;
 
+  //____________|
+  // N-ARY TREE |
+  //____________|
   class Node : public linked_list::Node {
   private:
     void cleanDuplicateToLastAdded(Node *node);
