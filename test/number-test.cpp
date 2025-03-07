@@ -5,7 +5,7 @@ int main() {
   std::filesystem::create_directory("outputs");
 
   std::string filenames[7] {
-    "../resources/sample.txt",
+    "res/sample.txt",
     "outputs/output-bubble-sort.txt",
     "outputs/output-comb-sort.txt",
     "outputs/output-insertion-sort.txt",

@@ -1,1 +1,1 @@
-"../resources/generator.exe" number 10000 100 5 ../resources/sample.txt
+"res/generator.exe" number 10000 100 5 res/sample.txt
