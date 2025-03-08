@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__SIZE_TOOLS_CPP__
 
 namespace mini_tools {
-namespace utils {
+namespace data_structures {
 
   template <typename T>
   VEC_SZ SizeTools<T>::generateSizes(CR_VEC2<T> vecs) {

@@ -2,9 +2,9 @@
 #define __MINI_TOOLS_H__
 
 #include "types.h"
-#include "sorters/sorters.h"
 #include "utils/utils.h"
 #include "data-structures/data-structures.h"
+#include "sorters/sorters.h"
 
 namespace mt = mini_tools;
 

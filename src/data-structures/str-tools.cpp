@@ -5,7 +5,7 @@
 #include "data-structures/str-tools.h"
 
 namespace mini_tools {
-namespace utils {
+namespace data_structures {
 
   void StrTools::changeCase(char &ch, CR_BOL isUpper) {
     if (isUpper) {

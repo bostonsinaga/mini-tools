@@ -6,7 +6,7 @@
 #include "utils/calculators.h"
 
 namespace mini_tools {
-namespace algorithms {
+namespace utils {
 
   int Calc::factorial(int n) {
     int ret = n;

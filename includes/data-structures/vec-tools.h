@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_H__
 
 namespace mini_tools {
-namespace utils {
+namespace data_structures {
 
   template <class T>
   class VecTools {

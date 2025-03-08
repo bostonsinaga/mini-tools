@@ -4,7 +4,7 @@
 #include "types.h"
 
 namespace mini_tools {
-namespace algorithms {
+namespace utils {
 
   class Calc {
   public:

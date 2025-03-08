@@ -4,7 +4,7 @@
 #include "types.h"
 
 namespace mini_tools {
-namespace utils {
+namespace data_structures {
 
   class StrTools {
   private:
