@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_CPP__
 
 namespace mini_tools {
-namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -18,10 +17,10 @@ namespace sorters {
     int subSize[2] = {mid - left + 1, right - mid};
 
     VEC<T> subVec_messy[2] = {
-      utils::VecTools<T>::cutInterval(
+      data_structures::VecTools<T>::cutInterval(
         messy, left, left + subSize[0] - 1, true
       ),
-      utils::VecTools<T>::cutInterval(
+      data_structures::VecTools<T>::cutInterval(
         messy, left + subSize[0], left + mid + subSize[1], true
       )
     };
@@ -30,11 +29,11 @@ namespace sorters {
 
     if constexpr (notNullptr<U>()) {
       if (attached) {
-        subVec_attached[0] = utils::VecTools<T>::cutInterval(
+        subVec_attached[0] = data_structures::VecTools<T>::cutInterval(
           *attached, left, left + subSize[0] - 1, true
         );
 
-        subVec_attached[1] = utils::VecTools<T>::cutInterval(
+        subVec_attached[1] = data_structures::VecTools<T>::cutInterval(
           *attached, left + subSize[0], left + mid + subSize[1], true
         );
       }
@@ -121,6 +120,6 @@ namespace sorters {
   ) {
     Merge<T, U>::partition(messy, nullptr, 0, messy.size() - 1, ascending);
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_CPP__

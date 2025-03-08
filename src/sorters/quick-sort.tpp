@@ -4,7 +4,6 @@
 #include <ctime>
 
 namespace mini_tools {
-namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -137,6 +136,6 @@ namespace sorters {
   ) {
     Quick<T, U>::recursion(messy, nullptr, 0, messy.size() - 1, ascending, scheme);
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__QUICK_SORT_CPP__

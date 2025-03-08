@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_SORT_CPP__
 
 namespace mini_tools {
-namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -47,6 +46,6 @@ namespace sorters {
   ) {
     Bubble<T, U>::process(messy, nullptr, ascending);
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_SORT_CPP__

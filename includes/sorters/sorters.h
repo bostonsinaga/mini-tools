@@ -8,4 +8,6 @@
 #include "quick-sort.h"
 #include "selection-sort.h"
 
+namespace mt_sor = mini_tools::sorters;
+
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS_H__

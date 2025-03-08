@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__INSERTION_SORT_H__
 
 namespace mini_tools {
-namespace algorithms {
 namespace sorters {
 
   template <class T, class U = std::nullptr_t>
@@ -30,7 +29,7 @@ namespace sorters {
     template<typename, typename>
     friend class Quick;
   };
-}}}
+}}
 
 #include "sorters/insertion-sort.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__INSERTION_SORT_H__
