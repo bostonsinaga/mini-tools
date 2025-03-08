@@ -36,7 +36,7 @@ namespace tree {
   }
 
   Node *Node::getChild(CR_INT index) {
-    return utils::VecTools<Node*>::getAt(children, index, nullptr);
+    return VecTools<Node*>::getAt(children, index, nullptr);
   }
 
   Node *Node::getChild(CR_STR searched) {
@@ -74,7 +74,7 @@ namespace tree {
     // faster (danger)
     else {
       if (needEmpty) children = newChildren;
-      else utils::VecTools<Node*>::concat(children, newChildren);
+      else VecTools<Node*>::concat(children, newChildren);
     }
 
     for (int i = startIdx; i < children.size(); i++) {
@@ -145,7 +145,7 @@ namespace tree {
 
   void Node::cleanDuplicatesInChildren() {
     std::tuple<VEC_NODE, VEC_NODE>
-      wastedTuple = utils::VecTools<Node*>::cleanDuplicateInside(
+      wastedTuple = VecTools<Node*>::cleanDuplicateInside(
         children, false,
         [](Node *rep, Node *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -161,7 +161,7 @@ namespace tree {
 
   void Node::cleanDuplicateToLastAdded(Node *node) {
     std::tuple<VEC_NODE, VEC_NODE>
-      wastedTuple = utils::VecTools<Node*>::cleanDuplicateToMember(
+      wastedTuple = VecTools<Node*>::cleanDuplicateToMember(
         children, node, false,
         [](Node *rep, Node *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -184,7 +184,7 @@ namespace tree {
   Node *Node::dismantle(CR_INT index) {
     Node *target = children[index];
     target->resign();
-    utils::VecTools<Node*>::cutSingle(children, index);
+    VecTools<Node*>::cutSingle(children, index);
     return target;
   }
 
@@ -210,7 +210,7 @@ namespace tree {
   }
 
   void Node::removeChild(CR_INT index) {
-    if (utils::VecTools<Node*>::hasIndex(children, index)) {
+    if (VecTools<Node*>::hasIndex(children, index)) {
       dismantleDestroy(index);
     }
   }
@@ -228,7 +228,7 @@ namespace tree {
   }
 
   Node *Node::releaseChild(CR_INT index) {
-    if (utils::VecTools<Node*>::hasIndex(children, index)) {
+    if (VecTools<Node*>::hasIndex(children, index)) {
       return dismantleRelease(index);
     }
     return nullptr;
