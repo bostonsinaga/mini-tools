@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__STR_TOOLS_H__
-#define __MINI_TOOLS__UTILS__STR_TOOLS_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_H__
+#define __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_H__
 
 #include "types.h"
 
@@ -107,4 +107,4 @@ namespace data_structures {
   };
 }}
 
-#endif // __MINI_TOOLS__UTILS__STR_TOOLS_H__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_H__

@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS_H__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS_H__
+#ifndef __MINI_TOOLS__SORTERS_H__
+#define __MINI_TOOLS__SORTERS_H__
 
 #include "bubble-sort.h"
 #include "comb-sort.h"
@@ -10,4 +10,4 @@
 
 namespace mt_sor = mini_tools::sorters;
 
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS_H__
+#endif // __MINI_TOOLS__SORTERS_H__

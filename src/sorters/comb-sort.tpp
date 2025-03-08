@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_CPP__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_CPP__
+#ifndef __MINI_TOOLS__SORTERS__COMB_SORT_TPP__
+#define __MINI_TOOLS__SORTERS__COMB_SORT_TPP__
 
 namespace mini_tools {
 namespace sorters {
@@ -61,4 +61,4 @@ namespace sorters {
   }
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_CPP__
+#endif // __MINI_TOOLS__SORTERS__COMB_SORT_TPP__

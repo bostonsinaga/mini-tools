@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__SIZE_TOOLS_H__
-#define __MINI_TOOLS__UTILS__SIZE_TOOLS_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__SIZE_TOOLS_H__
+#define __MINI_TOOLS__DATA_STRUCTURES__SIZE_TOOLS_H__
 
 namespace mini_tools {
 namespace data_structures {
@@ -24,4 +24,4 @@ namespace data_structures {
 }}
 
 #include "data-structures/size-tools.tpp"
-#endif // __MINI_TOOLS__UTILS__SIZE_TOOLS_H__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__SIZE_TOOLS_H__

@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
-#define __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
 
 #include "utils/calculators.h"
 
@@ -379,4 +379,4 @@ namespace data_structures {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__

@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
-#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
+#ifndef __MINI_TOOLS__UTILS__CALCULATORS_CPP__
+#define __MINI_TOOLS__UTILS__CALCULATORS_CPP__
 
 #include <cmath>
 #include <algorithm>
@@ -150,4 +150,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
+#endif // __MINI_TOOLS__UTILS__CALCULATORS_CPP__

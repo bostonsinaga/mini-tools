@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
-#define __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_CPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_CPP__
 
 #include <algorithm>
 #include "data-structures/str-tools.h"
@@ -290,4 +290,4 @@ namespace data_structures {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__STR_TOOLS_CPP__
