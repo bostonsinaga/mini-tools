@@ -23,5 +23,5 @@ namespace utils {
   };
 }}
 
-#include "size-tools.tpp"
+#include "data-structures/size-tools.tpp"
 #endif // __MINI_TOOLS__UTILS__SIZE_TOOLS_H__

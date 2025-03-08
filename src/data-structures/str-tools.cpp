@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
 
 #include <algorithm>
-#include "str-tools.h"
+#include "data-structures/str-tools.h"
 
 namespace mini_tools {
 namespace utils {

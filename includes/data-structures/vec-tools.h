@@ -151,5 +151,5 @@ namespace utils {
   };
 }}
 
-#include "vec-tools.tpp"
+#include "data-structures/vec-tools.tpp"
 #endif // __MINI_TOOLS__UTILS__VEC_TOOLS_H__

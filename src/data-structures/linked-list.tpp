@@ -1,6 +1,10 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_TPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_TPP__
 
+//_____________________________|
+// DOUBLY CIRCULAR LINKED LIST |
+//_____________________________|
+
 namespace mini_tools {
 namespace data_structures {
 namespace linked_list {

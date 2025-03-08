@@ -1,7 +1,11 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__
 
-#include "linked-list.h"
+#include "data-structures/linked-list.h"
+
+//_____________________________|
+// DOUBLY CIRCULAR LINKED LIST |
+//_____________________________|
 
 namespace mini_tools {
 namespace data_structures {

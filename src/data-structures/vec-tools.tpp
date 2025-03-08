@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_CPP__
 
-#include "../algorithms/calculators.h"
-
 namespace mini_tools {
 namespace utils {
 

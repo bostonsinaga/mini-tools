@@ -1,15 +1,16 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
 #define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
 
-#include "../types.h"
+#include "types.h"
+
+//_____________________________|
+// DOUBLY CIRCULAR LINKED LIST |
+//_____________________________|
 
 namespace mini_tools {
 namespace data_structures {
 namespace linked_list {
 
-  //_____________________________|
-  // DOUBLY CIRCULAR LINKED LIST |
-  //_____________________________|
   class Node {
   private:
     bool notExist(
@@ -329,5 +330,5 @@ namespace linked_list {
   };
 }}}
 
-#include "linked-list.tpp"
+#include "data-structures/linked-list.tpp"
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__

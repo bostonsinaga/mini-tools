@@ -28,5 +28,5 @@ namespace sorters {
 	};
 }}}
 
-#include "selection-sort.tpp"
+#include "sorters/selection-sort.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_SORT_H__

@@ -3,6 +3,10 @@
 
 #include "linked-list.h"
 
+//____________|
+// N-ARY TREE |
+//____________|
+
 namespace mini_tools {
 namespace data_structures {
 namespace tree {
@@ -11,9 +15,6 @@ namespace tree {
   typedef std::vector<Node*> VEC_NODE;
   typedef const VEC_NODE& CR_VEC_NODE;
 
-  //____________|
-  // N-ARY TREE |
-  //____________|
   class Node : public linked_list::Node {
   private:
     void cleanDuplicateToLastAdded(Node *node);
