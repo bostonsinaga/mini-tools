@@ -1,6 +1,9 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES_H__
 #define __MINI_TOOLS__DATA_STRUCTURES_H__
 
+#include "size-tools.h"
+#include "str-tools.h"
+#include "vec-tools.h"
 #include "linked-list.h"
 #include "tree.h"
 
