@@ -10,49 +10,48 @@
 
 namespace mini_tools {
 namespace data_structures {
-namespace tree {
 
-  Node::Node(
+  Tree::Tree(
     CR_STR name_in,
-    Node *parent_in
+    Tree *parent_in
   ):
-  linked_list::Node::Node(name_in) {
+  LinkedList(name_in) {
     name = name_in;
     setParent(parent_in);
   }
 
-  bool Node::hasChild(Node *node) {
-    for (Node *nd : children) {
+  bool Tree::hasChild(Tree *node) {
+    for (Tree *nd : children) {
       if (nd == node) return true;
     }
     return false;
   }
 
-  bool Node::hasChild(CR_STR searched) {
-    for (Node *nd : children) {
+  bool Tree::hasChild(CR_STR searched) {
+    for (Tree *nd : children) {
       if (nd->name == searched) return true;
     }
     return false;
   }
 
-  Node *Node::getChild(CR_INT index) {
-    return VecTools<Node*>::getAt(children, index, nullptr);
+  Tree *Tree::getChild(CR_INT index) {
+    return VecTools<Tree*>::getAt(children, index, nullptr);
   }
 
-  Node *Node::getChild(CR_STR searched) {
-    for (Node *nd : children) {
+  Tree *Tree::getChild(CR_STR searched) {
+    for (Tree *nd : children) {
       if (nd->name == searched) return nd;
     }
     return nullptr;
   }
 
-  Node *Node::getRoot() {
-    Node *root = this;
+  Tree *Tree::getRoot() {
+    Tree *root = this;
     while (root->parent) root = root->parent;
     return root;
   }
 
-  void Node::setChildren(
+  void Tree::setChildren(
     CR_VEC_NODE newChildren,
     CR_BOL needEmpty,
     CR_BOL validating
@@ -66,7 +65,7 @@ namespace tree {
 
     // slower (safe)
     if (validating) {
-      for (Node *nd : newChildren) {
+      for (Tree *nd : newChildren) {
         if (nd) children.push_back(nd);
       }
       cleanDuplicatesInChildren();
@@ -74,7 +73,7 @@ namespace tree {
     // faster (danger)
     else {
       if (needEmpty) children = newChildren;
-      else VecTools<Node*>::concat(children, newChildren);
+      else VecTools<Tree*>::concat(children, newChildren);
     }
 
     for (int i = startIdx; i < children.size(); i++) {
@@ -83,7 +82,7 @@ namespace tree {
     }
   }
 
-  VEC_NODE Node::setChildrenRelease(
+  VEC_NODE Tree::setChildrenRelease(
     CR_VEC_NODE newChildren,
     CR_BOL validating
   ) {
@@ -92,7 +91,7 @@ namespace tree {
     return oldChildren;
   }
 
-  void Node::setChildrenReplace(
+  void Tree::setChildrenReplace(
     CR_VEC_NODE newChildren,
     CR_BOL validating
   ) {
@@ -100,15 +99,15 @@ namespace tree {
     setChildren(newChildren, true, validating);
   }
 
-  void Node::addChildren(
+  void Tree::addChildren(
     CR_VEC_NODE newChildren,
     CR_BOL validating
   ) {
     setChildren(newChildren, false, validating);
   }
 
-  void Node::addChild(
-    Node *node,
+  void Tree::addChild(
+    Tree *node,
     CR_BOL reconnected
   ) {
     if (node) {
@@ -125,8 +124,8 @@ namespace tree {
     }
   }
 
-  void Node::setParent(
-    Node *newParent,
+  void Tree::setParent(
+    Tree *newParent,
     CR_BOL reconnected
   ) {
     if (newParent) {
@@ -143,62 +142,62 @@ namespace tree {
     }
   }
 
-  void Node::cleanDuplicatesInChildren() {
+  void Tree::cleanDuplicatesInChildren() {
     std::tuple<VEC_NODE, VEC_NODE>
-      wastedTuple = VecTools<Node*>::cleanDuplicateInside(
+      wastedTuple = VecTools<Tree*>::cleanDuplicateInside(
         children, false,
-        [](Node *rep, Node *nd)->bool {
+        [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
           return false;
         }
       );
 
     // remove duplicates of same name
-    for (Node *nd : std::get<1>(wastedTuple)) {
+    for (Tree *nd : std::get<1>(wastedTuple)) {
       nd->remove();
     }
   }
 
-  void Node::cleanDuplicateToLastAdded(Node *node) {
+  void Tree::cleanDuplicateToLastAdded(Tree *node) {
     std::tuple<VEC_NODE, VEC_NODE>
-      wastedTuple = VecTools<Node*>::cleanDuplicateToMember(
+      wastedTuple = VecTools<Tree*>::cleanDuplicateToMember(
         children, node, false,
-        [](Node *rep, Node *nd)->bool {
+        [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
           return false;
         }
       );
 
     // remove duplicates of same name
-    for (Node *nd : std::get<1>(wastedTuple)) {
+    for (Tree *nd : std::get<1>(wastedTuple)) {
       nd->remove();
     }
   }
 
-  void Node::cleanChildren() {
-    for (Node *nd : children) {
+  void Tree::cleanChildren() {
+    for (Tree *nd : children) {
       nd->destroy(false);
     }
   }
 
-  Node *Node::dismantle(CR_INT index) {
-    Node *target = children[index];
+  Tree *Tree::dismantle(CR_INT index) {
+    Tree *target = children[index];
     target->resign();
-    VecTools<Node*>::cutSingle(children, index);
+    VecTools<Tree*>::cutSingle(children, index);
     return target;
   }
 
-  void Node::dismantleDestroy(CR_INT index) {
+  void Tree::dismantleDestroy(CR_INT index) {
     dismantle(index)->destroy(true);
   }
 
-  Node* Node::dismantleRelease(CR_INT index) {
+  Tree* Tree::dismantleRelease(CR_INT index) {
     children[index]->level = 0;
     children[index]->parent = nullptr;
     return dismantle(index);
   }
 
-  void Node::removeChild(Node *node) {
+  void Tree::removeChild(Tree *node) {
     if (!node) return;
 
     for (int i = 0; i < children.size(); i++) {
@@ -209,13 +208,13 @@ namespace tree {
     }
   }
 
-  void Node::removeChild(CR_INT index) {
-    if (VecTools<Node*>::hasIndex(children, index)) {
+  void Tree::removeChild(CR_INT index) {
+    if (VecTools<Tree*>::hasIndex(children, index)) {
       dismantleDestroy(index);
     }
   }
 
-  Node *Node::releaseChild(Node *node) {
+  Tree *Tree::releaseChild(Tree *node) {
     if (!node) return nullptr;
 
     for (int i = 0; i < children.size(); i++) {
@@ -227,17 +226,17 @@ namespace tree {
     return nullptr;
   }
 
-  Node *Node::releaseChild(CR_INT index) {
-    if (VecTools<Node*>::hasIndex(children, index)) {
+  Tree *Tree::releaseChild(CR_INT index) {
+    if (VecTools<Tree*>::hasIndex(children, index)) {
       return dismantleRelease(index);
     }
     return nullptr;
   }
 
-  VEC_NODE Node::releaseChildren() {
+  VEC_NODE Tree::releaseChildren() {
     VEC_NODE released = children;
 
-    for (Node *nd : children) {
+    for (Tree *nd : children) {
       nd->level = 0;
       nd->parent = nullptr;
     }
@@ -246,13 +245,13 @@ namespace tree {
     return released;
   }
 
-  void Node::destroy(CR_BOL firstOccurrence) {
+  void Tree::destroy(CR_BOL firstOccurrence) {
     if (firstOccurrence && parent) {
       parent->releaseChild(this);
     }
     cleanChildren();
-    linked_list::Node::remove();
+    LinkedList::remove();
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
