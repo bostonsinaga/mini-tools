@@ -9,41 +9,40 @@
 
 namespace mini_tools {
 namespace data_structures {
-namespace linked_list {
 
-  class Node {
+  class LinkedList {
   private:
     bool notExist(
-      Node* start,
-      Node* node,
-      Node* test
+      LinkedList* start,
+      LinkedList* node,
+      LinkedList* test
     );
 
     /** using std::function<bool> */
 
     template<typename T, typename U, typename V>
-    using CR_BOOL_CB_TUV = const std::function<bool(Node*, T, U, V)>&;
+    using CR_BOOL_CB_TUV = const std::function<bool(LinkedList*, T, U, V)>&;
 
     template<typename T, typename U>
-    using CR_BOOL_CB_TU = const std::function<bool(Node*, T, U)>&;
+    using CR_BOOL_CB_TU = const std::function<bool(LinkedList*, T, U)>&;
 
     template<typename T>
-    using CR_BOOL_CB_T = const std::function<bool(Node*, T)>&;
+    using CR_BOOL_CB_T = const std::function<bool(LinkedList*, T)>&;
 
-    using CR_BOOL_CB = const std::function<bool(Node*)>&;
+    using CR_BOOL_CB = const std::function<bool(LinkedList*)>&;
 
-    /** typedef std::function<void> */
+    /** using std::function<void> */
 
     template<typename T, typename U, typename V>
-    using CR_VOID_CB_TUV = const std::function<void(Node*, T, U, V)>&;
+    using CR_VOID_CB_TUV = const std::function<void(LinkedList*, T, U, V)>&;
 
     template<typename T, typename U>
-    using CR_VOID_CB_TU = const std::function<void(Node*, T, U)>&;
+    using CR_VOID_CB_TU = const std::function<void(LinkedList*, T, U)>&;
 
     template<typename T>
-    using CR_VOID_CB_T = const std::function<void(Node*, T)>&;
+    using CR_VOID_CB_T = const std::function<void(LinkedList*, T)>&;
 
-    using CR_VOID_CB = const std::function<void(Node*)>&;
+    using CR_VOID_CB = const std::function<void(LinkedList*)>&;
 
     /** recur std::function<bool> */
 
@@ -53,7 +52,7 @@ namespace linked_list {
       T addParam_1,
       U addParam_2,
       V addParam_3,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
@@ -62,7 +61,7 @@ namespace linked_list {
       CR_BOOL_CB_TU<T, U> callback,
       T addParam_1,
       U addParam_2,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
@@ -70,13 +69,13 @@ namespace linked_list {
     void recurBool(
       CR_BOOL_CB_T<T> callback,
       T addParam_1,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
     void recurBool(
       CR_BOOL_CB callback,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
@@ -88,7 +87,7 @@ namespace linked_list {
       T addParam_1,
       U addParam_2,
       V addParam_3,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
@@ -97,7 +96,7 @@ namespace linked_list {
       CR_VOID_CB_TU<T, U> callback,
       T addParam_1,
       U addParam_2,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
@@ -105,46 +104,46 @@ namespace linked_list {
     void recurVoid(
       CR_VOID_CB_T<T> callback,
       T addParam_1,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
     void recurVoid(
       CR_VOID_CB callback,
-      Node *start,
+      LinkedList *start,
       CR_BOL forwarding
     );
 
   protected:
     std::string name;
 
-    Node *head = nullptr,
+    LinkedList *head = nullptr,
       *next = nullptr,
       *previous = nullptr;
 
-    ~Node() {}
+    ~LinkedList() {}
 
   public:
-    Node() {}
-    Node(CR_STR name_in);
+    LinkedList() {}
+    LinkedList(CR_STR name_in);
 
-    void connect(Node *node);
-    void disconnect(Node *node);
+    void connect(LinkedList *node);
+    void disconnect(LinkedList *node);
     void resign();
 
     virtual void remove();
     void sequentialRemove();
 
-    Node *getNext() { return next; }
-    Node *getPrevious() { return previous; }
-    Node *getHead() { return head; }
+    LinkedList *getNext() { return next; }
+    LinkedList *getPrevious() { return previous; }
+    LinkedList *getHead() { return head; }
     std::string getName() { return name; }
 
     /** iterate bool(*) */
 
     template<typename T, typename U, typename V>
     void iterate(
-      bool (*callback)(Node*, T, U, V),
+      bool (*callback)(LinkedList*, T, U, V),
       T addParam_1,
       U addParam_2,
       V addParam_3,
@@ -158,7 +157,7 @@ namespace linked_list {
 
     template<typename T, typename U>
     void iterate(
-      bool (*callback)(Node*, T, U),
+      bool (*callback)(LinkedList*, T, U),
       T addParam_1,
       U addParam_2,
       CR_BOL forwarding = true
@@ -171,7 +170,7 @@ namespace linked_list {
 
     template<typename T>
     void iterate(
-      bool (*callback)(Node*, T),
+      bool (*callback)(LinkedList*, T),
       T addParam_1,
       CR_BOL forwarding = true
     ) {
@@ -181,7 +180,7 @@ namespace linked_list {
     }
 
     void iterate(
-      bool (*callback)(Node*),
+      bool (*callback)(LinkedList*),
       CR_BOL forwarding = true
     ) {
       recurBool(callback, this, forwarding);
@@ -191,7 +190,7 @@ namespace linked_list {
 
     template<typename T, typename U, typename V>
     void iterate(
-      void (*callback)(Node*, T, U, V),
+      void (*callback)(LinkedList*, T, U, V),
       T addParam_1,
       U addParam_2,
       V addParam_3,
@@ -205,7 +204,7 @@ namespace linked_list {
 
     template<typename T, typename U>
     void iterate(
-      void (*callback)(Node*, T, U),
+      void (*callback)(LinkedList*, T, U),
       T addParam_1,
       U addParam_2,
       CR_BOL forwarding = true
@@ -218,7 +217,7 @@ namespace linked_list {
 
     template<typename T>
     void iterate(
-      void (*callback)(Node*, T),
+      void (*callback)(LinkedList*, T),
       T addParam_1,
       CR_BOL forwarding = true
     ) {
@@ -228,7 +227,7 @@ namespace linked_list {
     }
 
     void iterate(
-      void (*callback)(Node*),
+      void (*callback)(LinkedList*),
       CR_BOL forwarding = true
     ) {
       recurVoid(callback, this, forwarding);
@@ -328,7 +327,7 @@ namespace linked_list {
       recurVoid(callback, this, forwarding);
     }
   };
-}}}
+}}
 
 #include "data-structures/linked-list.tpp"
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__

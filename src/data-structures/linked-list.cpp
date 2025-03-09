@@ -9,17 +9,16 @@
 
 namespace mini_tools {
 namespace data_structures {
-namespace linked_list {
 
-  Node::Node(CR_STR name_in) {
+  LinkedList::LinkedList(CR_STR name_in) {
     name = name_in;
     head = this;
   }
 
-  bool Node::notExist(
-    Node* start,
-    Node* node,
-    Node* test
+  bool LinkedList::notExist(
+    LinkedList* start,
+    LinkedList* node,
+    LinkedList* test
   ) {
     if (node == test) return false;
     else if (node->next && node->next != start) {
@@ -28,10 +27,10 @@ namespace linked_list {
     return true;
   }
 
-  void Node::connect(Node *node) {
+  void LinkedList::connect(LinkedList *node) {
     if (node && notExist(this, this, node)) {
 
-      Node *third = next;
+      LinkedList *third = next;
       node->resign();
 
       if (!third) {
@@ -47,14 +46,14 @@ namespace linked_list {
     }
   }
 
-  void Node::disconnect(Node *node) {
+  void LinkedList::disconnect(LinkedList *node) {
     if (node) node->resign();
   }
 
-  void Node::resign() {
+  void LinkedList::resign() {
     if (next) {
       if (head == this) {
-        Node *newHead = next,
+        LinkedList *newHead = next,
           *current = next;
 
         while (current != this) {
@@ -78,13 +77,13 @@ namespace linked_list {
     }
   }
 
-  void Node::remove() {
+  void LinkedList::remove() {
     resign();
     delete this;
   }
 
-  void Node::sequentialRemove() {
-    Node *current_1 = head,
+  void LinkedList::sequentialRemove() {
+    LinkedList *current_1 = head,
       *current_2 = nullptr;
 
     bool willBreak = false;
@@ -103,9 +102,9 @@ namespace linked_list {
     }
   }
 
-  void Node::recurBool(
+  void LinkedList::recurBool(
     CR_BOOL_CB callback,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
@@ -130,9 +129,9 @@ namespace linked_list {
     }
   }
 
-  void Node::recurVoid(
+  void LinkedList::recurVoid(
     CR_VOID_CB callback,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
@@ -153,6 +152,6 @@ namespace linked_list {
       else callback(this);
     }
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__

@@ -7,17 +7,16 @@
 
 namespace mini_tools {
 namespace data_structures {
-namespace linked_list {
 
   /** recur BOOL */
 
   template<typename T, typename U, typename V>
-  void Node::recurBool(
+  void LinkedList::recurBool(
     CR_BOOL_CB_TUV<T, U, V> callback,
     T addParam_1,
     U addParam_2,
     V addParam_3,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
@@ -55,11 +54,11 @@ namespace linked_list {
   }
 
   template<typename T, typename U>
-  void Node::recurBool(
+  void LinkedList::recurBool(
     CR_BOOL_CB_TU<T, U> callback,
     T addParam_1,
     U addParam_2,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
@@ -91,10 +90,10 @@ namespace linked_list {
   }
 
   template<typename T>
-  void Node::recurBool(
+  void LinkedList::recurBool(
     CR_BOOL_CB_T<T> callback,
     T addParam_1,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     bool keepGoing = false;
@@ -126,12 +125,12 @@ namespace linked_list {
   /** recur VOID */
 
   template<typename T, typename U, typename V>
-  void Node::recurVoid(
+  void LinkedList::recurVoid(
     CR_VOID_CB_TUV<T, U, V> callback,
     T addParam_1,
     U addParam_2,
     V addParam_3,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
@@ -166,11 +165,11 @@ namespace linked_list {
   }
 
   template<typename T, typename U>
-  void Node::recurVoid(
+  void LinkedList::recurVoid(
     CR_VOID_CB_TU<T, U> callback,
     T addParam_1,
     U addParam_2,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
@@ -199,10 +198,10 @@ namespace linked_list {
   }
 
   template<typename T>
-  void Node::recurVoid(
+  void LinkedList::recurVoid(
     CR_VOID_CB_T<T> callback,
     T addParam_1,
-    Node *start,
+    LinkedList *start,
     CR_BOL forwarding
   ) {
     if (forwarding) {
@@ -227,6 +226,6 @@ namespace linked_list {
       else callback(this, addParam_1);
     }
   }
-}}}
+}}
 
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_TPP__
