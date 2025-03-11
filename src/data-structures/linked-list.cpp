@@ -17,37 +17,37 @@ namespace data_structures {
 
   bool LinkedList::notExist(
     LinkedList* start,
-    LinkedList* node,
+    LinkedList* linkedList,
     LinkedList* test
   ) {
-    if (node == test) return false;
-    else if (node->next && node->next != start) {
-      return notExist(start, node->next, test);
+    if (linkedList == test) return false;
+    else if (linkedList->next && linkedList->next != start) {
+      return notExist(start, linkedList->next, test);
     }
     return true;
   }
 
-  void LinkedList::connect(LinkedList *node) {
-    if (node && notExist(this, this, node)) {
+  void LinkedList::connect(LinkedList *linkedList) {
+    if (linkedList && notExist(this, this, linkedList)) {
 
       LinkedList *third = next;
-      node->resign();
+      linkedList->resign();
 
       if (!third) {
         third = head;
-        previous = node;
+        previous = linkedList;
       }
 
-      next = node;
-      node->head = head;
-      node->next = third;
-      node->previous = this;
-      third->previous = node;
+      next = linkedList;
+      linkedList->head = head;
+      linkedList->next = third;
+      linkedList->previous = this;
+      third->previous = linkedList;
     }
   }
 
-  void LinkedList::disconnect(LinkedList *node) {
-    if (node) node->resign();
+  void LinkedList::disconnect(LinkedList *linkedList) {
+    if (linkedList) linkedList->resign();
   }
 
   void LinkedList::resign() {

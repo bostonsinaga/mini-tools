@@ -11,12 +11,12 @@ namespace mini_tools {
 namespace data_structures {
 
   class Tree;
-  typedef std::vector<Tree*> VEC_NODE;
-  typedef const VEC_NODE& CR_VEC_NODE;
+  typedef std::vector<Tree*> VEC_TREE;
+  typedef const VEC_TREE& CR_VEC_TREE;
 
   class Tree : public LinkedList {
   private:
-    void cleanDuplicateToLastAdded(Tree *node);
+    void cleanDuplicateToLastAdded(Tree *tree);
     void cleanChildren();
     void destroy(CR_BOL firstOccurrence);
     void dismantleDestroy(CR_INT index);
@@ -24,11 +24,11 @@ namespace data_structures {
 
   protected:
     UI level = 0;
-    VEC_NODE children;
+    VEC_TREE children;
     Tree *parent = nullptr;
 
     virtual void setChildren(
-      CR_VEC_NODE newChildren,
+      CR_VEC_TREE newChildren,
       CR_BOL needEmpty,
       CR_BOL validating
     );
@@ -51,33 +51,33 @@ namespace data_structures {
     UI getLevel() { return level; }
     size_t getNumberOfChildren() { return children.size(); }
 
-    bool hasChild(Tree *node);
+    bool hasChild(Tree *tree);
     bool hasChild(CR_STR searched);
 
-    VEC_NODE getChildren() { return children; }
+    VEC_TREE getChildren() { return children; }
     Tree *getParent() { return parent; }
 
     Tree *getChild(CR_INT index);
     Tree *getChild(CR_STR searched);
     Tree *getRoot();
 
-    VEC_NODE setChildrenRelease(
-      CR_VEC_NODE newChildren,
+    VEC_TREE setChildrenRelease(
+      CR_VEC_TREE newChildren,
       CR_BOL validating = true
     );
 
     void setChildrenReplace(
-      CR_VEC_NODE newChildren,
+      CR_VEC_TREE newChildren,
       CR_BOL validating = true
     );
 
     void addChildren(
-      CR_VEC_NODE newChildren,
+      CR_VEC_TREE newChildren,
       CR_BOL validating = true
     );
 
     virtual void addChild(
-      Tree *node,
+      Tree *tree,
       CR_BOL reconnected = true
     );
 
@@ -86,13 +86,13 @@ namespace data_structures {
       CR_BOL reconnected = true
     );
 
-    void removeChild(Tree *node);
+    void removeChild(Tree *tree);
     void removeChild(CR_INT index);
 
-    Tree *releaseChild(Tree *node);
+    Tree *releaseChild(Tree *tree);
     Tree *releaseChild(CR_INT index);
 
-    virtual VEC_NODE releaseChildren();
+    virtual VEC_TREE releaseChildren();
     void remove() override { destroy(true); }
   };
 }}

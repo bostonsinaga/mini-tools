@@ -20,9 +20,9 @@ namespace data_structures {
     setParent(parent_in);
   }
 
-  bool Tree::hasChild(Tree *node) {
+  bool Tree::hasChild(Tree *tree) {
     for (Tree *nd : children) {
-      if (nd == node) return true;
+      if (nd == tree) return true;
     }
     return false;
   }
@@ -52,7 +52,7 @@ namespace data_structures {
   }
 
   void Tree::setChildren(
-    CR_VEC_NODE newChildren,
+    CR_VEC_TREE newChildren,
     CR_BOL needEmpty,
     CR_BOL validating
   ) {
@@ -82,17 +82,17 @@ namespace data_structures {
     }
   }
 
-  VEC_NODE Tree::setChildrenRelease(
-    CR_VEC_NODE newChildren,
+  VEC_TREE Tree::setChildrenRelease(
+    CR_VEC_TREE newChildren,
     CR_BOL validating
   ) {
-    VEC_NODE oldChildren = children;
+    VEC_TREE oldChildren = children;
     setChildren(newChildren, true, validating);
     return oldChildren;
   }
 
   void Tree::setChildrenReplace(
-    CR_VEC_NODE newChildren,
+    CR_VEC_TREE newChildren,
     CR_BOL validating
   ) {
     cleanChildren();
@@ -100,27 +100,27 @@ namespace data_structures {
   }
 
   void Tree::addChildren(
-    CR_VEC_NODE newChildren,
+    CR_VEC_TREE newChildren,
     CR_BOL validating
   ) {
     setChildren(newChildren, false, validating);
   }
 
   void Tree::addChild(
-    Tree *node,
+    Tree *tree,
     CR_BOL reconnected
   ) {
-    if (node) {
+    if (tree) {
       if (reconnected) {
-        node->setParent(this, false);
+        tree->setParent(this, false);
       }
 
       if (!children.empty()) {
-        children.back()->connect(node);
+        children.back()->connect(tree);
       }
 
-      children.push_back(node);
-      cleanDuplicateToLastAdded(node);
+      children.push_back(tree);
+      cleanDuplicateToLastAdded(tree);
     }
   }
 
@@ -143,7 +143,7 @@ namespace data_structures {
   }
 
   void Tree::cleanDuplicatesInChildren() {
-    std::tuple<VEC_NODE, VEC_NODE>
+    std::tuple<VEC_TREE, VEC_TREE>
       wastedTuple = VecTools<Tree*>::cleanDuplicateInside(
         children, false,
         [](Tree *rep, Tree *nd)->bool {
@@ -158,10 +158,10 @@ namespace data_structures {
     }
   }
 
-  void Tree::cleanDuplicateToLastAdded(Tree *node) {
-    std::tuple<VEC_NODE, VEC_NODE>
+  void Tree::cleanDuplicateToLastAdded(Tree *tree) {
+    std::tuple<VEC_TREE, VEC_TREE>
       wastedTuple = VecTools<Tree*>::cleanDuplicateToMember(
-        children, node, false,
+        children, tree, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
           return false;
@@ -197,11 +197,11 @@ namespace data_structures {
     return dismantle(index);
   }
 
-  void Tree::removeChild(Tree *node) {
-    if (!node) return;
+  void Tree::removeChild(Tree *tree) {
+    if (!tree) return;
 
     for (int i = 0; i < children.size(); i++) {
-      if (children[i] == node) {
+      if (children[i] == tree) {
         dismantleDestroy(i);
         break;
       }
@@ -214,11 +214,11 @@ namespace data_structures {
     }
   }
 
-  Tree *Tree::releaseChild(Tree *node) {
-    if (!node) return nullptr;
+  Tree *Tree::releaseChild(Tree *tree) {
+    if (!tree) return nullptr;
 
     for (int i = 0; i < children.size(); i++) {
-      if (children[i] == node) {
+      if (children[i] == tree) {
         return dismantleRelease(i);
       }
     }
@@ -233,8 +233,8 @@ namespace data_structures {
     return nullptr;
   }
 
-  VEC_NODE Tree::releaseChildren() {
-    VEC_NODE released = children;
+  VEC_TREE Tree::releaseChildren() {
+    VEC_TREE released = children;
 
     for (Tree *nd : children) {
       nd->level = 0;

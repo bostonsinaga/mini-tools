@@ -14,7 +14,7 @@ namespace data_structures {
   private:
     bool notExist(
       LinkedList* start,
-      LinkedList* node,
+      LinkedList* linkedList,
       LinkedList* test
     );
 
@@ -127,8 +127,8 @@ namespace data_structures {
     LinkedList() {}
     LinkedList(CR_STR name_in);
 
-    void connect(LinkedList *node);
-    void disconnect(LinkedList *node);
+    void connect(LinkedList *linkedList);
+    void disconnect(LinkedList *linkedList);
     void resign();
 
     virtual void remove();
