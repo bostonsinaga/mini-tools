@@ -14,6 +14,10 @@ namespace data_structures {
   typedef std::vector<Tree*> VEC_TREE;
   typedef const VEC_TREE& CR_VEC_TREE;
 
+  /**
+   * You can inherit from this class to create
+   * what is generally referred to as a Node.
+   */
   class Tree : public LinkedList {
   private:
     void cleanDuplicateToLastAdded(Tree *tree);
