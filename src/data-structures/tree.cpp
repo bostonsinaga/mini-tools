@@ -143,8 +143,7 @@ namespace data_structures {
   }
 
   void Tree::cleanDuplicatesInChildren() {
-    std::tuple<VEC_TREE, VEC_TREE>
-      wastedTuple = VecTools<Tree*>::cleanDuplicateInside(
+    PAIR<VEC_TREE> wastedPair = VecTools<Tree*>::cleanDuplicateInside(
         children, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -153,14 +152,13 @@ namespace data_structures {
       );
 
     // remove duplicates of same name
-    for (Tree *nd : std::get<1>(wastedTuple)) {
+    for (Tree *nd : wastedPair.second) {
       nd->remove();
     }
   }
 
   void Tree::cleanDuplicateToLastAdded(Tree *tree) {
-    std::tuple<VEC_TREE, VEC_TREE>
-      wastedTuple = VecTools<Tree*>::cleanDuplicateToMember(
+    PAIR<VEC_TREE> wastedPair = VecTools<Tree*>::cleanDuplicateToMember(
         children, tree, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -169,7 +167,7 @@ namespace data_structures {
       );
 
     // remove duplicates of same name
-    for (Tree *nd : std::get<1>(wastedTuple)) {
+    for (Tree *nd : wastedPair.second) {
       nd->remove();
     }
   }
