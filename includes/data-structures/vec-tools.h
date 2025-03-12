@@ -7,14 +7,13 @@ namespace data_structures {
   template <class T>
   class VecTools {
   public:
-    typedef std::tuple<VEC<T>, VEC<T>> WASTED_TUPLE;
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
   private:
     // invoked in the loop of 'clean..' method
     static bool fillWastedDuplicateInside (
       VEC<T> &vec, EQUAL_RULE &equalRule,
-      WASTED_TUPLE &wastedTuple,
+      PAIR<VEC<T>> &wastedPair,
       CR<T> &a, CR<T> &b, CR_UI cutIdx
     );
 
@@ -23,7 +22,7 @@ namespace data_structures {
      * a separate method to avoid errors.
      */
     static bool fillWastedDuplicateToMember(
-      VEC<T> &vec, WASTED_TUPLE &wastedTuple,
+      VEC<T> &vec, PAIR<VEC<T>> &wastedPair,
       EQUAL_RULE &equalRule, bool &firstIgnored,
       CR<T> &a, CR<T> &b, CR_UI cutIdx
     );
@@ -116,7 +115,7 @@ namespace data_structures {
      * One based on 'pointer' equality
      * and the other based on value equality.
      */
-    static WASTED_TUPLE cleanDuplicateInside(
+    static PAIR<VEC<T>> cleanDuplicateInside(
       VEC<T> &vec,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
@@ -129,7 +128,7 @@ namespace data_structures {
      * 
      * Returns the same as 'cleanDuplicateInside'.
      */
-    static WASTED_TUPLE cleanDuplicateToMember(
+    static PAIR<VEC<T>> cleanDuplicateToMember(
       VEC<T> &vec, CR<T> mem,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters

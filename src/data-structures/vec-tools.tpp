@@ -223,19 +223,23 @@ namespace data_structures {
   template <typename T>
   bool VecTools<T>::fillWastedDuplicateInside (
     VEC<T> &vec, EQUAL_RULE &equalRule,
-    WASTED_TUPLE &wastedTuple,
+    PAIR<VEC<T>> &wastedPair,
     CR<T> &a, CR<T> &b, CR_UI cutIdx
   ) {
     // equal based on pointer
     if constexpr (std::is_pointer<T>::value) {
       if (a == b) {
-        std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+        wastedPair.first.push_back(
+          VecTools<T>::cutSingle(vec, cutIdx)
+        );
         return true;
       }
     }
     else { // equal based on value
       if (a == b || equalRule(a, b)) {
-        std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+        wastedPair.second.push_back(
+          VecTools<T>::cutSingle(vec, cutIdx)
+        );
         return true;
       }
     }
@@ -243,18 +247,18 @@ namespace data_structures {
   }
 
   template <typename T>
-  std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateInside(
+  PAIR<VEC<T>> VecTools<T>::cleanDuplicateInside(
     VEC<T> &vec,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    WASTED_TUPLE wastedTuple({}, {});
+    PAIR<VEC<T>> wastedPair({}, {});
 
     if (originalAscending) {
       for (int i = 0; i < vec.size() - 1; i++) {
         for (int j = i+1; j < vec.size(); j++) {
           if (VecTools<T>::fillWastedDuplicateInside(
-            vec, equalRule, wastedTuple,
+            vec, equalRule, wastedPair,
             vec[i], vec[j], j
           )) { j--; }
         }
@@ -263,18 +267,18 @@ namespace data_structures {
     else for (int i = vec.size() - 1; i > 0; i--) {
       for (int j = i - 1; j >= 0; j--) {
         if (VecTools<T>::fillWastedDuplicateInside(
-          vec, equalRule, wastedTuple,
+          vec, equalRule, wastedPair,
           vec[i], vec[j], j
         )) { i--; }
       }
     }
 
-    return wastedTuple;
+    return wastedPair;
   }
 
   template <typename T>
   bool VecTools<T>::fillWastedDuplicateToMember(
-    VEC<T> &vec, WASTED_TUPLE &wastedTuple,
+    VEC<T> &vec, PAIR<VEC<T>> &wastedPair,
     EQUAL_RULE &equalRule, bool &firstIgnored,
     CR<T> &a, CR<T> &b, CR_UI cutIdx
   ) {
@@ -282,7 +286,9 @@ namespace data_structures {
     if constexpr (std::is_pointer<T>::value) {
       if (a == b) {
         if (firstIgnored) {
-          std::get<0>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          wastedPair.first.push_back(
+            VecTools<T>::cutSingle(vec, cutIdx)
+          );
           return true;
         }
         else firstIgnored = true;
@@ -291,7 +297,9 @@ namespace data_structures {
     else { // equal based on value
       if (a == b || equalRule(a, b)) {
         if (firstIgnored) {
-          std::get<1>(wastedTuple).push_back(VecTools<T>::cutSingle(vec, cutIdx));
+          wastedPair.second.push_back(
+            VecTools<T>::cutSingle(vec, cutIdx)
+          );
           return true;
         }
         else firstIgnored = true;
@@ -301,18 +309,18 @@ namespace data_structures {
   }
 
   template <typename T>
-  std::tuple<VEC<T>, VEC<T>> VecTools<T>::cleanDuplicateToMember(
+  PAIR<VEC<T>> VecTools<T>::cleanDuplicateToMember(
     VEC<T> &vec, CR<T> mem,
     CR_BOL originalAscending,
     EQUAL_RULE equalRule
   ) {
-    WASTED_TUPLE wastedTuple({}, {});
+    PAIR<VEC<T>> wastedPair({}, {});
     bool firstIgnored = false;
 
     if (originalAscending) {
       for (int i = 0; i < vec.size(); i++) {
         if (VecTools<T>::fillWastedDuplicateToMember(
-          vec, wastedTuple,
+          vec, wastedPair,
           equalRule, firstIgnored,
           mem, vec[i], i
         )) { i--; }
@@ -320,13 +328,13 @@ namespace data_structures {
     }
     else for (int i = vec.size() - 1; i >= 0; i--) {
       VecTools<T>::fillWastedDuplicateToMember(
-        vec, wastedTuple,
+        vec, wastedPair,
         equalRule, firstIgnored,
         mem, vec[i], i
       );
     }
 
-    return wastedTuple;
+    return wastedPair;
   }
 
   template <typename T>
