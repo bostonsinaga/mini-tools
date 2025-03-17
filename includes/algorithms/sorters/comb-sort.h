@@ -1,7 +1,8 @@
-#ifndef __MINI_TOOLS__SORTERS__COMB_SORT_H__
-#define __MINI_TOOLS__SORTERS__COMB_SORT_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
 
 namespace mini_tools {
+namespace algorithms {
 namespace sorters {
 
   template <class T, class U = std::nullptr_t>
@@ -24,7 +25,7 @@ namespace sorters {
       bool ascending = true
     );
   };
-}}
+}}}
 
-#include "sorters/comb-sort.tpp"
-#endif // __MINI_TOOLS__SORTERS__COMB_SORT_H__
+#include "algorithms/sorters/comb-sort.tpp"
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
