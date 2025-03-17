@@ -1,10 +1,10 @@
-#ifndef __MINI_TOOLS__UTILS__CALCULATORS_H__
-#define __MINI_TOOLS__UTILS__CALCULATORS_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
+#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
 
 #include "types.h"
 
 namespace mini_tools {
-namespace utils {
+namespace algorithms {
 
   class Calc {
   public:
@@ -68,4 +68,4 @@ namespace utils {
   };
 }}
 
-#endif // __MINI_TOOLS__UTILS__CALCULATORS_H__
+#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
