@@ -1,12 +1,12 @@
-#ifndef __MINI_TOOLS__UTILS__CALCULATORS_CPP__
-#define __MINI_TOOLS__UTILS__CALCULATORS_CPP__
+#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
+#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
 
 #include <cmath>
 #include <algorithm>
-#include "utils/calculators.h"
+#include "algorithms/calculators.h"
 
 namespace mini_tools {
-namespace utils {
+namespace algorithms {
 
   int Calc::factorial(int n) {
     int ret = n;
@@ -150,4 +150,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__CALCULATORS_CPP__
+#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
