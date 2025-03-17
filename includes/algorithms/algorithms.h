@@ -3,7 +3,7 @@
 
 #include "calculators.h"
 #include "equal-distribution.h"
-#include "sorters.h"
+#include "sorters/sorters.h"
 
 namespace mt_alg = mini_tools::algorithms;
 
