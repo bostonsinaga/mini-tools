@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__SORTERS__SELECTION_SORT_TPP__
 
 namespace mini_tools {
+namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -50,6 +51,6 @@ namespace sorters {
   ) {
     Selection<T, U>::process(messy, nullptr, ascending);
   }
-}}
+}}}
 
 #endif // __MINI_TOOLS__SORTERS__SELECTION_SORT_TPP__

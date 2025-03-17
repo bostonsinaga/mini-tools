@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__SORTERS__MERGE_SORT_TPP__
 
 namespace mini_tools {
+namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -120,6 +121,6 @@ namespace sorters {
   ) {
     Merge<T, U>::partition(messy, nullptr, 0, messy.size() - 1, ascending);
   }
-}}
+}}}
 
 #endif // __MINI_TOOLS__SORTERS__MERGE_SORT_TPP__

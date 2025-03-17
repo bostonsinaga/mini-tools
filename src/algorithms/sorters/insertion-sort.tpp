@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__SORTERS__INSERTION_SORT_TPP__
 
 namespace mini_tools {
+namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -63,6 +64,6 @@ namespace sorters {
   ) {
     Insertion<T, U>::solve(messy, nullptr, ascending, 0, messy.size() - 1);
   }
-}}
+}}}
 
 #endif // __MINI_TOOLS__SORTERS__INSERTION_SORT_TPP__

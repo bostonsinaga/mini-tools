@@ -1,7 +1,8 @@
-#ifndef __MINI_TOOLS__SORTERS__COMB_SORT_TPP__
-#define __MINI_TOOLS__SORTERS__COMB_SORT_TPP__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_TPP__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_TPP__
 
 namespace mini_tools {
+namespace algorithms {
 namespace sorters {
   using namespace CheckType;
 
@@ -59,6 +60,6 @@ namespace sorters {
   ) {
     Comb<T, U>::process(messy, nullptr, ascending);
   }
-}}
+}}}
 
-#endif // __MINI_TOOLS__SORTERS__COMB_SORT_TPP__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_TPP__
