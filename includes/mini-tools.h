@@ -4,7 +4,7 @@
 #include "types.h"
 #include "utils/utils.h"
 #include "data-structures/data-structures.h"
-#include "sorters/sorters.h"
+#include "algorithms/algorithms.h"
 
 namespace mt = mini_tools;
 
