@@ -27,6 +27,16 @@ namespace data_structures {
       CR<T> &a, CR<T> &b, CR_UI cutIdx
     );
 
+    //____________|
+    // SIZE TOOLS |
+    //____________|
+
+    static size_t getMax(VEC_SZ &sizes);
+    static VEC_SZ getDifferences(VEC_SZ &sizes);
+    static VEC_LLI getDifferences(VEC_SZ &sizes, CR_LLI targetSize);
+    static void balance(CR_VEC_SZ differences, VEC2<T> &vecs, CR<T> coveringValue);
+    static void balance(CR_VEC_LLI differences, VEC2<T> &vecs, CR<T> coveringValue);
+
   public:
     static bool hasIndex(VEC<T> &vec, CR_INT idx);
     static bool hasIndexes(VEC<T> &vec, CR_VEC_INT idxs);
@@ -147,6 +157,17 @@ namespace data_structures {
 
     // 'T' can also be a vector for multidimensional
     static VEC<T> collapse(CR_VEC2<T> vec);
+
+    //____________|
+    // SIZE TOOLS |
+    //____________|
+
+    static VEC_SZ generateSizes(CR_VEC2<T> vecs);
+    static size_t getMax(CR_VEC2<T> vecs);
+    static VEC_SZ getDifferences(CR_VEC2<T> vecs);
+    static VEC_LLI getDifferences(CR_VEC2<T> vecs, CR_LLI targetSize);
+    static void balance(VEC2<T> &vecs, CR<T> coveringValue);
+    static void balance(VEC2<T> &vecs, CR<T> coveringValue, LLI targetSize);
   };
 }}
 
