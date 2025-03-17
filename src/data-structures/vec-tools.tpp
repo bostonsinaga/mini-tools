@@ -1,7 +1,7 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
 
-#include "utils/calculators.h"
+#include "algorithms/calculators.h"
 
 namespace mini_tools {
 namespace data_structures {
@@ -164,7 +164,7 @@ namespace data_structures {
     if (vec.empty()) return;
 
     // ascending
-    if (utils::Calc::isArithmeticSequence(idxs, 1)) {
+    if (algorithms::Calc::isArithmeticSequence(idxs, 1)) {
       VecTools<T>::cutInterval(
         vec, wasted,
         idxs[0], idxs[idxs.size() - 1],
@@ -172,7 +172,7 @@ namespace data_structures {
       );
     }
     // descending
-    else if (utils::Calc::isArithmeticSequence(idxs, -1)) {
+    else if (algorithms::Calc::isArithmeticSequence(idxs, -1)) {
       VecTools<T>::cutInterval(
         vec, wasted,
         idxs[idxs.size() - 1], idxs[0],
