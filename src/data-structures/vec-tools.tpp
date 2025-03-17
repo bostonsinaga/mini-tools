@@ -385,6 +385,136 @@ namespace data_structures {
 
     return reduction;
   }
+
+  //____________|
+  // SIZE TOOLS |
+  //____________|
+
+  template <typename T>
+  VEC_SZ VecTools<T>::generateSizes(CR_VEC2<T> vecs) {
+    VEC_SZ sizes;
+    for (CR_VEC<T> v : vecs) {
+      sizes.push_back(v.size());
+    }
+    return sizes;
+  }
+
+  template <typename T>
+  size_t VecTools<T>::getMax(VEC_SZ &sizes) {
+    size_t max = 0;
+
+    for (CR_LLI sz : sizes) {
+      if (sz > max) max = sz;
+    }
+
+    return max;
+  }
+
+  template <typename T>
+  size_t VecTools<T>::getMax(CR_VEC2<T> vecs) {
+    VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
+    return VecTools<T>::getMax(sizes);
+  }
+
+  template <typename T>
+  VEC_SZ VecTools<T>::getDifferences(VEC_SZ &sizes) {
+
+    VEC_SZ differences;
+    size_t max = VecTools<T>::getMax(sizes);
+
+    for (CR_SZ sz : sizes) {
+      differences.push_back(max - sz);
+    }
+
+    return differences;
+  }
+
+  template <typename T>
+  VEC_LLI VecTools<T>::getDifferences(
+    VEC_SZ &sizes, CR_LLI targetSize
+  ) {
+    VEC_LLI differences;
+
+    for (CR_SZ sz : sizes) {
+      differences.push_back(targetSize - sz);
+    }
+
+    return differences;
+  }
+
+  template <typename T>
+  VEC_SZ VecTools<T>::getDifferences(CR_VEC2<T> vecs) {
+    VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
+    return VecTools<T>::getDifferences(sizes);
+  }
+
+  template <typename T>
+  VEC_LLI VecTools<T>::getDifferences(
+    CR_VEC2<T> vecs,
+    CR_LLI targetSize
+  ) {
+    VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
+    return VecTools<T>::getDifferences(sizes, targetSize);
+  }
+
+  template <typename T>
+  void VecTools<T>::balance(
+    CR_VEC_SZ differences,
+    VEC2<T> &vecs,
+    CR<T> coveringValue
+  ) {
+    for (int i = 0; i < vecs.size(); i++) {
+      std::vector<T> additions(differences[i], coveringValue);
+      vecs[i].reserve(vecs[i].size() + differences[i]);
+      vecs[i].insert(vecs[i].end(), additions.begin(), additions.end());
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::balance(
+    CR_VEC_LLI differences,
+    VEC2<T> &vecs,
+    CR<T> coveringValue
+  ) {
+    for (int i = 0; i < vecs.size(); i++) {
+      if (differences[i] < 0) {
+        vecs[i] = std::vector<T>(
+          vecs[i].begin(),
+          vecs[i].end() + differences[i]
+        );
+      }
+      else if (differences[i] > 0) {
+        std::vector<T> additions(differences[i], coveringValue);
+        vecs[i].reserve(vecs[i].size() + differences[i]);
+        vecs[i].insert(vecs[i].end(), additions.begin(), additions.end());
+      }
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::balance(
+    VEC2<T> &vecs,
+    CR<T> coveringValue
+  ) {
+    VecTools<T>::balance(
+      VecTools<T>::getDifferences(vecs),
+      vecs, coveringValue
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::balance(
+    VEC2<T> &vecs,
+    CR<T> coveringValue,
+    LLI targetSize
+  ) {
+    if (targetSize < 0) targetSize = 0;
+
+    VecTools<T>::balance(
+      VecTools<T>::getDifferences(vecs, targetSize),
+      vecs, coveringValue
+    );
+  }
 }}
 
 #endif // __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
