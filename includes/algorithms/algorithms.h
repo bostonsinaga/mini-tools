@@ -5,6 +5,6 @@
 #include "equal-distribution.h"
 #include "sorters.h"
 
-namespace mt_sor = mini_tools::algorithms;
+namespace mt_alg = mini_tools::algorithms;
 
 #endif // __MINI_TOOLS__ALGORITHMS_H__
