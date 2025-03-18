@@ -40,7 +40,7 @@ namespace utils {
   bool Reader::isSeparator(CR_VEC_STR textVec, CR_INT idx) {
     if (idx >= 0 && idx < textVec.size()) {
       if (Reader::isSeparator(textVec[idx]) ||
-        idx == text.length() - 1
+        idx == textVec.size() - 1
       ) {
         return true;
       }
