@@ -6,8 +6,8 @@ namespace utils {
 
   template <typename T>
   std::string Printer<T>::initText(
-    CR_INT step,
-    CR_STR title
+    CR_STR title,
+    CR_INT step
   ) {
     if (step >= 0) {
       return title + ": " + std::to_string(step) + "\n";
@@ -18,8 +18,8 @@ namespace utils {
   template <typename T>
   std::string Printer<T>::combine(
     CR_VEC<T> vec,
-    CR_INT step,
-    CR_STR title
+    CR_STR title,
+    CR_INT step
   ) {
     if constexpr (!CheckType::isLetter<T>()) {
       constexpr bool stringify_and_combine_error = false;
@@ -40,8 +40,8 @@ namespace utils {
   std::string Printer<T>::stringify(
     CR_VEC<T> vec,
     CR_BOL asBar,
-    CR_INT step,
-    CR_STR title
+    CR_STR title,
+    CR_INT step
   ) {
     if constexpr (!CheckType::isNumber<T>()) {
       return Printer<T>::combine(vec, step, title);
@@ -73,15 +73,15 @@ namespace utils {
     CR_STR title,
     CR_INT step
   ) {
-    std::cout << Printer<T>::stringify(vec, asBar, step, title);
+    std::cout << Printer<T>::stringify(vec, asBar, title, step);
   }
 
   template <typename T>
   void Printer<T>::logf(
     CR_VEC<T> vec,
+    CR_STR filename,
     CR_BOL asBar,
     CR_BOL extended,
-    CR_STR filename,
     CR_STR title,
     CR_INT step
   ) {
@@ -92,7 +92,7 @@ namespace utils {
     }
     else writer.open(filename);
 
-    writer << Printer<T>::stringify(vec, asBar, step, title);
+    writer << Printer<T>::stringify(vec, asBar, title, step);
     writer.close();
   }
 }}
