@@ -24,37 +24,37 @@ int main() {
 
   /** Bubble Sort */
   mt_alg::sorters::Bubble<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[1]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[1], true, false);
   timer.print(true, "Bubble Sort:");
   std::cout << std::endl;
 
   /** Comb Sort */
   mt_alg::sorters::Comb<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[2]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[2], true, false);
   timer.print(true, "Comb Sort:");
   std::cout << std::endl;
 
   /** Insertion Sort */
   mt_alg::sorters::Insertion<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[3]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[3], true, false);
   timer.print(true, "Insertion Sort:");
   std::cout << std::endl;
 
   /** Merge Sort */
   mt_alg::sorters::Merge<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[4]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[4], true, false);
   timer.print(true, "Merge Sort:");
   std::cout << std::endl;
 
   /** Quick Sort */
   mt_alg::sorters::Quick<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[5]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[5], true, false);
   timer.print(true, "Quick Sort:");
   std::cout << std::endl;
 
   /** Selection Sort */
   mt_alg::sorters::Selection<int, int>::solve(numbers, numbers_copy);
-  mt_uti::Printer<int>::logf(numbers_copy, true, false, filenames[6]);
+  mt_uti::Printer<int>::logf(numbers_copy, filenames[6], true, false);
   timer.print(true, "Selection Sort:");
   std::cout << std::endl;
 
