@@ -7,14 +7,15 @@
 namespace mini_tools {
 namespace utils {
 
-  bool Reader::isSeparator(CR_CH ch) {
+  bool Scanner::isSeparator(CR_CH ch) {
+    for (char separators)
     if (ch == ' ' || ch == ',' || ch == '\n') return true;
     return false;
   }
 
-  bool Reader::isSeparator(CR_STR text, CR_INT i) {
+  bool Scanner::isSeparator(CR_STR text, CR_INT i) {
     if (i >= 0 && i < text.length()) {
-      if (Reader::isSeparator(text[i]) || i == text.length() - 1) {
+      if (Scanner::isSeparator(text[i]) || i == text.length() - 1) {
         return true;
       }
       return false;
@@ -23,13 +24,17 @@ namespace utils {
   }
 
   /** WARNING. Unable to read '\n' character */
-  void Reader::getFile(
+  void Scanner::getFile(
     CR_STR name,
     std::string &textHook
   ) {
     std::string line;
     std::ifstream reader(name);
-    while (std::getline(reader, line)) { textHook += line; }
+
+    while (std::getline(reader, line)) {
+      textHook += line;
+    }
+
     reader.close();
   }
 }}
