@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__UTILS__TIMER_H__
 
 #include <chrono>
-#include "types.h"
 
 namespace mini_tools {
 namespace utils {
