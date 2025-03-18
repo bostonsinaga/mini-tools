@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
 #define __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
 
-#include "types.h"
-
 namespace mini_tools {
 namespace algorithms {
 
