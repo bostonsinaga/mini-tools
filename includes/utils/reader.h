@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__SCANNER_H__
-#define __MINI_TOOLS__UTILS__SCANNER_H__
+#ifndef __MINI_TOOLS__UTILS__READER_H__
+#define __MINI_TOOLS__UTILS__READER_H__
 
 namespace mini_tools {
 namespace utils {
@@ -21,4 +21,4 @@ namespace utils {
   };
 }}
 
-#endif // __MINI_TOOLS__UTILS__SCANNER_CPP__
+#endif // __MINI_TOOLS__UTILS__READER_CPP__
