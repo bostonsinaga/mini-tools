@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_CPP__
 #define __MINI_TOOLS__UTILS__TIMER_CPP__
 
+#include "types.h"
 #include "utils/timer.h"
 
 namespace mini_tools {
