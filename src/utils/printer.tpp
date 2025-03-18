@@ -26,7 +26,7 @@ namespace utils {
       static_assert(stringify_and_combine_error, "only for numbers and letters");
     }
     else {
-      std::string text = Printer<T>::initText(step, title);
+      std::string text = Printer<T>::initText(title, step);
 
       for (int i = 0; i < vec.size(); i++) {
         text += vec[i] + ", ";
@@ -47,7 +47,7 @@ namespace utils {
       return Printer<T>::combine(vec, step, title);
     }
     else {
-      std::string text = Printer<T>::initText(step, title);
+      std::string text = Printer<T>::initText(title, step);
 
       if (asBar) {
         for (int i = 0; i < vec.size(); i++) {
