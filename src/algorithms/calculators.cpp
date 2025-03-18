@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include "types.h"
 #include "algorithms/calculators.h"
 
 namespace mini_tools {
