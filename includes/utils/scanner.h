@@ -7,19 +7,6 @@ namespace utils {
   template <class T>
   class Scanner {
   public:
-    static VEC_CH separators_ch = {' ', ',', '\n'};
-    static VEC_STR separators_str = {" ", ",", "\n"};
-
-    static bool isSeparator(CR_CH ch);
-    static bool isSeparator(CR_STR str);
-    static bool isSeparator(CR_STR text, CR_INT idx);
-    static bool isSeparator(CR_VEC_STR textVec, CR_INT idx);
-
-    static void getFile(
-      CR_STR name,
-      std::string &textHook
-    );
-
     static T stringToNumber(CR_STR numStr);
     static void parseNumbers(CR_STR text, VEC<T> &vecHook);
     static void parseLetters(CR_STR text, VEC<T> &vecHook);
