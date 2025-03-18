@@ -1,5 +1,5 @@
 set (SOURCES
-  utils/reader.cpp
+  utils/scanner.cpp
   utils/timer.cpp
   data-structures/str-tools.cpp
   data-structures/linked-list.cpp
