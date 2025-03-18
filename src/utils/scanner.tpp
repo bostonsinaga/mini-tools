@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__SCANNER_CPP__
-#define __MINI_TOOLS__UTILS__SCANNER_CPP__
+#ifndef __MINI_TOOLS__UTILS__SCANNER_TPP__
+#define __MINI_TOOLS__UTILS__SCANNER_TPP__
 
 namespace mini_tools {
 namespace utils {
@@ -171,4 +171,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__SCANNER_CPP__
+#endif // __MINI_TOOLS__UTILS__SCANNER_TPP__

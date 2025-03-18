@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__PRINTER_CPP__ 
-#define __MINI_TOOLS__UTILS__PRINTER_CPP__
+#ifndef __MINI_TOOLS__UTILS__PRINTER_TPP__
+#define __MINI_TOOLS__UTILS__PRINTER_TPP__
 
 namespace mini_tools {
 namespace utils {
@@ -97,4 +97,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__PRINTER_CPP__
+#endif // __MINI_TOOLS__UTILS__PRINTER_TPP__
