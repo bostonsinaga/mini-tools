@@ -1,21 +1,44 @@
-#ifndef __MINI_TOOLS__UTILS__READER_CPP__
-#define __MINI_TOOLS__UTILS__READER_CPP__
+#ifndef __MINI_TOOLS__UTILS__SCANNER_CPP__
+#define __MINI_TOOLS__UTILS__SCANNER_CPP__
 
 #include <fstream>
-#include "utils/reader.h"
+#include "types.h"
+#include "utils/scanner.h"
 
 namespace mini_tools {
 namespace utils {
 
   bool Scanner::isSeparator(CR_CH ch) {
-    for (char separators)
-    if (ch == ' ' || ch == ',' || ch == '\n') return true;
+    for (CR_CH c : separators_ch) {
+      if (ch == c) return true;
+    }
     return false;
   }
 
-  bool Scanner::isSeparator(CR_STR text, CR_INT i) {
-    if (i >= 0 && i < text.length()) {
-      if (Scanner::isSeparator(text[i]) || i == text.length() - 1) {
+  bool Scanner::isSeparator(CR_STR str) {
+    for (CR_STR s : separators_str) {
+      if (str == s) return true;
+    }
+    return false;
+  }
+
+  bool Scanner::isSeparator(CR_STR text, CR_INT idx) {
+    if (idx >= 0 && idx < text.length()) {
+      if (Scanner::isSeparator(text[idx]) ||
+        idx == text.length() - 1
+      ) {
+        return true;
+      }
+      return false;
+    }
+    return false;
+  }
+
+  bool Scanner::isSeparator(CR_VEC_STR textVec, CR_INT idx) {
+    if (idx >= 0 && idx < textVec.size()) {
+      if (Scanner::isSeparator(textVec[idx]) ||
+        idx == text.length() - 1
+      ) {
         return true;
       }
       return false;
@@ -39,4 +62,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__READER_CPP__
+#endif // __MINI_TOOLS__UTILS__SCANNER_CPP__
