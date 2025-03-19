@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
 
 #include "data-structures/tree.h"
-#include "data-structures/vec-tools.h"
+#include "utils/vec-tools.h"
 
 //____________|
 // N-ARY TREE |
