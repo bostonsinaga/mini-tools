@@ -1,11 +1,11 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS_H__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS_H__
 
-#include "bubble-sort.h"
-#include "comb-sort.h"
-#include "insertion-sort.h"
-#include "merge-sort.h"
-#include "quick-sort.h"
-#include "selection-sort.h"
+#include "bubble.h"
+#include "comb.h"
+#include "insertion.h"
+#include "merge.h"
+#include "quick.h"
+#include "selection.h"
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS_H__

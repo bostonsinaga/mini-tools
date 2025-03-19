@@ -39,5 +39,5 @@ namespace sorters {
   };
 }}}
 
-#include "algorithms/sorters/merge-sort.tpp"
+#include "algorithms/sorters/merge.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_H__

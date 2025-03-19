@@ -27,5 +27,5 @@ namespace sorters {
   };
 }}}
 
-#include "algorithms/sorters/comb-sort.tpp"
+#include "algorithms/sorters/comb.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_H__
