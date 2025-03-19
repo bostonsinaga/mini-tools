@@ -1,9 +1,12 @@
 #ifndef __MINI_TOOLS__SORTERS__MERGE_TPP__
 #define __MINI_TOOLS__SORTERS__MERGE_TPP__
 
+#include "utils/vec-tools.h"
+
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+
   using namespace CheckType;
 
   template <typename T, typename U>
@@ -18,10 +21,10 @@ namespace sorters {
     int subSize[2] = {mid - left + 1, right - mid};
 
     VEC<T> subVec_messy[2] = {
-      data_structures::VecTools<T>::cutInterval(
+      utils::VecTools<T>::cutInterval(
         messy, left, left + subSize[0] - 1, true
       ),
-      data_structures::VecTools<T>::cutInterval(
+      utils::VecTools<T>::cutInterval(
         messy, left + subSize[0], left + mid + subSize[1], true
       )
     };
@@ -30,11 +33,11 @@ namespace sorters {
 
     if constexpr (notNullptr<U>()) {
       if (attached) {
-        subVec_attached[0] = data_structures::VecTools<T>::cutInterval(
+        subVec_attached[0] = utils::VecTools<T>::cutInterval(
           *attached, left, left + subSize[0] - 1, true
         );
 
-        subVec_attached[1] = data_structures::VecTools<T>::cutInterval(
+        subVec_attached[1] = utils::VecTools<T>::cutInterval(
           *attached, left + subSize[0], left + mid + subSize[1], true
         );
       }
