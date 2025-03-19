@@ -18,8 +18,8 @@ namespace utils {
     );
 
     /**
-     * Could be a lambda but better to be
-     * a separate method to avoid errors.
+     * The 'EQUAL_RULE' can be a lambda but it is better
+     * to be a separate method to avoid errors.
      */
     static bool fillWastedDuplicateToMember(
       VEC<T> &vec, PAIR<VEC<T>> &wastedPair,
