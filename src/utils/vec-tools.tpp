@@ -1,10 +1,10 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
-#define __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
+#ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
+#define __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 
 #include "algorithms/calculators.h"
 
 namespace mini_tools {
-namespace data_structures {
+namespace utils {
 
   template <typename T>
   bool VecTools<T>::hasIndex(VEC<T> &vec, CR_INT idx) {
@@ -517,4 +517,4 @@ namespace data_structures {
   }
 }}
 
-#endif // __MINI_TOOLS__DATA_STRUCTURES__VEC_TOOLS_TPP__
+#endif // __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
