@@ -1,10 +1,10 @@
 set (SOURCES
-  utils/reader.cpp
-  utils/timer.cpp
-  data-structures/str-tools.cpp
+  algorithms/calculators.cpp
   data-structures/linked-list.cpp
   data-structures/tree.cpp
-  algorithms/calculators.cpp
+  utils/reader.cpp
+  utils/str-tools.cpp
+  utils/timer.cpp
 )
 
 add_library(mini-tools STATIC ${SOURCES})
