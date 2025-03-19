@@ -35,7 +35,7 @@ namespace data_structures {
   }
 
   Tree *Tree::getChild(CR_INT index) {
-    return VecTools<Tree*>::getAt(children, index, nullptr);
+    return utils::VecTools<Tree*>::getAt(children, index, nullptr);
   }
 
   Tree *Tree::getChild(CR_STR searched) {
@@ -73,7 +73,7 @@ namespace data_structures {
     // faster (danger)
     else {
       if (needEmpty) children = newChildren;
-      else VecTools<Tree*>::concat(children, newChildren);
+      else utils::VecTools<Tree*>::concat(children, newChildren);
     }
 
     for (int i = startIdx; i < children.size(); i++) {
@@ -143,7 +143,7 @@ namespace data_structures {
   }
 
   void Tree::cleanDuplicatesInChildren() {
-    PAIR<VEC_TREE> wastedPair = VecTools<Tree*>::cleanDuplicateInside(
+    PAIR<VEC_TREE> wastedPair = utils::VecTools<Tree*>::cleanDuplicateInside(
         children, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -158,7 +158,7 @@ namespace data_structures {
   }
 
   void Tree::cleanDuplicateToLastAdded(Tree *tree) {
-    PAIR<VEC_TREE> wastedPair = VecTools<Tree*>::cleanDuplicateToMember(
+    PAIR<VEC_TREE> wastedPair = utils::VecTools<Tree*>::cleanDuplicateToMember(
         children, tree, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -181,7 +181,7 @@ namespace data_structures {
   Tree *Tree::dismantle(CR_INT index) {
     Tree *target = children[index];
     target->resign();
-    VecTools<Tree*>::cutSingle(children, index);
+    utils::VecTools<Tree*>::cutSingle(children, index);
     return target;
   }
 
@@ -207,7 +207,7 @@ namespace data_structures {
   }
 
   void Tree::removeChild(CR_INT index) {
-    if (VecTools<Tree*>::hasIndex(children, index)) {
+    if (utils::VecTools<Tree*>::hasIndex(children, index)) {
       dismantleDestroy(index);
     }
   }
@@ -225,7 +225,7 @@ namespace data_structures {
   }
 
   Tree *Tree::releaseChild(CR_INT index) {
-    if (VecTools<Tree*>::hasIndex(children, index)) {
+    if (utils::VecTools<Tree*>::hasIndex(children, index)) {
       return dismantleRelease(index);
     }
     return nullptr;
