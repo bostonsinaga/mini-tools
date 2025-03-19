@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_H__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_H__
 
 namespace mini_tools {
 namespace algorithms {
@@ -40,4 +40,4 @@ namespace sorters {
 }}}
 
 #include "algorithms/sorters/merge-sort.tpp"
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_SORT_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_H__

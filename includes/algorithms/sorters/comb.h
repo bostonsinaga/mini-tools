@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_H__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_H__
 
 namespace mini_tools {
 namespace algorithms {
@@ -28,4 +28,4 @@ namespace sorters {
 }}}
 
 #include "algorithms/sorters/comb-sort.tpp"
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_SORT_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_H__
