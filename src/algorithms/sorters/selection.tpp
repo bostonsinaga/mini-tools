@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__SORTERS__SELECTION_SORT_TPP__
-#define __MINI_TOOLS__SORTERS__SELECTION_SORT_TPP__
+#ifndef __MINI_TOOLS__SORTERS__SELECTION_TPP__
+#define __MINI_TOOLS__SORTERS__SELECTION_TPP__
 
 namespace mini_tools {
 namespace algorithms {
@@ -53,4 +53,4 @@ namespace sorters {
   }
 }}}
 
-#endif // __MINI_TOOLS__SORTERS__SELECTION_SORT_TPP__
+#endif // __MINI_TOOLS__SORTERS__SELECTION_TPP__

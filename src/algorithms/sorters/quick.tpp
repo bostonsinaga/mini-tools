@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__SORTERS__QUICK_SORT_TPP__
-#define __MINI_TOOLS__SORTERS__QUICK_SORT_TPP__
+#ifndef __MINI_TOOLS__SORTERS__QUICK_TPP__
+#define __MINI_TOOLS__SORTERS__QUICK_TPP__
 
 #include <ctime>
 
@@ -139,4 +139,4 @@ namespace sorters {
   }
 }}}
 
-#endif // __MINI_TOOLS__SORTERS__QUICK_SORT_TPP__
+#endif // __MINI_TOOLS__SORTERS__QUICK_TPP__
