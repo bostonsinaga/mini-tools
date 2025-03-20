@@ -1,10 +1,10 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
-#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
+#define __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
 
 namespace mini_tools {
 namespace algorithms {
 
-  class Calc {
+  class NumberSequence {
   public:
     /**
      * Stands of parameters:
@@ -66,4 +66,4 @@ namespace algorithms {
   };
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_H__
+#endif // __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
