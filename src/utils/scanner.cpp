@@ -1,33 +1,33 @@
-#ifndef __MINI_TOOLS__UTILS__READER_CPP__
-#define __MINI_TOOLS__UTILS__READER_CPP__
+#ifndef __MINI_TOOLS__UTILS__SCANNER_CPP__
+#define __MINI_TOOLS__UTILS__SCANNER_CPP__
 
 #include <fstream>
 #include "types.h"
-#include "utils/reader.h"
+#include "utils/scanner.h"
 
 namespace mini_tools {
 namespace utils {
 
-  VEC_CH Reader::separators_ch {' ', ',', '\n'};
-  VEC_STR Reader::separators_str {" ", ",", "\n"};
+  VEC_CH Scanner::separators_ch {' ', ',', '\n'};
+  VEC_STR Scanner::separators_str {" ", ",", "\n"};
 
-  bool Reader::isSeparator(CR_CH ch) {
+  bool Scanner::isSeparator(CR_CH ch) {
     for (CR_CH c : separators_ch) {
       if (ch == c) return true;
     }
     return false;
   }
 
-  bool Reader::isSeparator(CR_STR str) {
+  bool Scanner::isSeparator(CR_STR str) {
     for (CR_STR s : separators_str) {
       if (str == s) return true;
     }
     return false;
   }
 
-  bool Reader::isSeparator(CR_STR text, CR_INT idx) {
+  bool Scanner::isSeparator(CR_STR text, CR_INT idx) {
     if (idx >= 0 && idx < text.length()) {
-      if (Reader::isSeparator(text[idx]) ||
+      if (Scanner::isSeparator(text[idx]) ||
         idx == text.length() - 1
       ) {
         return true;
@@ -37,9 +37,9 @@ namespace utils {
     return false;
   }
 
-  bool Reader::isSeparator(CR_VEC_STR textVec, CR_INT idx) {
+  bool Scanner::isSeparator(CR_VEC_STR textVec, CR_INT idx) {
     if (idx >= 0 && idx < textVec.size()) {
-      if (Reader::isSeparator(textVec[idx]) ||
+      if (Scanner::isSeparator(textVec[idx]) ||
         idx == textVec.size() - 1
       ) {
         return true;
@@ -50,7 +50,7 @@ namespace utils {
   }
 
   /** WARNING. Unable to read '\n' character */
-  void Reader::getFile(
+  void Scanner::getFile(
     CR_STR name,
     std::string &textHook
   ) {
@@ -65,4 +65,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__READER_CPP__
+#endif // __MINI_TOOLS__UTILS__SCANNER_CPP__
