@@ -20,7 +20,7 @@ int main() {
   std::cout << std::endl;
 
   // start time
-  mt_uti::Timer timer;
+  mt_uti::TimeDate timer;
 
   /** Bubble Sort */
   mt_alg::sorters::Bubble<int, int>::solve(numbers, numbers_copy);
