@@ -1,15 +1,15 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
-#define __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
+#ifndef __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_CPP__
+#define __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_CPP__
 
 #include <cmath>
 #include <algorithm>
 #include "types.h"
-#include "algorithms/calculators.h"
+#include "algorithms/number-sequence.h"
 
 namespace mini_tools {
 namespace algorithms {
 
-  int Calc::factorial(int n) {
+  int NumberSequence::factorial(int n) {
     int ret = n;
 
     while (n > 2) {
@@ -20,23 +20,23 @@ namespace algorithms {
     return ret;
   }
 
-  int Calc::arithmeticSeries(
+  int NumberSequence::arithmeticSeries(
     CR_INT a, CR_INT an, CR_INT q
   ) { return q * ((a + an) / 2); }
 
-  int Calc::geometricSeries(
+  int NumberSequence::geometricSeries(
     CR_INT a, CR_INT r, CR_INT q
   ) { return a * (1 - std::pow(r, q)) / (1 - r); }
 
-  int Calc::arithmeticSequence(
+  int NumberSequence::arithmeticSequence(
     CR_INT a, CR_INT o, CR_INT d
   ) { return a + (o - 1) * d; }
 
-  int Calc::geometricSequence(
+  int NumberSequence::geometricSequence(
     CR_INT a, CR_INT r, CR_INT o
   ) { return a * std::pow(r, o - 1); }
 
-  bool Calc::isArithmeticSequence(
+  bool NumberSequence::isArithmeticSequence(
     VEC_INT &nums, CR_INT d
   ) {
     if (nums.size() == 0) return false;
@@ -48,7 +48,7 @@ namespace algorithms {
     return true;
   }
 
-  bool Calc::isArithmeticSequence(
+  bool NumberSequence::isArithmeticSequence(
     CR_VEC_INT nums, CR_INT d
   ) {
     if (nums.size() == 0) return false;
@@ -60,7 +60,7 @@ namespace algorithms {
     return true;
   }
 
-  bool Calc::isGeometricSequence(
+  bool NumberSequence::isGeometricSequence(
     VEC_INT &nums, CR_INT r
   ) {
     if (nums.size() == 0) return false;
@@ -72,7 +72,7 @@ namespace algorithms {
     return true;
   }
 
-  bool Calc::isGeometricSequence(
+  bool NumberSequence::isGeometricSequence(
     CR_VEC_INT nums, CR_INT r
   ) {
     if (nums.size() == 0) return false;
@@ -84,7 +84,7 @@ namespace algorithms {
     return true;
   }
 
-  bool Calc::isSorted(
+  bool NumberSequence::isSorted(
     VEC_INT &nums,
     CR_BOL ascending,
     CR_INT startIndex,
@@ -151,4 +151,4 @@ namespace algorithms {
   }
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__CALCULATORS_CPP__
+#endif // __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_CPP__
