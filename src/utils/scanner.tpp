@@ -5,7 +5,7 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T>
-  T Scanner<T>::stringToNumber(CR_STR numStr) {
+  T Scanner::stringToNumber(CR_STR numStr) {
     if constexpr (
       std::is_same<T, int>::value ||
       std::is_same<T, UI>::value ||
@@ -40,7 +40,7 @@ namespace utils {
   }
 
   template <typename T>
-  void Scanner<T>::parseNumbers(
+  void Scanner::parseNumbers(
     CR_STR text,
     VEC<T> &vecHook
   ) {
@@ -72,10 +72,10 @@ namespace utils {
           else skip = false;
 
           if (!skip &&
-            Reader::isSeparator(text, i) &&
+            Scanner::isSeparator(text, i) &&
             numStr.length() > 0
           ) {
-            vecHook.push_back(Scanner<T>::stringToNumber(numStr));
+            vecHook.push_back(Scanner::stringToNumber<T>(numStr));
             hasDecimalPoint = false;
             numStr = "";
           }
@@ -86,7 +86,7 @@ namespace utils {
   }
 
   template <typename T>
-  void Scanner<T>::parseLetters(
+  void Scanner::parseLetters(
     CR_STR text,
     VEC<T> &vecHook
   ) {
@@ -103,7 +103,7 @@ namespace utils {
         if (!separated) {
           chars += text[i];
 
-          if (Reader::isSeparator(text, i)) {
+          if (Scanner::isSeparator(text, i)) {
             vecHook.push_back(chars);
             separated = true;
             chars = "";
@@ -115,11 +115,11 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::parseNumbers(CR_STR text) {
+  VEC<T> Scanner::parseNumbers(CR_STR text) {
 
     if constexpr (CheckType::isNumber<T>()) {
       VEC<T> numbers;
-      Scanner<T>::parseNumbers(text, numbers);
+      Scanner::parseNumbers<T>(text, numbers);
       return numbers;
     }
     else {
@@ -129,11 +129,11 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::parseLetters(CR_STR text) {
+  VEC<T> Scanner::parseLetters(CR_STR text) {
 
     if constexpr (CheckType::isLetter<T>()) {
       VEC<T> letters;
-      Scanner<T>::parseLetters(text, letters);
+      Scanner::parseLetters<T>(text, letters);
       return letters;
     }
     else {
@@ -143,12 +143,12 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::txtToNumbers(CR_STR filename) {
+  VEC<T> Scanner::txtToNumbers(CR_STR filename) {
 
     if constexpr (CheckType::isNumber<T>()) {
       std::string text;
-      Reader::getFile(filename, text);
-      return Scanner<T>::parseNumbers(text);
+      Scanner::getFile(filename, text);
+      return Scanner::parseNumbers<T>(text);
     }
     else {
       static_assert(0, "template type");
@@ -157,12 +157,12 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> Scanner<T>::txtToLetters(CR_STR filename) {
+  VEC<T> Scanner::txtToLetters(CR_STR filename) {
 
     if constexpr (CheckType::isLetter<T>()) {
       std::string text;
-      Reader::getFile(filename, text);
-      return Scanner<T>::parseLetters(text);
+      Scanner::getFile(filename, text);
+      return Scanner::parseLetters<T>(text);
     }
     else {
       static_assert(0, "template type");
