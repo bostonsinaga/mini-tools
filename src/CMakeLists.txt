@@ -1,5 +1,5 @@
 set (SOURCES
-  algorithms/calculators.cpp
+  algorithms/number-sequence.cpp
   data-structures/linked-list.cpp
   data-structures/tree.cpp
   utils/scanner.cpp
