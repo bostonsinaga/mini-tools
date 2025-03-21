@@ -1,3 +1,6 @@
+#ifndef __MINI_TOOLS__UTILS__RANDOM_WORDS_TPP__
+#define __MINI_TOOLS__UTILS__RANDOM_WORDS_TPP__
+
 #include "random-words.h"
 
 namespace mini-tools {
@@ -43,12 +46,9 @@ namespace utils {
   void RandomWords::generateStrings(
     VEC<T> &strings,
     CR_SZ count,
-    CR_SZ maxLettersCount,
-    CR_BOL needReset,
-    CR<T> additional
+    CR_SZ maxLettersCount
   ) {
     std::srand(std::time(0));
-    if (needReset) floatingPoint = {};
 
     for (int i = 0; i < count; i++) {
       for (int j = 0; j < std::rand() % maxLettersCount + 1; j++) {
@@ -68,9 +68,12 @@ namespace utils {
   }
 
   void RandomWords::generateMixture(
-    
+    VEC<T> &strings,
+    CR_SZ count,
+    CR_SZ maxLettersCount
   ) {
 
   }
 }}
 
+#endif // __MINI_TOOLS__UTILS__RANDOM_WORDS_TPP__
