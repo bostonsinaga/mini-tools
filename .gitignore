@@ -1,3 +1,4 @@
 build/
-test/inputs/
-test/outputs/
+test/logs/
+test/executables/
+test/samples/
