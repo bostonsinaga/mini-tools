@@ -1,1 +1,0 @@
-"res/generator.exe" number 10000 100 5 res/sample.txt
