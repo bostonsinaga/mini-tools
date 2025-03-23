@@ -6,6 +6,7 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+
   using namespace CheckType;
 
   template <typename T, typename U>
