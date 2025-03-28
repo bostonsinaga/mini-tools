@@ -13,14 +13,9 @@
 
 namespace mini_tools {
 
-  /** Flags for direction of sorting process */
+  /** TYPE CHECKERS */
 
-  enum SortOrderFlag {DESCENDING, ASCENDING};
-  enum SortPriorityFlag {LETTER_LOWER, LETTER_UPPER};
-
-  /** INSPECTOR */
-
-  namespace CheckType {
+  namespace inspector {
 
     template <typename T>
     constexpr bool isLetter() {
@@ -44,6 +39,15 @@ namespace mini_tools {
     constexpr bool notNullptr() {
       return !std::is_same<T, std::nullptr_t>::value;
     }
+
+    template <typename T>
+    concept LETTER = std::is_same_v<T, char> || std::is_same_v<T, wchar_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
+
+    template <typename T>
+    concept NUMBER = std::is_integral_v<T> || std::is_floating_point_v<T>;
+
+    template <typename T>
+    concept POINTER = !std::is_same_v<T, std::nullptr_t>;
   }
 
   /** SHORTENED PRIMITIVE DATA TYPES */
