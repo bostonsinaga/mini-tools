@@ -1,6 +1,17 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS_H__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS_H__
 
+/** Enums for direction of sorting process */
+
+namespace mini_tools {
+namespace algorithms {
+namespace sorters {
+  enum ORDER_ENUM {ORDER_DESCENDING, ORDER_ASCENDING};
+  enum PRIORITY_ENUM {PRIORITY_LOWERCASE, PRIORITY_UPPERCASE};
+}}}
+
+/** Inclusion */
+
 #include "bubble.h"
 #include "comb.h"
 #include "insertion.h"
