@@ -13,16 +13,11 @@ namespace sorters {
   ) {
     for (int i = 0; i < messy.size() - 1; i++) {
       for (int j = 0; j < messy.size() - i - 1; j++) {
+
         if ((order && messy[j] > messy[j + 1]) ||
           (!order && messy[j] < messy[j + 1])
         ) {
-          std::swap(messy[j], messy[j + 1]);
-
-          if constexpr (notNullptr<U>()) {
-            if (attached) std::swap(
-              attached->at(j), attached->at(j + 1)
-            );
-          }
+          swap<T, U>(messy, attached, j, j + 1);
         }
       }
     }

@@ -28,14 +28,8 @@ namespace sorters {
         if ((order && messy[i] > messy[i + gap]) ||
           (!order && messy[i] < messy[i + gap])
         ) {
-          std::swap(messy[i], messy[i + gap]);
           swapped = true;
-
-          if constexpr (inspector::notNullptr<U>()) {
-            if (attached) std::swap(
-              attached->at(i), attached->at(i + gap)
-            );
-          }
+          swap<T, U>(messy, attached, i, i + gap);
         }
       }
     }

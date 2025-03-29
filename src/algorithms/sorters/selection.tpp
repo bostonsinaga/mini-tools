@@ -22,13 +22,7 @@ namespace sorters {
         ) { least = j; }
       }
 
-      std::swap(messy[least], messy[i]);
-
-      if constexpr (notNullptr<U>()) {
-        if (attached) std::swap(
-          attached->at(least), attached->at(i)
-        );
-      }
+      swap<T, U>(messy, attached, least, i);
     }
   }
 

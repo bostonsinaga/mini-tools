@@ -23,24 +23,11 @@ namespace sorters {
         (!order && messy[j] >= pivot)
       ) {
         i++;
-        std::swap(messy[i], messy[j]);
-
-        if constexpr (notNullptr<U>()) {
-          if (attached) std::swap(
-            attached->at(i), attached->at(j)
-          );
-        }
+        swap<T, U>(messy, attached, i, j);
       }
     }
 
-    std::swap(messy[i + 1], messy[right]);
-
-    if constexpr (notNullptr<U>()) {
-      if (attached) std::swap(
-        attached->at(i + 1), attached->at(right)
-      );
-    }
-
+    swap<T, U>(messy, attached, i + 1, right);
     return i + 1;
   }
 
@@ -66,13 +53,7 @@ namespace sorters {
       }
 
       if (i >= j) return j;
-      std::swap(messy[i], messy[j]);
-
-      if constexpr (notNullptr<U>()) {
-        if (attached) std::swap(
-          attached->at(i), attached->at(j)
-        );
-      }
+      swap<T, U>(messy, attached, i, j);
     }
   }
 
@@ -87,20 +68,15 @@ namespace sorters {
   ) {
     std::srand(std::time(NULL));
     int random = left + std::rand() % (right - left);
-    std::swap(messy[random], messy[right]);
-
-    if constexpr (inspector::notNullptr<U>()) {
-      if (attached) std::swap(
-        attached->at(random), attached->at(right)
-      );
-    }
+    swap<T, U>(messy, attached, random, right);
 
     if (scheme == LOMUTO) {
       return Quick<T, U>::lomutoPartition(
         messy, attached, left, right, order
       );
     }
-    else return Quick<T, U>::hoarePartition(
+
+    return Quick<T, U>::hoarePartition(
       messy, attached, left, right, order
     );
   }
