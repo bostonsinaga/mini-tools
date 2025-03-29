@@ -47,7 +47,7 @@ namespace mini_tools {
     concept NUMBER = std::is_integral_v<T> || std::is_floating_point_v<T>;
 
     template <typename T>
-    concept POINTER = !std::is_same_v<T, std::nullptr_t>;
+    concept NOT_NULLPTR = !std::is_same_v<T, std::nullptr_t>;
   }
 
   /** SHORTENED PRIMITIVE DATA TYPES */
