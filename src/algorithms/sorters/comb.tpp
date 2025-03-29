@@ -5,61 +5,63 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  using namespace CheckType;
-
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Comb<T, U>::process(
     VEC<T> &messy,
     VEC<U> *attached,
-    bool &ascending
+    CR_ORDER_ENUM order
   ) {
-    if constexpr (isNumber<T>()) {
-      int gap = messy.size();
-      bool swapped = true;
+    int gap = messy.size();
+    bool swapped = true;
 
-      while (gap != 1 || swapped) {
-        /**
-        * Starts with a large value
-        * and shrinks by a factor of 1.3
-        */
-        gap = (gap * 10) / 13;
+    while (gap != 1 || swapped) {
+      /**
+       * Starts with a large value
+       * and shrinks by a factor of 1.3
+       */
+      gap = (gap * 10) / 13;
 
-        if (gap < 1) gap = 1;
-        swapped = false;
+      if (gap < 1) gap = 1;
+      swapped = false;
 
-        for (int i = 0; i < messy.size() - gap; i++) {
-          if ((ascending && messy[i] > messy[i + gap]) ||
-            (!ascending && messy[i] < messy[i + gap])
-          ) {
-            std::swap(messy[i], messy[i + gap]);
-            swapped = true;
+      for (int i = 0; i < messy.size() - gap; i++) {
+        if ((order && messy[i] > messy[i + gap]) ||
+          (!order && messy[i] < messy[i + gap])
+        ) {
+          std::swap(messy[i], messy[i + gap]);
+          swapped = true;
 
-            if constexpr (notNullptr<U>()) {
-              if (attached) std::swap(attached->at(i), attached->at(i + gap));
-            }
+          if constexpr (inspector::notNullptr<U>()) {
+            if (attached) std::swap(
+              attached->at(i), attached->at(i + gap)
+            );
           }
         }
       }
     }
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Comb<T, U>::solve(
     VEC<T> &messy,
     VEC<U> &attached,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
     VEC<U> *attached_p = nullptr;
-    if (attached.size() >= messy.size()) attached_p = &attached;
-    Comb<T, U>::process(messy, attached_p, ascending);
+
+    if (attached.size() >= messy.size()) {
+      ttached_p = &attached;
+    }
+
+    Comb<T, U>::process(messy, attached_p, order);
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Comb<T, U>::solve(
     VEC<T> &messy,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
-    Comb<T, U>::process(messy, nullptr, ascending);
+    Comb<T, U>::process(messy, nullptr, order);
   }
 }}}
 

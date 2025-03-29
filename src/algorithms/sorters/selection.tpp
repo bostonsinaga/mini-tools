@@ -5,52 +5,54 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  using namespace CheckType;
-
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Selection<T, U>::process(
     std::vector<T> &messy,
     std::vector<U> *attached,
-    bool &ascending
+    CR_ORDER_ENUM order
   ) {
-    if constexpr (isNumber<T>()) {
-      int i, j, least; 
+    int i, j, least; 
 
-      for (i = 0; i < messy.size() - 1; i++) {
-        least = i; 
+    for (i = 0; i < messy.size() - 1; i++) {
+      least = i; 
 
-        for (j = i + 1; j < messy.size(); j++) {
-          if ((ascending && messy[j] < messy[least]) ||
-            (!ascending && messy[j] > messy[least])
-          ) { least = j; }
-        }
+      for (j = i + 1; j < messy.size(); j++) {
+        if ((order && messy[j] < messy[least]) ||
+          (!order && messy[j] > messy[least])
+        ) { least = j; }
+      }
 
-        std::swap(messy[least], messy[i]);
+      std::swap(messy[least], messy[i]);
 
-        if constexpr (notNullptr<U>()) {
-          if (attached) std::swap(attached->at(least), attached->at(i));
-        }
+      if constexpr (notNullptr<U>()) {
+        if (attached) std::swap(
+          attached->at(least), attached->at(i)
+        );
       }
     }
   }
 
-	template <typename T, typename U>
+	template <NUMBER T, typename U>
   void Selection<T, U>::solve(
     std::vector<T> &messy,
     std::vector<U> &attached,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
     std::vector<U> *attached_p = nullptr;
-    if (attached.size() >= messy.size()) attached_p = &attached;
-    Selection<T, U>::process(messy, attached_p, ascending);
+
+    if (attached.size() >= messy.size()) {
+      attached_p = &attached;
+    }
+
+    Selection<T, U>::process(messy, attached_p, order);
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Selection<T, U>::solve(
     std::vector<T> &messy,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
-    Selection<T, U>::process(messy, nullptr, ascending);
+    Selection<T, U>::process(messy, nullptr, order);
   }
 }}}
 

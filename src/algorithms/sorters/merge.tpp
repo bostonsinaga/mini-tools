@@ -7,16 +7,14 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  using namespace CheckType;
-
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Merge<T, U>::merge(
     VEC<T> &messy,
     VEC<U> *attached,
     CR_INT left,
     CR_INT mid,
     CR_INT right,
-    bool &ascending
+    CR_ORDER_ENUM order
   ) {
     int subSize[2] = {mid - left + 1, right - mid};
 
@@ -31,7 +29,7 @@ namespace sorters {
 
     VEC<T> subVec_attached[2];
 
-    if constexpr (notNullptr<U>()) {
+    if constexpr (inspector::notNullptr<U>()) {
       if (attached) {
         subVec_attached[0] = utils::VecTools<T>::cutInterval(
           *attached, left, left + subSize[0] - 1, true
@@ -49,14 +47,14 @@ namespace sorters {
     while (subVecDex[0] < subSize[0] &&
       subVecDex[1] < subSize[1]
     ) {
-      if ((ascending && subVec_messy[0][subVecDex[0]]
+      if ((order && subVec_messy[0][subVecDex[0]]
         <= subVec_messy[1][subVecDex[1]]) ||
-        (!ascending && subVec_messy[0][subVecDex[0]]
+        (!order && subVec_messy[0][subVecDex[0]]
         >= subVec_messy[1][subVecDex[1]])
       ) {
         messy[mergedVecDex] = subVec_messy[0][subVecDex[0]];
 
-        if constexpr (notNullptr<U>()) {
+        if constexpr (inspector::notNullptr<U>()) {
           if (attached) attached->at(mergedVecDex) = subVec_attached[0][subVecDex[0]];
         }
 
@@ -65,20 +63,22 @@ namespace sorters {
       else {
         messy[mergedVecDex] = subVec_messy[1][subVecDex[1]];
 
-        if constexpr (notNullptr<U>()) {
+        if constexpr (inspector::notNullptr<U>()) {
           if (attached) attached->at(mergedVecDex) = subVec_attached[1][subVecDex[1]];
         }
 
         subVecDex[1]++;
       }
+
       mergedVecDex++;
     }
 
     for (int i = 0; i < 2; i++) {
+
       while (subVecDex[i] < subSize[i]) {
         messy[mergedVecDex] = subVec_messy[i][subVecDex[i]];
 
-        if constexpr (notNullptr<U>()) {
+        if constexpr (inspector::notNullptr<U>()) {
           if (attached) attached->at(mergedVecDex) = subVec_attached[i][subVecDex[i]];
         }
 
@@ -88,41 +88,47 @@ namespace sorters {
     }
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Merge<T, U>::partition(
     VEC<T> &messy,
     VEC<U> *attached,
     CR_INT begin,
     CR_INT end,
-    bool &ascending
+    CR_ORDER_ENUM order
   ) {
-    if constexpr (isNumber<T>()) {
-      if (begin >= end) return;
-      int mid = begin + (end - begin) / 2;
+    if (begin >= end) return;
+    int mid = begin + (end - begin) / 2;
 
-      Merge<T, U>::partition(messy, attached, begin, mid, ascending);
-      Merge<T, U>::partition(messy, attached, mid + 1, end, ascending);
-      Merge<T, U>::merge(messy, attached, begin, mid, end, ascending);
-    }
+    Merge<T, U>::partition(messy, attached, begin, mid, order);
+    Merge<T, U>::partition(messy, attached, mid + 1, end, order);
+    Merge<T, U>::merge(messy, attached, begin, mid, end, order);
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Merge<T, U>::solve(
     VEC<T> &messy,
     VEC<U> &attached,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
     VEC<U> *attached_p = nullptr;
-    if (attached.size() >= messy.size()) attached_p = &attached;
-    Merge<T, U>::partition(messy, attached_p, 0, messy.size() - 1, ascending);
+
+    if (attached.size() >= messy.size()) {
+      attached_p = &attached;
+    }
+
+    Merge<T, U>::partition(
+      messy, attached_p, 0, messy.size() - 1, order
+    );
   }
 
-  template <typename T, typename U>
+  template <NUMBER T, typename U>
   void Merge<T, U>::solve(
     VEC<T> &messy,
-    bool ascending
+    CR_ORDER_ENUM order
   ) {
-    Merge<T, U>::partition(messy, nullptr, 0, messy.size() - 1, ascending);
+    Merge<T, U>::partition(
+      messy, nullptr, 0, messy.size() - 1, order
+    );
   }
 }}}
 
