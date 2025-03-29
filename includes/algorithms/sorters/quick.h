@@ -5,8 +5,12 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T, class U = std::nullptr_t>
+  template <NUMBER T, class U = std::nullptr_t>
   class Quick {
+  public:
+    enum SCHEME {HOARE, LOMUTO};
+    typedef const SCHEME& CR_SCHEME;
+
   private:
     /** Slower */
     static int lomutoPartition(
@@ -32,7 +36,7 @@ namespace sorters {
       CR_INT left,
       CR_INT right,
       bool &ascending,
-      int &scheme
+      CR_SCHEME scheme
     );
 
     static void recursion(
@@ -41,23 +45,21 @@ namespace sorters {
       CR_INT left,
       CR_INT right,
       bool &ascending,
-      int &scheme
+      CR_SCHEME scheme
     );
 
   public:
-    enum {HOARE, LOMUTO};
-
     static void solve(
       VEC<T> &messy,
       VEC<U> &attached,
       bool ascending = true,
-      int scheme = HOARE
+      CR_SCHEME scheme = HOARE
     );
 
     static void solve(
       VEC<T> &messy,
       bool ascending = true,
-      int scheme = HOARE
+      CR_SCHEME scheme = HOARE
     );
   };
 }}}

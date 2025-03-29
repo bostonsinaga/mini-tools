@@ -6,8 +6,12 @@
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
+
   enum ORDER_ENUM {ORDER_DESCENDING, ORDER_ASCENDING};
   enum PRIORITY_ENUM {PRIORITY_LOWERCASE, PRIORITY_UPPERCASE};
+
+  typedef const ORDER_ENUM& CR_ORDER_ENUM;
+  typedef const PRIORITY_ENUM& CR_PRIORITY_ENUM;
 }}}
 
 /** Inclusion */
