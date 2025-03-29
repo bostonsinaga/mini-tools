@@ -12,6 +12,21 @@ namespace sorters {
 
   typedef const ORDER_ENUM& CR_ORDER_ENUM;
   typedef const PRIORITY_ENUM& CR_PRIORITY_ENUM;
+
+  /** WARNING! Indexes are not protected */
+  template <inspector::NUMBER T, typename U>
+  inline void swap(
+    VEC<T> &messy, VEC<U> *attached,
+    CR_INT i, CR_INT j
+  ) {
+    std::swap(messy[i], messy[j]);
+
+    if constexpr (notNullptr<U>()) {
+      if (attached) std::swap(
+        attached->at(i), attached->at(j)
+      );
+    }
+  }
 }}}
 
 /** Inclusion */
