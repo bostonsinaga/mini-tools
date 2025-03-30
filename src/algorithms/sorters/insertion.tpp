@@ -19,8 +19,8 @@ namespace sorters {
       key = messy[i];
 
       while (j >= start && (
-        (order && messy[j].first > key) ||
-        (!order && messy[j].first < key)
+        (order == ORDER_ASCENDING && messy[j].first > key.first) ||
+        (order == ORDER_DESCENDING && messy[j].first < key.first)
       )) {
         messy[j + 1] = messy[j];
         j--;

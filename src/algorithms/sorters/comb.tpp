@@ -24,8 +24,12 @@ namespace sorters {
       swapped = false;
 
       for (int i = 0; i < messy.size() - gap; i++) {
-        if ((order && messy[i].first > messy[i + gap].first) ||
-          (!order && messy[i].first < messy[i + gap].first)
+
+        if ((order == ORDER_ASCENDING &&
+          messy[i].first > messy[i + gap].first)
+        ||
+          (order == ORDER_DESCENDING &&
+          messy[i].first < messy[i + gap].first)
         ) {
           swapped = true;
           std::swap(messy[i], messy[i + gap]);

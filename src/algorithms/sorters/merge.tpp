@@ -32,11 +32,11 @@ namespace sorters {
     while (subVecDex[0] < subSize[0] &&
       subVecDex[1] < subSize[1]
     ) {
-      if ((order && subVec[0][subVecDex[0]].first
-        <= subVec[1][subVecDex[1]].first)
+      if ((order == ORDER_ASCENDING &&
+        subVec[0][subVecDex[0]].first <= subVec[1][subVecDex[1]].first)
       ||
-        (!order && subVec[0][subVecDex[0]].first
-        >= subVec[1][subVecDex[1]].first)
+        (order == ORDER_DESCENDING &&
+        subVec[0][subVecDex[0]].first >= subVec[1][subVecDex[1]].first)
       ) {
         messy[mergedVecDex] = subVec[0][subVecDex[0]];
         subVecDex[0]++;

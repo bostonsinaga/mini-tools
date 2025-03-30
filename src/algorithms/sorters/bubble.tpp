@@ -13,8 +13,11 @@ namespace sorters {
     for (int i = 0; i < messy.size() - 1; i++) {
       for (int j = 0; j < messy.size() - i - 1; j++) {
 
-        if ((order && messy[j].first > messy[j + 1].first) ||
-          (!order && messy[j].first < messy[j + 1].first)
+        if ((order == ORDER_ASCENDING &&
+          messy[j].first > messy[j + 1].first)
+        ||
+          (order == ORDER_DESCENDING &&
+          messy[j].first < messy[j + 1].first)
         ) {
           std::swap(messy[j], messy[j + 1]);
         }

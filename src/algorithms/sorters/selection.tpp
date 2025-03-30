@@ -16,9 +16,15 @@ namespace sorters {
       least = i; 
 
       for (j = i + 1; j < messy.size(); j++) {
-        if ((order && messy[j].first < messy[least].first) ||
-          (!order && messy[j].first > messy[least].first)
-        ) { least = j; }
+
+        if ((order == ORDER_ASCENDING &&
+          messy[j].first < messy[least].first)
+        ||
+          (order == ORDER_DESCENDING &&
+          messy[j].first > messy[least].first)
+        ) {
+          least = j;
+        }
       }
 
       std::swap(messy[least], messy[i]);

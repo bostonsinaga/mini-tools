@@ -14,12 +14,15 @@ namespace sorters {
     CR_INT right,
     CR_ORDER_ENUM order
   ) {
-    T pivot = messy[right].first;
     int i = left - 1;
 
-    for (int j = left; j <= right - 1; j++) {
-      if ((order && messy[j].first <= pivot) ||
-        (!order && messy[j].first >= pivot)
+    for (int j = left; j < right; j++) {
+
+      if ((order == ORDER_ASCENDING &&
+        messy[j].first <= messy[right].first)
+      ||
+        (order == ORDER_DESCENDING &&
+        messy[j].first >= messy[right].first)
       ) {
         i++;
         std::swap(messy[i], messy[j]);
@@ -38,16 +41,16 @@ namespace sorters {
     CR_ORDER_ENUM order
   ) {
     int i = left - 1, j = right + 1;
-    int pivot = messy[(left + right) / 2].first;
+    const int mid = (left + right) / 2;
 
     while (true) {
-      if (order) {
-        do { i++; } while (messy[i].first < pivot);
-        do { j--; } while (messy[j].first > pivot);
+      if (order == ORDER_ASCENDING) {
+        do { i++; } while (messy[i].first < messy[mid].first);
+        do { j--; } while (messy[j].first > messy[mid].first);
       }
       else {
-        do { i++; } while (messy[i].first > pivot);
-        do { j--; } while (messy[j].first < pivot);
+        do { i++; } while (messy[i].first > messy[mid].first);
+        do { j--; } while (messy[j].first < messy[mid].first);
       }
 
       if (i >= j) return j;
@@ -88,16 +91,16 @@ namespace sorters {
         Insertion<T, U>::process(messy, order, left, right);
       }
       else {
-        int piv = Quick<T, U, SCHEME>::randomPartition(
+        int pix = Quick<T, U, SCHEME>::randomPartition(
           messy, left, right, order
         );
 
         Quick<T, U, SCHEME>::recursion(
-          messy, left, piv - 1, order
+          messy, left, pix - 1, order
         );
 
         Quick<T, U, SCHEME>::recursion(
-          messy, piv + 1, right, order
+          messy, pix + 1, right, order
         );
       }
     }
