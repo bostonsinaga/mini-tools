@@ -5,36 +5,28 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T, class U = std::nullptr_t>
+  template <inspector::NUMBER T, class U>
   class Merge {
   private:
     static void merge(
-      VEC<T> &messy,
-      VEC<U> *attached,
+      VEC_PAIR2<T, U> &messy,
       CR_INT left,
       CR_INT mid,
       CR_INT right,
-      bool &ascending
+      CR_ORDER_ENUM order
     );
 
     static void partition(
-      VEC<T> &messy,
-      VEC<U> *attached,
+      VEC_PAIR2<T, U> &messy,
       CR_INT begin,
       CR_INT end,
-      bool &ascending
+      CR_ORDER_ENUM order
     );
 
   public:
     static void solve(
-      VEC<T> &messy,
-      VEC<U> &attached,
-      bool ascending = true
-    );
-
-    static void solve(
-      VEC<T> &messy,
-      bool ascending = true
+      VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order = ORDER_ASCENDING
     );
   };
 }}}

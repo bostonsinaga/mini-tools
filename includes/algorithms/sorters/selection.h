@@ -5,25 +5,18 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-	template <class T, class U = std::nullptr_t>
+	template <inspector::NUMBER T, class U>
 	class Selection {
 	private:
 		static void process(
-			std::vector<T> &messy,
-			std::vector<U> *attached,
-			bool &ascending
+			VEC_PAIR2<T, U> &messy,
+			CR_ORDER_ENUM order
 		);
 
 	public:
 		static void solve(
 			std::vector<T> &messy,
-			std::vector<U> &attached,
-			bool ascending = true
-		);
-
-		static void solve(
-			std::vector<T> &messy,
-			bool ascending = true
+			CR_ORDER_ENUM order = ORDER_ASCENDING
 		);
 	};
 }}}

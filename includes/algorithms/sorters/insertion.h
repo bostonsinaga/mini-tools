@@ -5,26 +5,20 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <class T, class U = std::nullptr_t>
+  template <inspector::NUMBER T, class U>
   class Insertion {
   protected:
     static void process(
-      VEC<T> &messy,
-      VEC<U> *attached,
-      CR_BOL ascending,
-      CR_INT start, CR_INT end
+      VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
+      CR_INT start,
+      CR_INT end
     );
 
   public:
     static void solve(
-      VEC<T> &messy,
-      VEC<U> &attached,
-      CR_BOL ascending = true
-    );
-
-    static void solve(
-      VEC<T> &messy,
-      CR_BOL ascending = true
+      VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order = ORDER_ASCENDING
     );
 
     template<typename, typename>
