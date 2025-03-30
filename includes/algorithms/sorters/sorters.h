@@ -7,7 +7,7 @@ namespace sorters {
 
   /** Enums for direction of sorting process */
 
-  enum ORDER_ENUM {ORDER_DESCENDING, ORDER_ASCENDING};
+  enum ORDER_ENUM {ORDER_ASCENDING, ORDER_DESCENDING};
   enum PRIORITY_ENUM {PRIORITY_LOWERCASE, PRIORITY_UPPERCASE};
 
   typedef const ORDER_ENUM& CR_ORDER_ENUM;
