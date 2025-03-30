@@ -7,8 +7,7 @@ namespace sorters {
 
   template <NUMBER T, typename U>
   void Selection<T, U>::process(
-    std::vector<T> &messy,
-    std::vector<U> *attached,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
     int i, j, least; 
@@ -17,36 +16,21 @@ namespace sorters {
       least = i; 
 
       for (j = i + 1; j < messy.size(); j++) {
-        if ((order && messy[j] < messy[least]) ||
-          (!order && messy[j] > messy[least])
+        if ((order && messy[j].first < messy[least].first) ||
+          (!order && messy[j].first > messy[least].first)
         ) { least = j; }
       }
 
-      swap<T, U>(messy, attached, least, i);
+      std::swap(messy[least], messy[i]);
     }
-  }
-
-	template <NUMBER T, typename U>
-  void Selection<T, U>::solve(
-    std::vector<T> &messy,
-    std::vector<U> &attached,
-    CR_ORDER_ENUM order
-  ) {
-    std::vector<U> *attached_p = nullptr;
-
-    if (attached.size() >= messy.size()) {
-      attached_p = &attached;
-    }
-
-    Selection<T, U>::process(messy, attached_p, order);
   }
 
   template <NUMBER T, typename U>
   void Selection<T, U>::solve(
-    std::vector<T> &messy,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
-    Selection<T, U>::process(messy, nullptr, order);
+    Selection<T, U>::process(messy, order);
   }
 }}}
 

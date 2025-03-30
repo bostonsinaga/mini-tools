@@ -7,17 +7,16 @@ namespace sorters {
 
   template <NUMBER T, typename U>
   void Bubble<T, U>::process(
-    VEC<T> &messy,
-    VEC<U> *attached,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
     for (int i = 0; i < messy.size() - 1; i++) {
       for (int j = 0; j < messy.size() - i - 1; j++) {
 
-        if ((order && messy[j] > messy[j + 1]) ||
-          (!order && messy[j] < messy[j + 1])
+        if ((order && messy[j].first > messy[j + 1].first) ||
+          (!order && messy[j].first < messy[j + 1].first)
         ) {
-          swap<T, U>(messy, attached, j, j + 1);
+          std::swap(messy[j], messy[j + 1]);
         }
       }
     }
@@ -25,25 +24,10 @@ namespace sorters {
 
   template <NUMBER T, typename U>
   void Bubble<T, U>::solve(
-    VEC<T> &messy,
-    VEC<U> &attached,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
-    VEC<U> *attached_p = nullptr;
-
-    if (attached.size() >= messy.size()) {
-      attached_p = &attached;
-    }
-
-    Bubble<T, U>::process(messy, attached_p, order);
-  }
-
-  template <NUMBER T, typename U>
-  void Bubble<T, U>::solve(
-    VEC<T> &messy,
-    CR_ORDER_ENUM order
-  ) {
-    Bubble<T, U>::process(messy, nullptr, order);
+    Bubble<T, U>::process(messy, order);
   }
 }}}
 

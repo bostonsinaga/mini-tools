@@ -7,8 +7,7 @@ namespace sorters {
 
   template <NUMBER T, typename U>
   void Comb<T, U>::process(
-    VEC<T> &messy,
-    VEC<U> *attached,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
     int gap = messy.size();
@@ -25,11 +24,11 @@ namespace sorters {
       swapped = false;
 
       for (int i = 0; i < messy.size() - gap; i++) {
-        if ((order && messy[i] > messy[i + gap]) ||
-          (!order && messy[i] < messy[i + gap])
+        if ((order && messy[i].first > messy[i + gap].first) ||
+          (!order && messy[i].first < messy[i + gap].first)
         ) {
           swapped = true;
-          swap<T, U>(messy, attached, i, i + gap);
+          std::swap(messy[i], messy[i + gap]);
         }
       }
     }
@@ -37,22 +36,7 @@ namespace sorters {
 
   template <NUMBER T, typename U>
   void Comb<T, U>::solve(
-    VEC<T> &messy,
-    VEC<U> &attached,
-    CR_ORDER_ENUM order
-  ) {
-    VEC<U> *attached_p = nullptr;
-
-    if (attached.size() >= messy.size()) {
-      ttached_p = &attached;
-    }
-
-    Comb<T, U>::process(messy, attached_p, order);
-  }
-
-  template <NUMBER T, typename U>
-  void Comb<T, U>::solve(
-    VEC<T> &messy,
+    VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
     Comb<T, U>::process(messy, nullptr, order);
