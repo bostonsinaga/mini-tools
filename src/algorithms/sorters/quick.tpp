@@ -67,9 +67,13 @@ namespace sorters {
     std::swap(messy[random], messy[right]);
 
     if constexpr (SCHEME == QUICK_LOMUTO) {
-      return lomutoPartition(messy, left, right, order);
+      return Quick<T, U, SCHEME>::lomutoPartition(
+        messy, left, right, order
+      );
     }
-    else return hoarePartition(messy, left, right, order);
+    else return Quick<T, U, SCHEME>::hoarePartition(
+      messy, left, right, order
+    );
   }
 
   template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
@@ -84,9 +88,17 @@ namespace sorters {
         Insertion<T, U>::process(messy, order, left, right);
       }
       else {
-        int piv = randomPartition(messy, left, right, order);
-        recursion(messy, left, piv - 1, order);
-        recursion(messy, piv + 1, right, order);
+        int piv = Quick<T, U, SCHEME>::randomPartition(
+          messy, left, right, order
+        );
+
+        Quick<T, U, SCHEME>::recursion(
+          messy, left, piv - 1, order
+        );
+
+        Quick<T, U, SCHEME>::recursion(
+          messy, piv + 1, right, order
+        );
       }
     }
   }
@@ -96,7 +108,9 @@ namespace sorters {
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
-    recursion(messy, 0, messy.size() - 1, order);
+    Quick<T, U, SCHEME>::recursion(
+      messy, 0, messy.size() - 1, order
+    );
   }
 }}}
 
