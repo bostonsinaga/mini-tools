@@ -15,7 +15,7 @@ namespace sorters {
 
 	public:
 		static void solve(
-			std::vector<T> &messy,
+			VEC_PAIR2<T, U> &messy,
 			CR_ORDER_ENUM order = ORDER_ASCENDING
 		);
 	};
