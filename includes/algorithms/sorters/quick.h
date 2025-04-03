@@ -5,8 +5,6 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  enum QUICK_SCHEME_ENUM {QUICK_HOARE, QUICK_LOMUTO};
-
   template <inspector::NUMBER T, class U, QUICK_SCHEME_ENUM SCHEME = QUICK_HOARE>
   class Quick {
   private:
