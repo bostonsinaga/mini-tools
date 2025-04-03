@@ -5,6 +5,9 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
+  // this belongs to quick sort
+  enum QUICK_SCHEME_ENUM {QUICK_HOARE, QUICK_LOMUTO};
+
   template <inspector::NUMBER T, class U>
   class Insertion {
   protected:
@@ -21,7 +24,8 @@ namespace sorters {
       CR_ORDER_ENUM order = ORDER_ASCENDING
     );
 
-    template<typename, typename>
+  private:
+    template <inspector::NUMBER, class, QUICK_SCHEME_ENUM>
     friend class Quick;
   };
 }}}
