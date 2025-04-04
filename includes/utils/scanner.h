@@ -19,25 +19,25 @@ namespace utils {
       std::string &textHook
     );
 
-    template <typename T>
+    template <inspector::NUMBER T>
     static T stringToNumber(CR_STR numStr);
 
-    template <typename T>
+    template <inspector::NUMBER T>
     static void parseNumbers(CR_STR text, VEC<T> &vecHook);
 
-    template <typename T>
+    template <inspector::LETTER T>
     static void parseLetters(CR_STR text, VEC<T> &vecHook);
 
-    template <typename T>
+    template <inspector::NUMBER T>
     static VEC<T> parseNumbers(CR_STR text);
 
-    template <typename T>
+    template <inspector::LETTER T>
     static VEC<T> parseLetters(CR_STR text);
 
-    template <typename T>
+    template <inspector::NUMBER T>
     static VEC<T> txtToNumbers(CR_STR filename);
 
-    template <typename T>
+    template <inspector::LETTER T>
     static VEC<T> txtToLetters(CR_STR filename);
   };
 }}
