@@ -7,7 +7,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <NUMBER T, typename U>
+  template <inspector::NUMBER T, typename U>
   void Merge<T, U>::merge(
     VEC_PAIR2<T, U> &messy,
     CR_INT left,
@@ -59,7 +59,7 @@ namespace sorters {
     }
   }
 
-  template <NUMBER T, typename U>
+  template <inspector::NUMBER T, typename U>
   void Merge<T, U>::partition(
     VEC_PAIR2<T, U> &messy,
     CR_INT begin,
@@ -74,7 +74,7 @@ namespace sorters {
     Merge<T, U>::merge(messy, begin, mid, end, order);
   }
 
-  template <NUMBER T, typename U>
+  template <inspector::NUMBER T, typename U>
   void Merge<T, U>::solve(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order

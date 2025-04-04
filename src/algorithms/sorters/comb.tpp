@@ -5,7 +5,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <NUMBER T, typename U>
+  template <inspector::NUMBER T, typename U>
   void Comb<T, U>::process(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
@@ -38,7 +38,7 @@ namespace sorters {
     }
   }
 
-  template <NUMBER T, typename U>
+  template <inspector::NUMBER T, typename U>
   void Comb<T, U>::solve(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
