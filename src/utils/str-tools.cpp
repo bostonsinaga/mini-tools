@@ -1,7 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
 #define __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
 
-#include <algorithm>
 #include "types.h"
 #include "utils/str-tools.h"
 
