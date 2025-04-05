@@ -4,6 +4,8 @@
 namespace mini_tools {
 namespace utils {
 
+  typedef const fs::path& CR_PATH;
+
   class Scanner {
   public:
     static VEC_CH separators_ch;
@@ -13,6 +15,29 @@ namespace utils {
     static bool isSeparator(CR_STR str);
     static bool isSeparator(CR_STR text, CR_INT idx);
     static bool isSeparator(CR_VEC_STR textVec, CR_INT idx);
+
+    static bool isFileExist(CR_PATH path);
+    static bool isDirectoryExist(CR_PATH path);
+    static bool createNotExistFile(CR_PATH path);
+    static bool createNotExistDirectory(CR_STR path);
+
+    static fs::path findPath(
+      fs::path &path,
+      CR_BOL toFile,
+      CR_BOL upward
+    );
+
+    static fs::path findFile(
+      fs::path path, CR_BOL upward
+    ) {
+      return Scanner::findPath(path, true, upward);
+    }
+
+    static fs::path findDirectory(
+      fs::path path, CR_BOL upward
+    ) {
+      return Scanner::findPath(path, false, upward);
+    }
 
     static void getFile(
       CR_STR name,
