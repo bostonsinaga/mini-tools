@@ -4,7 +4,7 @@
 namespace mini_tools {
 namespace utils {
 
-  template <typename T>
+  template <inspector::ALPHANUMERIC T>
   std::string Printer<T>::initText(
     CR_STR title,
     CR_INT step
@@ -15,36 +15,30 @@ namespace utils {
     return title + ":\n";
   }
 
-  template <typename T>
+  template <inspector::ALPHANUMERIC T>
   std::string Printer<T>::combine(
     CR_VEC<T> vec,
     CR_STR title,
     CR_INT step
   ) {
-    if constexpr (!CheckType::isLetter<T>()) {
-      constexpr bool stringify_and_combine_error = false;
-      static_assert(stringify_and_combine_error, "only for numbers and letters");
-    }
-    else {
-      std::string text = Printer<T>::initText(title, step);
+    std::string text = Printer<T>::initText(title, step);
 
-      for (int i = 0; i < vec.size(); i++) {
-        text += vec[i] + ", ";
-      }
-
-      return text + "\n\n";
+    for (int i = 0; i < vec.size(); i++) {
+      text += vec[i] + ", ";
     }
+
+    return text + "\n\n";
   }
 
-  template <typename T>
+  template <inspector::ALPHANUMERIC T>
   std::string Printer<T>::stringify(
     CR_VEC<T> vec,
     CR_BOL asBar,
     CR_STR title,
     CR_INT step
   ) {
-    if constexpr (!CheckType::isNumber<T>()) {
-      return Printer<T>::combine(vec, step, title);
+    if constexpr (!inspector::isNumber<T>()) {
+      return Printer<T>::combine(vec, title, step);
     }
     else {
       std::string text = Printer<T>::initText(title, step);
@@ -66,7 +60,7 @@ namespace utils {
     }
   }
 
-  template <typename T>
+  template <inspector::ALPHANUMERIC T>
   void Printer<T>::log(
     CR_VEC<T> vec,
     CR_BOL asBar,
@@ -76,7 +70,7 @@ namespace utils {
     std::cout << Printer<T>::stringify(vec, asBar, title, step);
   }
 
-  template <typename T>
+  template <inspector::ALPHANUMERIC T>
   void Printer<T>::logf(
     CR_VEC<T> vec,
     CR_STR filename,
