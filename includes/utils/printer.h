@@ -4,7 +4,7 @@
 namespace mini_tools {
 namespace utils {
 
-  template <class T>
+  template <inspector::ALPHANUMERIC T>
   class Printer {
   private:
     static std::string initText(
