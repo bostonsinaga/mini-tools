@@ -4,10 +4,14 @@
 namespace mini_tools {
 namespace utils {
 
-  typedef const fs::path& CR_PATH;
+  namespace FS = std::filesystem;
+  typedef FS::path FS_PATH;
+  typedef const FS_PATH& CR_FS_PATH;
 
   class Scanner {
   public:
+    /** Simple Detectors */
+
     static VEC_CH separators_ch;
     static VEC_STR separators_str;
 
@@ -16,33 +20,39 @@ namespace utils {
     static bool isSeparator(CR_STR text, CR_INT idx);
     static bool isSeparator(CR_VEC_STR textVec, CR_INT idx);
 
-    static bool isFileExist(CR_PATH path);
-    static bool isDirectoryExist(CR_PATH path);
-    static bool createNotExistFile(CR_PATH path);
-    static bool createNotExistDirectory(CR_STR path);
+    /** Text File or Directory Readers */
 
-    static fs::path findPath(
-      fs::path &path,
+    static bool isFileExist(CR_FS_PATH path);
+    static bool isDirectoryExist(CR_FS_PATH path);
+    static bool createNotExistFile(CR_FS_PATH path);
+    static bool createNotExistDirectory(CR_FS_PATH path);
+
+    static FS_PATH findPath(
+      FS_PATH &path,
       CR_BOL toFile,
       CR_BOL upward
     );
 
-    static fs::path findFile(
-      fs::path path, CR_BOL upward
+    static FS_PATH findFile(
+      FS_PATH path,
+      CR_BOL upward
     ) {
       return Scanner::findPath(path, true, upward);
     }
 
-    static fs::path findDirectory(
-      fs::path path, CR_BOL upward
+    static FS_PATH findDirectory(
+      FS_PATH path,
+      CR_BOL upward
     ) {
       return Scanner::findPath(path, false, upward);
     }
 
     static void getFile(
-      CR_STR name,
+      CR_FS_PATH path,
       std::string &textHook
     );
+
+    /** Advanced Detectors */
 
     template <inspector::NUMBER T>
     static T stringToNumber(CR_STR numStr);
