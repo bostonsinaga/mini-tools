@@ -400,6 +400,17 @@ namespace utils {
   }
 
   template <typename T>
+  size_t VecTools<T>::getMin(VEC_SZ &sizes) {
+    size_t min = 0;
+
+    for (CR_LLI sz : sizes) {
+      if (sz < min) min = sz;
+    }
+
+    return min;
+  }
+
+  template <typename T>
   size_t VecTools<T>::getMax(VEC_SZ &sizes) {
     size_t max = 0;
 
@@ -408,6 +419,12 @@ namespace utils {
     }
 
     return max;
+  }
+
+  template <typename T>
+  size_t VecTools<T>::getMin(CR_VEC2<T> vecs) {
+    VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
+    return VecTools<T>::getMin(sizes);
   }
 
   template <typename T>
