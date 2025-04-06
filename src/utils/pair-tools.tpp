@@ -5,7 +5,7 @@ namespace mini_tools {
 namespace utils {
 
   template <typename T, typename U>
-  VEC_PAIR2 PairTools<T, U>::mergeVectors(
+  VEC_PAIR2<T, U> PairTools<T, U>::mergeVectors(
     CR_VEC<T> &vecA,
     CR_VEC<U> &vecB
   ) {
@@ -54,7 +54,7 @@ namespace utils {
   //____________|
 
   template <typename T, typename U>
-  PAIR<SZ> PairTools<T, U>::generateSizes(
+  PAIR<size_t> PairTools<T, U>::generateSizes(
     CR_VEC<T> &vecA,
     CR_VEC<U> &vecB
   ) {
@@ -88,7 +88,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<SZ> PairTools<T, U>::getDifferences(
+  PAIR<size_t> PairTools<T, U>::getDifferences(
     CR_VEC<T> &vecA,
     CR_VEC<U> &vecB
   ) {
@@ -119,10 +119,10 @@ namespace utils {
     CR<T> coveringValueA,
     CR<U> coveringValueB
   ) {
-    PAIR<SZ> differences = PairTools<T, U>::getDifferences(vecA, vecB);
+    PAIR<size_t> differences = PairTools<T, U>::getDifferences(vecA, vecB);
 
-    std::vector<T> additions(differences.front, coveringValueA);
-    vecA.reserve(vecA.size() + differences.front);
+    std::vector<T> additions(differences.first, coveringValueA);
+    vecA.reserve(vecA.size() + differences.first);
     vecA.insert(vecA.end(), additions.begin(), additions.end());
 
     additions = std::vector<T>(differences.second, coveringValueB);
