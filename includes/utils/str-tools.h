@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__UTILS__STR_TOOLS_H__
 #define __MINI_TOOLS__UTILS__STR_TOOLS_H__
 
-#include "types.h"
-
 namespace mini_tools {
 namespace utils {
 
