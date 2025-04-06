@@ -7,6 +7,8 @@
 namespace mini_tools {
 namespace utils {
 
+  /** Simple Detectors */
+
   VEC_CH Scanner::separators_ch {' ', ',', '\n'};
   VEC_STR Scanner::separators_str {" ", ",", "\n"};
 
@@ -48,9 +50,11 @@ namespace utils {
     return false;
   }
 
-  bool Scanner::isFileExist(CR_PATH path) {
-    if (fs::exists(path)) {
-      if (fs::is_regular_file(path)) {
+  /** Text File or Directory Readers */
+
+  bool Scanner::isFileExist(CR_FS_PATH path) {
+    if (FS::exists(path)) {
+      if (FS::is_regular_file(path)) {
         return true;
       }
       return false;
@@ -58,9 +62,9 @@ namespace utils {
     return false;
   }
 
-  bool Scanner::isDirectoryExist(CR_PATH path) {
-    if (fs::exists(path)) {
-      if (fs::is_directory(path)) {
+  bool Scanner::isDirectoryExist(CR_FS_PATH path) {
+    if (FS::exists(path)) {
+      if (FS::is_directory(path)) {
         return true;
       }
       return false;
@@ -68,7 +72,7 @@ namespace utils {
     return false;
   }
 
-  bool Scanner::createNotExistFile(CR_PATH path) {
+  bool Scanner::createNotExistFile(CR_FS_PATH path) {
 
     if (!Scanner::isFileExist(path)) {
       std::ofstream file(path);
@@ -84,14 +88,14 @@ namespace utils {
     return false;
   }
 
-  bool Scanner::createNotExistDirectory(CR_PATH path) {
+  bool Scanner::createNotExistDirectory(CR_FS_PATH path) {
 
     if (!Scanner::isDirectoryExist(path)) {
 
       if (std::distance(path.begin(), path.end()) > 1) {
-        fs::create_directories(path);
+        FS::create_directories(path);
       }
-      else fs::create_directory(path);
+      else FS::create_directory(path);
 
       return true;
     }
@@ -99,21 +103,21 @@ namespace utils {
     return false;
   }
 
-  fs::path Scanner::findPath(
-    fs::path &path,
+  FS_PATH Scanner::findPath(
+    FS_PATH &path,
     CR_BOL toFile,
     CR_BOL upward
   ) {
-    fs::path combined;
+    FS_PATH combined;
 
     if (path.is_absolute()) {
-      path = fs::relative(path);
+      path = FS::relative(path);
     }
 
     if (upward) {
-      fs::path current = fs::current_path();
+      FS_PATH current = FS::current_path();
 
-      while (!current.root_directory()) {
+      while (current == current.root_path()) {
         combined = current / path;
 
         if ((toFile && isFileExist(combined)) ||
@@ -126,7 +130,7 @@ namespace utils {
       }
     }
     else for (const std::filesystem::directory_entry& entry:
-      fs::recursive_directory_iterator(fs::current_path())
+      FS::recursive_directory_iterator(FS::current_path())
     ) {
       combined = entry.path() / path;
 
@@ -137,16 +141,16 @@ namespace utils {
       }
     }
 
-    return fs::current_path();
+    return FS::current_path();
   }
 
   /** WARNING. Unable to read '\n' character */
   void Scanner::getFile(
-    CR_STR name,
+    CR_FS_PATH path,
     std::string &textHook
   ) {
     std::string line;
-    std::ifstream reader(name);
+    std::ifstream reader(path);
 
     while (std::getline(reader, line)) {
       textHook += line;
