@@ -10,6 +10,8 @@ namespace utils {
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
   private:
+    PairTools() = delete;
+
     // invoked in the loop of 'clean..' method
     static bool fillWastedDuplicateInside (
       VEC<T> &vec, EQUAL_RULE &equalRule,
