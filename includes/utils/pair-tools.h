@@ -14,7 +14,7 @@ namespace utils {
      * Combine two vectors into one vector of pairs.
      * This will ignore any other vector members that exceed the least vector.
      */
-    static VEC_PAIR2 mergeVectors(
+    static VEC_PAIR2<T, U> mergeVectors(
       CR_VEC<T> &vecA,
       CR_VEC<U> &vecB
     );
@@ -36,7 +36,7 @@ namespace utils {
     // SIZE TOOLS |
     //____________|
 
-    static PAIR<SZ> generateSizes(
+    static PAIR<size_t> generateSizes(
       CR_VEC<T> &vecA,
       CR_VEC<U> &vecB
     );
@@ -51,7 +51,7 @@ namespace utils {
       CR_VEC<U> &vecB
     );
 
-    static PAIR<SZ> getDifferences(
+    static PAIR<size_t> getDifferences(
       CR_VEC<T> &vecA,
       CR_VEC<U> &vecB
     );
