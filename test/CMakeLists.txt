@@ -1,2 +1,2 @@
-add_executable(test number-test.cpp)
-target_link_libraries(test mini-tools)
+set(main_files_dir ${CMAKE_CURRENT_SOURCE_DIR}/main-files)
+add_subdirectory(main-files)
