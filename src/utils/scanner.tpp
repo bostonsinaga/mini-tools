@@ -4,6 +4,8 @@
 namespace mini_tools {
 namespace utils {
 
+  /** Advanced Detectors */
+
   template <inspector::NUMBER T>
   T Scanner::stringToNumber(CR_STR numStr) {
     if constexpr (
