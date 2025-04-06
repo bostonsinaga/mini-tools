@@ -31,6 +31,7 @@ namespace utils {
     // SIZE TOOLS |
     //____________|
 
+    static size_t getMin(VEC_SZ &sizes);
     static size_t getMax(VEC_SZ &sizes);
     static VEC_SZ getDifferences(VEC_SZ &sizes);
     static VEC_LLI getDifferences(VEC_SZ &sizes, CR_LLI targetSize);
@@ -163,6 +164,7 @@ namespace utils {
     //____________|
 
     static VEC_SZ generateSizes(CR_VEC2<T> vecs);
+    static size_t getMin(CR_VEC2<T> vecs);
     static size_t getMax(CR_VEC2<T> vecs);
     static VEC_SZ getDifferences(CR_VEC2<T> vecs);
     static VEC_LLI getDifferences(CR_VEC2<T> vecs, CR_LLI targetSize);
