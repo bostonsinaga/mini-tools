@@ -10,17 +10,17 @@ namespace sorters {
   private:
     static void merge(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT left,
       CR_INT mid,
-      CR_INT right,
-      CR_ORDER_ENUM order
+      CR_INT right
     );
 
     static void partition(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT begin,
-      CR_INT end,
-      CR_ORDER_ENUM order
+      CR_INT end
     );
 
   public:

@@ -11,31 +11,31 @@ namespace sorters {
     /** Slower */
     static int lomutoPartition(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT left,
-      CR_INT right,
-      CR_ORDER_ENUM order
+      CR_INT right
     );
 
     /** Faster */
     static int hoarePartition(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT left,
-      CR_INT right,
-      CR_ORDER_ENUM order
+      CR_INT right
     );
 
     static int randomPartition(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT left,
-      CR_INT right,
-      CR_ORDER_ENUM order
+      CR_INT right
     );
 
     static void recursion(
       VEC_PAIR2<T, U> &messy,
+      CR_ORDER_ENUM order,
       CR_INT left,
-      CR_INT right,
-      CR_ORDER_ENUM order
+      CR_INT right
     );
 
   public:
