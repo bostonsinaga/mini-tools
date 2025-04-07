@@ -25,7 +25,8 @@ namespace utils {
     static void unmergeVectors(
       CR_VEC_PAIR2<T, U> merged,
       VEC<T> &vecA,
-      VEC<U> &vecB
+      VEC<U> &vecB,
+      CR_BOL needClear = false
     );
 
     static PAIR2<VEC<T>, VEC<U>> unmergeVectors(
