@@ -5,10 +5,10 @@ namespace helper {
   typedef std::tuple<
     mt::VEC_INT*, mt::VEC_DBL*,
     mt::VEC_STR*, mt::VEC_STR*
-  > TUPLE_4;
+  > TUP4PTR;
 
   void call(
-    std::function<TUPLE_4(mt::VEC_INT&, mt::VEC_DBL&, mt::VEC_STR&, mt::VEC_STR&)> callback,
+    std::function<TUP4PTR(mt::VEC_INT&, mt::VEC_DBL&, mt::VEC_STR&, mt::VEC_STR&)> callback,
     mt::CR_STR timerTitle,
     mt::CR_STR logFilePath
   ) {
@@ -19,7 +19,7 @@ namespace helper {
     mt::VEC_STR letters = mt_uti::Scanner::txtToLetters<std::string>("../../test/samples/letters.txt");
     mt::VEC_STR words = mt_uti::Scanner::txtToLetters<std::string>("../../test/samples/words.txt");
 
-    TUPLE_4 toPrint = callback(integers, reals, letters, words);
+    TUP4PTR toPrint = callback(integers, reals, letters, words);
     const std::string completeLogFilePath = "../../test/logs/" + logFilePath;
 
     // integers
