@@ -22,14 +22,17 @@ namespace utils {
   void PairTools<T, U>::unmergeVectors(
     CR_VEC_PAIR2<T, U> merged,
     VEC<T> &vecA,
-    VEC<U> &vecB
+    VEC<U> &vecB,
+    CR_BOL needClear
   ) {
-    vecA = {};
-    vecB = {};
+    if (needClear) {
+      vecA.clear();
+      vecB.clear();
+    }
 
     for (CR_PAIR2<T, U> pair : merged) {
       vecA.push_back(pair.first);
-      vecA.push_back(pair.second);
+      vecB.push_back(pair.second);
     }
   }
 
