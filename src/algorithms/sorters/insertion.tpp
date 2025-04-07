@@ -35,8 +35,8 @@ namespace sorters {
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order
   ) {
-    Insertion<T, U>::solve(
-      messy, nullptr, order, 0, messy.size() - 1
+    Insertion<T, U>::process(
+      messy, order, 0, messy.size() - 1
     );
   }
 }}}

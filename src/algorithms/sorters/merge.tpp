@@ -10,18 +10,18 @@ namespace sorters {
   template <inspector::NUMBER T, typename U>
   void Merge<T, U>::merge(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT left,
     CR_INT mid,
-    CR_INT right,
-    CR_ORDER_ENUM order
+    CR_INT right
   ) {
     int subSize[2] = {mid - left + 1, right - mid};
 
     VEC_PAIR2<T, U> subVec[2] = {
-      utils::VecTools<T>::cutInterval(
+      utils::VecTools<PAIR2<T, U>>::cutInterval(
         messy, left, left + subSize[0] - 1, true
       ),
-      utils::VecTools<T>::cutInterval(
+      utils::VecTools<PAIR2<T, U>>::cutInterval(
         messy, left + subSize[0], left + mid + subSize[1], true
       )
     };
@@ -62,16 +62,16 @@ namespace sorters {
   template <inspector::NUMBER T, typename U>
   void Merge<T, U>::partition(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT begin,
-    CR_INT end,
-    CR_ORDER_ENUM order
+    CR_INT end
   ) {
     if (begin >= end) return;
     int mid = begin + (end - begin) / 2;
 
-    Merge<T, U>::partition(messy, begin, mid, order);
-    Merge<T, U>::partition(messy, mid + 1, end, order);
-    Merge<T, U>::merge(messy, begin, mid, end, order);
+    Merge<T, U>::partition(messy, order, begin, mid);
+    Merge<T, U>::partition(messy, order, mid + 1, end);
+    Merge<T, U>::merge(messy, order, begin, mid, end);
   }
 
   template <inspector::NUMBER T, typename U>
@@ -80,7 +80,7 @@ namespace sorters {
     CR_ORDER_ENUM order
   ) {
     Merge<T, U>::partition(
-      messy, 0, messy.size() - 1, order
+      messy, order, 0, messy.size() - 1
     );
   }
 }}}

@@ -10,9 +10,9 @@ namespace sorters {
   template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::lomutoPartition(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT left,
-    CR_INT right,
-    CR_ORDER_ENUM order
+    CR_INT right
   ) {
     int i = left - 1;
 
@@ -36,9 +36,9 @@ namespace sorters {
   template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::hoarePartition(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT left,
-    CR_INT right,
-    CR_ORDER_ENUM order
+    CR_INT right
   ) {
     int i = left - 1, j = right + 1;
     const int mid = (left + right) / 2;
@@ -61,9 +61,9 @@ namespace sorters {
   template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::randomPartition(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT left,
-    CR_INT right,
-    CR_ORDER_ENUM order
+    CR_INT right
   ) {
     std::srand(std::time(NULL));
     int random = left + std::rand() % (right - left);
@@ -71,20 +71,20 @@ namespace sorters {
 
     if constexpr (SCHEME == QUICK_LOMUTO) {
       return Quick<T, U, SCHEME>::lomutoPartition(
-        messy, left, right, order
+        messy, order, left, right
       );
     }
     else return Quick<T, U, SCHEME>::hoarePartition(
-      messy, left, right, order
+      messy, order, left, right
     );
   }
 
   template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   void Quick<T, U, SCHEME>::recursion(
     VEC_PAIR2<T, U> &messy,
+    CR_ORDER_ENUM order,
     CR_INT left,
-    CR_INT right,
-    CR_ORDER_ENUM order
+    CR_INT right
   ) {
     if (left < right) {
       if (right - left <= 100) {
@@ -92,15 +92,15 @@ namespace sorters {
       }
       else {
         int pix = Quick<T, U, SCHEME>::randomPartition(
-          messy, left, right, order
+          messy, order, left, right
         );
 
         Quick<T, U, SCHEME>::recursion(
-          messy, left, pix - 1, order
+          messy, order, left, pix - 1
         );
 
         Quick<T, U, SCHEME>::recursion(
-          messy, pix + 1, right, order
+          messy, order, pix + 1, right
         );
       }
     }
@@ -112,7 +112,7 @@ namespace sorters {
     CR_ORDER_ENUM order
   ) {
     Quick<T, U, SCHEME>::recursion(
-      messy, 0, messy.size() - 1, order
+      messy, order, 0, messy.size() - 1
     );
   }
 }}}
