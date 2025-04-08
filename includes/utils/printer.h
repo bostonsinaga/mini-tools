@@ -40,7 +40,7 @@ namespace utils {
 
     static void logf(
       CR_VEC<T> vec,
-      CR_STR filename,
+      CR_FS_PATH filename,
       CR_BOL asBar,
       CR_BOL extended,
       CR_STR title = "Step",
@@ -49,7 +49,7 @@ namespace utils {
 
     static void write(
       CR_VEC<T> vec,
-      CR_STR filename,
+      CR_FS_PATH filename,
       CR_BOL extended
     ) {
       Printer<T>::logf(
