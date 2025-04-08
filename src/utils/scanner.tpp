@@ -125,14 +125,14 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  VEC<T> Scanner::txtToNumbers(CR_STR filename) {
+  VEC<T> Scanner::txtToNumbers(CR_FS_PATH filename) {
     std::string text;
     Scanner::getFile(filename, text);
     return Scanner::parseNumbers<T>(text);
   }
 
   template <inspector::LETTER T>
-  VEC<T> Scanner::txtToLetters(CR_STR filename) {
+  VEC<T> Scanner::txtToLetters(CR_FS_PATH filename) {
     std::string text;
     Scanner::getFile(filename, text);
     return Scanner::parseLetters<T>(text);

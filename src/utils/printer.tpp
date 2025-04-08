@@ -73,7 +73,7 @@ namespace utils {
   template <inspector::ALPHANUMERIC T>
   void Printer<T>::logf(
     CR_VEC<T> vec,
-    CR_STR filename,
+    CR_FS_PATH filename,
     CR_BOL asBar,
     CR_BOL extended,
     CR_STR title,
