@@ -12,6 +12,8 @@
 #include <type_traits>
 #include <concepts>
 #include <filesystem>
+#include <random>
+#include <chrono>
 
 namespace mini_tools {
 
