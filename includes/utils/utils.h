@@ -1,12 +1,13 @@
 #ifndef __MINI_TOOLS__UTILS_H__
 #define __MINI_TOOLS__UTILS_H__
 
-#include "scanner.h"
-#include "printer.h"
-#include "str-tools.h"
-#include "vec-tools.h"
 #include "pair-tools.h"
+#include "printer.h"
+#include "random-words.h"
+#include "scanner.h"
+#include "str-tools.h"
 #include "time-date.h"
+#include "vec-tools.h"
 
 namespace mt_uti = mini_tools::utils;
 
