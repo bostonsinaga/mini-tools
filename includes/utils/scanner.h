@@ -70,10 +70,10 @@ namespace utils {
     static VEC<T> parseLetters(CR_STR text);
 
     template <inspector::NUMBER T>
-    static VEC<T> txtToNumbers(CR_STR filename);
+    static VEC<T> txtToNumbers(CR_FS_PATH filename);
 
     template <inspector::LETTER T>
-    static VEC<T> txtToLetters(CR_STR filename);
+    static VEC<T> txtToLetters(CR_FS_PATH filename);
   };
 }}
 
