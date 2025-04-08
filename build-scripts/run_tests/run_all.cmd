@@ -1,6 +1,5 @@
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_bubble.exe" &
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_comb.exe" &
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_insertion.exe" &
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_merge.exe" &
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_quick.exe" &
-"../build/test/main-files/algorithms/sorters/algorithms_sorters_selection.exe"
+call run_algorithms.cmd
+call run_algorithms.cmd
+call run_algorithms.cmd
+echo.
+powershell -command "& { Write-Host 'ALL TESTS COMPLETED' -ForegroundColor Green }"
