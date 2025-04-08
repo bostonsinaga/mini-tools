@@ -1,7 +1,6 @@
-../test/executables/init.exe &
-../test/executables/
-../test/executables/
-../test/executables/
-../test/executables/
-../test/executables/
-../test/executables/
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_bubble.exe" &
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_comb.exe" &
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_insertion.exe" &
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_merge.exe" &
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_quick.exe" &
+"../build/test/main-files/algorithms/sorters/algorithms_sorters_selection.exe"
