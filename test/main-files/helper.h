@@ -13,7 +13,7 @@ namespace helper {
     mt::CR_STR logFilePath
   ) {
     mt_uti::TimeDate timer;
-    mt_uti::FS_PATH testPath = mt_uti::Scanner::findDirectory("test", true);
+    mt::FS_PATH testPath = mt_uti::Scanner::findDirectory("test", true);
 
     mt::VEC_INT integers = mt_uti::Scanner::txtToNumbers<int>(
       testPath / "samples/integers.txt"
@@ -35,7 +35,7 @@ namespace helper {
       integers, reals, letters, words
     );
 
-    const mt_uti::FS_PATH
+    const mt::FS_PATH
       completeLogFilePath = testPath / "logs" / logFilePath;
 
     // integers
