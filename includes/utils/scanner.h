@@ -4,10 +4,6 @@
 namespace mini_tools {
 namespace utils {
 
-  namespace FS = std::filesystem;
-  typedef FS::path FS_PATH;
-  typedef const FS_PATH& CR_FS_PATH;
-
   class Scanner {
   public:
     /** Simple Detectors */
