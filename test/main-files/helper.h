@@ -13,14 +13,30 @@ namespace helper {
     mt::CR_STR logFilePath
   ) {
     mt_uti::TimeDate timer;
+    mt_uti::FS_PATH testPath = mt_uti::Scanner::findDirectory("test", true);
 
-    mt::VEC_INT integers = mt_uti::Scanner::txtToNumbers<int>("../../test/samples/integers.txt");
-    mt::VEC_DBL reals = mt_uti::Scanner::txtToNumbers<double>("../../test/samples/reals.txt");
-    mt::VEC_STR letters = mt_uti::Scanner::txtToLetters<std::string>("../../test/samples/letters.txt");
-    mt::VEC_STR words = mt_uti::Scanner::txtToLetters<std::string>("../../test/samples/words.txt");
+    mt::VEC_INT integers = mt_uti::Scanner::txtToNumbers<int>(
+      testPath / "samples/integers.txt"
+    );
 
-    TUP4PTR toPrint = callback(integers, reals, letters, words);
-    const std::string completeLogFilePath = "../../test/logs/" + logFilePath;
+    mt::VEC_DBL reals = mt_uti::Scanner::txtToNumbers<double>(
+      testPath / "samples/reals.txt"
+    );
+
+    mt::VEC_STR letters = mt_uti::Scanner::txtToLetters<std::string>(
+      testPath / "samples/letters.txt"
+    );
+
+    mt::VEC_STR words = mt_uti::Scanner::txtToLetters<std::string>(
+      testPath / "samples/words.txt"
+    );
+
+    TUP4PTR toPrint = callback(
+      integers, reals, letters, words
+    );
+
+    const mt_uti::FS_PATH
+      completeLogFilePath = testPath / "logs" / logFilePath;
 
     // integers
     if (std::get<0>(toPrint)) {
