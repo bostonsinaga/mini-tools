@@ -68,6 +68,12 @@ namespace mini_tools {
   typedef unsigned long long int ULLI;
   typedef long double LD;
 
+  /** SHORTENED FILESYSTEM NAMES */
+
+  namespace FS = std::filesystem;
+  typedef FS::path FS_PATH;
+  typedef const FS_PATH& CR_FS_PATH;
+
   /** SHORTENED VECTOR TEMPLATES */
 
   template <typename T>
