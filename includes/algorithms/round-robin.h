@@ -1,15 +1,38 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__EQUAL_DISTRIBUTION_H__
-#define __MINI_TOOLS__ALGORITHMS__EQUAL_DISTRIBUTION_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
+#define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
 
 namespace mini_tools {
 namespace algorithms {
 
-  class EqualDistribution {
+  class RoundRobin {
   public:
-    template <typename T>
-    static void balance(VEC2<T> containers, VEC<T> contents);
+    template <inspector::NUMBER T>
+    struct NumericTask {
+      std::function<void(T&)> ongoing;
+      std::function<void()> finish;
+      T load;
+    };
 
+    template <typename T>
+    struct VectorTask {
+      std::function<void(VEC<T>&)> ongoing;
+      std::function<void()> finish;
+      VEC<T> load;
+    };
+
+    template <inspector::NUMBER T>
+    static void arbitrateNumeric(
+      std::queue<NumericTask<T>> &taskQueue,
+      CR<T> valueLimit
+    );
+
+    template <typename T>
+    static void arbitrateVector(
+      std::queue<VectorTask<T>> &taskQueue,
+      CR_SZ sizeLimit
+    );
   };
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__EQUAL_DISTRIBUTION_H__
+#include "algorithms/round-robin.tpp"
+#endif // __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
