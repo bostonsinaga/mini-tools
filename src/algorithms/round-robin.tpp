@@ -1,43 +1,76 @@
-#include <iostream>
-#include <queue>
-#include <vector>
-#include <string>
+#ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
+#define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 
-struct Task {
-  int id;              // Task ID
-  int executionTime;   // Time required to complete the task
-};
+#include "utils/vec-tools.h"
 
-int main() {
-  // Example tasks with their execution times
-  std::vector<Task> tasks = {{1, 5}, {2, 10}, {3, 8}, {4, 4}};
-  int timeSlice = 3;  // Time slice for each task
+namespace mini_tools {
+namespace algorithms {
 
-  std::queue<Task> taskQueue;
+  template <inspector::NUMBER T>
+  void RoundRobin::arbitrateNumeric(
+    std::queue<RoundRobin::NumericTask<T>> &taskQueue,
+    CR<T> valueLimit
+  ) {
+    while (!taskQueue.empty()) {
 
-  // Load all tasks into the queue
-  for (const auto& task : tasks) {
-      taskQueue.push(task);
-  }
+      // isolate first item
+      NumericTask<T> currentTask = taskQueue.front();
+      taskQueue.pop();
 
-  std::cout << "Round-Robin Scheduling Simulation:\n";
+      if (currentTask.load > valueLimit) {
+        // reduce load
+        currentTask.load -= valueLimit;
+        taskQueue.push(currentTask);
 
-  // Simulate the Round-Robin process
-  while (!taskQueue.empty()) {
-    Task currentTask = taskQueue.front();
-    taskQueue.pop();
-
-    std::cout << "Processing Task " << currentTask.id;
-
-    if (currentTask.executionTime > timeSlice) {
-      std::cout << " for " << timeSlice << " units of time.\n";
-      currentTask.executionTime -= timeSlice;
-      taskQueue.push(currentTask); // Re-add the task for further processing
-    } else {
-      std::cout << " for " << currentTask.executionTime << " units of time (Task Complete).\n";
+        // repeated callback
+        if (taskQueue.ongoing) taskQueue.ongoing(
+          currentTask.load // remaining load
+        );
+      }
+      // task completes with callback
+      else if (currentTask.finish) {
+        currentTask.finish();
+      }
     }
   }
 
-  std::cout << "All tasks completed.\n";
-  return 0;
-}
+  template <typename T>
+  void RoundRobin::arbitrateVector(
+    std::queue<VectorTask<T>> &taskQueue,
+    CR_SZ sizeLimit
+  ) {
+    while (!taskQueue.empty()) {
+
+      // isolate first item
+      VectorTask<T> currentTask = taskQueue.front();
+      taskQueue.pop();
+
+      if (currentTask.load.size() > sizeLimit) {
+
+        // reduce load
+        currentTask.load -= sizeLimit;
+        taskQueue.push(currentTask);
+
+        VEC<T> wasted;
+
+        utils::VecTools<T>::cutInterval(
+          currentTask.load,
+          wasted,
+          currentTask.load.size() - 1 - sizeLimit,
+          currentTask.load.size() - 1
+        );
+
+        // repeated callback
+        if (taskQueue.ongoing) taskQueue.ongoing(
+          wasted // dropped vector
+        );
+      }
+      // task completes with callback
+      else if (currentTask.finish) {
+        currentTask.finish();
+      }
+    }
+  }
+}}
+
+#endif // __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
