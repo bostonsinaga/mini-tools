@@ -18,11 +18,11 @@ namespace sorters {
     int subSize[2] = {mid - left + 1, right - mid};
 
     VEC_PAIR2<T, U> subVec[2] = {
-      utils::VecTools<PAIR2<T, U>>::cutInterval(
-        messy, left, left + subSize[0] - 1, true
+      utils::VecTools<PAIR2<T, U>>::extractIntervalStable(
+        messy, {left, left + subSize[0] - 1}
       ),
-      utils::VecTools<PAIR2<T, U>>::cutInterval(
-        messy, left + subSize[0], left + mid + subSize[1], true
+      utils::VecTools<PAIR2<T, U>>::extractIntervalStable(
+        messy, {left + subSize[0], left + mid + subSize[1]}
       )
     };
 
