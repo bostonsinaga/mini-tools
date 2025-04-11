@@ -6,18 +6,20 @@
 namespace mini_tools {
 namespace utils {
 
+  /** VECTOR TOOLS */
+
   template <typename T>
-  bool VecTools<T>::hasIndex(VEC<T> &vec, CR_INT idx) {
+  bool VecTools<T>::hasIndex(VEC<T> &vec, CR_LLI idx) {
     if (idx < vec.size() && idx >= 0) return true;
     return false;
   }
 
   template <typename T>
-  bool VecTools<T>::hasIndexes(VEC<T> &vec, CR_VEC_INT idxs) {
-    for (CR_INT i : idxs) {
+  bool VecTools<T>::hasIndices(VEC<T> &vec, CR_VEC_LLI indices) {
+    for (CR_LLI i : indices) {
       if (!hasIndex(vec, i)) return false;
     }
-    return idxs.size() > 0 ? true : false;
+    return indices.size() > 0 ? true : false;
   }
 
   template <typename T>
@@ -26,348 +28,283 @@ namespace utils {
     CR<T> data,
     EQUAL_RULE equalRule
   ) {
-    for (int i = 0; i < vec.size(); i++) {
+    for (size_t i = 0; i < vec.size(); i++) {
       if (data == vec[i] || equalRule(data, vec[i])) return i;
     }
     return -1;
   }
 
   template <typename T>
-  T VecTools<T>::getAt(VEC<T> &vec, CR_INT idx, CR<T> defaultReturn) {
+  T VecTools<T>::getAt(VEC<T> &vec, CR_LLI idx, CR<T> defaultReturn) {
     if (VecTools<T>::hasIndex(vec, idx)) return vec[idx];
     return defaultReturn;
   }
 
+  /** VECTORS CONNECTORS */
+
   template <typename T>
-  void VecTools<T>::concat(
+  void VecTools<T>::concatCopy(
     VEC<T> &targetVec,
     CR_VEC<T> additionVec
   ) {
+    // reserving capacity
     targetVec.reserve(targetVec.size() + additionVec.size());
+
+    // copy the 'additionVec'
     targetVec.insert(targetVec.end(), additionVec.begin(), additionVec.end());
   }
 
   template <typename T>
-  VEC<T> VecTools<T>::join(
+  void VecTools<T>::concatCut(
+    VEC<T> &targetVec,
+    VEC<T> &additionVec,
+    CR_BOL needShrink
+  ) {
+    // reserving capacity
+    targetVec.reserve(targetVec.size() + additionVec.size());
+
+    // cut the 'additionVec'
+    targetVec.insert(
+      targetVec.end(),
+      std::make_move_iterator(additionVec.begin()),
+      std::make_move_iterator(additionVec.end())
+    );
+
+    // release 2D memory
+    additionVec.clear();
+    if (needShrink) additionVec.shrink_to_fit();
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::joinCopy(
     CR_VEC<T> vecA,
     CR_VEC<T> vecB
   ) {
     VEC<T> newVec;
-    VecTools<T>::concat(newVec, vecA);
-    VecTools<T>::concat(newVec, vecB);
+    VecTools<T>::concatCopy(newVec, vecA);
+    VecTools<T>::concatCopy(newVec, vecB);
     return newVec;
   }
 
   template <typename T>
-  void VecTools<T>::cutInterval(
+  VEC<T> VecTools<T>::joinCut(
+    VEC<T> &vecA,
+    VEC<T> &vecB,
+    CR_BOL needShrink
+  ) {
+    VEC<T> newVec;
+    VecTools<T>::concatCut(newVec, vecA, needShrink);
+    VecTools<T>::concatCut(newVec, vecB, needShrink);
+    return newVec;
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::collapseCopy(CR_VEC2<T> vec) {
+    VEC<T> reduction;
+
+    for (CR_VEC<T> mem : vec) {
+      VecTools<T>::concatCopy(reduction, mem);
+    }
+
+    return std::move(reduction);
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::collapseCut(VEC2<T> &vec, CR_BOL needShrink) {
+    VEC<T> reduction;
+
+    for (VEC<T> &mem : vec) {
+      VecTools<T>::concatCut(reduction, mem, needShrink);
+    }
+
+    // release 1D memory
+    vec.clear();
+    if (needShrink) vec.shrink_to_fit();
+
+    return std::move(reduction);
+  }
+
+  /** STABLE ERASERS (SLOWER) */
+
+  template <typename T>
+  void VecTools<T>::eraseSingleStable(
     VEC<T> &vec,
-    VEC<T> &wasted,
-    int begin, int end,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
+    CR_SZ index,
+    T extracted
+  ) {
+    extracted = vec[index];
+    vec.erase(vec.begin() + index);
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIntervalStable(
+    VEC<T> &vec,
+    CR_PAIR<size_t> interval,
+    VEC<T> &extracted
+  ) {
+    extracted = VEC<T>(
+      vec.begin() + interval.first,
+      vec.begin() + interval.second + 1
+    );
+
+    vec.erase(
+      vec.begin() + interval.first,
+      vec.begin() + interval.second + 1
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIndicesStable(
+    VEC<T> &vec,
+    CR_VEC<size_t> indices,
+    VEC<T> &extracted
+  ) {
+    for (CR_SZ i : indices) {
+      extracted.push_back(vec[i]);
+      vec.erase(vec.begin() + i);
+    }
+  }
+
+  /** UNSTABLE ERASERS (FASTER) */
+
+  template <typename T>
+  void VecTools<T>::eraseSingleUnstable(
+    VEC<T> &vec,
+    CR_SZ index,
+    T &extracted
+  ) {
+    extracted = vec[index];
+    vec[index] = vec.back();
+    vec.pop_back();
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIntervalUnstable(
+    VEC<T> &vec,
+    CR_PAIR<size_t> interval,
+    VEC<T> &extracted
+  ) {
+    extracted = VEC<T>(
+      vec.begin() + interval.first,
+      vec.begin() + interval.second + 1
+    );
+
+    for (size_t i = interval.first; i <= interval.second; i++) {
+      vec[i] = vec.back();
+      vec.pop_back();
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIndicesUnstable(
+    VEC<T> &vec,
+    CR_VEC<size_t> indices,
+    VEC<T> &extracted
+  ) {
+    for (CR_SZ i : indices) {
+      extracted.push_back(vec[i]);
+      vec[i] = vec.back();
+      vec.pop_back();
+    }
+  }
+
+  /** STABLE EXTRACTORS */
+
+  template <typename T>
+  T VecTools<T>::extractSingleStable(
+    VEC<T> &vec,
+    CR_SZ index
+  ) {
+    T extracted;
+    VecTools<T>::eraseSingleStable(vec, index, extracted);
+    return std::move(extracted);
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::extractIntervalStable(
+    VEC<T> &vec,
+    CR_PAIR<size_t> interval
+  ) {
+    VEC<T> extracted;
+    VecTools<T>::eraseIntervalStable(vec, interval, extracted);
+    return std::move(extracted);
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::extractIndicesStable(
+    VEC<T> &vec,
+    CR_VEC<size_t> indices
+  ) {
+    VEC<T> extracted;
+    VecTools<T>::eraseIndicesStable(vec, indices, extracted);
+    return std::move(extracted);
+  }
+
+  /** UNSTABLE EXTRACTORS */
+
+  template <typename T>
+  T VecTools<T>::extractSingleUnstable(
+    VEC<T> &vec,
+    CR_SZ index
+  ) {
+    T extracted;
+    VecTools<T>::eraseSingleUnstable(vec, index, extracted);
+    return std::move(extracted);
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::extractIntervalUnstable(
+    VEC<T> &vec,
+    CR_PAIR<size_t> interval
+  ) {
+    VEC<T> extracted;
+    VecTools<T>::eraseIntervalUnstable(vec, interval, extracted);
+    return std::move(extracted);
+  }
+
+  template <typename T>
+  VEC<T> VecTools<T>::extractIndicesUnstable(
+    VEC<T> &vec,
+    CR_VEC<size_t> indices
+  ) {
+    VEC<T> extracted;
+    VecTools<T>::eraseIndicesUnstable(vec, indices, extracted);
+    return std::move(extracted);
+  }
+
+  /** INDEX LIMITERS */
+
+  template <typename T>
+  void VecTools<T>::fixIndices(
+    VEC<T> &vec,
+    VEC_LLI &indices,
+    CR_BOL needRemove
   ) {
     if (vec.empty()) return;
 
-    // slower
-    if (validatingIndex) {
-
-      // bad interval
-      if ((begin < 0 && end < 0) ||
-        (begin >= vec.size() && end >= vec.size())
-      ) { return; }
-
-      VecTools<T>::fixIndexInterval(vec, begin, end);
-    }
-
-    // separated
-    wasted = VEC<T>(vec.begin() + begin, vec.begin() + end + 1);
-
-    // change the original
-    if (!onlyWasted) {
-      vec = VecTools<T>::join(
-        VEC<T>(vec.begin(), vec.begin() + begin),
-        VEC<T>(vec.begin() + end + 1, vec.end())
-      );
-    }
-  }
-
-  template <typename T>
-  VEC<T> VecTools<T>::cutInterval(
-    VEC<T> &vec,
-    CR_INT begin, CR_INT end,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
-  ) {
-    VEC<T> wasted;
-
-    VecTools<T>::cutInterval(
-      vec, wasted,
-      begin, end,
-      validatingIndex, onlyWasted
-    );
-
-    return wasted;
-  }
-
-  template <typename T>
-  void VecTools<T>::cutSingle(
-    VEC<T> &vec,
-    T &wasted,
-    int idx,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
-  ) {
-    if (vec.empty() || ( // slower
-      validatingIndex &&
-      !VecTools<T>::hasIndex(vec, idx)
-    )) return;
-
-    // separated
-    wasted = vec[idx];
-
-    // change the original
-    if (!onlyWasted) {
-      vec = VecTools<T>::join(
-        VEC<T>(vec.begin(), vec.begin() + idx),
-        VEC<T>(vec.begin() + idx + 1, vec.end())
-      );
-    }
-  }
-
-  template <typename T>
-  T VecTools<T>::cutSingle(
-    VEC<T> &vec,
-    CR_INT idx,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
-  ) {
-    T wasted = vec[idx];
-
-    VecTools<T>::cutSingle(
-      vec, wasted,
-      idx, validatingIndex,
-      onlyWasted
-    );
-
-    return wasted;
-  }
-
-  template <typename T>
-  void VecTools<T>::cutIndexes(
-    VEC<T> &vec,
-    VEC<T> &wasted,
-    VEC_INT idxs,
-    CR_BOL lockedIndex,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
-  ) {
-    if (vec.empty()) return;
-
-    // ascending
-    if (algorithms::NumberSequence::isArithmeticSequence(idxs, 1)) {
-      VecTools<T>::cutInterval(
-        vec, wasted,
-        idxs[0], idxs[idxs.size() - 1],
-        validatingIndex, onlyWasted
-      );
-    }
-    // descending
-    else if (algorithms::NumberSequence::isArithmeticSequence(idxs, -1)) {
-      VecTools<T>::cutInterval(
-        vec, wasted,
-        idxs[idxs.size() - 1], idxs[0],
-        validatingIndex, onlyWasted
-      );
-    }
-    // one by one
-    else {
-      // slower
-      if (validatingIndex) {
-        VecTools<T>::fixIndexes(vec, idxs, true);
-      }
-
-      for (int i = 0; i < idxs.size(); i++) {
-
-        wasted.push_back(VecTools<T>::cutSingle(
-          vec, idxs[i], validatingIndex, onlyWasted
-        ));
-
-        if (lockedIndex) {
-          for (int j = i+1; j < idxs.size(); j++) {
-            if (idxs[i] < idxs[j]) idxs[j]--;
-          }
-        }
-      }
-    }
-  }
-
-  template <typename T>
-  VEC<T> VecTools<T>::cutIndexes(
-    VEC<T> &vec,
-    CR_VEC_INT idxs,
-    CR_BOL lockedIndex,
-    CR_BOL validatingIndex,
-    CR_BOL onlyWasted
-  ) {
-    VEC<T> wasted;
-
-    VecTools<T>::cutIndexes(
-      vec, wasted,
-      idxs, lockedIndex,
-      validatingIndex, onlyWasted
-    );
-
-    return wasted;
-  }
-
-  template <typename T>
-  bool VecTools<T>::fillWastedDuplicateInside (
-    VEC<T> &vec, EQUAL_RULE &equalRule,
-    PAIR<VEC<T>> &wastedPair,
-    CR<T> &a, CR<T> &b, CR_UI cutIdx
-  ) {
-    // equal based on pointer
-    if constexpr (std::is_pointer<T>::value) {
-      if (a == b) {
-        wastedPair.first.push_back(
-          VecTools<T>::cutSingle(vec, cutIdx)
-        );
-        return true;
-      }
-    }
-    else { // equal based on value
-      if (a == b || equalRule(a, b)) {
-        wastedPair.second.push_back(
-          VecTools<T>::cutSingle(vec, cutIdx)
-        );
-        return true;
-      }
-    }
-    return false;
-  }
-
-  template <typename T>
-  PAIR<VEC<T>> VecTools<T>::cleanDuplicateInside(
-    VEC<T> &vec,
-    CR_BOL originalAscending,
-    EQUAL_RULE equalRule
-  ) {
-    PAIR<VEC<T>> wastedPair({}, {});
-
-    if (originalAscending) {
-      for (int i = 0; i < vec.size() - 1; i++) {
-        for (int j = i+1; j < vec.size(); j++) {
-          if (VecTools<T>::fillWastedDuplicateInside(
-            vec, equalRule, wastedPair,
-            vec[i], vec[j], j
-          )) { j--; }
-        }
-      }
-    }
-    else for (int i = vec.size() - 1; i > 0; i--) {
-      for (int j = i - 1; j >= 0; j--) {
-        if (VecTools<T>::fillWastedDuplicateInside(
-          vec, equalRule, wastedPair,
-          vec[i], vec[j], j
-        )) { i--; }
-      }
-    }
-
-    return wastedPair;
-  }
-
-  template <typename T>
-  bool VecTools<T>::fillWastedDuplicateToMember(
-    VEC<T> &vec, PAIR<VEC<T>> &wastedPair,
-    EQUAL_RULE &equalRule, bool &firstIgnored,
-    CR<T> &a, CR<T> &b, CR_UI cutIdx
-  ) {
-    // equal based on pointer
-    if constexpr (std::is_pointer<T>::value) {
-      if (a == b) {
-        if (firstIgnored) {
-          wastedPair.first.push_back(
-            VecTools<T>::cutSingle(vec, cutIdx)
-          );
-          return true;
-        }
-        else firstIgnored = true;
-      }
-    }
-    else { // equal based on value
-      if (a == b || equalRule(a, b)) {
-        if (firstIgnored) {
-          wastedPair.second.push_back(
-            VecTools<T>::cutSingle(vec, cutIdx)
-          );
-          return true;
-        }
-        else firstIgnored = true;
-      }
-    }
-    return false;
-  }
-
-  template <typename T>
-  PAIR<VEC<T>> VecTools<T>::cleanDuplicateToMember(
-    VEC<T> &vec, CR<T> mem,
-    CR_BOL originalAscending,
-    EQUAL_RULE equalRule
-  ) {
-    PAIR<VEC<T>> wastedPair({}, {});
-    bool firstIgnored = false;
-
-    if (originalAscending) {
-      for (int i = 0; i < vec.size(); i++) {
-        if (VecTools<T>::fillWastedDuplicateToMember(
-          vec, wastedPair,
-          equalRule, firstIgnored,
-          mem, vec[i], i
-        )) { i--; }
-      }
-    }
-    else for (int i = vec.size() - 1; i >= 0; i--) {
-      VecTools<T>::fillWastedDuplicateToMember(
-        vec, wastedPair,
-        equalRule, firstIgnored,
-        mem, vec[i], i
-      );
-    }
-
-    return wastedPair;
-  }
-
-  template <typename T>
-  void VecTools<T>::fixIndexes(
-    VEC<T> &vec,
-    VEC_INT &idxs,
-    CR_BOL removed
-  ) {
-    if (vec.empty()) return;
-
-    for (int i = 0; i < idxs.size(); i++) {
-      if (!VecTools<T>::hasIndex(vec, idxs[i])) {
-        if (removed) {
-          VecTools<int>::cutSingle(idxs, i);
+    for (LLI i = 0; i < indices.size(); i++) {
+      if (!VecTools<T>::hasIndex(vec, indices[i])) {
+        if (needRemove) {
+          VecTools<LLI>::extractSingleStable(indices, i);
           i--;
         }
         else {
-          if (idxs[i] < 0) idxs[i] = 0;
-          else if (idxs[i] >= vec.size()) idxs[i] = vec.size() - 1;
+          if (indices[i] < 0) indices[i] = 0;
+          else if (indices[i] >= vec.size()) indices[i] = vec.size() - 1;
         }
       }
     }
   }
 
   template <typename T>
-  void VecTools<T>::fixIndexInterval(VEC<T> &vec, int &begin, int &end) {
+  void VecTools<T>::fixIndexInterval(VEC<T> &vec, LLI &begin, LLI &end) {
     if (begin > end) std::swap(begin, end);
     if (begin < 0 || begin > vec.size()) begin = 0;
     if (end <= 0 || end >= vec.size()) end = vec.size() - 1;
   }
 
   template <typename T>
-  bool VecTools<T>::isIndexIntervalValid(VEC<T> &vec, CR_INT begin, CR_INT end) {
+  bool VecTools<T>::isIndexIntervalValid(VEC<T> &vec, CR_LLI begin, CR_LLI end) {
     if (begin < end &&
       begin >= 0 && begin < vec.size() - 1 &&
       end > 0 && end < vec.size()
@@ -375,28 +312,17 @@ namespace utils {
     return false;
   }
 
-  template <typename T>
-  VEC<T> VecTools<T>::collapse(CR_VEC2<T> vec) {
-    VEC<T> reduction;
-
-    for (CR_VEC<T> red: vec) {
-      VecTools<T>::concat(reduction, red);
-    }
-
-    return reduction;
-  }
-
-  //____________|
-  // SIZE TOOLS |
-  //____________|
+  /** SIZE TOOLS */
 
   template <typename T>
   VEC_SZ VecTools<T>::generateSizes(CR_VEC2<T> vecs) {
     VEC_SZ sizes;
+
     for (CR_VEC<T> v : vecs) {
       sizes.push_back(v.size());
     }
-    return sizes;
+
+    return std::move(sizes);
   }
 
   template <typename T>
@@ -414,7 +340,7 @@ namespace utils {
   size_t VecTools<T>::getMax(VEC_SZ &sizes) {
     size_t max = 0;
 
-    for (CR_LLI sz : sizes) {
+    for (CR_SZ sz : sizes) {
       if (sz > max) max = sz;
     }
 
@@ -443,26 +369,26 @@ namespace utils {
       differences.push_back(max - sz);
     }
 
-    return differences;
+    return std::move(differences);
   }
 
   template <typename T>
   VEC_LLI VecTools<T>::getDifferences(
-    VEC_SZ &sizes, CR_LLI targetSize
+    VEC_LLI &sizes, CR_LLI targetSize
   ) {
     VEC_LLI differences;
 
-    for (CR_SZ sz : sizes) {
+    for (CR_LLI sz : sizes) {
       differences.push_back(targetSize - sz);
     }
 
-    return differences;
+    return std::move(differences);
   }
 
   template <typename T>
   VEC_SZ VecTools<T>::getDifferences(CR_VEC2<T> vecs) {
     VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
-    return VecTools<T>::getDifferences(sizes);
+    return std::move(VecTools<T>::getDifferences(sizes));
   }
 
   template <typename T>
@@ -470,8 +396,8 @@ namespace utils {
     CR_VEC2<T> vecs,
     CR_LLI targetSize
   ) {
-    VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
-    return VecTools<T>::getDifferences(sizes, targetSize);
+    VEC_LLI sizes = VecTools<T>::generateSizes(vecs);
+    return std::move(VecTools<T>::getDifferences(sizes, targetSize));
   }
 
   template <typename T>
@@ -480,7 +406,7 @@ namespace utils {
     VEC2<T> &vecs,
     CR<T> coveringValue
   ) {
-    for (int i = 0; i < vecs.size(); i++) {
+    for (size_t i = 0; i < vecs.size(); i++) {
       std::vector<T> additions(differences[i], coveringValue);
       vecs[i].reserve(vecs[i].size() + differences[i]);
       vecs[i].insert(vecs[i].end(), additions.begin(), additions.end());
@@ -493,7 +419,7 @@ namespace utils {
     VEC2<T> &vecs,
     CR<T> coveringValue
   ) {
-    for (int i = 0; i < vecs.size(); i++) {
+    for (size_t i = 0; i < vecs.size(); i++) {
       if (differences[i] < 0) {
         vecs[i] = std::vector<T>(
           vecs[i].begin(),
@@ -531,6 +457,98 @@ namespace utils {
       VecTools<T>::getDifferences(vecs, targetSize),
       vecs, coveringValue
     );
+  }
+
+  /** MEMBER DUPLICATION CLEANERS */
+
+  template <typename T>
+  template <typename VecTools<T>::DUPLICATION_ENUM U>
+  bool VecTools<T>::template Duplication<U>::fillWasted(
+    VEC<T> &vec,
+    VEC<T> &wasted,
+    EQUAL_RULE &equalRule,
+    CR<T> &a,
+    CR<T> &b,
+    CR_SZ cutIdx
+  ) {
+    if (a == b || equalRule(a, b)) {
+
+      if constexpr (U == DUPLICATION_STABLE) {
+        wasted.push_back(
+          VecTools<T>::extractSingleStable(vec, cutIdx)
+        );
+      }
+      else wasted.push_back(
+        VecTools<T>::extractSingleUnstable(vec, cutIdx)
+      );
+
+      return true;
+    }
+
+    return false;
+  }
+
+  template <typename T>
+  template <typename VecTools<T>::DUPLICATION_ENUM U>
+  VEC<T> VecTools<T>::template Duplication<U>::eliminate(
+    VEC<T> &vec,
+    CR_BOL originalAscending,
+    EQUAL_RULE equalRule
+  ) {
+    VEC<T> wasted;
+
+    if (originalAscending) {
+
+      for (LLI i = 0; i < vec.size() - 1; i++) {
+        for (LLI j = i+1; j < vec.size(); j++) {
+
+          if (VecTools<T>::Duplication<U>::fillWasted(
+            vec, wasted, equalRule,
+            vec[i], vec[j], j
+          )) { j--; }
+        }
+      }
+    }
+    else for (LLI i = vec.size() - 1; i > 0; i--) {
+      for (LLI j = i - 1; j >= 0; j--) {
+
+        if (VecTools<T>::Duplication<U>::fillWasted(
+          vec, wasted, equalRule,
+          vec[i], vec[j], j
+        )) { i--; }
+      }
+    }
+
+    return std::move(wasted);
+  }
+
+  template <typename T>
+  template <typename VecTools<T>::DUPLICATION_ENUM U>
+  VEC<T> VecTools<T>::template Duplication<U>::clean(
+    VEC<T> &vec,
+    CR<T> val,
+    CR_BOL originalAscending,
+    EQUAL_RULE equalRule
+  ) {
+    VEC<T> wasted;
+
+    if (originalAscending) {
+      for (LLI i = 0; i < vec.size(); i++) {
+
+        if (VecTools<T>::Duplication<U>::fillWasted(
+          vec, wasted, equalRule,
+          val, vec[i], i
+        )) { i--; }
+      }
+    }
+    else for (size_t i = vec.size() - 1; i >= 0; i--) {
+      VecTools<T>::Duplication<U>::fillWasted(
+        vec, wasted, equalRule,
+        val, vec[i], i
+      );
+    }
+
+    return std::move(wasted);
   }
 }}
 
