@@ -32,9 +32,9 @@ namespace utils {
 
     static VEC_STR generateStrings(
       CR_SZ count,
-      PAIR<size_t> lengthInterval,
+      PAIR<LLI> lengthInterval,
       CR_BOL lettersOnly,
-      CR_BOL alwaysStartWithLetter
+      bool alwaysStartWithLetter
     );
 
     /** Call these to get a random number */
