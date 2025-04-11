@@ -73,7 +73,7 @@ namespace data_structures {
     // faster (danger)
     else {
       if (needEmpty) children = newChildren;
-      else utils::VecTools<Tree*>::concat(children, newChildren);
+      else utils::VecTools<Tree*>::concatCopy(children, newChildren);
     }
 
     for (int i = startIdx; i < children.size(); i++) {
@@ -143,7 +143,9 @@ namespace data_structures {
   }
 
   void Tree::cleanDuplicatesInChildren() {
-    PAIR<VEC_TREE> wastedPair = utils::VecTools<Tree*>::cleanDuplicateInside(
+
+    VEC_TREE wasted
+      = utils::VecTools<Tree*>::Duplication<utils::VecTools<Tree*>::DUPLICATION_STABLE>::eliminate(
         children, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -152,13 +154,15 @@ namespace data_structures {
       );
 
     // remove duplicates of same name
-    for (Tree *nd : wastedPair.second) {
+    for (Tree *nd : wasted) {
       nd->remove();
     }
   }
 
   void Tree::cleanDuplicateToLastAdded(Tree *tree) {
-    PAIR<VEC_TREE> wastedPair = utils::VecTools<Tree*>::cleanDuplicateToMember(
+
+    VEC_TREE wasted
+      = utils::VecTools<Tree*>::Duplication<utils::VecTools<Tree*>::DUPLICATION_STABLE>::clean(
         children, tree, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -167,7 +171,7 @@ namespace data_structures {
       );
 
     // remove duplicates of same name
-    for (Tree *nd : wastedPair.second) {
+    for (Tree *nd : wasted) {
       nd->remove();
     }
   }
@@ -181,7 +185,7 @@ namespace data_structures {
   Tree *Tree::dismantle(CR_INT index) {
     Tree *target = children[index];
     target->resign();
-    utils::VecTools<Tree*>::cutSingle(children, index);
+    utils::VecTools<Tree*>::extractSingleStable(children, index);
     return target;
   }
 
