@@ -6,12 +6,15 @@ namespace utils {
 
   class RandomWords final {
   private:
+    // default 0-1000
     static PAIR<LD> rouletteInterval;
+
     static std::random_device randomDevice;
     static std::mt19937 mersenneTwister;
     static std::uniform_int_distribution<LLI> distributeInteger;
     static std::uniform_real_distribution<LD> distributeReal;
 
+  /** Half-open intervals [a, b) */
   public:
     RandomWords() = delete;
 
@@ -58,6 +61,7 @@ namespace utils {
 
     static VEC_STR generateStrings(
       CR_SZ count,
+      // first is minimum, second -1 is maximum
       PAIR<LLI> lengthInterval,
       CR_BOL lettersOnly,
       CR_BOL alwaysStartWithLetter
