@@ -60,7 +60,7 @@ namespace utils {
       CR_SZ count,
       PAIR<LLI> lengthInterval,
       CR_BOL lettersOnly,
-      bool alwaysStartWithLetter
+      CR_BOL alwaysStartWithLetter
     );
   };
 }}
