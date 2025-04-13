@@ -71,7 +71,7 @@ namespace utils {
 
     enum {uppercase_e, lowercase_e, integer_e};
 
-    LLI last; // maximum
+    LLI last;
     const SI division = 3 - lettersOnly;
     SI selected = RandomWords::rouletteInteger() % division;
 
@@ -93,9 +93,9 @@ namespace utils {
     // pushing the 'word' to the 'strings'
     for (size_t i = 0; i < count; i++) {
 
-      // second length as the maximum number of characters
+      // second length -1 as the maximum number of characters
       last = RandomWords::rouletteInteger()
-        % lengthInterval.second + 1;
+        % lengthInterval.second;
 
       // first length as the minimum number of characters
       if (last < lengthInterval.first) {
