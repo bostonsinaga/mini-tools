@@ -30,13 +30,6 @@ namespace utils {
       CR_LD begin, CR_LD end
     );
 
-    static VEC_STR generateStrings(
-      CR_SZ count,
-      PAIR<LLI> lengthInterval,
-      CR_BOL lettersOnly,
-      bool alwaysStartWithLetter
-    );
-
     /** Call these to get a random number */
 
     static LLI rouletteInteger() {
@@ -61,6 +54,13 @@ namespace utils {
       CR_SZ count,
       T maxNumber,
       CR<T> additional
+    );
+
+    static VEC_STR generateStrings(
+      CR_SZ count,
+      PAIR<LLI> lengthInterval,
+      CR_BOL lettersOnly,
+      bool alwaysStartWithLetter
     );
   };
 }}
