@@ -88,12 +88,17 @@ namespace utils {
     // pushing the 'word' to the 'strings'
     for (size_t i = 0; i < count; i++) {
 
-      // random length with minimum value as the first length
+      // second length as maximum value
       last = RandomWords::rouletteInteger()
-        % lengthInterval.second + lengthInterval.first;
+        % lengthInterval.second + 1;
+
+      // first length as minimum value
+      if (last < lengthInterval.first) {
+        last = lengthInterval.first;
+      }
 
       // generating the 'word'
-      for (LLI j = lengthInterval.first; j < last; j++) {
+      for (LLI j = 0; j < last; j++) {
 
         switch (selected) {
           case 0: { // uppercase
