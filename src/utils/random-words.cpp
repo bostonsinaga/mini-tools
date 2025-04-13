@@ -64,14 +64,19 @@ namespace utils {
     CR_SZ count,
     PAIR<LLI> lengthInterval,
     CR_BOL lettersOnly,
-    bool alwaysStartWithLetter
+    CR_BOL alwaysStartWithLetter
   ) {
     VEC_STR strings;
     std::string word;
 
-    LLI last;
-    SI selected;
+    enum {uppercase_e, lowercase_e, integer_e};
+
+    LLI last; // maximum
     const SI division = 3 - lettersOnly;
+    SI selected = RandomWords::rouletteInteger() % division;
+
+    // will change in loop 'j' but be reassigned in loop 'i'
+    bool needStartWithLetter = alwaysStartWithLetter;
 
     // the lengths are always positive numbers
     lengthInterval.first = std::abs(lengthInterval.first);
@@ -88,11 +93,11 @@ namespace utils {
     // pushing the 'word' to the 'strings'
     for (size_t i = 0; i < count; i++) {
 
-      // second length as maximum value
+      // second length as the maximum number of characters
       last = RandomWords::rouletteInteger()
         % lengthInterval.second + 1;
 
-      // first length as minimum value
+      // first length as the minimum number of characters
       if (last < lengthInterval.first) {
         last = lengthInterval.first;
       }
@@ -100,35 +105,40 @@ namespace utils {
       // generating the 'word'
       for (LLI j = 0; j < last; j++) {
 
-        switch (selected) {
-          case 0: { // uppercase
-            word.push_back(char(
-              RandomWords::rouletteInteger() % 26 + 65
-            ));
-          break;}
-          case 1: { // lowercase
-            word.push_back(char(
-              RandomWords::rouletteInteger() % 26 + 97
-            ));
-          break;}
-          case 2: { // integer
-            // repeat with next as letter
-            if (alwaysStartWithLetter) {
-              j--;
-              alwaysStartWithLetter = false;
-              selected = RandomWords::rouletteInteger() % 2;
-              continue;
-            }
-            // number
-            else word.push_back(char(
-              RandomWords::rouletteInteger() % 10 + 48
-            ));
-          break;}
+        // uppercase
+        if (selected == uppercase_e) {
+          word.push_back(char(
+            RandomWords::rouletteInteger() % 26 + 65
+          ));
+        }
+        // lowercase
+        else if (selected == lowercase_e) {
+          word.push_back(char(
+            RandomWords::rouletteInteger() % 26 + 97
+          ));
+        }
+        // integer
+        else if (selected == integer_e) {
+
+          // repeat with next as letter
+          if (needStartWithLetter) {
+            j--;
+            needStartWithLetter = false;
+            selected = RandomWords::rouletteInteger() % 2;
+            continue;
+          }
+          // allowed number
+          else word.push_back(char(
+            RandomWords::rouletteInteger() % 10 + 48
+          ));
         }
 
         // up to 3 possible values
         selected = RandomWords::rouletteInteger() % division;
       }
+
+      // keep all 'strings' to follow the option
+      needStartWithLetter = alwaysStartWithLetter;
 
       // push and reset the 'word'
       if (last) {
