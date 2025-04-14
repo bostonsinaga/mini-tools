@@ -4,90 +4,139 @@
 namespace mini_tools {
 namespace utils {
 
-  template <inspector::ALPHANUMERIC T>
-  std::string Printer<T>::initText(
-    CR_STR title,
-    CR_INT step
+  std::string Printer::getNewlines(
+    CR_STR text,
+    CR_SZ endNewlinesCount
   ) {
-    if (step >= 0) {
-      return title + ": " + std::to_string(step) + "\n";
-    }
-    return title + ":\n";
+    return text + std::string(endNewlinesCount, '\n');
   }
 
   template <inspector::ALPHANUMERIC T>
-  std::string Printer<T>::combine(
+  std::string Printer::getHeader(CR_SZ endNewlinesCount) {
+
+    std::string text = Printer::title + ": ";
+
+    if constexpr (inspector::isNumber<T>()) {
+      text += std::to_string(Printer::tag<T>);
+    }
+    else text += Printer::tag<T>;
+
+    return Printer::getNewlines(text, endNewlinesCount);
+  }
+
+  template <inspector::ALPHANUMERIC T>
+  std::string Printer::stringify(
     CR_VEC<T> vec,
-    CR_STR title,
-    CR_INT step
+    CR_SZ endNewlinesCount,
+    CR_STR separator
   ) {
-    std::string text = Printer<T>::initText(title, step);
+    std::string text;
+
+    for (size_t i = 0; i < vec.size(); i++) {
+
+      if constexpr (inspector::isNumber<T>()) {
+        text += std::to_string(vec[i]) + separator;
+      }
+      else text += vec[i] + separator;
+    }
+
+    return Printer::getNewlines(text, endNewlinesCount);
+  }
+
+  template <inspector::NUMBER T>
+  std::string Printer::barStringify(
+    CR_VEC<T> vec,
+    CR_SZ endNewlinesCount,
+    CR_STR barStyle
+  ) {
+    std::string text;
 
     for (int i = 0; i < vec.size(); i++) {
-      text += vec[i] + ", ";
+      text += std::string(vec[i], barStyle) + "\n";
     }
 
-    return text + "\n\n";
+    return Printer::getNewlines(text, endNewlinesCount);
   }
 
   template <inspector::ALPHANUMERIC T>
-  std::string Printer<T>::stringify(
+  void Printer::log(
     CR_VEC<T> vec,
-    CR_BOL asBar,
-    CR_STR title,
-    CR_INT step
+    CR_SZ endNewlinesCount,
+    CR_STR separator
   ) {
-    if constexpr (!inspector::isNumber<T>()) {
-      return Printer<T>::combine(vec, title, step);
-    }
-    else {
-      std::string text = Printer<T>::initText(title, step);
-
-      if (asBar) {
-        for (int i = 0; i < vec.size(); i++) {
-          text += std::string(vec[i], '=') + "\n";
-        }
-        text += "\n";
-      }
-      else {
-        for (int i = 0; i < vec.size(); i++) {
-          text += std::to_string(vec[i]) + ", ";
-        }
-        text += "\n\n";
-      }
-
-      return text;
-    }
+    std::cout << Printer::getHeader<T>(endNewlinesCount)
+      << Printer::stringify<T>(vec, endNewlinesCount, separator);
   }
 
-  template <inspector::ALPHANUMERIC T>
-  void Printer<T>::log(
+  template <inspector::NUMBER T>
+  void Printer::barLog(
     CR_VEC<T> vec,
-    CR_BOL asBar,
-    CR_STR title,
-    CR_INT step
+    CR_SZ endNewlinesCount,
+    CR_STR barStyle
   ) {
-    std::cout << Printer<T>::stringify(vec, asBar, title, step);
+    std::cout << Printer::getHeader<T>(endNewlinesCount)
+      << Printer::barStringify<T>(vec, endNewlinesCount, barStyle);
   }
 
-  template <inspector::ALPHANUMERIC T>
-  void Printer<T>::logf(
-    CR_VEC<T> vec,
+  void Printer::write(
+    CR_STR text,
     CR_FS_PATH filename,
-    CR_BOL asBar,
     CR_BOL extended,
-    CR_STR title,
-    CR_INT step
+    CR_SZ endNewlinesCount
   ) {
-    std::ofstream writer;
+    std::ofstream output;
 
     if (extended) {
-      writer.open(filename, std::ios_base::app);
+      output.open(filename, std::ios_base::app);
     }
-    else writer.open(filename);
+    else output.open(filename);
 
-    writer << Printer<T>::stringify(vec, asBar, title, step);
-    writer.close();
+    output << Printer::getNewlines(text, endNewlinesCount);
+    output.close();
+  }
+
+  template <inspector::ALPHANUMERIC T>
+  void Printer::write(
+    CR_VEC<T> vec,
+    CR_FS_PATH filename,
+    CR_BOL extended,
+    CR_SZ endNewlinesCount,
+    CR_STR separator
+  ) {
+    Printer::write(
+      Printer::stringify<T>(vec, separator),
+      filename, extended, endNewlinesCount
+    );
+  }
+
+  template <inspector::ALPHANUMERIC T>
+  void Printer::logf(
+    CR_VEC<T> vec,
+    CR_FS_PATH filename,
+    CR_BOL extended,
+    CR_SZ endNewlinesCount,
+    CR_STR separator
+  ) {
+    Printer::write(
+      Printer::getHeader<T>(endNewlinesCount) +
+      Printer::stringify<T>(vec, endNewlinesCount, separator),
+      filename, extended, endNewlinesCount
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void Printer::barLogf(
+    CR_VEC<T> vec,
+    CR_FS_PATH filename,
+    CR_BOL extended,
+    CR_SZ endNewlinesCount,
+    CR_STR barStyle
+  ) {
+    Printer::write(
+      Printer::getHeader<T>(endNewlinesCount) +
+      Printer::barStringify<T>(vec, endNewlinesCount, barStyle),
+      filename, extended, endNewlinesCount
+    );
   }
 }}
 
