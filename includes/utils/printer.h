@@ -4,33 +4,60 @@
 namespace mini_tools {
 namespace utils {
 
-  template <inspector::ALPHANUMERIC T>
-  class Printer {
+  class Printer final {
   private:
-    static std::string initText(
-      CR_STR title,
-      CR_INT step
+    static std::string getNewlines(
+      CR_STR text,
+      CR_SZ endNewlinesCount
     );
 
-    static std::string combine(
-      CR_VEC<T> vec,
-      CR_STR title,
-      CR_INT step
-    );
+    // output example: "Error: 404"
+    template <inspector::ALPHANUMERIC T>
+    static std::string getHeader(CR_SZ endNewlinesCount);
 
+  /**
+   * The 'endNewlinesCount' parameter controls
+   * the newlines of generated 'text' at the end.
+   */
+  public:
+    Printer() = delete;
+
+    /** VARIABLES */
+
+    inline static std::string title = "Step";
+
+    template <inspector::ALPHANUMERIC T>
+    inline static T tag = T();
+
+    /** METHODS */
+
+    template <inspector::ALPHANUMERIC T>
     static std::string stringify(
       CR_VEC<T> vec,
-      CR_BOL asBar,
-      CR_STR title,
-      CR_INT step
+      CR_SZ endNewlinesCount = 0,
+      CR_STR separator = ", "
     );
 
-  public:
+    /** Warning! Floating numbers will be rounded down */
+    template <inspector::NUMBER T>
+    static std::string barStringify(
+      CR_VEC<T> vec,
+      CR_SZ endNewlinesCount = 0,
+      CR_STR barStyle = "="
+    );
+
+    template <inspector::ALPHANUMERIC T>
     static void log(
       CR_VEC<T> vec,
-      CR_BOL asBar,
-      CR_STR title = "Step",
-      CR_INT step = -1
+      CR_SZ endNewlinesCount = 0,
+      CR_STR separator = ", "
+    );
+
+    template <inspector::NUMBER T>
+    static void barLog(
+      CR_VEC<T> vec,
+      CR_SZ endNewlinesCount = 0,
+      CR_STR barStyle = "="
     );
 
     /**
@@ -38,24 +65,39 @@ namespace utils {
      * whether to overwrite or continue the file.
      */
 
-    static void logf(
-      CR_VEC<T> vec,
+    static void write(
+      CR_STR text,
       CR_FS_PATH filename,
-      CR_BOL asBar,
       CR_BOL extended,
-      CR_STR title = "Step",
-      CR_INT step = -1
+      CR_SZ endNewlinesCount = 0
     );
 
+    template <inspector::ALPHANUMERIC T>
     static void write(
       CR_VEC<T> vec,
       CR_FS_PATH filename,
-      CR_BOL extended
-    ) {
-      Printer<T>::logf(
-        vec, filename, false, extended, ""
-      );
-    }
+      CR_BOL extended,
+      CR_SZ endNewlinesCount = 0,
+      CR_STR separator = ", "
+    );
+
+    template <inspector::ALPHANUMERIC T>
+    static void logf(
+      CR_VEC<T> vec,
+      CR_FS_PATH filename,
+      CR_BOL extended,
+      CR_SZ endNewlinesCount = 0,
+      CR_STR separator = ", "
+    );
+
+    template <inspector::NUMBER T>
+    static void barLogf(
+      CR_VEC<T> vec,
+      CR_FS_PATH filename,
+      CR_BOL extended,
+      CR_SZ endNewlinesCount = 0,
+      CR_STR barStyle = "="
+    );
   };
 }}
 
