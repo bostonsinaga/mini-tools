@@ -40,29 +40,29 @@ namespace helper {
 
     // integers
     if (std::get<0>(toPrint)) {
-      mt_uti::Printer<int>::logf(
-        *std::get<0>(toPrint), completeLogFilePath, true, false
+      mt_uti::Printer::logf<int>(
+        *std::get<0>(toPrint), completeLogFilePath, false
       );
     }
 
     // reals
     if (std::get<1>(toPrint)) {
-      mt_uti::Printer<double>::logf(
-        *std::get<1>(toPrint), completeLogFilePath, true, false
+      mt_uti::Printer::logf<double>(
+        *std::get<1>(toPrint), completeLogFilePath, false
       );
     }
 
     // letters
     if (std::get<2>(toPrint)) {
-      mt_uti::Printer<std::string>::logf(
-        *std::get<2>(toPrint), completeLogFilePath, true, false
+      mt_uti::Printer::logf<std::string>(
+        *std::get<2>(toPrint), completeLogFilePath, false
       );
     }
 
     // words
     if (std::get<3>(toPrint)) {
-      mt_uti::Printer<std::string>::logf(
-        *std::get<3>(toPrint), completeLogFilePath, true, false
+      mt_uti::Printer::logf<std::string>(
+        *std::get<3>(toPrint), completeLogFilePath, false
       );
     }
 
