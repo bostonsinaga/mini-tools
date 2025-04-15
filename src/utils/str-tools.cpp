@@ -288,6 +288,35 @@ namespace utils {
       }
     }
   }
+
+  bool StrTools::isInteger(CR_STR str) {
+
+    for (CR_CH ch : str) {
+      if (!StrTools::isDigit(ch)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  bool StrTools::isFloatingPoint(
+    CR_STR str,
+    CR_CH decPtSign
+  ) {
+    bool decPtFound = false;
+
+    for (CR_CH ch : str) {
+      if (!decPtFound && ch == decPtSign) {
+        decPtFound = true;
+      }
+      else if (!StrTools::isDigit(ch)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }}
 
 #endif // __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
