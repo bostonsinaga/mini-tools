@@ -83,12 +83,10 @@ namespace utils {
       CR_INT reverseSpaceBoundaryIndex = -1
     );
 
+    /** Character detectors */
+
     static bool isWhitespace(CR_CH ch) {
       return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
-    }
-
-    static bool isDigit(CR_CH ch) {
-      return ch >= '0' && ch <= '9';
     }
 
     static bool isUppercaseLetter(CR_CH ch) {
@@ -102,6 +100,19 @@ namespace utils {
     static bool isLetter(CR_CH ch) {
       return isUppercaseLetter(ch) || isLowercaseLetter(ch);
     }
+
+    /** Number detectors */
+
+    static bool isDigit(CR_CH ch) {
+      return ch >= '0' && ch <= '9';
+    }
+
+    static bool isInteger(CR_STR str);
+
+    static bool isFloatingPoint(
+      CR_STR str,
+      CR_CH decPtSign = '.'
+    );
   };
 }}
 
