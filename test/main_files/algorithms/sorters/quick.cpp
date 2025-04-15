@@ -1,4 +1,4 @@
-#include "sorters_helper.h"
+#include "sorters_helper.hpp"
 
 void sorters_helper::usePair(mt::VEC_PAIR2<int, std::string> &merged) {
   mt_alg::sorters::Quick<int, std::string>::solve(merged);
