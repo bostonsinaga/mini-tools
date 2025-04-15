@@ -1,2 +1,2 @@
-add_subdirectory(linked-lists)
+add_subdirectory(linked_lists)
 add_subdirectory(trees)
