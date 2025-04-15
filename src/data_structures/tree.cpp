@@ -1,8 +1,8 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
 
-#include "data-structures/tree.h"
-#include "utils/vec-tools.h"
+#include "data_structures/tree.hpp"
+#include "utils/vec_tools.hpp"
 
 //____________|
 // N-ARY TREE |

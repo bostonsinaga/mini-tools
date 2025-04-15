@@ -1,8 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__TIME_DATE_CPP__
 #define __MINI_TOOLS__UTILS__TIME_DATE_CPP__
 
-#include "types.h"
-#include "utils/time-date.h"
+#include "types.hpp"
+#include "utils/time_date.hpp"
 
 namespace mini_tools {
 namespace utils {

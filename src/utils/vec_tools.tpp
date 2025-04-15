@@ -1,7 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 
-#include "algorithms/number-sequence.h"
+#include "algorithms/number_sequence.hpp"
 
 namespace mini_tools {
 namespace utils {

@@ -1,8 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__SCANNER_CPP__
 #define __MINI_TOOLS__UTILS__SCANNER_CPP__
 
-#include "types.h"
-#include "utils/scanner.h"
+#include "types.hpp"
+#include "utils/scanner.hpp"
 
 namespace mini_tools {
 namespace utils {

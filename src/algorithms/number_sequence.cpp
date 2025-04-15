@@ -3,8 +3,8 @@
 
 #include <cmath>
 #include <algorithm>
-#include "types.h"
-#include "algorithms/number-sequence.h"
+#include "types.hpp"
+#include "algorithms/number_sequence.hpp"
 
 namespace mini_tools {
 namespace algorithms {

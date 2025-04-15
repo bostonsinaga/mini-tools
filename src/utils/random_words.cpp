@@ -1,8 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__RANDOM_WORDS_CPP__
 #define __MINI_TOOLS__UTILS__RANDOM_WORDS_CPP__
 
-#include "types.h"
-#include "utils/random-words.h"
+#include "types.hpp"
+#include "utils/random_words.hpp"
 
 namespace mini_tools {
 namespace utils {
