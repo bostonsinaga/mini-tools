@@ -104,7 +104,7 @@ namespace utils {
     CR_STR separator
   ) {
     Printer::write(
-      Printer::stringify<T>(vec, separator),
+      Printer::stringify<T>(vec, endNewlinesCount, separator),
       filename, extended, endNewlinesCount
     );
   }
