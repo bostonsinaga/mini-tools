@@ -8,13 +8,13 @@ namespace algorithms {
   public:
     /**
      * Stands of parameters:
-     *  n = number
-     *  a = first number
+     *  n  = number
+     *  a  = first number
      *  an = last number
-     *  d = difference
-     *  o = order
-     *  r = ratio
-     *  q = quantity
+     *  d  = difference
+     *  o  = order
+     *  r  = ratio
+     *  q  = quantity
      */
 
     static int factorial(int n);
