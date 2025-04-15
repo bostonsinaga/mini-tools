@@ -34,5 +34,5 @@ namespace algorithms {
   };
 }}
 
-#include "algorithms/round-robin.tpp"
+#include "algorithms/round_robin.tpp"
 #endif // __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_HPP__

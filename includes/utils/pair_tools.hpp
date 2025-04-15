@@ -80,5 +80,5 @@ namespace utils {
   };
 }}
 
-#include "utils/pair-tools.tpp"
+#include "utils/pair_tools.tpp"
 #endif // __MINI_TOOLS__UTILS__PAIR_TOOLS_HPP__

@@ -213,5 +213,5 @@ namespace utils {
   };
 }}
 
-#include "utils/vec-tools.tpp"
+#include "utils/vec_tools.tpp"
 #endif // __MINI_TOOLS__UTILS__VEC_TOOLS_HPP__

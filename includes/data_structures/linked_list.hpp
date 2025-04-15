@@ -329,5 +329,5 @@ namespace data_structures {
   };
 }}
 
-#include "data-structures/linked-list.tpp"
+#include "data_structures/linked_list.tpp"
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
