@@ -13,7 +13,7 @@ namespace utils {
     VEC<T> integrals;
 
     for (int i = 0; i < count; i++) {
-      integrals.push(
+      integrals.push_back(
         std::rand() % maxNumber + additional
       );
     }
@@ -30,7 +30,7 @@ namespace utils {
     VEC<T> floatingPoints;
 
     for (int i = 0; i < count; i++) {
-      floatingPoints.push(std::fmod(
+      floatingPoints.push_back(std::fmod(
         static_cast<double>(std::rand()) / RAND_MAX,
         maxNumber) + additional
       );
