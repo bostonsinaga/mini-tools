@@ -1,11 +1,11 @@
 set (SOURCES
-  algorithms/number-sequence.cpp
-  data-structures/linked-list.cpp
-  data-structures/tree.cpp
-  utils/random-words.cpp
+  algorithms/number_sequence.cpp
+  data_structures/linked_list.cpp
+  data_structures/tree.cpp
+  utils/random_words.cpp
   utils/scanner.cpp
-  utils/str-tools.cpp
-  utils/time-date.cpp
+  utils/str_tools.cpp
+  utils/time_date.cpp
 )
 
-add_library(mini-tools STATIC ${SOURCES})
+add_library(mini_tools STATIC ${SOURCES})
