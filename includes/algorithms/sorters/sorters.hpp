@@ -14,11 +14,11 @@ namespace sorters {
   typedef const PRIORITY_ENUM& CR_PRIORITY_ENUM;
 }}}
 
-#include "bubble.h"
-#include "comb.h"
-#include "insertion.h"
-#include "merge.h"
-#include "quick.h"
-#include "selection.h"
+#include "bubble.hpp"
+#include "comb.hpp"
+#include "insertion.hpp"
+#include "merge.hpp"
+#include "quick.hpp"
+#include "selection.hpp"
 
 #endif // __MINI_TOOLS__ALGORITHMS__SORTERS_HPP__
