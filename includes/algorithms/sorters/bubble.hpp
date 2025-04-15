@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_H__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_HPP__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_HPP__
 
 namespace mini_tools {
 namespace algorithms {
@@ -22,4 +22,4 @@ namespace sorters {
 }}}
 
 #include "algorithms/sorters/bubble.tpp"
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__BUBBLE_HPP__

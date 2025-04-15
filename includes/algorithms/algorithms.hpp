@@ -1,10 +1,10 @@
-#ifndef __MINI_TOOLS__ALGORITHMS_H__
-#define __MINI_TOOLS__ALGORITHMS_H__
+#ifndef __MINI_TOOLS__ALGORITHMS_HPP__
+#define __MINI_TOOLS__ALGORITHMS_HPP__
 
-#include "number-sequence.h"
-#include "round-robin.h"
-#include "sorters/sorters.h"
+#include "number_sequence.hpp"
+#include "round_robin.hpp"
+#include "sorters/sorters.hpp"
 
 namespace mt_alg = mini_tools::algorithms;
 
-#endif // __MINI_TOOLS__ALGORITHMS_H__
+#endif // __MINI_TOOLS__ALGORITHMS_HPP__

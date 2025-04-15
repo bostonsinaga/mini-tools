@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
-#define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_HPP__
+#define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_HPP__
 
 namespace mini_tools {
 namespace algorithms {
@@ -35,4 +35,4 @@ namespace algorithms {
 }}
 
 #include "algorithms/round-robin.tpp"
-#endif // __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_H__
+#endif // __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_HPP__

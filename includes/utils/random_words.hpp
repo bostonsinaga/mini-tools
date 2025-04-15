@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__RANDOM_WORDS_H__
-#define __MINI_TOOLS__UTILS__RANDOM_WORDS_H__
+#ifndef __MINI_TOOLS__UTILS__RANDOM_WORDS_HPP__
+#define __MINI_TOOLS__UTILS__RANDOM_WORDS_HPP__
 
 namespace mini_tools {
 namespace utils {
@@ -70,4 +70,4 @@ namespace utils {
 }}
 
 #include "utils/random-words.tpp"
-#endif // __MINI_TOOLS__UTILS__RANDOM_WORDS_H__
+#endif // __MINI_TOOLS__UTILS__RANDOM_WORDS_HPP__

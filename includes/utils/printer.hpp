@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__PRINTER_H__
-#define __MINI_TOOLS__UTILS__PRINTER_H__
+#ifndef __MINI_TOOLS__UTILS__PRINTER_HPP__
+#define __MINI_TOOLS__UTILS__PRINTER_HPP__
 
 namespace mini_tools {
 namespace utils {
@@ -102,4 +102,4 @@ namespace utils {
 }}
 
 #include "utils/printer.tpp"
-#endif // __MINI_TOOLS__UTILS__PRINTER_H__
+#endif // __MINI_TOOLS__UTILS__PRINTER_HPP__

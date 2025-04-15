@@ -1,9 +1,9 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES_H__
-#define __MINI_TOOLS__DATA_STRUCTURES_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES_HPP__
+#define __MINI_TOOLS__DATA_STRUCTURES_HPP__
 
-#include "linked-list.h"
-#include "tree.h"
+#include "linked_list.hpp"
+#include "tree.hpp"
 
 namespace mt_ds = mini_tools::data_structures;
 
-#endif // __MINI_TOOLS__DATA_STRUCTURES_H__
+#endif // __MINI_TOOLS__DATA_STRUCTURES_HPP__

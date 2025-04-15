@@ -1,7 +1,7 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES__TREE_H__
-#define __MINI_TOOLS__DATA_STRUCTURES__TREE_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__
 
-#include "linked-list.h"
+#include "linked_list.hpp"
 
 //____________|
 // N-ARY TREE |
@@ -101,4 +101,4 @@ namespace data_structures {
   };
 }}
 
-#endif // __MINI_TOOLS__DATA_STRUCTURES__TREE_H__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__

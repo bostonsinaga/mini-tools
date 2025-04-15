@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__TYPES_H__
-#define __MINI_TOOLS__TYPES_H__
+#ifndef __MINI_TOOLS__TYPES_HPP__
+#define __MINI_TOOLS__TYPES_HPP__
 
 #include <iostream>
 #include <fstream>
@@ -726,4 +726,4 @@ namespace mini_tools {
   using CR_ARR2_LD_P = const ARR2_LD_P<M, N>&;
 }
 
-#endif // __MINI_TOOLS__TYPES_H__
+#endif // __MINI_TOOLS__TYPES_HPP__

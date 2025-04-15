@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
-#define __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_HPP__
+#define __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_HPP__
 
 namespace mini_tools {
 namespace algorithms {
@@ -66,4 +66,4 @@ namespace algorithms {
   };
 }}
 
-#endif // __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_H__
+#endif // __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_HPP__

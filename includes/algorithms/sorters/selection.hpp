@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_H__
-#define __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_H__
+#ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_HPP__
+#define __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_HPP__
 
 namespace mini_tools {
 namespace algorithms {
@@ -22,4 +22,4 @@ namespace sorters {
 }}}
 
 #include "algorithms/sorters/selection.tpp"
-#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_H__
+#endif // __MINI_TOOLS__ALGORITHMS__SORTERS__SELECTION_HPP__

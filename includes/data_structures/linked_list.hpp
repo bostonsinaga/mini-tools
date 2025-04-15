@@ -1,7 +1,7 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
-#define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
 
-#include "types.h"
+#include "types.hpp"
 
 //_____________________________|
 // DOUBLY CIRCULAR LINKED LIST |
@@ -330,4 +330,4 @@ namespace data_structures {
 }}
 
 #include "data-structures/linked-list.tpp"
-#endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_H__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__

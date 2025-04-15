@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__TIME_DATE_H__
-#define __MINI_TOOLS__UTILS__TIME_DATE_H__
+#ifndef __MINI_TOOLS__UTILS__TIME_DATE_HPP__
+#define __MINI_TOOLS__UTILS__TIME_DATE_HPP__
 
 namespace mini_tools {
 namespace utils {
@@ -20,4 +20,4 @@ namespace utils {
   };
 }}
 
-#endif // __MINI_TOOLS__UTILS__TIME_DATE_H__
+#endif // __MINI_TOOLS__UTILS__TIME_DATE_HPP__
