@@ -117,7 +117,7 @@ namespace utils {
     if (upward) {
       FS_PATH current = FS::current_path();
 
-      while (current == current.root_path()) {
+      while (current != current.root_path()) {
         combined = current / path;
 
         if ((toFile && isFileExist(combined)) ||
