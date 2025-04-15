@@ -68,6 +68,26 @@ namespace mini_tools {
   typedef unsigned long long int ULLI;
   typedef long double LD;
 
+  /** SHORTENED CONSTANT REFERENCES */
+
+  typedef const bool& CR_BOL;
+  typedef const std::string& CR_STR;
+  typedef const char& CR_CH;
+  typedef const wchar_t& CR_WCH;
+  typedef const int& CR_INT;
+  typedef const SI& CR_SI;
+  typedef const LI& CR_LI;
+  typedef const LLI& CR_LLI;
+  typedef const USI& CR_USI;
+  typedef const UI& CR_UI;
+  typedef const ULI& CR_ULI;
+  typedef const ULLI& CR_ULLI;
+  typedef const size_t& CR_SZ;
+  typedef const time_t& CR_TM;
+  typedef const float& CR_FLT;
+  typedef const double& CR_DBL;
+  typedef const LD& CR_LD;
+
   /** SHORTENED FILESYSTEM NAMES */
 
   namespace FS = std::filesystem;
@@ -213,26 +233,6 @@ namespace mini_tools {
   typedef VEC<VEC_DBL_P> VEC2_DBL_P;
   typedef VEC<VEC_LD_P> VEC2_LD_P;
 
-  /** SHORTENED CONSTANT REFERENCES */
-
-  typedef const bool& CR_BOL;
-  typedef const std::string& CR_STR;
-  typedef const char& CR_CH;
-  typedef const wchar_t& CR_WCH;
-  typedef const int& CR_INT;
-  typedef const SI& CR_SI;
-  typedef const LI& CR_LI;
-  typedef const LLI& CR_LLI;
-  typedef const USI& CR_USI;
-  typedef const UI& CR_UI;
-  typedef const ULI& CR_ULI;
-  typedef const ULLI& CR_ULLI;
-  typedef const size_t& CR_SZ;
-  typedef const time_t& CR_TM;
-  typedef const float& CR_FLT;
-  typedef const double& CR_DBL;
-  typedef const LD& CR_LD;
-
   /** SHORTENED CONSTANT REFERENCE VECTORS */
 
   typedef const VEC_BOL& CR_VEC_BOL;
@@ -308,6 +308,422 @@ namespace mini_tools {
   typedef const VEC2_FLT_P& CR_VEC2_FLT_P;
   typedef const VEC2_DBL_P& CR_VEC2_DBL_P;
   typedef const VEC2_LD_P& CR_VEC2_LD_P;
+
+  /** SHORTENED VALUE ARRAYS */
+
+  template <size_t N>
+  using ARR_BOL = ARR<bool, N>;
+
+  template <size_t N>
+  using ARR_STR = ARR<std::string, N>;
+
+  template <size_t N>
+  using ARR_CH = ARR<char, N>;
+
+  template <size_t N>
+  using ARR_WCH = ARR<wchar_t, N>;
+
+  template <size_t N>
+  using ARR_INT = ARR<int, N>;
+
+  template <size_t N>
+  using ARR_SI = ARR<SI, N>;
+
+  template <size_t N>
+  using ARR_LI = ARR<LI, N>;
+
+  template <size_t N>
+  using ARR_LLI = ARR<LLI, N>;
+
+  template <size_t N>
+  using ARR_USI = ARR<USI, N>;
+
+  template <size_t N>
+  using ARR_UI = ARR<UI, N>;
+
+  template <size_t N>
+  using ARR_ULI = ARR<ULI, N>;
+
+  template <size_t N>
+  using ARR_ULLI = ARR<ULLI, N>;
+
+  template <size_t N>
+  using ARR_SZ = ARR<size_t, N>;
+
+  template <size_t N>
+  using ARR_TM = ARR<time_t, N>;
+
+  template <size_t N>
+  using ARR_FLT = ARR<float, N>;
+
+  template <size_t N>
+  using ARR_DBL = ARR<double, N>;
+
+  template <size_t N>
+  using ARR_LD = ARR<LD, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_BOL = ARR<ARR_BOL<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_STR = ARR<ARR_STR<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_CH = ARR<ARR_CH<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_WCH = ARR<ARR_WCH<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_INT = ARR<ARR_INT<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_SI = ARR<ARR_SI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LI = ARR<ARR_LI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LLI = ARR<ARR_LLI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_USI = ARR<ARR_USI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_UI = ARR<ARR_UI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_ULI = ARR<ARR_ULI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_ULLI = ARR<ARR_ULLI<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_SZ = ARR<ARR_SZ<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_TM = ARR<ARR_TM<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_FLT = ARR<ARR_FLT<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_DBL = ARR<ARR_DBL<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LD = ARR<ARR_LD<M>, N>;
+
+  /** SHORTENED POINTER ARRAYS */
+
+  template <size_t N>
+  using ARR_BOL_P = ARR<bool*, N>;
+
+  template <size_t N>
+  using ARR_STR_P = ARR<std::string*, N>;
+
+  template <size_t N>
+  using ARR_CH_P = ARR<char*, N>;
+
+  template <size_t N>
+  using ARR_WCH_P = ARR<wchar_t*, N>;
+
+  template <size_t N>
+  using ARR_INT_P = ARR<int*, N>;
+
+  template <size_t N>
+  using ARR_SI_P = ARR<SI*, N>;
+
+  template <size_t N>
+  using ARR_LI_P = ARR<LI*, N>;
+
+  template <size_t N>
+  using ARR_LLI_P = ARR<LLI*, N>;
+
+  template <size_t N>
+  using ARR_USI_P = ARR<USI*, N>;
+
+  template <size_t N>
+  using ARR_UI_P = ARR<UI*, N>;
+
+  template <size_t N>
+  using ARR_ULI_P = ARR<ULI*, N>;
+
+  template <size_t N>
+  using ARR_ULLI_P = ARR<ULLI*, N>;
+
+  template <size_t N>
+  using ARR_SZ_P = ARR<size_t*, N>;
+
+  template <size_t N>
+  using ARR_TM_P = ARR<time_t*, N>;
+
+  template <size_t N>
+  using ARR_FLT_P = ARR<float*, N>;
+
+  template <size_t N>
+  using ARR_DBL_P = ARR<double*, N>;
+
+  template <size_t N>
+  using ARR_LD_P = ARR<LD*, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_BOL_P = ARR<ARR_BOL_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_STR_P = ARR<ARR_STR_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_CH_P = ARR<ARR_CH_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_WCH_P = ARR<ARR_WCH_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_INT_P = ARR<ARR_INT_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_SI_P = ARR<ARR_SI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LI_P = ARR<ARR_LI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LLI_P = ARR<ARR_LLI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_USI_P = ARR<ARR_USI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_UI_P = ARR<ARR_UI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_ULI_P = ARR<ARR_ULI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_ULLI_P = ARR<ARR_ULLI_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_SZ_P = ARR<ARR_SZ_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_TM_P = ARR<ARR_TM_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_FLT_P = ARR<ARR_FLT_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_DBL_P = ARR<ARR_DBL_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_LD_P = ARR<ARR_LD_P<M>, N>;
+
+  /** SHORTENED CONSTANT REFERENCE ARRAYS */
+
+  template <size_t N>
+  using CR_ARR_BOL = const ARR_BOL<N>&;
+
+  template <size_t N>
+  using CR_ARR_STR = const ARR_STR<N>&;
+
+  template <size_t N>
+  using CR_ARR_CH = const ARR_CH<N>&;
+
+  template <size_t N>
+  using CR_ARR_WCH = const ARR_WCH<N>&;
+
+  template <size_t N>
+  using CR_ARR_INT = const ARR_INT<N>&;
+
+  template <size_t N>
+  using CR_ARR_SI = const ARR_SI<N>&;
+
+  template <size_t N>
+  using CR_ARR_LI = const ARR_LI<N>&;
+
+  template <size_t N>
+  using CR_ARR_LLI = const ARR_LLI<N>&;
+
+  template <size_t N>
+  using CR_ARR_USI = const ARR_USI<N>&;
+
+  template <size_t N>
+  using CR_ARR_UI = const ARR_UI<N>&;
+
+  template <size_t N>
+  using CR_ARR_ULI = const ARR_ULI<N>&;
+
+  template <size_t N>
+  using CR_ARR_ULLI = const ARR_ULLI<N>&;
+
+  template <size_t N>
+  using CR_ARR_SZ = const ARR_SZ<N>&;
+
+  template <size_t N>
+  using CR_ARR_TM = const ARR_TM<N>&;
+
+  template <size_t N>
+  using CR_ARR_FLT = const ARR_FLT<N>&;
+
+  template <size_t N>
+  using CR_ARR_DBL = const ARR_DBL<N>&;
+
+  template <size_t N>
+  using CR_ARR_LD = const ARR_LD<N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_BOL = const ARR2_BOL<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_STR = const ARR2_STR<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_CH = const ARR2_CH<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_WCH = const ARR2_WCH<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_INT = const ARR2_INT<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_SI = const ARR2_SI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LI = const ARR2_LI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LLI = const ARR2_LLI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_USI = const ARR2_USI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_UI = const ARR2_UI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_ULI = const ARR2_ULI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_ULLI = const ARR2_ULLI<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_SZ = const ARR2_SZ<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_TM = const ARR2_TM<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_FLT = const ARR2_FLT<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_DBL = const ARR2_DBL<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LD = const ARR2_LD<M, N>&;
+
+  /** SHORTENED CONSTANT REFERENCE POINTER ARRAYS */
+
+  template <size_t N>
+  using CR_ARR_BOL_P = const ARR_BOL_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_STR_P = const ARR_STR_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_CH_P = const ARR_CH_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_WCH_P = const ARR_WCH_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_INT_P = const ARR_INT_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_SI_P = const ARR_SI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_LI_P = const ARR_LI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_LLI_P = const ARR_LLI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_USI_P = const ARR_USI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_UI_P = const ARR_UI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_ULI_P = const ARR_ULI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_ULLI_P = const ARR_ULLI_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_SZ_P = const ARR_SZ_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_TM_P = const ARR_TM_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_FLT_P = const ARR_FLT_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_DBL_P = const ARR_DBL_P<N>&;
+
+  template <size_t N>
+  using CR_ARR_LD_P = const ARR_LD_P<N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_BOL_P = const ARR2_BOL_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_STR_P = const ARR2_STR_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_CH_P = const ARR2_CH_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_WCH_P = const ARR2_WCH_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_INT_P = const ARR2_INT_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_SI_P = const ARR2_SI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LI_P = const ARR2_LI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LLI_P = const ARR2_LLI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_USI_P = const ARR2_USI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_UI_P = const ARR2_UI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_ULI_P = const ARR2_ULI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_ULLI_P = const ARR2_ULLI_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_SZ_P = const ARR2_SZ_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_TM_P = const ARR2_TM_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_FLT_P = const ARR2_FLT_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_DBL_P = const ARR2_DBL_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_LD_P = const ARR2_LD_P<M, N>&;
 }
 
 #endif // __MINI_TOOLS__TYPES_H__
