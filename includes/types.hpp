@@ -111,26 +111,6 @@ namespace mini_tools {
   template <typename T>
   using CR_VEC2 = const VEC2<T>&;
 
-  /** SHORTENED VECTOR ARRAY TEMPLATES */
-
-  template <typename T, size_t N>
-  using ARR = std::array<T, N>;
-
-  template <typename T, size_t N>
-  using CR_ARR = const ARR<T, N>&;
-
-  template <typename T, size_t N>
-  using VEC_ARR = VEC<ARR<T, N>>;
-
-  template <typename T, size_t N>
-  using VEC_ARR2 = VEC<VEC_ARR<T, N>>;
-
-  template <typename T, size_t N>
-  using CR_VEC_ARR = const VEC_ARR<T, N>&;
-
-  template <typename T, size_t N>
-  using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
-
   /** SHORTENED PAIR TEMPLATES */
 
   template <typename T>
@@ -156,6 +136,26 @@ namespace mini_tools {
 
   template <typename T, typename U>
   using CR_VEC_PAIR2 = const VEC_PAIR2<T, U>&;
+
+  /** SHORTENED VECTOR ARRAY TEMPLATES */
+
+  template <typename T, size_t N>
+  using ARR = std::array<T, N>;
+
+  template <typename T, size_t N>
+  using CR_ARR = const ARR<T, N>&;
+
+  template <typename T, size_t N>
+  using VEC_ARR = VEC<ARR<T, N>>;
+
+  template <typename T, size_t N>
+  using VEC_ARR2 = VEC<VEC_ARR<T, N>>;
+
+  template <typename T, size_t N>
+  using CR_VEC_ARR = const VEC_ARR<T, N>&;
+
+  template <typename T, size_t N>
+  using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
 
   /** SHORTENED VALUE VECTORS */
 
@@ -308,6 +308,86 @@ namespace mini_tools {
   typedef const VEC2_FLT_P& CR_VEC2_FLT_P;
   typedef const VEC2_DBL_P& CR_VEC2_DBL_P;
   typedef const VEC2_LD_P& CR_VEC2_LD_P;
+
+  /** SHORTENED VALUE PAIRS */
+
+  typedef PAIR<bool> PAIR_BOL;
+  typedef PAIR<std::string> PAIR_STR;
+  typedef PAIR<char> PAIR_CH;
+  typedef PAIR<wchar_t> PAIR_WCH;
+  typedef PAIR<int> PAIR_INT;
+  typedef PAIR<SI> PAIR_SI;
+  typedef PAIR<LI> PAIR_LI;
+  typedef PAIR<LLI> PAIR_LLI;
+  typedef PAIR<USI> PAIR_USI;
+  typedef PAIR<UI> PAIR_UI;
+  typedef PAIR<ULI> PAIR_ULI;
+  typedef PAIR<ULLI> PAIR_ULLI;
+  typedef PAIR<size_t> PAIR_SZ;
+  typedef PAIR<time_t> PAIR_TM;
+  typedef PAIR<float> PAIR_FLT;
+  typedef PAIR<double> PAIR_DBL;
+  typedef PAIR<LD> PAIR_LD;
+
+  /** SHORTENED POINTER PAIRS */
+
+  typedef PAIR<bool*> PAIR_BOL_P;
+  typedef PAIR<std::string*> PAIR_STR_P;
+  typedef PAIR<char*> PAIR_CH_P;
+  typedef PAIR<wchar_t*> PAIR_WCH_P;
+  typedef PAIR<int*> PAIR_INT_P;
+  typedef PAIR<SI*> PAIR_SI_P;
+  typedef PAIR<LI*> PAIR_LI_P;
+  typedef PAIR<LLI*> PAIR_LLI_P;
+  typedef PAIR<USI*> PAIR_USI_P;
+  typedef PAIR<UI*> PAIR_UI_P;
+  typedef PAIR<ULI*> PAIR_ULI_P;
+  typedef PAIR<ULLI*> PAIR_ULLI_P;
+  typedef PAIR<size_t*> PAIR_SZ_P;
+  typedef PAIR<time_t*> PAIR_TM_P;
+  typedef PAIR<float*> PAIR_FLT_P;
+  typedef PAIR<double*> PAIR_DBL_P;
+  typedef PAIR<LD*> PAIR_LD_P;
+
+  /** SHORTENED CONSTANT REFERENCE PAIRS */
+
+  typedef const PAIR_BOL& CR_PAIR_BOL;
+  typedef const PAIR_STR& CR_PAIR_STR;
+  typedef const PAIR_CH& CR_PAIR_CH;
+  typedef const PAIR_WCH& CR_PAIR_WCH;
+  typedef const PAIR_INT& CR_PAIR_INT;
+  typedef const PAIR_SI& CR_PAIR_SI;
+  typedef const PAIR_LI& CR_PAIR_LI;
+  typedef const PAIR_LLI& CR_PAIR_LLI;
+  typedef const PAIR_USI& CR_PAIR_USI;
+  typedef const PAIR_UI& CR_PAIR_UI;
+  typedef const PAIR_ULI& CR_PAIR_ULI;
+  typedef const PAIR_ULLI& CR_PAIR_ULLI;
+  typedef const PAIR_SZ& CR_PAIR_SZ;
+  typedef const PAIR_TM& CR_PAIR_TM;
+  typedef const PAIR_FLT& CR_PAIR_FLT;
+  typedef const PAIR_DBL& CR_PAIR_DBL;
+  typedef const PAIR_LD& CR_PAIR_LD;
+
+  /** SHORTENED CONSTANT REFERENCE POINTER PAIRS */
+
+  typedef const PAIR_BOL_P& CR_PAIR_BOL_P;
+  typedef const PAIR_STR_P& CR_PAIR_STR_P;
+  typedef const PAIR_CH_P& CR_PAIR_CH_P;
+  typedef const PAIR_WCH_P& CR_PAIR_WCH_P;
+  typedef const PAIR_INT_P& CR_PAIR_INT_P;
+  typedef const PAIR_SI_P& CR_PAIR_SI_P;
+  typedef const PAIR_LI_P& CR_PAIR_LI_P;
+  typedef const PAIR_LLI_P& CR_PAIR_LLI_P;
+  typedef const PAIR_USI_P& CR_PAIR_USI_P;
+  typedef const PAIR_UI_P& CR_PAIR_UI_P;
+  typedef const PAIR_ULI_P& CR_PAIR_ULI_P;
+  typedef const PAIR_ULLI_P& CR_PAIR_ULLI_P;
+  typedef const PAIR_SZ_P& CR_PAIR_SZ_P;
+  typedef const PAIR_TM_P& CR_PAIR_TM_P;
+  typedef const PAIR_FLT_P& CR_PAIR_FLT_P;
+  typedef const PAIR_DBL_P& CR_PAIR_DBL_P;
+  typedef const PAIR_LD_P& CR_PAIR_LD_P;
 
   /** SHORTENED VALUE ARRAYS */
 
