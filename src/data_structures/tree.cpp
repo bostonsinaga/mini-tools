@@ -145,7 +145,7 @@ namespace data_structures {
   void Tree::cleanDuplicatesInChildren() {
 
     VEC_TREE wasted
-      = utils::VecTools<Tree*>::Duplication<utils::VecTools<Tree*>::DUPLICATION_STABLE>::eliminate(
+      = utils::VecDupTools<Tree*, utils::VECDUP_STABLE>::eliminate(
         children, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
@@ -162,7 +162,7 @@ namespace data_structures {
   void Tree::cleanDuplicateToLastAdded(Tree *tree) {
 
     VEC_TREE wasted
-      = utils::VecTools<Tree*>::Duplication<utils::VecTools<Tree*>::DUPLICATION_STABLE>::clean(
+      = utils::VecDupTools<Tree*, utils::VECDUP_STABLE>::clean(
         children, tree, false,
         [](Tree *rep, Tree *nd)->bool {
           if (rep->name == nd->name) return true;
