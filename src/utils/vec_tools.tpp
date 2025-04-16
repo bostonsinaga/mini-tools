@@ -1,12 +1,12 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 
-#include "algorithms/number_sequence.hpp"
-
 namespace mini_tools {
 namespace utils {
 
-  /** VECTOR TOOLS */
+  //______________|
+  // VECTOR TOOLS |
+  //______________|
 
   template <typename T>
   bool VecTools<T>::hasIndex(VEC<T> &vec, CR_LLI idx) {
@@ -459,21 +459,22 @@ namespace utils {
     );
   }
 
-  /** MEMBER DUPLICATION CLEANERS */
+  //__________________________|
+  // VECTOR DUPLICATION TOOLS |
+  //__________________________|
 
-  template <typename T>
-  template <typename VecTools<T>::DUPLICATION_ENUM U>
-  bool VecTools<T>::template Duplication<U>::fillWasted(
+  template <typename T, VECDUP_ENUM U>
+  bool VecDupTools<T, U>::fillWasted(
     VEC<T> &vec,
     VEC<T> &wasted,
-    EQUAL_RULE &equalRule,
+    VecTools<T>::EQUAL_RULE &equalRule,
     CR<T> &a,
     CR<T> &b,
     CR_SZ cutIdx
   ) {
     if (a == b || equalRule(a, b)) {
 
-      if constexpr (U == DUPLICATION_STABLE) {
+      if constexpr (U == VECDUP_STABLE) {
         wasted.push_back(
           VecTools<T>::extractSingleStable(vec, cutIdx)
         );
@@ -488,12 +489,11 @@ namespace utils {
     return false;
   }
 
-  template <typename T>
-  template <typename VecTools<T>::DUPLICATION_ENUM U>
-  VEC<T> VecTools<T>::template Duplication<U>::eliminate(
+  template <typename T, VECDUP_ENUM U>
+  VEC<T> VecDupTools<T, U>::eliminate(
     VEC<T> &vec,
     CR_BOL originalAscending,
-    EQUAL_RULE equalRule
+    VecTools<T>::EQUAL_RULE equalRule
   ) {
     VEC<T> wasted;
 
@@ -502,7 +502,7 @@ namespace utils {
       for (LLI i = 0; i < vec.size() - 1; i++) {
         for (LLI j = i+1; j < vec.size(); j++) {
 
-          if (VecTools<T>::Duplication<U>::fillWasted(
+          if (VecDupTools<T, U>::fillWasted(
             vec, wasted, equalRule,
             vec[i], vec[j], j
           )) { j--; }
@@ -512,7 +512,7 @@ namespace utils {
     else for (LLI i = vec.size() - 1; i > 0; i--) {
       for (LLI j = i - 1; j >= 0; j--) {
 
-        if (VecTools<T>::Duplication<U>::fillWasted(
+        if (VecDupTools<T, U>::fillWasted(
           vec, wasted, equalRule,
           vec[i], vec[j], j
         )) { i--; }
@@ -522,27 +522,26 @@ namespace utils {
     return std::move(wasted);
   }
 
-  template <typename T>
-  template <typename VecTools<T>::DUPLICATION_ENUM U>
-  VEC<T> VecTools<T>::template Duplication<U>::clean(
+  template <typename T, VECDUP_ENUM U>
+  VEC<T> VecDupTools<T, U>::clean(
     VEC<T> &vec,
     CR<T> val,
     CR_BOL originalAscending,
-    EQUAL_RULE equalRule
+    VecTools<T>::EQUAL_RULE equalRule
   ) {
     VEC<T> wasted;
 
     if (originalAscending) {
       for (LLI i = 0; i < vec.size(); i++) {
 
-        if (VecTools<T>::Duplication<U>::fillWasted(
+        if (VecDupTools<T, U>::fillWasted(
           vec, wasted, equalRule,
           val, vec[i], i
         )) { i--; }
       }
     }
     else for (size_t i = vec.size() - 1; i >= 0; i--) {
-      VecTools<T>::Duplication<U>::fillWasted(
+      VecDupTools<T, U>::fillWasted(
         vec, wasted, equalRule,
         val, vec[i], i
       );
