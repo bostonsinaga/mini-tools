@@ -4,8 +4,10 @@
 namespace mini_tools {
 namespace algorithms {
 
-  class RoundRobin {
+  class RoundRobin final {
   public:
+    RoundRobin() = delete;
+
     template <inspector::NUMBER T>
     struct NumericTask {
       std::function<void(T&)> ongoing;

@@ -4,8 +4,10 @@
 namespace mini_tools {
 namespace utils {
 
-  class Scanner {
+  class Scanner final {
   public:
+    Scanner() = delete;
+
     /** Simple Detectors */
 
     static VEC_CH separators_ch;

@@ -4,11 +4,13 @@
 namespace mini_tools {
 namespace utils {
 
-  class StrTools {
+  class StrTools final {
   private:
     static void changeCase(char &ch, CR_BOL isUpper);
 
   public:
+    StrTools() = delete;
+
     static void changeToLowercase(char &ch);
     static void changeToUppercase(char &ch);
     static char getToLowercase(char ch);

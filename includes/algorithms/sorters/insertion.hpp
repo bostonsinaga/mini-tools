@@ -9,7 +9,7 @@ namespace sorters {
   enum QUICK_SCHEME_ENUM {QUICK_HOARE, QUICK_LOMUTO};
 
   template <inspector::NUMBER T, class U>
-  class Insertion {
+  class Insertion final {
   protected:
     static void process(
       VEC_PAIR2<T, U> &messy,
@@ -19,6 +19,8 @@ namespace sorters {
     );
 
   public:
+    Insertion() = delete;
+
     static void solve(
       VEC_PAIR2<T, U> &messy,
       CR_ORDER_ENUM order = ORDER_ASCENDING

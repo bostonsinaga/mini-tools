@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
   template <inspector::NUMBER T, class U, QUICK_SCHEME_ENUM SCHEME = QUICK_HOARE>
-  class Quick {
+  class Quick final {
   private:
     /** Slower */
     static int lomutoPartition(
@@ -39,6 +39,8 @@ namespace sorters {
     );
 
   public:
+    Quick() = delete;
+
     static void solve(
       VEC_PAIR2<T, U> &messy,
       CR_ORDER_ENUM order = ORDER_ASCENDING

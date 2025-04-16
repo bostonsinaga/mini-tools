@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
   template <inspector::NUMBER T, class U>
-  class Merge {
+  class Merge final {
   private:
     static void merge(
       VEC_PAIR2<T, U> &messy,
@@ -24,6 +24,8 @@ namespace sorters {
     );
 
   public:
+    Merge() = delete;
+
     static void solve(
       VEC_PAIR2<T, U> &messy,
       CR_ORDER_ENUM order = ORDER_ASCENDING

@@ -6,7 +6,7 @@ namespace algorithms {
 namespace sorters {
 
 	template <inspector::NUMBER T, class U>
-	class Selection {
+	class Selection final {
 	private:
 		static void process(
 			VEC_PAIR2<T, U> &messy,
@@ -14,6 +14,8 @@ namespace sorters {
 		);
 
 	public:
+		Selection() = delete;
+
 		static void solve(
 			VEC_PAIR2<T, U> &messy,
 			CR_ORDER_ENUM order = ORDER_ASCENDING

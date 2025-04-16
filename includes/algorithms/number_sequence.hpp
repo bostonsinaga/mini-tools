@@ -4,7 +4,7 @@
 namespace mini_tools {
 namespace algorithms {
 
-  class NumberSequence {
+  class NumberSequence final {
   public:
     /**
      * Stands of parameters:
@@ -17,6 +17,7 @@ namespace algorithms {
      *  q  = quantity
      */
 
+    NumberSequence() = delete;
     static int factorial(int n);
 
     static int arithmeticSeries(

@@ -5,11 +5,10 @@ namespace mini_tools {
 namespace utils {
 
   template <class T, class U>
-  class PairTools {
-  private:
+  class PairTools final {
+  public:
     PairTools() = delete;
 
-  public:
     /**
      * Combine two vectors into one vector of pairs.
      * This will ignore any other vector members that exceed the least vector.

@@ -6,13 +6,16 @@ namespace algorithms {
 namespace sorters {
 
   template <inspector::NUMBER T, class U>
-  class Comb {
+  class Comb final {
+  private:
     static void process(
       VEC_PAIR2<T, U> &messy,
       CR_ORDER_ENUM ascending
     );
 
   public:
+    Comb() = delete;
+
     static void solve(
       VEC_PAIR2<T, U> &messy,
       CR_ORDER_ENUM ascending = ORDER_ASCENDING
