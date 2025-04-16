@@ -12,7 +12,6 @@ namespace helper {
     mt::CR_STR timerTitle,
     mt::CR_STR logFilePath
   ) {
-    mt_uti::TimeDate timer;
     mt::FS_PATH testPath = mt_uti::Scanner::findDirectory("test", true);
 
     mt::VEC_INT integers = mt_uti::Scanner::txtToNumbers<int>(
@@ -66,7 +65,8 @@ namespace helper {
       );
     }
 
-    timer.print(false, timerTitle + ":");
+    // display elapsed time
+    mt_uti::TimeDate::print(false, timerTitle + ":");
   }
 
   /**
