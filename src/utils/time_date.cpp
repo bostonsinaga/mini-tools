@@ -8,31 +8,44 @@ namespace mini_tools {
 namespace utils {
 
   void TimeDate::reset() {
-    prior = std::chrono::high_resolution_clock::now();
-    difference = std::chrono::nanoseconds::zero();
+    TimeDate::prior = std::chrono::high_resolution_clock::now();
+    TimeDate::difference = std::chrono::nanoseconds::zero();
   }
 
   void TimeDate::check() {
     TP now = std::chrono::high_resolution_clock::now();
-    difference = now - prior;
-    prior = now;
+    TimeDate::difference = now - TimeDate::prior;
+    TimeDate::prior = now;
   }
 
   float TimeDate::getSeconds(CR_BOL needCheck) {
-    if (needCheck) check();
-    return difference.count();
+    if (needCheck) TimeDate::check();
+    return TimeDate::difference.count();
   }
 
   float TimeDate::getMilliseconds(CR_BOL needCheck) {
-    if (needCheck) check();
-    return std::chrono::duration_cast<std::chrono::milliseconds>(difference).count();
+    if (needCheck) TimeDate::check();
+
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+      TimeDate::difference
+    ).count();
   }
 
-  void TimeDate::print(CR_BOL needCheck, CR_STR title) {
-    if (needCheck) check();
+  void TimeDate::print(
+    CR_BOL needCheck, CR_STR title,
+    CR_BOL inSeconds, CR_BOL inMilliseconds
+  ) {
+    if (needCheck) TimeDate::check();
+
+    // title
     std::cout << title << std::endl;
-    std::cout << getSeconds(false) << "s\n";
-    std::cout << getMilliseconds(false) << "ms\n";
+
+    // seconds
+    if (inSeconds || !(inSeconds || inMilliseconds)) {
+      std::cout << TimeDate::getSeconds(false) << "s\n";
+    }
+    // milliseconds
+    else std::cout << TimeDate::getMilliseconds(false) << "ms\n";
   }
 }}
 
