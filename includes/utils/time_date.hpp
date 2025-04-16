@@ -4,19 +4,32 @@
 namespace mini_tools {
 namespace utils {
 
-  class TimeDate {
+  class TimeDate final {
   private:
     typedef std::chrono::time_point<std::chrono::high_resolution_clock> TP;
-    std::chrono::duration<float> difference;
-    TP prior;
+    inline static std::chrono::duration<float> difference;
+    inline static TP prior;
 
   public:
-    TimeDate() { reset(); }
-    void reset();
-    void check();
-    float getSeconds(CR_BOL needCheck = true);
-    float getMilliseconds(CR_BOL needCheck = true);
-    void print(CR_BOL needCheck = true, CR_STR title = "DURATION:");
+    TimeDate() = delete;
+
+    // reset elapsed time
+    static void reset();
+
+    // save elapsed time into variables
+    static void check();
+
+    /** Elapsed time display in text */
+
+    static float getSeconds(CR_BOL needCheck = true);
+    static float getMilliseconds(CR_BOL needCheck = true);
+
+    static void print(
+      CR_BOL needCheck = true,
+      CR_STR title = "DURATION:",
+      CR_BOL inSeconds = false,
+      CR_BOL inMilliseconds = true
+    );
   };
 }}
 
