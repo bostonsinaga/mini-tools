@@ -4,6 +4,10 @@
 namespace mini_tools {
 namespace utils {
 
+  //______________|
+  // VECTOR TOOLS |
+  //______________|
+
   template <class T>
   class VecTools final {
   public:
@@ -173,43 +177,45 @@ namespace utils {
     static VEC_LLI getDifferences(CR_VEC2<T> vecs, CR_LLI targetSize);
     static void balance(VEC2<T> &vecs, CR<T> coveringValue);
     static void balance(VEC2<T> &vecs, CR<T> coveringValue, LLI targetSize);
+  };
 
-    /** MEMBER DUPLICATION CLEANERS */
+  //__________________________|
+  // VECTOR DUPLICATION TOOLS |
+  //__________________________|
 
-    enum DUPLICATION_ENUM {
-      DUPLICATION_STABLE, DUPLICATION_UNSTABLE
-    };
+  enum VECDUP_ENUM {
+    VECDUP_STABLE, VECDUP_UNSTABLE
+  };
 
-    template<DUPLICATION_ENUM U>
-    class Duplication final {
-    private:
-      static bool fillWasted(
-        VEC<T> &vec,
-        VEC<T> &wasted,
-        EQUAL_RULE &equalRule,
-        CR<T> &a,
-        CR<T> &b,
-        CR_SZ cutIdx
-      );
+  template <typename T, VECDUP_ENUM U>
+  class VecDupTools final {
+  private:
+    static bool fillWasted(
+      VEC<T> &vec,
+      VEC<T> &wasted,
+      VecTools<T>::EQUAL_RULE &equalRule,
+      CR<T> &a,
+      CR<T> &b,
+      CR_SZ cutIdx
+    );
 
-    public:
-      /** Keep only one member of the same */
-      static VEC<T> eliminate(
-        VEC<T> &vec,
-        CR_BOL originalAscending = true,
-        // repeated and compared 'T' parameters
-        EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
-      );
+  public:
+    /** Keep only one member of the same */
+    static VEC<T> eliminate(
+      VEC<T> &vec,
+      CR_BOL originalAscending = true,
+      // repeated and compared 'T' parameters
+      VecTools<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
+    );
 
-      /** Remove all members that are equal to an external value */
-      static VEC<T> clean(
-        VEC<T> &vec,
-        CR<T> val,
-        CR_BOL originalAscending = true,
-        // repeated and compared 'T' parameters
-        EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
-      );
-    };
+    /** Remove all members that are equal to an external value */
+    static VEC<T> clean(
+      VEC<T> &vec,
+      CR<T> val,
+      CR_BOL originalAscending = true,
+      // repeated and compared 'T' parameters
+      VecTools<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
+    );
   };
 }}
 
