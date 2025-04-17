@@ -11,22 +11,12 @@ namespace utils {
   template <class T>
   class VecTools final {
   public:
+    VecTools() = delete;
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
-  private:
-    VecTools() = delete;
-
-    /** SIZE TOOLS */
-
-    static size_t getMin(VEC_SZ &sizes);
-    static size_t getMax(VEC_SZ &sizes);
-    static VEC_SZ getDifferences(VEC_SZ &sizes);
-    static VEC_LLI getDifferences(VEC_LLI &sizes, CR_LLI targetSize);
-    static void balance(CR_VEC_SZ differences, VEC2<T> &vecs, CR<T> coveringValue);
-    static void balance(CR_VEC_LLI differences, VEC2<T> &vecs, CR<T> coveringValue);
-
-  public:
+    static bool hasIndex(CR_SZ targetSz, CR_LLI idx);
     static bool hasIndex(VEC<T> &vec, CR_LLI idx);
+    static bool hasIndices(CR_SZ targetSz, CR_VEC_LLI indices);
     static bool hasIndices(VEC<T> &vec, CR_VEC_LLI indices);
 
     // return -1 if not found
@@ -43,9 +33,10 @@ namespace utils {
       CR<T> defaultReturn
     );
 
-    /** VECTORS CONNECTORS */
-
-    /** Connect vector to vector */
+    /**
+     * VECTORS CONNECTORS
+     * Connect vector to vector.
+     */
 
     static void concatCopy(
       VEC<T> &targetVec,
@@ -77,9 +68,10 @@ namespace utils {
 
     /**
      * NOTE:
-     * Make sure to use 'fixIndexInterval' or 'isIndexIntervalValid' methods
-     * before calling 'erase..' or 'extract..' to prevent undefined behavior
-     * when these methods accessing the 'vec' parameter.
+     * Make sure the indices match the size of 'vec' parameter
+     * or use 'fixIndices' and 'fixIndexInterval' methods
+     * before calling 'erase..' or 'extract..' to prevent
+     * undefined behavior when these methods accessing the vector.
      */
 
     /** STABLE ERASERS (SLOWER) */
@@ -159,24 +151,67 @@ namespace utils {
     /** INDEX LIMITERS */
 
     static void fixIndices(
+      CR_SZ targetSz,
+      VEC_LLI &indices,
+      CR_BOL needRemove = true
+    );
+
+    static void fixIndices(
       VEC<T> &vec,
       VEC_LLI &indices,
       CR_BOL needRemove = true
     );
 
-    // range of values ​​from 0 to size - 1
+    static VEC_LLI fixIndices(
+      CR_SZ targetSz,
+      CR_VEC_LLI indices,
+      CR_BOL needRemove = true
+    );
+
+    static VEC_LLI fixIndices(
+      VEC<T> &vec,
+      CR_VEC_LLI indices,
+      CR_BOL needRemove = true
+    );
+
+    /** Keep range of values between 0 to size - 1 */
+
+    static void fixIndexInterval(CR_SZ targetSz, LLI &begin, LLI &end);
+    static void fixIndexInterval(CR_SZ targetSz, PAIR<LLI> &interval);
     static void fixIndexInterval(VEC<T> &vec, LLI &begin, LLI &end);
+    static void fixIndexInterval(VEC<T> &vec, PAIR<LLI> &interval);
+
+    static PAIR<LLI> fixIndexInterval(CR_SZ targetSz, CR_LLI begin, CR_LLI end);
+    static PAIR<LLI> fixIndexInterval(CR_SZ targetSz, CR_PAIR<LLI> interval);
+    static PAIR<LLI> fixIndexInterval(VEC<T> &vec, CR_LLI begin, CR_LLI end);
+    static PAIR<LLI> fixIndexInterval(VEC<T> &vec, CR_PAIR<LLI> interval);
+
+    // check range of values between 0 to size - 1
+    static bool isIndexIntervalValid(CR_SZ targetSz, CR_LLI begin, CR_LLI end);
+    static bool isIndexIntervalValid(CR_SZ targetSz, CR_PAIR<LLI> interval);
     static bool isIndexIntervalValid(VEC<T> &vec, CR_LLI begin, CR_LLI end);
+    static bool isIndexIntervalValid(VEC<T> &vec, CR_PAIR<LLI> interval);
 
-    /** SIZE TOOLS */
+    //____________|
+    // SIZE TOOLS |
+    //____________|
 
+  private:
+    static size_t getMin(VEC_SZ &sizes);
+    static size_t getMax(VEC_SZ &sizes);
+    static VEC_SZ getDifferences(VEC_SZ &sizes);
+    static VEC_LLI getDifferences(VEC_LLI &sizes, CR_LLI targetSz);
+    static void balance(CR_VEC_SZ differences, VEC2<T> &vecs, CR<T> padding);
+    static void balance(CR_VEC_LLI differences, VEC2<T> &vecs, CR<T> padding);
+
+  public:
     static VEC_SZ generateSizes(CR_VEC2<T> vecs);
     static size_t getMin(CR_VEC2<T> vecs);
     static size_t getMax(CR_VEC2<T> vecs);
     static VEC_SZ getDifferences(CR_VEC2<T> vecs);
-    static VEC_LLI getDifferences(CR_VEC2<T> vecs, CR_LLI targetSize);
-    static void balance(VEC2<T> &vecs, CR<T> coveringValue);
-    static void balance(VEC2<T> &vecs, CR<T> coveringValue, LLI targetSize);
+    static VEC_LLI getDifferences(CR_VEC2<T> vecs, CR_LLI targetSz);
+    static void balance(VEC2<T> &vecs, CR<T> padding);
+    static void balance(VEC2<T> &vecs, CR<T> padding, LLI targetSz);
   };
 
   //__________________________|
