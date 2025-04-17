@@ -37,44 +37,76 @@ namespace utils {
     //____________|
 
     static PAIR<size_t> generateSizes(
-      CR_VEC<T> &vecA,
-      CR_VEC<U> &vecB
+      CR_VEC<T> vecA,
+      CR_VEC<U> vecB
+    );
+
+    static PAIR<size_t> generateSizes(
+      CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
     static size_t getMin(
-      CR_VEC<T> &vecA,
-      CR_VEC<U> &vecB
+      CR_VEC<T> vecA,
+      CR_VEC<U> vecB
+    );
+
+    static size_t getMin(
+      CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
     static size_t getMax(
-      CR_VEC<T> &vecA,
-      CR_VEC<U> &vecB
+      CR_VEC<T> vecA,
+      CR_VEC<U> vecB
+    );
+
+    static size_t getMax(
+      CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
     static PAIR<size_t> getDifferences(
-      CR_VEC<T> &vecA,
-      CR_VEC<U> &vecB
+      CR_VEC<T> vecA,
+      CR_VEC<U> vecB
+    );
+
+    static PAIR<size_t> getDifferences(
+      CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
     static PAIR<LLI> getDifferences(
-      CR_VEC<T> &vecA,
-      CR_VEC<U> &vecB,
-      CR_LLI targetSize
+      CR_VEC<T> vecA,
+      CR_VEC<U> vecB,
+      CR_LLI targetSz
+    );
+
+    static PAIR<LLI> getDifferences(
+      CR_PAIR2<VEC<T>, VEC<U>> pairVec,
+      CR_LLI targetSz
     );
 
     static void balance(
       VEC<T> &vecA,
       VEC<U> &vecB,
-      CR<T> coveringValueA,
-      CR<U> coveringValueB
+      CR<T> paddingA,
+      CR<U> paddingB
+    );
+
+    static void balance(
+      PAIR2<VEC<T>, VEC<U>> &pairVec,
+      CR_PAIR2<T, U> pairPadding
     );
 
     static void balance(
       VEC<T> &vecA,
       VEC<U> &vecB,
-      CR<T> coveringValueA,
-      CR<U> coveringValueB,
-      LLI targetSize
+      CR<T> paddingA,
+      CR<U> paddingB,
+      LLI targetSz
+    );
+
+    static void balance(
+      PAIR2<VEC<T>, VEC<U>> &pairVec,
+      CR_PAIR2<T, U> pairPadding,
+      LLI targetSz
     );
   };
 }}
