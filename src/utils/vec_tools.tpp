@@ -9,9 +9,23 @@ namespace utils {
   //______________|
 
   template <typename T>
+  bool VecTools<T>::hasIndex(CR_SZ targetSz, CR_LLI idx) {
+    if (idx < targetSz && idx >= 0) return true;
+    return false;
+  }
+
+  template <typename T>
   bool VecTools<T>::hasIndex(VEC<T> &vec, CR_LLI idx) {
     if (idx < vec.size() && idx >= 0) return true;
     return false;
+  }
+
+  template <typename T>
+  bool VecTools<T>::hasIndices(CR_SZ targetSz, CR_VEC_LLI indices) {
+    for (CR_LLI i : indices) {
+      if (!hasIndex(targetSz, i)) return false;
+    }
+    return indices.size() > 0 ? true : false;
   }
 
   template <typename T>
@@ -275,44 +289,182 @@ namespace utils {
   /** INDEX LIMITERS */
 
   template <typename T>
-  void VecTools<T>::fixIndices(
-    VEC<T> &vec,
+  static void fixIndices(
+    CR_SZ targetSz,
     VEC_LLI &indices,
     CR_BOL needRemove
   ) {
-    if (vec.empty()) return;
+    if (!targetSz) return;
 
     for (LLI i = 0; i < indices.size(); i++) {
-      if (!VecTools<T>::hasIndex(vec, indices[i])) {
+      if (!VecTools<T>::hasIndex(targetSz, indices[i])) {
+
         if (needRemove) {
-          VecTools<LLI>::extractSingleStable(indices, i);
+          VecTools<T>::extractSingleStable(indices, i);
           i--;
         }
         else {
           if (indices[i] < 0) indices[i] = 0;
-          else if (indices[i] >= vec.size()) indices[i] = vec.size() - 1;
+          else if (indices[i] >= targetSz) indices[i] = targetSz - 1;
         }
       }
     }
   }
 
   template <typename T>
-  void VecTools<T>::fixIndexInterval(VEC<T> &vec, LLI &begin, LLI &end) {
-    if (begin > end) std::swap(begin, end);
-    if (begin < 0 || begin > vec.size()) begin = 0;
-    if (end <= 0 || end >= vec.size()) end = vec.size() - 1;
+  void VecTools<T>::fixIndices(
+    VEC<T> &vec,
+    VEC_LLI &indices,
+    CR_BOL needRemove
+  ) {
+    VecTools<T>::fixIndices(
+      vec.size(), indices, needRemove
+    );
   }
 
   template <typename T>
-  bool VecTools<T>::isIndexIntervalValid(VEC<T> &vec, CR_LLI begin, CR_LLI end) {
+  VEC_LLI VecTools<T>::fixIndices(
+    CR_SZ targetSz,
+    CR_VEC_LLI indices,
+    CR_BOL needRemove
+  ) {
+    VEC_LLI newIndices = indices;
+
+    VecTools<T>::fixIndices(
+      targetSz, newIndices, needRemove
+    );
+
+    return newIndices;
+  }
+
+  template <typename T>
+  VEC_LLI VecTools<T>::fixIndices(
+    VEC<T> &vec,
+    CR_VEC_LLI indices,
+    CR_BOL needRemove
+  ) {
+    return VecTools<T>::fixIndices(
+      vec.size(), indices, needRemove
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::fixIndexInterval(
+    CR_SZ targetSz, LLI &begin, LLI &end
+  ) {
+    if (begin > end) std::swap(begin, end);
+    if (begin < 0 || begin > targetSz) begin = 0;
+    if (end <= 0 || end >= targetSz) end = targetSz - 1;
+  }
+
+  template <typename T>
+  void VecTools<T>::fixIndexInterval(
+    CR_SZ targetSz, PAIR<LLI> &interval
+  ) {
+    VecTools<T>::fixIndexInterval(
+      targetSz, interval.first, interval.second
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::fixIndexInterval(
+    VEC<T> &vec, LLI &begin, LLI &end
+  ) {
+    VecTools<T>::fixIndexInterval(
+      vec.size(), begin, end
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::fixIndexInterval(
+    VEC<T> &vec, PAIR<LLI> &interval
+  ) {
+    VecTools<T>::fixIndexInterval(
+      vec.size(), interval.first, interval.second
+    );
+  }
+
+  template <typename T>
+  PAIR<LLI> VecTools<T>::fixIndexInterval(
+    CR_SZ targetSz, CR_LLI begin, CR_LLI end
+  ) {
+    PAIR<LLI> newInterval {begin, end};
+
+    VecTools<T>::fixIndexInterval(
+      targetSz, newInterval.first, newInterval.second
+    );
+
+    return std::move(newInterval);
+  }
+
+  template <typename T>
+  PAIR<LLI> VecTools<T>::fixIndexInterval(
+    CR_SZ targetSz, CR_PAIR<LLI> interval
+  ) {
+    return fixIndexInterval(
+      targetSz, interval.first, interval.second
+    );
+  }
+
+  template <typename T>
+  PAIR<LLI> VecTools<T>::fixIndexInterval(
+    VEC<T> &vec, CR_LLI begin, CR_LLI end
+  ) {
+    return fixIndexInterval(
+      vec.size(), begin, end
+    );
+  }
+
+  template <typename T>
+  PAIR<LLI> VecTools<T>::fixIndexInterval(
+    VEC<T> &vec, CR_PAIR<LLI> interval
+  ) {
+    return fixIndexInterval(
+      vec.size(), interval.first, interval.second
+    );
+  }
+
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(
+    CR_SZ targetSz, CR_LLI begin, CR_LLI end
+  ) {
     if (begin < end &&
-      begin >= 0 && begin < vec.size() - 1 &&
-      end > 0 && end < vec.size()
+      begin >= 0 && begin < targetSz - 1 &&
+      end > 0 && end < targetSz
     ) { return true; }
     return false;
   }
 
-  /** SIZE TOOLS */
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(
+    CR_SZ targetSz, CR_PAIR<LLI> interval
+  ) {
+    return isIndexIntervalValid(
+      targetSz, interval.first, interval.second
+    );
+  }
+
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(
+    VEC<T> &vec, CR_LLI begin, CR_LLI end
+  ) {
+    return isIndexIntervalValid(
+      vec.size(), begin, end
+    );
+  }
+
+  template <typename T>
+  bool VecTools<T>::isIndexIntervalValid(
+    VEC<T> &vec, CR_PAIR<LLI> interval
+  ) {
+    return isIndexIntervalValid(
+      vec.size(), interval.first, interval.second
+    );
+  }
+
+  //____________|
+  // SIZE TOOLS |
+  //____________|
 
   template <typename T>
   VEC_SZ VecTools<T>::generateSizes(CR_VEC2<T> vecs) {
@@ -374,12 +526,12 @@ namespace utils {
 
   template <typename T>
   VEC_LLI VecTools<T>::getDifferences(
-    VEC_LLI &sizes, CR_LLI targetSize
+    VEC_LLI &sizes, CR_LLI targetSz
   ) {
     VEC_LLI differences;
 
     for (CR_LLI sz : sizes) {
-      differences.push_back(targetSize - sz);
+      differences.push_back(targetSz - sz);
     }
 
     return std::move(differences);
@@ -394,20 +546,20 @@ namespace utils {
   template <typename T>
   VEC_LLI VecTools<T>::getDifferences(
     CR_VEC2<T> vecs,
-    CR_LLI targetSize
+    CR_LLI targetSz
   ) {
     VEC_LLI sizes = VecTools<T>::generateSizes(vecs);
-    return std::move(VecTools<T>::getDifferences(sizes, targetSize));
+    return std::move(VecTools<T>::getDifferences(sizes, targetSz));
   }
 
   template <typename T>
   void VecTools<T>::balance(
     CR_VEC_SZ differences,
     VEC2<T> &vecs,
-    CR<T> coveringValue
+    CR<T> padding
   ) {
     for (size_t i = 0; i < vecs.size(); i++) {
-      std::vector<T> additions(differences[i], coveringValue);
+      std::vector<T> additions(differences[i], padding);
       vecs[i].reserve(vecs[i].size() + differences[i]);
       vecs[i].insert(vecs[i].end(), additions.begin(), additions.end());
     }
@@ -417,7 +569,7 @@ namespace utils {
   void VecTools<T>::balance(
     CR_VEC_LLI differences,
     VEC2<T> &vecs,
-    CR<T> coveringValue
+    CR<T> padding
   ) {
     for (size_t i = 0; i < vecs.size(); i++) {
       if (differences[i] < 0) {
@@ -427,7 +579,7 @@ namespace utils {
         );
       }
       else if (differences[i] > 0) {
-        std::vector<T> additions(differences[i], coveringValue);
+        std::vector<T> additions(differences[i], padding);
         vecs[i].reserve(vecs[i].size() + differences[i]);
         vecs[i].insert(vecs[i].end(), additions.begin(), additions.end());
       }
@@ -437,25 +589,25 @@ namespace utils {
   template <typename T>
   void VecTools<T>::balance(
     VEC2<T> &vecs,
-    CR<T> coveringValue
+    CR<T> padding
   ) {
     VecTools<T>::balance(
       VecTools<T>::getDifferences(vecs),
-      vecs, coveringValue
+      vecs, padding
     );
   }
 
   template <typename T>
   void VecTools<T>::balance(
     VEC2<T> &vecs,
-    CR<T> coveringValue,
-    LLI targetSize
+    CR<T> padding,
+    LLI targetSz
   ) {
-    if (targetSize < 0) targetSize = 0;
+    if (targetSz < 0) targetSz = 0;
 
     VecTools<T>::balance(
-      VecTools<T>::getDifferences(vecs, targetSize),
-      vecs, coveringValue
+      VecTools<T>::getDifferences(vecs, targetSz),
+      vecs, padding
     );
   }
 
