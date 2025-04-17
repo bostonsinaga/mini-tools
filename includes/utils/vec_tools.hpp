@@ -15,20 +15,20 @@ namespace utils {
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
     static bool hasIndex(CR_SZ targetSz, CR_LLI idx);
-    static bool hasIndex(VEC<T> &vec, CR_LLI idx);
+    static bool hasIndex(CR_VEC<T> vec, CR_LLI idx);
     static bool hasIndices(CR_SZ targetSz, CR_VEC_LLI indices);
-    static bool hasIndices(VEC<T> &vec, CR_VEC_LLI indices);
+    static bool hasIndices(CR_VEC<T> vec, CR_VEC_LLI indices);
 
     // return -1 if not found
     static LLI getIndex(
-      VEC<T> &vec,
+      CR_VEC<T> vec,
       CR<T> data,
       // repeated and compared 'T' parameters
       EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     static T getAt(
-      VEC<T> &vec,
+      CR_VEC<T> vec,
       CR_LLI idx,
       CR<T> defaultReturn
     );
