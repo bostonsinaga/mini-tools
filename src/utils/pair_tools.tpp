@@ -15,7 +15,7 @@ namespace utils {
       merged.push_back({vecA[i], vecB[i]});
     }
 
-    return std::move(merged);
+    return merged;
   }
 
   template <typename T, typename U>
@@ -47,9 +47,7 @@ namespace utils {
       merged, vecA, vecB
     );
 
-    return std::make_pair(
-      std::move(vecA), std::move(vecB)
-    );
+    return std::make_pair(vecA, vecB);
   }
 
   //____________|

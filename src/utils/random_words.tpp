@@ -18,7 +18,7 @@ namespace utils {
       );
     }
 
-    return std::move(integrals);
+    return integrals;
   }
 
   template <std::floating_point T>
@@ -36,7 +36,7 @@ namespace utils {
       );
     }
 
-    return std::move(floatingPoints);
+    return floatingPoints;
   }
 }}
 

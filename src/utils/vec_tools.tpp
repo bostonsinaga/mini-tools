@@ -120,7 +120,7 @@ namespace utils {
       VecTools<T>::concatCopy(reduction, mem);
     }
 
-    return std::move(reduction);
+    return reduction;
   }
 
   template <typename T>
@@ -135,7 +135,7 @@ namespace utils {
     vec.clear();
     if (needShrink) vec.shrink_to_fit();
 
-    return std::move(reduction);
+    return reduction;
   }
 
   /** STABLE ERASERS (SLOWER) */
@@ -231,7 +231,7 @@ namespace utils {
   ) {
     T extracted;
     VecTools<T>::eraseSingleStable(vec, index, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   template <typename T>
@@ -241,7 +241,7 @@ namespace utils {
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIntervalStable(vec, interval, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   template <typename T>
@@ -251,7 +251,7 @@ namespace utils {
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIndicesStable(vec, indices, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   /** UNSTABLE EXTRACTORS */
@@ -263,7 +263,7 @@ namespace utils {
   ) {
     T extracted;
     VecTools<T>::eraseSingleUnstable(vec, index, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   template <typename T>
@@ -273,7 +273,7 @@ namespace utils {
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIntervalUnstable(vec, interval, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   template <typename T>
@@ -283,7 +283,7 @@ namespace utils {
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIndicesUnstable(vec, indices, extracted);
-    return std::move(extracted);
+    return extracted;
   }
 
   /** INDEX LIMITERS */
@@ -394,7 +394,7 @@ namespace utils {
       targetSz, newInterval.first, newInterval.second
     );
 
-    return std::move(newInterval);
+    return newInterval;
   }
 
   template <typename T>
@@ -474,7 +474,7 @@ namespace utils {
       sizes.push_back(v.size());
     }
 
-    return std::move(sizes);
+    return sizes;
   }
 
   template <typename T>
@@ -521,7 +521,7 @@ namespace utils {
       differences.push_back(max - sz);
     }
 
-    return std::move(differences);
+    return differences;
   }
 
   template <typename T>
@@ -534,13 +534,13 @@ namespace utils {
       differences.push_back(targetSz - sz);
     }
 
-    return std::move(differences);
+    return differences;
   }
 
   template <typename T>
   VEC_SZ VecTools<T>::getDifferences(CR_VEC2<T> vecs) {
     VEC_SZ sizes = VecTools<T>::generateSizes(vecs);
-    return std::move(VecTools<T>::getDifferences(sizes));
+    return VecTools<T>::getDifferences(sizes);
   }
 
   template <typename T>
@@ -549,7 +549,7 @@ namespace utils {
     CR_LLI targetSz
   ) {
     VEC_LLI sizes = VecTools<T>::generateSizes(vecs);
-    return std::move(VecTools<T>::getDifferences(sizes, targetSz));
+    return VecTools<T>::getDifferences(sizes, targetSz);
   }
 
   template <typename T>
@@ -671,7 +671,7 @@ namespace utils {
       }
     }
 
-    return std::move(wasted);
+    return wasted;
   }
 
   template <typename T, VECDUP_ENUM U>
@@ -699,7 +699,7 @@ namespace utils {
       );
     }
 
-    return std::move(wasted);
+    return wasted;
   }
 }}
 

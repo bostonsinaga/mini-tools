@@ -147,7 +147,7 @@ namespace utils {
       }
     }
 
-    return std::move(strings);
+    return strings;
   }
 }}
 
