@@ -9,7 +9,7 @@ namespace utils {
 
   /** VARIABLES */
 
-  PAIR<LD> RandomWords::rouletteInterval {0, 1000};
+  PAIR_LD RandomWords::rouletteInterval {0, 1000};
   std::random_device RandomWords::randomDevice;
   std::mt19937 RandomWords::mersenneTwister(RandomWords::randomDevice());
 
@@ -62,7 +62,7 @@ namespace utils {
 
   VEC_STR RandomWords::generateStrings(
     CR_SZ count,
-    PAIR<LLI> lengthInterval,
+    PAIR_LLI lengthInterval,
     CR_BOL lettersOnly,
     CR_BOL alwaysStartWithLetter
   ) {

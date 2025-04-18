@@ -157,7 +157,7 @@ namespace utils {
   template <typename T>
   void VecTools<T>::eraseIntervalStable(
     VEC<T> &vec,
-    CR_PAIR<size_t> interval,
+    CR_PAIR_SZ interval,
     VEC<T> &extracted
   ) {
     extracted = VEC<T>(
@@ -174,7 +174,7 @@ namespace utils {
   template <typename T>
   void VecTools<T>::eraseIndicesStable(
     VEC<T> &vec,
-    CR_VEC<size_t> indices,
+    CR_VEC_SZ indices,
     VEC<T> &extracted
   ) {
     for (CR_SZ i : indices) {
@@ -199,7 +199,7 @@ namespace utils {
   template <typename T>
   void VecTools<T>::eraseIntervalUnstable(
     VEC<T> &vec,
-    CR_PAIR<size_t> interval,
+    CR_PAIR_SZ interval,
     VEC<T> &extracted
   ) {
     extracted = VEC<T>(
@@ -216,7 +216,7 @@ namespace utils {
   template <typename T>
   void VecTools<T>::eraseIndicesUnstable(
     VEC<T> &vec,
-    CR_VEC<size_t> indices,
+    CR_VEC_SZ indices,
     VEC<T> &extracted
   ) {
     for (CR_SZ i : indices) {
@@ -241,7 +241,7 @@ namespace utils {
   template <typename T>
   VEC<T> VecTools<T>::extractIntervalStable(
     VEC<T> &vec,
-    CR_PAIR<size_t> interval
+    CR_PAIR_SZ interval
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIntervalStable(vec, interval, extracted);
@@ -251,7 +251,7 @@ namespace utils {
   template <typename T>
   VEC<T> VecTools<T>::extractIndicesStable(
     VEC<T> &vec,
-    CR_VEC<size_t> indices
+    CR_VEC_SZ indices
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIndicesStable(vec, indices, extracted);
@@ -273,7 +273,7 @@ namespace utils {
   template <typename T>
   VEC<T> VecTools<T>::extractIntervalUnstable(
     VEC<T> &vec,
-    CR_PAIR<size_t> interval
+    CR_PAIR_SZ interval
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIntervalUnstable(vec, interval, extracted);
@@ -283,7 +283,7 @@ namespace utils {
   template <typename T>
   VEC<T> VecTools<T>::extractIndicesUnstable(
     VEC<T> &vec,
-    CR_VEC<size_t> indices
+    CR_VEC_SZ indices
   ) {
     VEC<T> extracted;
     VecTools<T>::eraseIndicesUnstable(vec, indices, extracted);
@@ -363,7 +363,7 @@ namespace utils {
 
   template <typename T>
   void VecTools<T>::fixIndexInterval(
-    CR_SZ targetSz, PAIR<LLI> &interval
+    CR_SZ targetSz, PAIR_LLI &interval
   ) {
     VecTools<T>::fixIndexInterval(
       targetSz, interval.first, interval.second
@@ -381,7 +381,7 @@ namespace utils {
 
   template <typename T>
   void VecTools<T>::fixIndexInterval(
-    VEC<T> &vec, PAIR<LLI> &interval
+    VEC<T> &vec, PAIR_LLI &interval
   ) {
     VecTools<T>::fixIndexInterval(
       vec.size(), interval.first, interval.second
@@ -389,10 +389,10 @@ namespace utils {
   }
 
   template <typename T>
-  PAIR<LLI> VecTools<T>::fixIndexInterval(
+  PAIR_LLI VecTools<T>::fixIndexInterval(
     CR_SZ targetSz, CR_LLI begin, CR_LLI end
   ) {
-    PAIR<LLI> newInterval {begin, end};
+    PAIR_LLI newInterval {begin, end};
 
     VecTools<T>::fixIndexInterval(
       targetSz, newInterval.first, newInterval.second
@@ -402,8 +402,8 @@ namespace utils {
   }
 
   template <typename T>
-  PAIR<LLI> VecTools<T>::fixIndexInterval(
-    CR_SZ targetSz, CR_PAIR<LLI> interval
+  PAIR_LLI VecTools<T>::fixIndexInterval(
+    CR_SZ targetSz, CR_PAIR_LLI interval
   ) {
     return VecTools<T>::fixIndexInterval(
       targetSz, interval.first, interval.second
@@ -411,7 +411,7 @@ namespace utils {
   }
 
   template <typename T>
-  PAIR<LLI> VecTools<T>::fixIndexInterval(
+  PAIR_LLI VecTools<T>::fixIndexInterval(
     VEC<T> &vec, CR_LLI begin, CR_LLI end
   ) {
     return VecTools<T>::fixIndexInterval(
@@ -420,8 +420,8 @@ namespace utils {
   }
 
   template <typename T>
-  PAIR<LLI> VecTools<T>::fixIndexInterval(
-    VEC<T> &vec, CR_PAIR<LLI> interval
+  PAIR_LLI VecTools<T>::fixIndexInterval(
+    VEC<T> &vec, CR_PAIR_LLI interval
   ) {
     return VecTools<T>::fixIndexInterval(
       vec.size(), interval.first, interval.second
@@ -441,7 +441,7 @@ namespace utils {
 
   template <typename T>
   bool VecTools<T>::isIndexIntervalValid(
-    CR_SZ targetSz, CR_PAIR<LLI> interval
+    CR_SZ targetSz, CR_PAIR_LLI interval
   ) {
     return VecTools<T>::isIndexIntervalValid(
       targetSz, interval.first, interval.second
@@ -459,7 +459,7 @@ namespace utils {
 
   template <typename T>
   bool VecTools<T>::isIndexIntervalValid(
-    VEC<T> &vec, CR_PAIR<LLI> interval
+    VEC<T> &vec, CR_PAIR_LLI interval
   ) {
     return VecTools<T>::isIndexIntervalValid(
       vec.size(), interval.first, interval.second

@@ -7,7 +7,7 @@ namespace utils {
   class RandomWords final {
   private:
     // default 0-1000
-    static PAIR<LD> rouletteInterval;
+    static PAIR_LD rouletteInterval;
 
     static std::random_device randomDevice;
     static std::mt19937 mersenneTwister;
@@ -62,7 +62,7 @@ namespace utils {
     static VEC_STR generateStrings(
       CR_SZ count,
       // first is minimum, second -1 is maximum
-      PAIR<LLI> lengthInterval,
+      PAIR_LLI lengthInterval,
       CR_BOL lettersOnly,
       CR_BOL alwaysStartWithLetter
     );

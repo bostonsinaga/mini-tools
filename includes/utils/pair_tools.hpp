@@ -36,12 +36,12 @@ namespace utils {
     // SIZE TOOLS |
     //____________|
 
-    static PAIR<size_t> generateSizes(
+    static PAIR_SZ generateSizes(
       CR_VEC<T> vecA,
       CR_VEC<U> vecB
     );
 
-    static PAIR<size_t> generateSizes(
+    static PAIR_SZ generateSizes(
       CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
@@ -63,22 +63,22 @@ namespace utils {
       CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
-    static PAIR<size_t> getDifferences(
+    static PAIR_SZ getDifferences(
       CR_VEC<T> vecA,
       CR_VEC<U> vecB
     );
 
-    static PAIR<size_t> getDifferences(
+    static PAIR_SZ getDifferences(
       CR_PAIR2<VEC<T>, VEC<U>> pairVec
     );
 
-    static PAIR<LLI> getDifferences(
+    static PAIR_LLI getDifferences(
       CR_VEC<T> vecA,
       CR_VEC<U> vecB,
       CR_LLI targetSz
     );
 
-    static PAIR<LLI> getDifferences(
+    static PAIR_LLI getDifferences(
       CR_PAIR2<VEC<T>, VEC<U>> pairVec,
       CR_LLI targetSz
     );

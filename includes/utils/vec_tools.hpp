@@ -84,13 +84,13 @@ namespace utils {
 
     static void eraseIntervalStable(
       VEC<T> &vec,
-      CR_PAIR<size_t> interval,
+      CR_PAIR_SZ interval,
       VEC<T> &extracted
     );
 
     static void eraseIndicesStable(
       VEC<T> &vec,
-      CR_VEC<size_t> indices,
+      CR_VEC_SZ indices,
       VEC<T> &extracted
     );
 
@@ -104,13 +104,13 @@ namespace utils {
 
     static void eraseIntervalUnstable(
       VEC<T> &vec,
-      CR_PAIR<size_t> interval,
+      CR_PAIR_SZ interval,
       VEC<T> &extracted
     );
 
     static void eraseIndicesUnstable(
       VEC<T> &vec,
-      CR_VEC<size_t> indices,
+      CR_VEC_SZ indices,
       VEC<T> &extracted
     );
 
@@ -123,12 +123,12 @@ namespace utils {
 
     static VEC<T> extractIntervalStable(
       VEC<T> &vec,
-      CR_PAIR<size_t> interval
+      CR_PAIR_SZ interval
     );
 
     static VEC<T> extractIndicesStable(
       VEC<T> &vec,
-      CR_VEC<size_t> indices
+      CR_VEC_SZ indices
     );
 
     /** UNSTABLE EXTRACTORS */
@@ -140,12 +140,12 @@ namespace utils {
 
     static VEC<T> extractIntervalUnstable(
       VEC<T> &vec,
-      CR_PAIR<size_t> interval
+      CR_PAIR_SZ interval
     );
 
     static VEC<T> extractIndicesUnstable(
       VEC<T> &vec,
-      CR_VEC<size_t> indices
+      CR_VEC_SZ indices
     );
 
     /** INDEX LIMITERS */
@@ -177,20 +177,20 @@ namespace utils {
     /** Keep range of values between 0 to size - 1 */
 
     static void fixIndexInterval(CR_SZ targetSz, LLI &begin, LLI &end);
-    static void fixIndexInterval(CR_SZ targetSz, PAIR<LLI> &interval);
+    static void fixIndexInterval(CR_SZ targetSz, PAIR_LLI &interval);
     static void fixIndexInterval(VEC<T> &vec, LLI &begin, LLI &end);
-    static void fixIndexInterval(VEC<T> &vec, PAIR<LLI> &interval);
+    static void fixIndexInterval(VEC<T> &vec, PAIR_LLI &interval);
 
-    static PAIR<LLI> fixIndexInterval(CR_SZ targetSz, CR_LLI begin, CR_LLI end);
-    static PAIR<LLI> fixIndexInterval(CR_SZ targetSz, CR_PAIR<LLI> interval);
-    static PAIR<LLI> fixIndexInterval(VEC<T> &vec, CR_LLI begin, CR_LLI end);
-    static PAIR<LLI> fixIndexInterval(VEC<T> &vec, CR_PAIR<LLI> interval);
+    static PAIR_LLI fixIndexInterval(CR_SZ targetSz, CR_LLI begin, CR_LLI end);
+    static PAIR_LLI fixIndexInterval(CR_SZ targetSz, CR_PAIR_LLI interval);
+    static PAIR_LLI fixIndexInterval(VEC<T> &vec, CR_LLI begin, CR_LLI end);
+    static PAIR_LLI fixIndexInterval(VEC<T> &vec, CR_PAIR_LLI interval);
 
     // check range of values between 0 to size - 1
     static bool isIndexIntervalValid(CR_SZ targetSz, CR_LLI begin, CR_LLI end);
-    static bool isIndexIntervalValid(CR_SZ targetSz, CR_PAIR<LLI> interval);
+    static bool isIndexIntervalValid(CR_SZ targetSz, CR_PAIR_LLI interval);
     static bool isIndexIntervalValid(VEC<T> &vec, CR_LLI begin, CR_LLI end);
-    static bool isIndexIntervalValid(VEC<T> &vec, CR_PAIR<LLI> interval);
+    static bool isIndexIntervalValid(VEC<T> &vec, CR_PAIR_LLI interval);
 
     //____________|
     // SIZE TOOLS |

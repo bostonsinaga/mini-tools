@@ -55,7 +55,7 @@ namespace utils {
   //____________|
 
   template <typename T, typename U>
-  PAIR<size_t> PairTools<T, U>::generateSizes(
+  PAIR_SZ PairTools<T, U>::generateSizes(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
@@ -65,7 +65,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<size_t> PairTools<T, U>::generateSizes(
+  PAIR_SZ PairTools<T, U>::generateSizes(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
     return PairTools<T, U>::generateSizes(
@@ -119,7 +119,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<size_t> PairTools<T, U>::getDifferences(
+  PAIR_SZ PairTools<T, U>::getDifferences(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
@@ -132,7 +132,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<size_t> PairTools<T, U>::getDifferences(
+  PAIR_SZ PairTools<T, U>::getDifferences(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
     return PairTools<T, U>::getDifferences(
@@ -142,7 +142,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<LLI> PairTools<T, U>::getDifferences(
+  PAIR_LLI PairTools<T, U>::getDifferences(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB,
     CR_LLI targetSz
@@ -154,7 +154,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR<LLI> PairTools<T, U>::getDifferences(
+  PAIR_LLI PairTools<T, U>::getDifferences(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec,
     CR_LLI targetSz
   ) {
@@ -172,7 +172,7 @@ namespace utils {
     CR<T> paddingA,
     CR<U> paddingB
   ) {
-    PAIR<size_t> differences = PairTools<T, U>::getDifferences(vecA, vecB);
+    PAIR_SZ differences = PairTools<T, U>::getDifferences(vecA, vecB);
 
     std::vector<T> additions(differences.first, paddingA);
     vecA.reserve(vecA.size() + differences.first);
@@ -206,7 +206,7 @@ namespace utils {
   ) {
     if (targetSz < 0) targetSz = 0;
 
-    PAIR<LLI> differences = PairTools<T, U>::getDifferences(
+    PAIR_LLI differences = PairTools<T, U>::getDifferences(
       vecA, vecB, targetSz
     );
 
