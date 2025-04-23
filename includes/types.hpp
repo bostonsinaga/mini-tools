@@ -3,17 +3,18 @@
 
 #include <iostream>
 #include <fstream>
-#include <array>
 #include <vector>
+#include <array>
 #include <queue>
-#include <utility>
+#include <unordered_map>
 #include <algorithm>
+#include <random>
+#include <utility>
 #include <functional>
 #include <type_traits>
 #include <concepts>
-#include <filesystem>
-#include <random>
 #include <chrono>
+#include <filesystem>
 
 namespace mini_tools {
 
@@ -137,7 +138,7 @@ namespace mini_tools {
   template <typename T, typename U>
   using CR_VEC_PAIR2 = const VEC_PAIR2<T, U>&;
 
-  /** SHORTENED VECTOR ARRAY TEMPLATES */
+  /** SHORTENED ARRAY TEMPLATES */
 
   template <typename T, size_t N>
   using ARR = std::array<T, N>;
@@ -156,6 +157,14 @@ namespace mini_tools {
 
   template <typename T, size_t N>
   using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
+
+  /** SHORTENED STRING UNORDERED MAP TEMPLATES */
+
+  template <typename T>
+  using UNORMAP_STR = std::unordered_map<std::string, T>;
+
+  template <typename T>
+  using CR_UNORMAP_STR = const UNORMAP_STR<T>&;
 
   /** SHORTENED VALUE VECTORS */
 
