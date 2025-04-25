@@ -14,14 +14,14 @@ namespace utils {
     STRUNORMAP_DBL &numbers,
     STRUNORMAP_STR &words
   ) {
-    std::string param, input;
+    std::string keyword, input;
 
     // skip the first 'argv' as it is the program name
     for (int i = 1; i < argc; i++) {
-      param = argv[i];
+      keyword = argv[i];
 
       // NUMBERS
-      if (STRUNORMAP_DBL_FOUND(numbers, param)) {
+      if (STRUNORMAP_DBL_FOUND(numbers, keyword)) {
 
         for (int j = i+1; j < argc; j++) {
           input = argv[j];
@@ -33,15 +33,15 @@ namespace utils {
             break;
           }
           else try {
-            numbers[param] = std::stod(input);
+            numbers[keyword] = std::stod(input);
           }
           catch (...) {
-            numbers[param] = 0;
+            numbers[keyword] = 0;
           }
         }
       }
       // WORDS
-      else if (STRUNORMAP_STR_FOUND(words, param)) {
+      else if (STRUNORMAP_STR_FOUND(words, keyword)) {
 
         for (int j = i+1; j < argc; j++) {
           input = argv[j];
@@ -52,11 +52,11 @@ namespace utils {
             i = j-1;
             break;
           }
-          else words[param] = input;
+          else words[keyword] = input;
         }
       }
       // TITLES
-      else titles[param] = true;
+      else titles[keyword] = true;
     }
   }
 
@@ -67,14 +67,14 @@ namespace utils {
     STRUNORMAP<VEC_DBL> &numbers,
     STRUNORMAP<VEC_STR> &words
   ) {
-    std::string param, input;
+    std::string keyword, input;
 
     // skip the first 'argv' as it is the program name
     for (int i = 1; i < argc; i++) {
-      param = argv[i];
+      keyword = argv[i];
 
       // NUMBERS
-      if (STRUNORMAP_FOUND<VEC_DBL>(numbers, param)) {
+      if (STRUNORMAP_FOUND<VEC_DBL>(numbers, keyword)) {
 
         for (int j = i+1; j < argc; j++) {
           input = argv[j];
@@ -86,15 +86,15 @@ namespace utils {
             break;
           }
           else try {
-            numbers[param].push_back(std::stod(input));
+            numbers[keyword].push_back(std::stod(input));
           }
           catch (...) {
-            numbers[param].push_back(0);
+            numbers[keyword].push_back(0);
           }
         }
       }
       // WORDS
-      else if (STRUNORMAP_FOUND<VEC_STR>(words, param)) {
+      else if (STRUNORMAP_FOUND<VEC_STR>(words, keyword)) {
 
         for (int j = i+1; j < argc; j++) {
           input = argv[j];
@@ -105,11 +105,11 @@ namespace utils {
             i = j-1;
             break;
           }
-          else words[param].push_back(input);
+          else words[keyword].push_back(input);
         }
       }
       // TITLES
-      else titles[param] = true;
+      else titles[keyword] = true;
     }
   }
 }}
