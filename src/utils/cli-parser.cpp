@@ -7,110 +7,161 @@
 namespace mini_tools {
 namespace utils {
 
-  void CLIParser::assignLast(
+  CLIParser::CLIParser(
     CR_INT argc,
     char *argv[],
-    STRUNORMAP_BOL &titles,
-    STRUNORMAP_DBL &numbers,
-    STRUNORMAP_STR &words
+    CR_VEC_STR numberKeywords,
+    CR_VEC_STR wordKeywords
   ) {
-    std::string keyword, input;
-
     // skip the first 'argv' as it is the program name
     for (int i = 1; i < argc; i++) {
-      keyword = argv[i];
+      raws.push_back(argv[i]);
+    }
 
-      // NUMBERS
-      if (STRUNORMAP_DBL_FOUND(numbers, keyword)) {
+    for (CR_STR key : numberKeywords) {
+      latestNumber[key] = 0;
+      numberVectors[key] = {};
+    }
 
-        for (int j = i+1; j < argc; j++) {
-          input = argv[j];
-  
-          if (STRUNORMAP_DBL_FOUND(numbers, input) ||
-            STRUNORMAP_STR_FOUND(words, input)
-          ) {
-            i = j-1;
-            break;
-          }
-          else try {
-            numbers[keyword] = std::stod(input);
-          }
-          catch (...) {
-            numbers[keyword] = 0;
-          }
-        }
-      }
-      // WORDS
-      else if (STRUNORMAP_STR_FOUND(words, keyword)) {
-
-        for (int j = i+1; j < argc; j++) {
-          input = argv[j];
-
-          if (STRUNORMAP_DBL_FOUND(numbers, input) ||
-            STRUNORMAP_STR_FOUND(words, input)
-          ) {
-            i = j-1;
-            break;
-          }
-          else words[keyword] = input;
-        }
-      }
-      // TITLES
-      else titles[keyword] = true;
+    for (CR_STR key : wordKeywords) {
+      latestWord[key] = "";
+      wordVectors[key] = {};
     }
   }
 
-  void CLIParser::assignVector(
-    CR_INT argc,
-    char *argv[],
-    STRUNORMAP_BOL &titles,
-    STRUNORMAP<VEC_DBL> &numbers,
-    STRUNORMAP<VEC_STR> &words
-  ) {
-    std::string keyword, input;
+  inline bool CLIParser::isLatestKeyword(CR_STR test) {
+    return STRUNORMAP_DBL_FOUND(latestNumber, test) ||
+      STRUNORMAP_STR_FOUND(latestWord, test);
+  }
 
-    // skip the first 'argv' as it is the program name
-    for (int i = 1; i < argc; i++) {
-      keyword = argv[i];
+  inline bool CLIParser::isVectorKeyword(CR_STR test) {
+    return STRUNORMAP_FOUND<VEC_DBL>(numberVectors, test) ||
+      STRUNORMAP_FOUND<VEC_STR>(wordVectors, test);
+  }
+
+  void CLIParser::assignLatest() {
+    for (int i = 0; i < raws.size(); i++) {
 
       // NUMBERS
-      if (STRUNORMAP_FOUND<VEC_DBL>(numbers, keyword)) {
+      if (STRUNORMAP_DBL_FOUND(latestNumber, raws[i])) {
 
-        for (int j = i+1; j < argc; j++) {
-          input = argv[j];
-  
-          if (STRUNORMAP_FOUND<VEC_DBL>(numbers, input) ||
-            STRUNORMAP_FOUND<VEC_STR>(words, input)
-          ) {
+        for (int j = i+1; j < raws.size(); j++) {
+          if (isLatestKeyword(raws[j])) {
             i = j-1;
             break;
           }
           else try {
-            numbers[keyword].push_back(std::stod(input));
+            latestNumber[raws[i]] = std::stod(raws[j]);
           }
           catch (...) {
-            numbers[keyword].push_back(0);
+            latestNumber[raws[i]] = 0;
           }
         }
       }
       // WORDS
-      else if (STRUNORMAP_FOUND<VEC_STR>(words, keyword)) {
+      else if (STRUNORMAP_STR_FOUND(latestWord, raws[i])) {
 
-        for (int j = i+1; j < argc; j++) {
-          input = argv[j];
-
-          if (STRUNORMAP_FOUND<VEC_DBL>(numbers, input) ||
-            STRUNORMAP_FOUND<VEC_STR>(words, input)
-          ) {
+        for (int j = i+1; j < raws.size(); j++) {
+          if (isLatestKeyword(raws[j])) {
             i = j-1;
             break;
           }
-          else words[keyword].push_back(input);
+          else latestWord[raws[i]] = raws[j];
         }
       }
       // TITLES
-      else titles[keyword] = true;
+      else titles[raws[i]] = true;
     }
+  }
+
+  void CLIParser::assignVectors() {
+    for (int i = 0; i < raws.size(); i++) {
+
+      // NUMBERS
+      if (STRUNORMAP_FOUND<VEC_DBL>(numberVectors, raws[i])) {
+
+        for (int j = i+1; j < raws.size(); j++) {
+          if (isVectorKeyword(raws[j])) {
+            i = j-1;
+            break;
+          }
+          else try {
+            numberVectors[raws[i]].push_back(std::stod(raws[j]));
+          }
+          catch (...) {
+            numberVectors[raws[i]].push_back(0);
+          }
+        }
+      }
+      // WORDS
+      else if (STRUNORMAP_FOUND<VEC_STR>(wordVectors, raws[i])) {
+
+        for (int j = i+1; j < raws.size(); j++) {
+          if (isVectorKeyword(raws[j])) {
+            i = j-1;
+            break;
+          }
+          else wordVectors[raws[i]].push_back(raws[j]);
+        }
+      }
+      // TITLES
+      else titles[raws[i]] = true;
+    }
+  }
+
+  bool CLIParser::hasTitle(CR_STR keyword) {
+
+    if (STRUNORMAP_BOL_FOUND(titles, keyword)) {
+      return titles[keyword];
+    }
+
+    return false;
+  }
+
+  VEC_STR CLIParser::extractTitles() {
+    VEC_STR keywords;
+
+    for (CR_PAIR2<CR_STR, CR_BOL> pair : titles) {
+      keywords.push_back(pair.first);
+    }
+
+    return keywords;
+  }
+
+  double CLIParser::getLatestNumber(CR_STR keyword) {
+
+    if (STRUNORMAP_DBL_FOUND(latestNumber, keyword)) {
+      return latestNumber[keyword];
+    }
+
+    return 0;
+  }
+
+  std::string CLIParser::getLatestWord(CR_STR keyword) {
+
+    if (STRUNORMAP_STR_FOUND(latestWord, keyword)) {
+      return latestWord[keyword];
+    }
+
+    return "";
+  }
+
+  VEC_DBL CLIParser::getVectorNumber(CR_STR keyword) {
+
+    if (STRUNORMAP_FOUND<VEC_DBL>(numberVectors, keyword)) {
+      return numberVectors[keyword];
+    }
+
+    return {};
+  }
+
+  VEC_STR CLIParser::getVectorWord(CR_STR keyword) {
+
+    if (STRUNORMAP_FOUND<VEC_STR>(wordVectors, keyword)) {
+      return wordVectors[keyword];
+    }
+
+    return {};
   }
 }}
 
