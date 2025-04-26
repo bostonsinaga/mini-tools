@@ -10,24 +10,39 @@ namespace utils {
    * that control the keywords that follow.
    */
   class CLIParser final {
+  private:
+    VEC_STR raws;
+    STRUNORMAP_BOL titles;
+
+    STRUNORMAP_DBL latestNumber;
+    STRUNORMAP_STR latestWord;
+
+    STRUNORMAP<VEC_DBL> numberVectors;
+    STRUNORMAP<VEC_STR> wordVectors;
+
+    inline bool isLatestKeyword(CR_STR test);
+    inline bool isVectorKeyword(CR_STR test);
+
   public:
     CLIParser() = delete;
 
-    static void assignLast(
+    CLIParser(
       CR_INT argc,
       char *argv[],
-      STRUNORMAP_BOL &titles,
-      STRUNORMAP_DBL &numbers,
-      STRUNORMAP_STR &words
+      CR_VEC_STR numberKeywords,
+      CR_VEC_STR wordKeywords
     );
 
-    static void assignVector(
-      CR_INT argc,
-      char *argv[],
-      STRUNORMAP_BOL &titles,
-      STRUNORMAP<VEC_DBL> &numbers,
-      STRUNORMAP<VEC_STR> &words
-    );
+    bool hasTitle(CR_STR keyword);
+    VEC_STR extractTitles();
+
+    void assignLatest();
+    double getLatestNumber(CR_STR keyword);
+    std::string getLatestWord(CR_STR keyword);
+
+    void assignVectors();
+    VEC_DBL getVectorNumber(CR_STR keyword);
+    VEC_STR getVectorWord(CR_STR keyword);
   };
 }}
 
