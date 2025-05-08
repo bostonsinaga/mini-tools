@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS_HPP__
 #define __MINI_TOOLS__UTILS_HPP__
 
+#include "cli-parser.hpp"
 #include "pair_tools.hpp"
 #include "printer.hpp"
 #include "random_words.hpp"
