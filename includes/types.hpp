@@ -15,6 +15,7 @@
 #include <concepts>
 #include <chrono>
 #include <filesystem>
+#include <tuple>
 
 namespace mini_tools {
 
@@ -165,6 +166,11 @@ namespace mini_tools {
 
   template <typename T>
   using CR_STRUNORMAP = const STRUNORMAP<T>&;
+
+  template <typename T>
+  inline bool STRUNORMAP_FOUND(CR_STRUNORMAP<T> map, CR_STR key) {
+    return map.find(key) != map.end();
+  }
 
   /** SHORTENED VALUE VECTORS */
 
@@ -893,6 +899,146 @@ namespace mini_tools {
   typedef const STRUNORMAP_FLT_P& CR_STRUNORMAP_FLT_P;
   typedef const STRUNORMAP_DBL_P& CR_STRUNORMAP_DBL_P;
   typedef const STRUNORMAP_LD_P& CR_STRUNORMAP_LD_P;
+
+  /** VALUE STRING UNORDERED MAP CONTAINING CHECK FUNCTIONS */
+
+  inline bool STRUNORMAP_BOL_FOUND(CR_STRUNORMAP_BOL map, CR_STR key) {
+    return STRUNORMAP_FOUND<bool>(map, key);
+  }
+
+  inline bool STRUNORMAP_STR_FOUND(CR_STRUNORMAP_STR map, CR_STR key) {
+    return STRUNORMAP_FOUND<std::string>(map, key);
+  }
+
+  inline bool STRUNORMAP_CH_FOUND(CR_STRUNORMAP_CH map, CR_STR key) {
+    return STRUNORMAP_FOUND<char>(map, key);
+  }
+
+  inline bool STRUNORMAP_WCH_FOUND(CR_STRUNORMAP_WCH map, CR_STR key) {
+    return STRUNORMAP_FOUND<wchar_t>(map, key);
+  }
+
+  inline bool STRUNORMAP_INT_FOUND(CR_STRUNORMAP_INT map, CR_STR key) {
+    return STRUNORMAP_FOUND<int>(map, key);
+  }
+
+  inline bool STRUNORMAP_SI_FOUND(CR_STRUNORMAP_SI map, CR_STR key) {
+    return STRUNORMAP_FOUND<SI>(map, key);
+  }
+
+  inline bool STRUNORMAP_LI_FOUND(CR_STRUNORMAP_LI map, CR_STR key) {
+    return STRUNORMAP_FOUND<LI>(map, key);
+  }
+
+  inline bool STRUNORMAP_LLI_FOUND(CR_STRUNORMAP_LLI map, CR_STR key) {
+    return STRUNORMAP_FOUND<LLI>(map, key);
+  }
+
+  inline bool STRUNORMAP_USI_FOUND(CR_STRUNORMAP_USI map, CR_STR key) {
+    return STRUNORMAP_FOUND<USI>(map, key);
+  }
+
+  inline bool STRUNORMAP_UI_FOUND(CR_STRUNORMAP_UI map, CR_STR key) {
+    return STRUNORMAP_FOUND<UI>(map, key);
+  }
+
+  inline bool STRUNORMAP_ULI_FOUND(CR_STRUNORMAP_ULI map, CR_STR key) {
+    return STRUNORMAP_FOUND<ULI>(map, key);
+  }
+
+  inline bool STRUNORMAP_ULLI_FOUND(CR_STRUNORMAP_ULLI map, CR_STR key) {
+    return STRUNORMAP_FOUND<ULLI>(map, key);
+  }
+
+  inline bool STRUNORMAP_SZ_FOUND(CR_STRUNORMAP_SZ map, CR_STR key) {
+    return STRUNORMAP_FOUND<size_t>(map, key);
+  }
+
+  inline bool STRUNORMAP_TM_FOUND(CR_STRUNORMAP_TM map, CR_STR key) {
+    return STRUNORMAP_FOUND<time_t>(map, key);
+  }
+
+  inline bool STRUNORMAP_FLT_FOUND(CR_STRUNORMAP_FLT map, CR_STR key) {
+    return STRUNORMAP_FOUND<float>(map, key);
+  }
+
+  inline bool STRUNORMAP_DBL_FOUND(CR_STRUNORMAP_DBL map, CR_STR key) {
+    return STRUNORMAP_FOUND<double>(map, key);
+  }
+
+  inline bool STRUNORMAP_LD_FOUND(CR_STRUNORMAP_LD map, CR_STR key) {
+    return STRUNORMAP_FOUND<LD>(map, key);
+  }
+
+  /** POINTER STRING UNORDERED MAP CONTAINING CHECK FUNCTIONS */
+
+  inline bool STRUNORMAP_BOL_P_FOUND(CR_STRUNORMAP_BOL_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<bool*>(map, key);
+  }
+
+  inline bool STRUNORMAP_STR_P_FOUND(CR_STRUNORMAP_STR_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<std::string*>(map, key);
+  }
+
+  inline bool STRUNORMAP_CH_P_FOUND(CR_STRUNORMAP_CH_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<char*>(map, key);
+  }
+
+  inline bool STRUNORMAP_WCH_P_FOUND(CR_STRUNORMAP_WCH_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<wchar_t*>(map, key);
+  }
+
+  inline bool STRUNORMAP_INT_P_FOUND(CR_STRUNORMAP_INT_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<int*>(map, key);
+  }
+
+  inline bool STRUNORMAP_SI_P_FOUND(CR_STRUNORMAP_SI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<SI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_LI_P_FOUND(CR_STRUNORMAP_LI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<LI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_LLI_P_FOUND(CR_STRUNORMAP_LLI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<LLI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_USI_P_FOUND(CR_STRUNORMAP_USI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<USI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_UI_P_FOUND(CR_STRUNORMAP_UI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<UI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_ULI_P_FOUND(CR_STRUNORMAP_ULI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<ULI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_ULLI_P_FOUND(CR_STRUNORMAP_ULLI_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<ULLI*>(map, key);
+  }
+
+  inline bool STRUNORMAP_SZ_P_FOUND(CR_STRUNORMAP_SZ_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<size_t*>(map, key);
+  }
+
+  inline bool STRUNORMAP_TM_P_FOUND(CR_STRUNORMAP_TM_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<time_t*>(map, key);
+  }
+
+  inline bool STRUNORMAP_FLT_P_FOUND(CR_STRUNORMAP_FLT_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<float*>(map, key);
+  }
+
+  inline bool STRUNORMAP_DBL_P_FOUND(CR_STRUNORMAP_DBL_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<double*>(map, key);
+  }
+
+  inline bool STRUNORMAP_LD_P_FOUND(CR_STRUNORMAP_LD_P map, CR_STR key) {
+    return STRUNORMAP_FOUND<LD*>(map, key);
+  }
 }
 
 #endif // __MINI_TOOLS__TYPES_HPP__
