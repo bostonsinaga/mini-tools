@@ -1,7 +1,8 @@
 set (SOURCES
   algorithms/number_sequence.cpp
   data_structures/linked_list.cpp
-  data_structures/tree.cpp
+  data_structures/general_tree.cpp
+  utils/cli-parser.cpp
   utils/random_words.cpp
   utils/scanner.cpp
   utils/str_tools.cpp
