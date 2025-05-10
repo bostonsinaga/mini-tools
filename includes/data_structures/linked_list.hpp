@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
 
-#include "types.hpp"
-
 //_____________________________|
 // DOUBLY CIRCULAR LINKED LIST |
 //_____________________________|
@@ -10,324 +8,208 @@
 namespace mini_tools {
 namespace data_structures {
 
-  class LinkedList {
+  class LinkedList;
+
+  class LinkedListMetadata final {
+  public:
+    LinkedListMetadata() = delete;
+
   private:
-    bool notExist(
-      LinkedList* start,
-      LinkedList* linkedList,
-      LinkedList* test
-    );
-
-    /** using std::function<bool> */
-
-    template<typename T, typename U, typename V>
-    using CR_BOOL_CB_TUV = const std::function<bool(LinkedList*, T, U, V)>&;
-
     template<typename T, typename U>
-    using CR_BOOL_CB_TU = const std::function<bool(LinkedList*, T, U)>&;
+    using MAP_LL = std::unordered_map<T, U>;
 
-    template<typename T>
-    using CR_BOOL_CB_T = const std::function<bool(LinkedList*, T)>&;
+    inline static MAP_LL<LinkedList*, size_t> numbers;
+    inline static MAP_LL<LinkedList*, bool> iteratings;
+    inline static MAP_LL<LinkedList*, MAP_LL<LinkedList*, bool>> existences;
 
-    using CR_BOOL_CB = const std::function<bool(LinkedList*)>&;
+    static void add(LinkedList *leader) {
+      numbers[leader] = 1;
+      iteratings[leader] = false;
+      existences[leader][leader] = true;
+    }
 
-    /** using std::function<void> */
+    static void addTo(
+      LinkedList *leader,
+      LinkedList *follower
+    ) {
+      numbers[leader]++;
+      existences[leader][follower] = true;
+    }
 
-    template<typename T, typename U, typename V>
-    using CR_VOID_CB_TUV = const std::function<void(LinkedList*, T, U, V)>&;
+    static void remove(LinkedList *leader) {
+      numbers.erase(leader);
+      iteratings.erase(leader);
+      existences.erase(leader);
+    }
 
-    template<typename T, typename U>
-    using CR_VOID_CB_TU = const std::function<void(LinkedList*, T, U)>&;
+    static void removeFrom(
+      LinkedList *leader,
+      LinkedList *follower
+    ) {
+      numbers[leader]--;
+      existences[leader].erase(follower);
+    }
 
-    template<typename T>
-    using CR_VOID_CB_T = const std::function<void(LinkedList*, T)>&;
+    friend class LinkedList;
+  };
 
-    using CR_VOID_CB = const std::function<void(LinkedList*)>&;
+  class LinkedList {
+  public:
+    // return false to force stop the loop
+    typedef std::function<bool(LinkedList*)> CALLBACK;
 
-    /** recur std::function<bool> */
+  private:
+    LinkedList *start,
+      *left = nullptr,
+      *right = nullptr;
 
-    template<typename T, typename U, typename V>
-    void recurBool(
-      CR_BOOL_CB_TUV<T, U, V> callback,
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+    void iterate(
+      CALLBACK &callback,
+      CR_BOL ascending
+    ) {
+      if ((ascending && !right) ||
+        (!ascending && !left)
+      ) {
+        callback(this);
+        return;
+      }
 
-    template<typename T, typename U>
-    void recurBool(
-      CR_BOOL_CB_TU<T, U> callback,
-      T addParam_1,
-      U addParam_2,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      LinkedList *current,
+        *buffer = nullptr,
+        *stop = this;
 
-    template<typename T>
-    void recurBool(
-      CR_BOOL_CB_T<T> callback,
-      T addParam_1,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      if (ascending) current = right;
+      else current = left;
 
-    void recurBool(
-      CR_BOOL_CB callback,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      callback(this);
+      LinkedListMetadata::iteratings[start] = true;
 
-    /** recur std::function<void> */
+      if (ascending) while (current && current != stop) {
+        if (!callback(current)) break;
+        current = current->right;
+      }
+      else while (current && current != stop) {
+        if (!callback(current)) break;
+        current = current->left;
+      }
 
-    template<typename T, typename U, typename V>
-    void recurVoid(
-      CR_VOID_CB_TUV<T, U, V> callback,
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      LinkedListMetadata::iteratings[start] = false;
+    }
 
-    template<typename T, typename U>
-    void recurVoid(
-      CR_VOID_CB_TU<T, U> callback,
-      T addParam_1,
-      U addParam_2,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+    void xjoin(LinkedList *insider) {
+      xdetach();
+      start = insider->start;
+      left = insider;
 
-    template<typename T>
-    void recurVoid(
-      CR_VOID_CB_T<T> callback,
-      T addParam_1,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      if (insider->right) {
+        right = insider->right;
+        insider->right->left = this;
+      }
+      else {
+        right = insider;
+        insider->left = this;
+      }
 
-    void recurVoid(
-      CR_VOID_CB callback,
-      LinkedList *start,
-      CR_BOL forwarding
-    );
+      left = insider;
+      insider->right = this;
+      LinkedListMetadata::addTo(start, this);
+    }
+
+    void xaccept(LinkedList *outsider) {
+      outsider->xjoin(this);
+    }
+
+    void xdetach() {
+      if (right) {
+        LinkedListMetadata::removeFrom(start, this);
+        left->right = right;
+        right->left = left;
+      }
+    }
+
+    friend class GeneralTree;
 
   protected:
-    std::string name;
-
-    LinkedList *head = nullptr,
-      *next = nullptr,
-      *previous = nullptr;
-
     ~LinkedList() {}
 
   public:
-    LinkedList() {}
-    LinkedList(CR_STR name_in);
-
-    void connect(LinkedList *linkedList);
-    void disconnect(LinkedList *linkedList);
-    void resign();
-
-    virtual void remove();
-    void sequentialRemove();
-
-    LinkedList *getNext() { return next; }
-    LinkedList *getPrevious() { return previous; }
-    LinkedList *getHead() { return head; }
-    std::string getName() { return name; }
-
-    /** iterate bool(*) */
-
-    template<typename T, typename U, typename V>
-    void iterate(
-      bool (*callback)(LinkedList*, T, U, V),
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T, U, V>(
-        callback, addParam_1, addParam_2,
-        addParam_3, this, forwarding
-      );
+    LinkedList() {
+      start = this;
+      LinkedListMetadata::add(this);
     }
 
-    template<typename T, typename U>
-    void iterate(
-      bool (*callback)(LinkedList*, T, U),
-      T addParam_1,
-      U addParam_2,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T, U>(
-        callback, addParam_1, addParam_2,
-        this, forwarding
-      );
+    LinkedList *head() { return start; }
+    LinkedList *tail() { return start->left; }
+    LinkedList *next() { return right; }
+    LinkedList *prev() { return left; }
+
+    bool isolated() const { return !right; }
+    bool front() const { return this == start; }
+    bool back() const { return this == start->left; }
+    size_t count() const { return LinkedListMetadata::numbers[start]; }
+
+    bool hasMember(LinkedList *object) {
+      return LinkedListMetadata::existences[start][object];
     }
 
-    template<typename T>
-    void iterate(
-      bool (*callback)(LinkedList*, T),
-      T addParam_1,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T>(
-        callback, addParam_1, this, forwarding
-      );
+    void iterateRight(CALLBACK callback) {
+      iterate(callback, true);
     }
 
-    void iterate(
-      bool (*callback)(LinkedList*),
-      CR_BOL forwarding = true
-    ) {
-      recurBool(callback, this, forwarding);
+    void iterateLeft(CALLBACK callback) {
+      iterate(callback, false);
     }
 
-    /** iterate void(*) */
-
-    template<typename T, typename U, typename V>
-    void iterate(
-      void (*callback)(LinkedList*, T, U, V),
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T, U, V>(
-        callback, addParam_1, addParam_2,
-        addParam_3, this, forwarding
-      );
+    LinkedList *slice() {
+      return start;
     }
 
-    template<typename T, typename U>
-    void iterate(
-      void (*callback)(LinkedList*, T, U),
-      T addParam_1,
-      U addParam_2,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T, U>(
-        callback, addParam_1, addParam_2,
-        this, forwarding
-      );
+    void detach() {
+      if (right) {
+        LinkedListMetadata::removeFrom(start, this);
+        left->right = right;
+        right->left = left;
+  
+        LinkedListMetadata::add(this);
+        start = this;
+        left = nullptr;
+        right = nullptr;
+      }
     }
 
-    template<typename T>
-    void iterate(
-      void (*callback)(LinkedList*, T),
-      T addParam_1,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T>(
-        callback, addParam_1, this, forwarding
-      );
+    virtual void join(LinkedList *insider) {
+      if (insider) xjoin(insider);
     }
 
-    void iterate(
-      void (*callback)(LinkedList*),
-      CR_BOL forwarding = true
-    ) {
-      recurVoid(callback, this, forwarding);
+    virtual void accept(LinkedList *outsider) {
+      if (outsider) xaccept(outsider);
     }
 
-    /** iterate std::function<bool> */
+    virtual void destroy() {
+      if (!LinkedListMetadata::iteratings[start]) {
 
-    template<typename T, typename U, typename V>
-    void iterate(
-      CR_BOOL_CB_TUV<T, U, V> callback,
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T, U, V>(
-        callback, addParam_1, addParam_2,
-        addParam_3, this, forwarding
-      );
+        xdetach();
+        LinkedListMetadata::remove(this);
+
+        delete this;
+      }
     }
 
-    template<typename T, typename U>
-    void iterate(
-      CR_BOOL_CB_TU<T, U> callback,
-      T addParam_1,
-      U addParam_2,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T, U>(
-        callback, addParam_1, addParam_2,
-        this, forwarding
-      );
-    }
+    virtual void annihilate() {
+      if (!LinkedListMetadata::iteratings[start]) {
 
-    template<typename T>
-    void iterate(
-      CR_BOOL_CB_T<T> callback,
-      T addParam_1,
-      CR_BOL forwarding = true
-    ) {
-      recurBool<T>(
-        callback, addParam_1, this, forwarding
-      );
-    }
+        LinkedListMetadata::remove(start);
+        LinkedList *current = right;
 
-    void iterate(
-      CR_BOOL_CB callback,
-      CR_BOL forwarding = true
-    ) {
-      recurBool(callback, this, forwarding);
-    }
+        while (current && current != this) {
+          current->destroy();
+          current = current->right;
+        }
+      }
 
-    /** iterate std::function<void> */
-
-    template<typename T, typename U, typename V>
-    void iterate(
-      CR_VOID_CB_TUV<T, U, V> callback,
-      T addParam_1,
-      U addParam_2,
-      V addParam_3,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T, U, V>(
-        callback, addParam_1, addParam_2,
-        addParam_3, this, forwarding
-      );
-    }
-
-    template<typename T, typename U>
-    void iterate(
-      CR_VOID_CB_TU<T, U> callback,
-      T addParam_1,
-      U addParam_2,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T, U>(
-        callback, addParam_1, addParam_2,
-        this, forwarding
-      );
-    }
-
-    template<typename T>
-    void iterate(
-      CR_VOID_CB_T<T> callback,
-      T addParam_1,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid<T>(
-        callback, addParam_1, this, forwarding
-      );
-    }
-
-    void iterate(
-      CR_VOID_CB callback,
-      CR_BOL forwarding = true
-    ) {
-      recurVoid(callback, this, forwarding);
+      destroy();
     }
   };
 }}
 
-#include "data_structures/linked_list.tpp"
 #endif // __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_HPP__
