@@ -48,32 +48,32 @@ namespace utils {
   CLI_WordParser::CLI_WordParser(
     CR_INT argc,
     char *argv[],
-    CR_VEC_STR keywords
+    CR_VEC_STR keywords,
+    CR_BOL assigning
   ) : CLI_TitleParser(argc, argv, keywords) {
 
     for (CR_STR key : keywords) {
       words[key] = {};
     }
 
-    assign();
+    if (assigning) assign();
   }
 
   void CLI_WordParser::assign() {
+    bool inputDetected = false;
+    int j;
+
     for (int i = 0; i < raws.size(); i++) {
+      j = i-1;
 
       // now is keyword
       if (has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else words[raws[i]].push_back(raws[j]);
-        }
+        inputDetected = true;
+      }
+      // input detected
+      else if (inputDetected) {
+        inputDetected = false;
+        words[raws[j]].push_back(raws[i]);
       }
       // set titles in early iterations
       else titles[raws[i]] = true;
@@ -129,29 +129,32 @@ namespace utils {
   CLI_ToggleParser::CLI_ToggleParser(
     CR_INT argc,
     char *argv[],
-    CR_VEC_STR keywords
+    CR_VEC_STR keywords,
+    CR_BOL assigning
   ) : CLI_TitleParser(argc, argv, keywords) {
-    assign();
+
+    for (CR_STR key : keywords) {
+      toggles[key] = {};
+    }
+
+    if (assigning) assign();
   }
 
   void CLI_ToggleParser::assign() {
+    bool inputDetected = false;
+    int j;
+
     for (int i = 0; i < raws.size(); i++) {
+      j = i-1;
 
       // now is keyword
       if (has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else toggles[raws[i]].push_back(
-            booleanize(raws[j])
-          );
-        }
+        inputDetected = true;
+      }
+      // input detected
+      else if (inputDetected) {
+        inputDetected = false;
+        toggles[raws[j]].push_back(booleanize(raws[i]));
       }
       // set titles in early iterations
       else titles[raws[i]] = true;

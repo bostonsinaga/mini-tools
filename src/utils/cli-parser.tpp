@@ -14,14 +14,15 @@ namespace utils {
   CLI_NumberParser<T>::CLI_NumberParser(
     CR_INT argc,
     char *argv[],
-    CR_VEC_STR keywords
+    CR_VEC_STR keywords,
+    CR_BOL assigning
   ) : CLI_TitleParser(argc, argv, keywords) {
 
     for (CR_STR key : keywords) {
       numbers[key] = {};
     }
 
-    assign();
+    if (assigning) assign();
   }
 
   template <inspector::NUMBER T>
@@ -30,54 +31,53 @@ namespace utils {
     // try to all possible number types
     try {
       if constexpr (std::is_same_v<T, int>) {
-        numbers[raws[i]].push_back(std::stoi(raws[j]));
+        numbers[raws[j]].push_back(std::stoi(raws[i]));
       }
       else if constexpr (std::is_same_v<T, LI>) {
-        numbers[raws[i]].push_back(std::stol(raws[j]));
+        numbers[raws[j]].push_back(std::stol(raws[i]));
       }
       else if constexpr (std::is_same_v<T, LLI>) {
-        numbers[raws[i]].push_back(std::stoll(raws[j]));
+        numbers[raws[j]].push_back(std::stoll(raws[i]));
       }
       else if constexpr (std::is_same_v<T, ULI>) {
-        numbers[raws[i]].push_back(std::stoul(raws[j]));
+        numbers[raws[j]].push_back(std::stoul(raws[i]));
       }
       else if constexpr (std::is_same_v<T, ULLI>) {
-        numbers[raws[i]].push_back(std::stoull(raws[j]));
+        numbers[raws[j]].push_back(std::stoull(raws[i]));
       }
       else if constexpr (std::is_same_v<T, float>) {
-        numbers[raws[i]].push_back(std::stof(raws[j]));
+        numbers[raws[j]].push_back(std::stof(raws[i]));
       }
       else if constexpr (std::is_same_v<T, double>) {
-        numbers[raws[i]].push_back(std::stod(raws[j]));
+        numbers[raws[j]].push_back(std::stod(raws[i]));
       }
       else if constexpr (std::is_same_v<T, LD>) {
-        numbers[raws[i]].push_back(std::stold(raws[j]));
+        numbers[raws[j]].push_back(std::stold(raws[i]));
       }
-      else numbers[raws[i]].push_back(0);
+      else numbers[raws[j]].push_back(0);
     }
-    // the 'raws[j]' ​​start with non-numeric
+    // the 'raws[i]' ​​start with non-numeric
     catch (...) {
-      numbers[raws[i]].push_back(0);
+      numbers[raws[j]].push_back(0);
     }
   }
 
   template <inspector::NUMBER T>
   void CLI_NumberParser<T>::assign() {
+    bool inputDetected = false;
+    int j;
+
     for (int i = 0; i < raws.size(); i++) {
+      j = i-1;
 
       // now is keyword
       if (has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else CLI_NumberParser<T>::assignTryCatch(i, j);
-        }
+        inputDetected = true;
+      }
+      // input detected
+      else if (inputDetected) {
+        inputDetected = false;
+        CLI_NumberParser<T>::assignTryCatch(i, j);
       }
       // set titles in early iterations
       else titles[raws[i]] = true;
@@ -150,58 +150,45 @@ namespace utils {
       toggleKeywords
     )
   ),
-  CLI_WordParser(argc, argv, wordKeywords),
-  CLI_NumberParser<T>(argc, argv, numberKeywords),
-  CLI_ToggleParser(argc, argv, toggleKeywords)
+  CLI_WordParser(argc, argv, wordKeywords, false),
+  CLI_NumberParser<T>(argc, argv, numberKeywords, false),
+  CLI_ToggleParser(argc, argv, toggleKeywords, false)
   { assign(); }
 
   template <inspector::NUMBER T>
   void CLI_Parser<T>::assign() {
+    int j;
+
+    enum {
+      title_e, word_e, number_e, toggle_e
+    } index_e = title_e;
+
     for (int i = 0; i < raws.size(); i++) {
+      j = i-1;
 
-      // now is keyword WORDS
+      // keyword detected WORDS
       if (CLI_WordParser::has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else words[raws[i]].push_back(raws[j]);
-        }
+        index_e = word_e;
       }
       // now is keyword NUMBERS
       else if (CLI_NumberParser<T>::has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else CLI_NumberParser<T>::assignTryCatch(i, j);
-        }
+        index_e = number_e;
       }
       // now is keyword TOGGLES
       else if (CLI_ToggleParser::has(raws[i])) {
-
-        for (int j = i+1; j < raws.size(); j++) {
-
-          // next is keyword
-          if (has(raws[j])) {
-            i = j-1;
-            break;
-          }
-          // input detected
-          else toggles[raws[i]].push_back(
-            booleanize(raws[j])
-          );
-        }
+        index_e = toggle_e;
+      }
+      // input detected WORDS
+      else if (index_e == word_e) {
+        words[raws[j]].push_back(raws[i]);
+      }
+      // input detected NUMBERS
+      else if (index_e == number_e) {
+        CLI_NumberParser<T>::assignTryCatch(i, j);
+      }
+      // input detected TOGGLES
+      else if (index_e == toggle_e) {
+        toggles[raws[j]].push_back(booleanize(raws[i]));
       }
       // set titles in early iterations
       else titles[raws[i]] = true;
