@@ -22,33 +22,24 @@ namespace data_structures {
     inline static MAP_LL<LinkedList*, bool> iteratings;
     inline static MAP_LL<LinkedList*, MAP_LL<LinkedList*, bool>> existences;
 
-    static void add(LinkedList *leader) {
-      numbers[leader] = 1;
-      iteratings[leader] = false;
-      existences[leader][leader] = true;
-    }
+    static void create(LinkedList *leader);
 
-    static void addTo(
+    static void add(
       LinkedList *leader,
       LinkedList *follower
-    ) {
-      numbers[leader]++;
-      existences[leader][follower] = true;
-    }
+    );
 
-    static void remove(LinkedList *leader) {
-      numbers.erase(leader);
-      iteratings.erase(leader);
-      existences.erase(leader);
-    }
+    static void remove(LinkedList *leader);
 
-    static void removeFrom(
+    static void drop(
       LinkedList *leader,
       LinkedList *follower
-    ) {
-      numbers[leader]--;
-      existences[leader].erase(follower);
-    }
+    );
+
+    static void appoint(
+      LinkedList *leader,
+      LinkedList *candidate
+    );
 
     friend class LinkedList;
   };
@@ -66,66 +57,12 @@ namespace data_structures {
     void iterate(
       CALLBACK &callback,
       CR_BOL ascending
-    ) {
-      if ((ascending && !right) ||
-        (!ascending && !left)
-      ) {
-        callback(this);
-        return;
-      }
+    );
 
-      LinkedList *current,
-        *buffer = nullptr,
-        *stop = this;
-
-      if (ascending) current = right;
-      else current = left;
-
-      callback(this);
-      LinkedListMetadata::iteratings[start] = true;
-
-      if (ascending) while (current && current != stop) {
-        if (!callback(current)) break;
-        current = current->right;
-      }
-      else while (current && current != stop) {
-        if (!callback(current)) break;
-        current = current->left;
-      }
-
-      LinkedListMetadata::iteratings[start] = false;
-    }
-
-    void xjoin(LinkedList *insider) {
-      xdetach();
-      start = insider->start;
-      left = insider;
-
-      if (insider->right) {
-        right = insider->right;
-        insider->right->left = this;
-      }
-      else {
-        right = insider;
-        insider->left = this;
-      }
-
-      left = insider;
-      insider->right = this;
-      LinkedListMetadata::addTo(start, this);
-    }
-
-    void xaccept(LinkedList *outsider) {
-      outsider->xjoin(this);
-    }
-
-    void xdetach() {
-      if (right) {
-        LinkedListMetadata::removeFrom(start, this);
-        left->right = right;
-        right->left = left;
-      }
-    }
+    void xjoin(LinkedList *insider);
+    void xaccept(LinkedList *outsider);
+    void xappoint(LinkedList *newStart);
+    void xdetach();
 
     friend class GeneralTree;
 
@@ -135,7 +72,7 @@ namespace data_structures {
   public:
     LinkedList() {
       start = this;
-      LinkedListMetadata::add(this);
+      LinkedListMetadata::create(this);
     }
 
     LinkedList *head() { return start; }
@@ -143,72 +80,29 @@ namespace data_structures {
     LinkedList *next() { return right; }
     LinkedList *prev() { return left; }
 
-    bool isolated() const { return !right; }
-    bool front() const { return this == start; }
-    bool back() const { return this == start->left; }
-    size_t count() const { return LinkedListMetadata::numbers[start]; }
+    /**
+     * Disconnect list from this thus dividing it into 2 'start'.
+     * Returns 'start' if this is follower.
+     * Returns 'right' if this the 'start'.
+     * Returns 'nullptr' if this is single.
+     */
+    LinkedList *slice();
 
-    bool hasMember(LinkedList *object) {
-      return LinkedListMetadata::existences[start][object];
-    }
+    bool isolated() { return !right; }
+    bool atFront() { return this == start; }
+    bool atBack() { return this == start->left; }
+    size_t count() { return LinkedListMetadata::numbers[start]; }
 
-    void iterateRight(CALLBACK callback) {
-      iterate(callback, true);
-    }
+    bool hasMember(LinkedList *object);
+    void iterateRight(CALLBACK callback);
+    void iterateLeft(CALLBACK callback);
+    void appoint(LinkedList *newStart);
+    void detach();
 
-    void iterateLeft(CALLBACK callback) {
-      iterate(callback, false);
-    }
-
-    LinkedList *slice() {
-      return start;
-    }
-
-    void detach() {
-      if (right) {
-        LinkedListMetadata::removeFrom(start, this);
-        left->right = right;
-        right->left = left;
-  
-        LinkedListMetadata::add(this);
-        start = this;
-        left = nullptr;
-        right = nullptr;
-      }
-    }
-
-    virtual void join(LinkedList *insider) {
-      if (insider) xjoin(insider);
-    }
-
-    virtual void accept(LinkedList *outsider) {
-      if (outsider) xaccept(outsider);
-    }
-
-    virtual void destroy() {
-      if (!LinkedListMetadata::iteratings[start]) {
-
-        xdetach();
-        LinkedListMetadata::remove(this);
-
-        delete this;
-      }
-    }
-
-    virtual void annihilate() {
-      if (!LinkedListMetadata::iteratings[start]) {
-
-        LinkedListMetadata::remove(start);
-        LinkedList *current = right;
-
-        while (current && current != this) {
-          current->destroy();
-          current = current->right;
-        }
-      }
-
-      destroy();
-    }
+    virtual void join(LinkedList *insider);
+    virtual void accept(LinkedList *outsider);
+    virtual void destroy();
+    virtual void annihilate();
   };
 }}
 
