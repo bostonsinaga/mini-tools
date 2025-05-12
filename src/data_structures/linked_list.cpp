@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__LINKED_LIST_CPP__
 
+#include "types.hpp"
 #include "data_structures/linked_list.hpp"
 
 //_____________________________|
@@ -10,146 +11,210 @@
 namespace mini_tools {
 namespace data_structures {
 
-  LinkedList::LinkedList(CR_STR name_in) {
-    name = name_in;
-    head = this;
+  /** Linked List Metadata */
+
+  void LinkedListMetadata::create(LinkedList *leader) {
+    numbers[leader] = 1;
+    iteratings[leader] = false;
+    existences[leader][leader] = true;
   }
 
-  bool LinkedList::notExist(
-    LinkedList* start,
-    LinkedList* linkedList,
-    LinkedList* test
+  void LinkedListMetadata::add(
+    LinkedList *leader,
+    LinkedList *follower
   ) {
-    if (linkedList == test) return false;
-    else if (linkedList->next && linkedList->next != start) {
-      return notExist(start, linkedList->next, test);
-    }
-    return true;
+    numbers[leader]++;
+    existences[leader][follower] = true;
   }
 
-  void LinkedList::connect(LinkedList *linkedList) {
-    if (linkedList && notExist(this, this, linkedList)) {
+  void LinkedListMetadata::remove(LinkedList *leader) {
+    numbers.erase(leader);
+    iteratings.erase(leader);
+    existences.erase(leader);
+  }
 
-      LinkedList *third = next;
-      linkedList->resign();
+  void LinkedListMetadata::drop(
+    LinkedList *leader,
+    LinkedList *follower
+  ) {
+    numbers[leader]--;
+    existences[leader].erase(follower);
+  }
 
-      if (!third) {
-        third = head;
-        previous = linkedList;
+  void LinkedListMetadata::appoint(
+    LinkedList *leader,
+    LinkedList *candidate
+  ) {
+    numbers[candidate] = numbers[leader];
+    iteratings[candidate] = false;
+    existences[candidate] = existences[leader];
+    LinkedListMetadata::remove(leader);
+  }
+
+  /** LINKED LIST */
+
+  LinkedList *LinkedList::slice() {
+    if (right) {
+      LinkedList *newStart;
+
+      if (start == this) {
+        newStart = right;
+        detach();
       }
-
-      next = linkedList;
-      linkedList->head = head;
-      linkedList->next = third;
-      linkedList->previous = this;
-      third->previous = linkedList;
-    }
-  }
-
-  void LinkedList::disconnect(LinkedList *linkedList) {
-    if (linkedList) linkedList->resign();
-  }
-
-  void LinkedList::resign() {
-    if (next) {
-      if (head == this) {
-        LinkedList *newHead = next,
-          *current = next;
-
-        while (current != this) {
-          current->head = newHead;
-          current = current->next;
-        }
+      else if (left == start) {
+        newStart = this;
+        start->detach();
       }
-
-      if (next == previous) {
-        next->previous = nullptr;
-        previous->next = nullptr;
+      else if (start->left == this) {
+        newStart = start;
+        detach();
       }
       else {
-        next->previous = previous;
-        previous->next = next;
+        LinkedList *tailBuffer = start->left;
+        start->left = left;
+        left->right = start;
+        left = tailBuffer;
       }
 
-      next = nullptr;
-      previous = nullptr;
-      head = this;
+      return newStart;
     }
+
+    return nullptr;
   }
 
-  void LinkedList::remove() {
-    resign();
-    delete this;
+  bool LinkedList::hasMember(LinkedList *object) {
+    return LinkedListMetadata::existences[start][object];
   }
 
-  void LinkedList::sequentialRemove() {
-    LinkedList *current_1 = head,
-      *current_2 = nullptr;
-
-    bool willBreak = false;
-
-    while (true) {
-      current_2 = current_1->next;
-
-      if (!current_2) {
-        willBreak = true;
-      }
-
-      current_1->remove();
-      current_1 = current_2;
-
-      if (willBreak) break;
-    }
-  }
-
-  void LinkedList::recurBool(
-    CR_BOOL_CB callback,
-    LinkedList *start,
-    CR_BOL forwarding
+  void LinkedList::iterate(
+    CALLBACK &callback,
+    CR_BOL ascending
   ) {
-    bool keepGoing = false;
-
-    if (forwarding) {
-      keepGoing = callback(this);
-
-      if (keepGoing && next && next != start) {
-        next->recurBool(callback, start, true);
-      }
-    }
-    // reversing
-    else {
-      if (previous) {
-        keepGoing = callback(previous);
-
-        if (keepGoing && previous != start) {
-          previous->recurBool(callback, start, false);
-        }
-      }
-      else callback(this);
-    }
-  }
-
-  void LinkedList::recurVoid(
-    CR_VOID_CB callback,
-    LinkedList *start,
-    CR_BOL forwarding
-  ) {
-    if (forwarding) {
+    if ((ascending && !right) ||
+      (!ascending && !left)
+    ) {
       callback(this);
-
-      if (next && next != start) {
-        next->recurVoid(callback, start, true);
-      }
+      return;
     }
-    else if (!forwarding) {
-      if (previous) {
-        callback(previous);
 
-        if (previous != start) {
-          previous->recurVoid(callback, start, false);
-        }
+    LinkedList *current,
+      *buffer = nullptr,
+      *stop = this;
+
+    if (ascending) current = right;
+    else current = left;
+
+    callback(this);
+    LinkedListMetadata::iteratings[start] = true;
+
+    if (ascending) while (current && current != stop) {
+      if (!callback(current)) break;
+      current = current->right;
+    }
+    else while (current && current != stop) {
+      if (!callback(current)) break;
+      current = current->left;
+    }
+
+    LinkedListMetadata::iteratings[start] = false;
+  }
+
+  void LinkedList::iterateRight(CALLBACK callback) {
+    iterate(callback, true);
+  }
+
+  void LinkedList::iterateLeft(CALLBACK callback) {
+    iterate(callback, false);
+  }
+
+  void LinkedList::xappoint(LinkedList *newStart) {
+    LinkedListMetadata::appoint(start, newStart);
+
+    LinkedList *current = right;
+    start = newStart;
+
+    while (current && current != this) {
+      current->start = newStart;
+      current = current->right;
+    }
+  }
+
+  void LinkedList::appoint(LinkedList *newStart) {
+    if (newStart) xappoint(newStart);
+  }
+
+  void LinkedList::xdetach() {
+    if (right) {
+      LinkedListMetadata::drop(start, this);
+      left->right = right;
+      right->left = left;
+
+      if (start == this) xappoint(right);
+    }
+  }
+
+  void LinkedList::detach() {
+    xdetach();
+
+    if (right) {
+      LinkedListMetadata::create(this);
+      start = this;
+      left = nullptr;
+      right = nullptr;
+    }
+  }
+
+  void LinkedList::xjoin(LinkedList *insider) {
+    xdetach();
+    start = insider->start;
+    left = insider;
+
+    if (insider->right) {
+      right = insider->right;
+      insider->right->left = this;
+    }
+    else {
+      right = insider;
+      insider->left = this;
+    }
+
+    left = insider;
+    insider->right = this;
+    LinkedListMetadata::add(start, this);
+  }
+
+  void LinkedList::join(LinkedList *insider) {
+    if (insider) xjoin(insider);
+  }
+
+  void LinkedList::xaccept(LinkedList *outsider) {
+    outsider->xjoin(this);
+  }
+
+  void LinkedList::accept(LinkedList *outsider) {
+    if (outsider) xaccept(outsider);
+  }
+
+  void LinkedList::destroy() {
+    if (!LinkedListMetadata::iteratings[start]) {
+      xdetach();
+      LinkedListMetadata::remove(this);
+      delete this;
+    }
+  }
+
+  void LinkedList::annihilate() {
+    if (!LinkedListMetadata::iteratings[start]) {
+
+      LinkedListMetadata::remove(start);
+      LinkedList *current = right;
+
+      while (current && current != this) {
+        delete current;
+        current = current->right;
       }
-      else callback(this);
+
+      delete this;
     }
   }
 }}
