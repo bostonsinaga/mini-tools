@@ -49,7 +49,8 @@ namespace utils {
     CLI_WordParser(
       CR_INT argc,
       char *argv[],
-      CR_VEC_STR keywords = {}
+      CR_VEC_STR keywords = {},
+      CR_BOL assigning = true
     );
 
     // capture arguments of keyword into the vector maps
@@ -87,7 +88,8 @@ namespace utils {
     CLI_NumberParser(
       CR_INT argc,
       char *argv[],
-      CR_VEC_STR keywords = {}
+      CR_VEC_STR keywords = {},
+      CR_BOL assigning = true
     );
 
     void assign();
@@ -116,7 +118,8 @@ namespace utils {
     CLI_ToggleParser(
       CR_INT argc,
       char *argv[],
-      CR_VEC_STR keywords = {}
+      CR_VEC_STR keywords = {},
+      CR_BOL assigning = true
     );
 
     void assign();
