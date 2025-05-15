@@ -54,26 +54,26 @@ namespace data_structures {
   /** LINKED LIST */
 
   LinkedList *LinkedList::slice() {
-    if (right) {
+    if (neighbors[RIGHT]) {
       LinkedList *newStart;
 
       if (start == this) {
-        newStart = right;
+        newStart = neighbors[RIGHT];
         detach();
       }
-      else if (left == start) {
+      else if (neighbors[LEFT] == start) {
         newStart = this;
         start->detach();
       }
-      else if (start->left == this) {
+      else if (start->neighbors[LEFT] == this) {
         newStart = start;
         detach();
       }
       else {
-        LinkedList *tailBuffer = start->left;
-        start->left = left;
-        left->right = start;
-        left = tailBuffer;
+        LinkedList *tailBuffer = start->neighbors[LEFT];
+        start->neighbors[LEFT] = neighbors[LEFT];
+        neighbors[LEFT]->neighbors[RIGHT] = start;
+        neighbors[LEFT] = tailBuffer;
       }
 
       return newStart;
@@ -87,55 +87,33 @@ namespace data_structures {
   }
 
   void LinkedList::iterate(
-    CALLBACK &callback,
-    CR_BOL ascending
+    CR_BOL direction,
+    CR_CALLBACK &callback
   ) {
-    if ((ascending && !right) ||
-      (!ascending && !left)
-    ) {
-      callback(this);
-      return;
-    }
-
-    LinkedList *current,
-      *buffer = nullptr,
-      *stop = this;
-
-    if (ascending) current = right;
-    else current = left;
-
-    callback(this);
     LinkedListMetadata::iteratings[start] = true;
 
-    if (ascending) while (current && current != stop) {
+    // begin from this
+    if (!callback(this) || !neighbors[direction]) return;
+
+    LinkedList *current = neighbors[direction];
+
+    while (current && current != this) {
       if (!callback(current)) break;
-      current = current->right;
-    }
-    else while (current && current != stop) {
-      if (!callback(current)) break;
-      current = current->left;
+      current = current->neighbors[direction];
     }
 
     LinkedListMetadata::iteratings[start] = false;
   }
 
-  void LinkedList::iterateRight(CALLBACK callback) {
-    iterate(callback, true);
-  }
-
-  void LinkedList::iterateLeft(CALLBACK callback) {
-    iterate(callback, false);
-  }
-
   void LinkedList::xappoint(LinkedList *newStart) {
     LinkedListMetadata::appoint(start, newStart);
 
-    LinkedList *current = right;
+    LinkedList *current = neighbors[RIGHT];
     start = newStart;
 
     while (current && current != this) {
       current->start = newStart;
-      current = current->right;
+      current = current->neighbors[RIGHT];
     }
   }
 
@@ -144,42 +122,42 @@ namespace data_structures {
   }
 
   void LinkedList::xdetach() {
-    if (right) {
+    if (neighbors[RIGHT]) {
       LinkedListMetadata::drop(start, this);
-      left->right = right;
-      right->left = left;
+      neighbors[LEFT]->neighbors[RIGHT] = neighbors[RIGHT];
+      neighbors[RIGHT]->neighbors[LEFT] = neighbors[LEFT];
 
-      if (start == this) xappoint(right);
+      if (start == this) xappoint(neighbors[RIGHT]);
     }
   }
 
   void LinkedList::detach() {
     xdetach();
 
-    if (right) {
+    if (neighbors[RIGHT]) {
       LinkedListMetadata::create(this);
       start = this;
-      left = nullptr;
-      right = nullptr;
+      neighbors[LEFT] = nullptr;
+      neighbors[RIGHT] = nullptr;
     }
   }
 
   void LinkedList::xjoin(LinkedList *insider) {
     xdetach();
     start = insider->start;
-    left = insider;
+    neighbors[LEFT] = insider;
 
-    if (insider->right) {
-      right = insider->right;
-      insider->right->left = this;
+    if (insider->neighbors[RIGHT]) {
+      neighbors[RIGHT] = insider->neighbors[RIGHT];
+      insider->neighbors[RIGHT]->neighbors[LEFT] = this;
     }
     else {
-      right = insider;
-      insider->left = this;
+      neighbors[RIGHT] = insider;
+      insider->neighbors[LEFT] = this;
     }
 
-    left = insider;
-    insider->right = this;
+    neighbors[LEFT] = insider;
+    insider->neighbors[RIGHT] = this;
     LinkedListMetadata::add(start, this);
   }
 
@@ -207,11 +185,11 @@ namespace data_structures {
     if (!LinkedListMetadata::iteratings[start]) {
 
       LinkedListMetadata::remove(start);
-      LinkedList *current = right;
+      LinkedList *current = neighbors[RIGHT];
 
       while (current && current != this) {
         delete current;
-        current = current->right;
+        current = current->neighbors[RIGHT];
       }
 
       delete this;
