@@ -42,22 +42,18 @@ namespace data_structures {
     );
 
     friend class LinkedList;
+    friend class GeneralTree;
   };
 
   class LinkedList {
   public:
     // return false to force stop the loop
     typedef std::function<bool(LinkedList*)> CALLBACK;
+    typedef const CALLBACK& CR_CALLBACK;
 
   private:
     LinkedList *start,
-      *left = nullptr,
-      *right = nullptr;
-
-    void iterate(
-      CALLBACK &callback,
-      CR_BOL ascending
-    );
+      *neighbors[2] = {nullptr, nullptr};
 
     void xjoin(LinkedList *insider);
     void xaccept(LinkedList *outsider);
@@ -75,27 +71,32 @@ namespace data_structures {
       LinkedListMetadata::create(this);
     }
 
+    enum DIRECTION { LEFT, RIGHT };
+
     LinkedList *head() { return start; }
-    LinkedList *tail() { return start->left; }
-    LinkedList *next() { return right; }
-    LinkedList *prev() { return left; }
+    LinkedList *tail() { return start->neighbors[LEFT]; }
+    LinkedList *next() { return neighbors[RIGHT]; }
+    LinkedList *prev() { return neighbors[LEFT]; }
 
     /**
      * Disconnect list from this thus dividing it into 2 'start'.
      * Returns 'start' if this is follower.
-     * Returns 'right' if this the 'start'.
+     * Returns 'neighbors[RIGHT]' if this the 'start'.
      * Returns 'nullptr' if this is single.
      */
     LinkedList *slice();
 
-    bool isolated() { return !right; }
+    bool isolated() { return !neighbors[RIGHT]; }
     bool atFront() { return this == start; }
-    bool atBack() { return this == start->left; }
+    bool atBack() { return this == start->neighbors[LEFT]; }
     size_t count() { return LinkedListMetadata::numbers[start]; }
 
+    void iterate(
+      CR_BOL direction,
+      CR_CALLBACK callback
+    );
+
     bool hasMember(LinkedList *object);
-    void iterateRight(CALLBACK callback);
-    void iterateLeft(CALLBACK callback);
     void appoint(LinkedList *newStart);
     void detach();
 
