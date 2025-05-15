@@ -1,259 +1,155 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
-#define __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_CPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_CPP__
 
-#include "data_structures/tree.hpp"
-#include "utils/vec_tools.hpp"
-
-//____________|
-// N-ARY TREE |
-//____________|
+#include "types.hpp"
+#include "data_structures/linked_list.hpp"
+#include "data_structures/general_tree.hpp"
 
 namespace mini_tools {
 namespace data_structures {
 
-  Tree::Tree(
-    CR_STR name_in,
-    Tree *parent_in
-  ):
-  LinkedList(name_in) {
-    name = name_in;
-    setParent(parent_in);
+  void GeneralTree::xsetParent(GT *object) {
+    if (parent) parent->removeChild(this);
+    parent = object;
+    level = object->level + 1;
   }
 
-  bool Tree::hasChild(Tree *tree) {
-    for (Tree *nd : children) {
-      if (nd == tree) return true;
-    }
+  void GeneralTree::xaddChild(GT *object) {
+    children->xaccept(object);
+    object->level = level + 1;
+    object->parent = this;
+  }
+
+  size_t GeneralTree::childrenCount() {
+    if (children) return children->count();
+    else return 0;
+  }
+
+  bool GeneralTree::hasChild(GT *child) {
+    if (children) return children->hasMember(child);
     return false;
   }
 
-  bool Tree::hasChild(CR_STR searched) {
-    for (Tree *nd : children) {
-      if (nd->name == searched) return true;
-    }
-    return false;
+  void GeneralTree::setParent(GT *object) {
+    if (object) xsetParent(object);
   }
 
-  Tree *Tree::getChild(CR_INT index) {
-    return utils::VecTools<Tree*>::getAt(children, index, nullptr);
+  void GeneralTree::addChild(GT *object) {
+    if (children) xaddChild(object);
   }
 
-  Tree *Tree::getChild(CR_STR searched) {
-    for (Tree *nd : children) {
-      if (nd->name == searched) return nd;
-    }
-    return nullptr;
-  }
-
-  Tree *Tree::getRoot() {
-    Tree *root = this;
-    while (root->parent) root = root->parent;
-    return root;
-  }
-
-  void Tree::setChildren(
-    CR_VEC_TREE newChildren,
-    CR_BOL needEmpty,
-    CR_BOL validating
-  ) {
-    if (newChildren.empty()) return;
-
-    int startIdx = 0;
-
-    if (needEmpty) children = {};
-    else startIdx = children.size();
-
-    // slower (safe)
-    if (validating) {
-      for (Tree *nd : newChildren) {
-        if (nd) children.push_back(nd);
-      }
-      cleanDuplicatesInChildren();
-    }
-    // faster (danger)
-    else {
-      if (needEmpty) children = newChildren;
-      else utils::VecTools<Tree*>::concatCopy(children, newChildren);
-    }
-
-    for (int i = startIdx; i < children.size(); i++) {
-      children[i]->setParent(this, false);
-      if (i > 0) children[i-1]->connect(children[i]);
+  void GeneralTree::removeChild(GT *child) {
+    if (child && hasChild(child)) {
+      child->destroy();
     }
   }
 
-  VEC_TREE Tree::setChildrenRelease(
-    CR_VEC_TREE newChildren,
-    CR_BOL validating
-  ) {
-    VEC_TREE oldChildren = children;
-    setChildren(newChildren, true, validating);
-    return oldChildren;
-  }
-
-  void Tree::setChildrenReplace(
-    CR_VEC_TREE newChildren,
-    CR_BOL validating
-  ) {
-    cleanChildren();
-    setChildren(newChildren, true, validating);
-  }
-
-  void Tree::addChildren(
-    CR_VEC_TREE newChildren,
-    CR_BOL validating
-  ) {
-    setChildren(newChildren, false, validating);
-  }
-
-  void Tree::addChild(
-    Tree *tree,
-    CR_BOL reconnected
-  ) {
-    if (tree) {
-      if (reconnected) {
-        tree->setParent(this, false);
-      }
-
-      if (!children.empty()) {
-        children.back()->connect(tree);
-      }
-
-      children.push_back(tree);
-      cleanDuplicateToLastAdded(tree);
-    }
-  }
-
-  void Tree::setParent(
-    Tree *newParent,
-    CR_BOL reconnected
-  ) {
-    if (newParent) {
-      if (parent) {
-        parent->releaseChild(this);
-      }
-
-      if (reconnected) {
-        newParent->addChild(this, false);
-      }
-
-      parent = newParent;
-      level = parent->level + 1;
-    }
-  }
-
-  void Tree::cleanDuplicatesInChildren() {
-
-    VEC_TREE wasted
-      = utils::VecDupTools<Tree*, utils::VECDUP_STABLE>::eliminate(
-        children, false,
-        [](Tree *rep, Tree *nd)->bool {
-          if (rep->name == nd->name) return true;
-          return false;
+  void GeneralTree::movePointer(CR_INT direction) {
+    if (children) {
+      if (direction < 0) {
+        for (int i = 0; i < std::abs(direction); i++) {
+          children = static_cast<GT*>(children->prev());
         }
-      );
-
-    // remove duplicates of same name
-    for (Tree *nd : wasted) {
-      nd->remove();
+      }
+      else for (int i = 0; i < direction; i++) {
+        children = static_cast<GT*>(children->next());
+      }
     }
   }
 
-  void Tree::cleanDuplicateToLastAdded(Tree *tree) {
-
-    VEC_TREE wasted
-      = utils::VecDupTools<Tree*, utils::VECDUP_STABLE>::clean(
-        children, tree, false,
-        [](Tree *rep, Tree *nd)->bool {
-          if (rep->name == nd->name) return true;
-          return false;
-        }
-      );
-
-    // remove duplicates of same name
-    for (Tree *nd : wasted) {
-      nd->remove();
+  void GeneralTree::resetPointer() {
+    if (children) {
+      children = static_cast<GT*>(children->head());
     }
   }
 
-  void Tree::cleanChildren() {
-    for (Tree *nd : children) {
-      nd->destroy(false);
+  void GeneralTree::cleanChildren() {
+    if (children) {
+      children->annihilate();
+      children = nullptr;
     }
   }
 
-  Tree *Tree::dismantle(CR_INT index) {
-    Tree *target = children[index];
-    target->resign();
-    utils::VecTools<Tree*>::extractSingleStable(children, index);
-    return target;
+  // postorder traversal
+  void GeneralTree::traverse(CR_BOL direction, CR_CALLBACK callback) {
+
+    LinkedListMetadata::iteratings[start] = true;
+    GT *current = static_cast<GT*>(neighbors[direction]);
+
+    if (children) children->traverse(direction, callback);
+    callback(this);
+
+    while (current && current != this) {
+
+      if (current->children) {
+        current->children->traverse(direction, callback);
+      }
+
+      callback(current);
+      current = static_cast<GT*>(current->neighbors[direction]);
+    }
+
+    LinkedListMetadata::iteratings[start] = false;
   }
 
-  void Tree::dismantleDestroy(CR_INT index) {
-    dismantle(index)->destroy(true);
-  }
+  // preorder traversal
+  void GeneralTree::branch(CR_BOL direction, CR_CALLBACK condition) {
 
-  Tree* Tree::dismantleRelease(CR_INT index) {
-    children[index]->level = 0;
-    children[index]->parent = nullptr;
-    return dismantle(index);
-  }
+    LinkedListMetadata::iteratings[start] = true;
+    GT *current = static_cast<GT*>(neighbors[direction]);
 
-  void Tree::removeChild(Tree *tree) {
-    if (!tree) return;
+    if (condition(this)) {
+      branch(this, condition);
+      current = nullptr;
+    }
 
-    for (int i = 0; i < children.size(); i++) {
-      if (children[i] == tree) {
-        dismantleDestroy(i);
+    while (current && current != this) {
+
+      if (condition(current)){
+        branch(current, condition);
         break;
       }
+
+      current = static_cast<GT*>(current->neighbors[direction]);
+    }
+
+    LinkedListMetadata::iteratings[start] = false;
+  }
+
+  /** OVERRIDES */
+
+  void GeneralTree::join(LinkedList *object) {
+    if (object) {
+      LinkedList::xjoin(object);
+      static_cast<GT*>(object)->xsetParent(parent);
     }
   }
 
-  void Tree::removeChild(CR_INT index) {
-    if (utils::VecTools<Tree*>::hasIndex(children, index)) {
-      dismantleDestroy(index);
-    }
+  void GeneralTree::accept(LinkedList *object) {
+    object->join(this);
   }
 
-  Tree *Tree::releaseChild(Tree *tree) {
-    if (!tree) return nullptr;
+  void GeneralTree::destroy() {
+    if (children) children->annihilate();
+    LinkedList::destroy();
+  }
 
-    for (int i = 0; i < children.size(); i++) {
-      if (children[i] == tree) {
-        return dismantleRelease(i);
+  // postorder traversal
+  void GeneralTree::annihilate() {
+    GT *current = static_cast<GT*>(neighbors[RIGHT]);
+
+    while (current && current != this) {
+
+      if (current->children) {
+        current->children->annihilate();
       }
+
+      delete current;
+      current = static_cast<GT*>(current->neighbors[RIGHT]);
     }
 
-    return nullptr;
-  }
-
-  Tree *Tree::releaseChild(CR_INT index) {
-    if (utils::VecTools<Tree*>::hasIndex(children, index)) {
-      return dismantleRelease(index);
-    }
-    return nullptr;
-  }
-
-  VEC_TREE Tree::releaseChildren() {
-    VEC_TREE released = children;
-
-    for (Tree *nd : children) {
-      nd->level = 0;
-      nd->parent = nullptr;
-    }
-
-    children = {};
-    return released;
-  }
-
-  void Tree::destroy(CR_BOL firstOccurrence) {
-    if (firstOccurrence && parent) {
-      parent->releaseChild(this);
-    }
-    cleanChildren();
-    LinkedList::remove();
+    delete this;
   }
 }}
 
-#endif // __MINI_TOOLS__DATA_STRUCTURES__TREE_CPP__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_CPP__
