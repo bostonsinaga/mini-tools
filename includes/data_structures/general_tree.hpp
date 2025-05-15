@@ -1,104 +1,50 @@
-#ifndef __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__
-#define __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__
-
-#include "linked_list.hpp"
-
-//____________|
-// N-ARY TREE |
-//____________|
+#ifndef __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_HPP__
+#define __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_HPP__
 
 namespace mini_tools {
 namespace data_structures {
-
-  class Tree;
-  typedef std::vector<Tree*> VEC_TREE;
-  typedef const VEC_TREE& CR_VEC_TREE;
 
   /**
    * You can inherit from this class to create
    * what is generally referred to as a Node.
    */
-  class Tree : public LinkedList {
+  class GeneralTree : public LinkedList {
   private:
-    void cleanDuplicateToLastAdded(Tree *tree);
-    void cleanChildren();
-    void destroy(CR_BOL firstOccurrence);
-    void dismantleDestroy(CR_INT index);
-    Tree* dismantleRelease(CR_INT index);
+    typedef GeneralTree GT;
+    size_t level = 0;
+
+    GT *parent = nullptr,
+      *children = nullptr;
+
+    void xsetParent(GT *object);
+    void xaddChild(GT *object);
 
   protected:
-    UI level = 0;
-    VEC_TREE children;
-    Tree *parent = nullptr;
-
-    virtual void setChildren(
-      CR_VEC_TREE newChildren,
-      CR_BOL needEmpty,
-      CR_BOL validating
-    );
-
-    virtual Tree* dismantle(CR_INT index);
-    void cleanDuplicatesInChildren();
-    void setLevel(CR_UI lv) { level = lv; }
-
-    // destructor only invoked from 'remove' method
-    ~Tree() {}
+    ~GeneralTree() {}
 
   public:
-    Tree() {}
+    size_t getLevel() { return level; }
+    size_t childrenCount();
 
-    Tree(
-      CR_STR name_in,
-      Tree *parent_in = nullptr
-    );
+    GT *getChildren() { return children; }
+    bool hasChild(GT *child);
 
-    UI getLevel() { return level; }
-    size_t getNumberOfChildren() { return children.size(); }
+    void setParent(GT *object);
+    void addChild(GT *object);
+    void removeChild(GT *child);
+    void movePointer(CR_INT direction);
+    void resetPointer();
+    void cleanChildren();
+    void traverse(CR_BOL direction, CR_CALLBACK callback);
+    void branch(CR_BOL direction, CR_CALLBACK condition);
 
-    bool hasChild(Tree *tree);
-    bool hasChild(CR_STR searched);
+    /** OVERRIDES */
 
-    VEC_TREE getChildren() { return children; }
-    Tree *getParent() { return parent; }
-
-    Tree *getChild(CR_INT index);
-    Tree *getChild(CR_STR searched);
-    Tree *getRoot();
-
-    VEC_TREE setChildrenRelease(
-      CR_VEC_TREE newChildren,
-      CR_BOL validating = true
-    );
-
-    void setChildrenReplace(
-      CR_VEC_TREE newChildren,
-      CR_BOL validating = true
-    );
-
-    void addChildren(
-      CR_VEC_TREE newChildren,
-      CR_BOL validating = true
-    );
-
-    virtual void addChild(
-      Tree *tree,
-      CR_BOL reconnected = true
-    );
-
-    void setParent(
-      Tree *newParent,
-      CR_BOL reconnected = true
-    );
-
-    void removeChild(Tree *tree);
-    void removeChild(CR_INT index);
-
-    Tree *releaseChild(Tree *tree);
-    Tree *releaseChild(CR_INT index);
-
-    virtual VEC_TREE releaseChildren();
-    void remove() override { destroy(true); }
+    void join(LinkedList *object) override;
+    void accept(LinkedList *object) override;
+    void destroy() override;
+    void annihilate() override;
   };
 }}
 
-#endif // __MINI_TOOLS__DATA_STRUCTURES__TREE_HPP__
+#endif // __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_HPP__
