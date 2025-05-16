@@ -106,7 +106,9 @@ namespace utils {
 
   std::string CLI_WordParser::last(CR_STR keyword) {
 
-    if (STRUNORMAP_FOUND<VEC_STR>(words, keyword)) {
+    if (STRUNORMAP_FOUND<VEC_STR>(words, keyword) &&
+      !words[keyword].empty()
+    ) {
       return words[keyword].back();
     }
 
@@ -204,7 +206,9 @@ namespace utils {
 
   bool CLI_ToggleParser::last(CR_STR keyword) {
 
-    if (STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword)) {
+    if (STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword) &&
+      !toggles[keyword].empty()
+    ) {
       return toggles[keyword].back();
     }
 

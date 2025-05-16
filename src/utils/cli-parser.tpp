@@ -114,7 +114,9 @@ namespace utils {
   template <inspector::NUMBER T>
   T CLI_NumberParser<T>::last(CR_STR keyword) {
 
-    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword)) {
+    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword) &&
+      !numbers[keyword].empty()
+    ) {
       return numbers[keyword].back();
     }
 
