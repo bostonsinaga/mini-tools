@@ -82,8 +82,15 @@ namespace data_structures {
     return nullptr;
   }
 
-  bool LinkedList::hasMember(LinkedList *object) {
-    return LinkedListMetadata::existences[start][object];
+  void LinkedList::merge(LinkedList *outsider) {
+    if (outsider) {
+      tail->accept(outsider->start);
+      outsider->xappoint(start);
+    }
+  }
+
+  bool LinkedList::hasMember(LinkedList *member) {
+    return LinkedListMetadata::existences[start][member];
   }
 
   void LinkedList::iterate(
