@@ -19,18 +19,18 @@ namespace data_structures {
     existences[leader][leader] = true;
   }
 
+  void LinkedListMetadata::remove(LinkedList *leader) {
+    numbers.erase(leader);
+    iteratings.erase(leader);
+    existences.erase(leader);
+  }
+
   void LinkedListMetadata::add(
     LinkedList *leader,
     LinkedList *follower
   ) {
     numbers[leader]++;
     existences[leader][follower] = true;
-  }
-
-  void LinkedListMetadata::remove(LinkedList *leader) {
-    numbers.erase(leader);
-    iteratings.erase(leader);
-    existences.erase(leader);
   }
 
   void LinkedListMetadata::drop(
@@ -41,39 +41,41 @@ namespace data_structures {
     existences[leader].erase(follower);
   }
 
-  void LinkedListMetadata::appoint(
-    LinkedList *leader,
-    LinkedList *candidate
-  ) {
-    numbers[candidate] = numbers[leader];
-    iteratings[candidate] = false;
-    existences[candidate] = existences[leader];
-    LinkedListMetadata::remove(leader);
-  }
-
   /** LINKED LIST */
+
+  LinkedList::LinkedList() {
+    start = this;
+    LinkedListMetadata::create(this);
+  }
 
   LinkedList *LinkedList::slice() {
     if (neighbors[RIGHT]) {
-      LinkedList *newStart;
+      LinkedList *newStart = start;
 
+      // head
       if (start == this) {
         newStart = neighbors[RIGHT];
         detach();
       }
+      // head right
       else if (neighbors[LEFT] == start) {
-        newStart = this;
         start->detach();
       }
+      // tail
       else if (start->neighbors[LEFT] == this) {
-        newStart = start;
         detach();
       }
       else {
+        // segment 1
         LinkedList *tailBuffer = start->neighbors[LEFT];
         start->neighbors[LEFT] = neighbors[LEFT];
         neighbors[LEFT]->neighbors[RIGHT] = start;
+
+        // segment 2
         neighbors[LEFT] = tailBuffer;
+        tailBuffer->neighbors[RIGHT] = this;
+
+        xappoint(this);
       }
 
       return newStart;
@@ -84,13 +86,23 @@ namespace data_structures {
 
   void LinkedList::merge(LinkedList *outsider) {
     if (outsider) {
-      tail->accept(outsider->start);
+      LinkedList *outStart = outsider->start,
+        *outTail = outsider->tail();
+
       outsider->xappoint(start);
+
+      outStart->neighbors[LEFT] = tail();
+      outTail->neighbors[RIGHT] = start;
+      tail()->neighbors[RIGHT] = outStart;
+      start->neighbors[LEFT] = outTail;
     }
   }
 
   bool LinkedList::hasMember(LinkedList *member) {
-    return LinkedListMetadata::existences[start][member];
+    return UNORMAP_FOUND<LinkedList*, bool>(
+      LinkedListMetadata::existences[start],
+      member
+    );
   }
 
   void LinkedList::iterate(
@@ -113,28 +125,43 @@ namespace data_structures {
   }
 
   void LinkedList::xappoint(LinkedList *newStart) {
-    LinkedListMetadata::appoint(start, newStart);
+
+    if (!UNORMAP_FOUND<LinkedList*, UNORMAP<LinkedList*, bool>>(
+      LinkedListMetadata::existences,
+      newStart
+    )) {
+      LinkedListMetadata::create(newStart);
+    }
 
     LinkedList *current = neighbors[RIGHT];
     start = newStart;
 
     while (current && current != this) {
+
+      // transfer ownership
+      LinkedListMetadata::drop(start, current);
+      LinkedListMetadata::add(newStart, current);
+
       current->start = newStart;
       current = current->neighbors[RIGHT];
     }
   }
 
   void LinkedList::appoint(LinkedList *newStart) {
-    if (newStart) xappoint(newStart);
+    if (hasMember(newStart)) xappoint(newStart);
   }
 
   void LinkedList::xdetach() {
     if (neighbors[RIGHT]) {
-      LinkedListMetadata::drop(start, this);
+
+      if (start == this) {
+        xappoint(neighbors[RIGHT]);
+        start = this;
+      }
+      else LinkedListMetadata::drop(start, this);
+
       neighbors[LEFT]->neighbors[RIGHT] = neighbors[RIGHT];
       neighbors[RIGHT]->neighbors[LEFT] = neighbors[LEFT];
-
-      if (start == this) xappoint(neighbors[RIGHT]);
     }
   }
 
