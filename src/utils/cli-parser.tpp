@@ -64,19 +64,16 @@ namespace utils {
 
   template <inspector::NUMBER T>
   void CLI_NumberParser<T>::assign() {
-    bool inputDetected = false;
-    int j;
+    int j = -1;
 
     for (int i = 0; i < raws.size(); i++) {
-      j = i-1;
-
-      // now is keyword
+      // keyword detected
       if (has(raws[i])) {
-        inputDetected = true;
+        j = i;
+        break;
       }
       // input detected
-      else if (inputDetected) {
-        inputDetected = false;
+      else if (j >= 0) {
         CLI_NumberParser<T>::assignTryCatch(i, j);
       }
       // set titles in early iterations
