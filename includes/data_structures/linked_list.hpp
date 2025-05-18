@@ -15,30 +15,21 @@ namespace data_structures {
     LinkedListMetadata() = delete;
 
   private:
-    template<typename T, typename U>
-    using MAP_LL = std::unordered_map<T, U>;
-
-    inline static MAP_LL<LinkedList*, size_t> numbers;
-    inline static MAP_LL<LinkedList*, bool> iteratings;
-    inline static MAP_LL<LinkedList*, MAP_LL<LinkedList*, bool>> existences;
+    inline static UNORMAP<LinkedList*, size_t> numbers;
+    inline static UNORMAP<LinkedList*, bool> iteratings;
+    inline static UNORMAP<LinkedList*, UNORMAP<LinkedList*, bool>> existences;
 
     static void create(LinkedList *leader);
+    static void remove(LinkedList *leader);
 
     static void add(
       LinkedList *leader,
       LinkedList *follower
     );
 
-    static void remove(LinkedList *leader);
-
     static void drop(
       LinkedList *leader,
       LinkedList *follower
-    );
-
-    static void appoint(
-      LinkedList *leader,
-      LinkedList *candidate
     );
 
     friend class LinkedList;
@@ -67,23 +58,22 @@ namespace data_structures {
     ~LinkedList() {}
 
   public:
-    LinkedList() {
-      start = this;
-      LinkedListMetadata::create(this);
-    }
-
     enum DIRECTION { LEFT, RIGHT };
 
+    LinkedList();
     LinkedList *head() { return start; }
     LinkedList *tail() { return start->neighbors[LEFT]; }
     LinkedList *next() { return neighbors[RIGHT]; }
     LinkedList *prev() { return neighbors[LEFT]; }
 
     /**
-     * Disconnect list from this thus dividing it into 2 'start'.
-     * Returns 'start' if this is follower.
-     * Returns 'neighbors[RIGHT]' if this the 'start'.
-     * Returns 'nullptr' if this is single.
+     * Disconnect list from this thus dividing it into 2 'start'
+     * and make this a 'start' for the right followers.
+     * 
+     * Rules:
+     *  Returns 'start' if this is follower.
+     *  Returns 'neighbors[RIGHT]' if this the 'start'.
+     *  Returns 'nullptr' if this is single.
      */
     LinkedList *slice();
 
