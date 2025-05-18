@@ -161,11 +161,22 @@ namespace mini_tools {
 
   /** SHORTENED STRING UNORDERED MAP TEMPLATES */
 
+  template <typename T, typename U>
+  using UNORMAP = std::unordered_map<T, U>;
+
   template <typename T>
   using STRUNORMAP = std::unordered_map<std::string, T>;
 
+  template <typename T, typename U>
+  using CR_UNORMAP = const UNORMAP<T, U>&;
+
   template <typename T>
   using CR_STRUNORMAP = const STRUNORMAP<T>&;
+
+  template <typename T, typename U>
+  inline bool UNORMAP_FOUND(CR_UNORMAP<T, U> map, T key) {
+    return map.find(key) != map.end();
+  }
 
   template <typename T>
   inline bool STRUNORMAP_FOUND(CR_STRUNORMAP<T> map, CR_STR key) {
