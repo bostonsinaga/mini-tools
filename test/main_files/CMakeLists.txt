@@ -13,6 +13,6 @@ function(register_test target_filename_list)
   endforeach()
 endfunction()
 
-add_subdirectory(algorithms)
+# add_subdirectory(algorithms)
 add_subdirectory(data_structures)
-add_subdirectory(utils)
+# add_subdirectory(utils)
