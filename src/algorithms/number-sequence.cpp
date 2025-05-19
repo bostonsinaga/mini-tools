@@ -1,10 +1,8 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_CPP__
 #define __MINI_TOOLS__ALGORITHMS__NUMBER_SEQUENCE_CPP__
 
-#include <cmath>
-#include <algorithm>
 #include "types.hpp"
-#include "algorithms/number_sequence.hpp"
+#include "algorithms/number-sequence.hpp"
 
 namespace mini_tools {
 namespace algorithms {

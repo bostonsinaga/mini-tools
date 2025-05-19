@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__RANDOM_WORDS_CPP__
 
 #include "types.hpp"
-#include "utils/random_words.hpp"
+#include "utils/random-words.hpp"
 
 namespace mini_tools {
 namespace utils {

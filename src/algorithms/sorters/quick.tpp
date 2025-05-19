@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__SORTERS__QUICK_TPP__
 #define __MINI_TOOLS__SORTERS__QUICK_TPP__
 
-#include <ctime>
-
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {

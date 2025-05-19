@@ -1,4 +1,3 @@
-#include "mini_tools.hpp"
 #include "helper.hpp"
 
 typedef mt_ds::LinkedList LL;

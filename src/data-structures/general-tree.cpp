@@ -2,8 +2,8 @@
 #define __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_CPP__
 
 #include "types.hpp"
-#include "data_structures/linked_list.hpp"
-#include "data_structures/general_tree.hpp"
+#include "data-structures/linked-list.hpp"
+#include "data-structures/general-tree.hpp"
 
 namespace mini_tools {
 namespace data_structures {

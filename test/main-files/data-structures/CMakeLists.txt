@@ -1,6 +1,6 @@
 set(datastructures
-  datastructures_linkedlist@linked_list.cpp
-  datastructures_generaltree@general_tree.cpp
+  datastructures_linkedlist@linked-list.cpp
+  datastructures_generaltree@general-tree.cpp
 )
 
 register_test(datastructures)

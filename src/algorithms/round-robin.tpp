@@ -1,7 +1,7 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 #define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 
-#include "utils/vec_tools.hpp"
+#include "utils/vec-tools.hpp"
 
 namespace mini_tools {
 namespace algorithms {

@@ -3,7 +3,7 @@
 
 #include "types.hpp"
 #include "algorithms/algorithms.hpp"
-#include "data_structures/data_structures.hpp"
+#include "data-structures/data-structures.hpp"
 #include "utils/utils.hpp"
 
 namespace mt = mini_tools;
