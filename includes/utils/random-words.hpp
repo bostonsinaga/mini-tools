@@ -69,5 +69,5 @@ namespace utils {
   };
 }}
 
-#include "utils/random_words.tpp"
+#include "utils/random-words.tpp"
 #endif // __MINI_TOOLS__UTILS__RANDOM_WORDS_HPP__
