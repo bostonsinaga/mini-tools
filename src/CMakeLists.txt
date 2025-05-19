@@ -9,4 +9,4 @@ set (SOURCES
   utils/time-date.cpp
 )
 
-add_library(mini_tools STATIC ${SOURCES})
+add_library(mini-tools STATIC ${SOURCES})
