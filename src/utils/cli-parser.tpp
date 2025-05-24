@@ -70,7 +70,6 @@ namespace utils {
       // keyword detected
       if (has(raws[i])) {
         j = i;
-        break;
       }
       // input detected
       else if (j >= 0) {
@@ -156,38 +155,41 @@ namespace utils {
 
   template <inspector::NUMBER T>
   void CLI_Parser<T>::assign() {
-    int j;
+    int j = -1;
 
     enum {
-      title_e, word_e, number_e, toggle_e
-    } index_e = title_e;
+      word_e, number_e, toggle_e
+    } index_e;
 
     for (int i = 0; i < raws.size(); i++) {
-      j = i-1;
-
       // keyword detected WORDS
       if (CLI_WordParser::has(raws[i])) {
         index_e = word_e;
+        j = i;
       }
-      // now is keyword NUMBERS
+      // keyword detected NUMBERS
       else if (CLI_NumberParser<T>::has(raws[i])) {
         index_e = number_e;
+        j = i;
       }
-      // now is keyword TOGGLES
+      // keyword detected TOGGLES
       else if (CLI_ToggleParser::has(raws[i])) {
         index_e = toggle_e;
+        j = i;
       }
-      // input detected WORDS
-      else if (index_e == word_e) {
-        words[raws[j]].push_back(raws[i]);
-      }
-      // input detected NUMBERS
-      else if (index_e == number_e) {
-        CLI_NumberParser<T>::assignTryCatch(i, j);
-      }
-      // input detected TOGGLES
-      else if (index_e == toggle_e) {
-        toggles[raws[j]].push_back(booleanize(raws[i]));
+      else if (j >= 0) {
+        // input detected WORDS
+        if (index_e == word_e) {
+          words[raws[j]].push_back(raws[i]);
+        }
+        // input detected NUMBERS
+        else if (index_e == number_e) {
+          CLI_NumberParser<T>::assignTryCatch(i, j);
+        }
+        // input detected TOGGLES
+        else if (index_e == toggle_e) {
+          toggles[raws[j]].push_back(booleanize(raws[i]));
+        }
       }
       // set titles in early iterations
       else titles[raws[i]] = true;

@@ -60,19 +60,15 @@ namespace utils {
   }
 
   void CLI_WordParser::assign() {
-    bool inputDetected = false;
-    int j;
+    int j = -1;
 
     for (int i = 0; i < raws.size(); i++) {
-      j = i-1;
-
-      // now is keyword
+      // keyword detected
       if (has(raws[i])) {
-        inputDetected = true;
+        j = i;
       }
       // input detected
-      else if (inputDetected) {
-        inputDetected = false;
+      else if (j >= 0) {
         words[raws[j]].push_back(raws[i]);
       }
       // set titles in early iterations
@@ -143,19 +139,15 @@ namespace utils {
   }
 
   void CLI_ToggleParser::assign() {
-    bool inputDetected = false;
-    int j;
+    int j = -1;
 
     for (int i = 0; i < raws.size(); i++) {
-      j = i-1;
-
-      // now is keyword
+      // keyword detected
       if (has(raws[i])) {
-        inputDetected = true;
+        j = i;
       }
       // input detected
-      else if (inputDetected) {
-        inputDetected = false;
+      else if (j >= 0) {
         toggles[raws[j]].push_back(booleanize(raws[i]));
       }
       // set titles in early iterations
