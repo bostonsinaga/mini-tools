@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__RANDOM_WORDS_TPP__
 #define __MINI_TOOLS__UTILS__RANDOM_WORDS_TPP__
 
+#include "utils/random-words.hpp"
+
 namespace mini_tools {
 namespace utils {
 

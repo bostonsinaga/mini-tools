@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__SCANNER_HPP__
 #define __MINI_TOOLS__UTILS__SCANNER_HPP__
 
+#include "types.hpp"
+
 namespace mini_tools {
 namespace utils {
 

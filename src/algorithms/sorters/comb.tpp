@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_TPP__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_TPP__
 
+#include "algorithms/sorters/comb.hpp"
+
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {

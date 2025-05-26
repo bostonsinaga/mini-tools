@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 #define __MINI_TOOLS__UTILS__VEC_TOOLS_TPP__
 
+#include "utils/vec-tools.hpp"
+
 namespace mini_tools {
 namespace utils {
 

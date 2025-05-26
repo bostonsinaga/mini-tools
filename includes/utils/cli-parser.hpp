@@ -1,6 +1,10 @@
 #ifndef __MINI_TOOLS__UTILS__CLI_PARSER_HPP__
 #define __MINI_TOOLS__UTILS__CLI_PARSER_HPP__
 
+#include "types.hpp"
+#include "utils/str-tools.hpp"
+#include "utils/vec-tools.hpp"
+
 namespace mini_tools {
 namespace utils {
 

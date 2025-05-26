@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__PRINTER_TPP__
 #define __MINI_TOOLS__UTILS__PRINTER_TPP__
 
+#include "utils/printer.hpp"
+
 namespace mini_tools {
 namespace utils {
 

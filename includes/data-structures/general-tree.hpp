@@ -1,6 +1,9 @@
 #ifndef __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_HPP__
 #define __MINI_TOOLS__DATA_STRUCTURES__GENERAL_TREE_HPP__
 
+#include "types.hpp"
+#include "data-structures/linked-list.hpp"
+
 namespace mini_tools {
 namespace data_structures {
 

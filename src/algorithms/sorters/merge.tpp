@@ -1,7 +1,7 @@
 #ifndef __MINI_TOOLS__SORTERS__MERGE_TPP__
 #define __MINI_TOOLS__SORTERS__MERGE_TPP__
 
-#include "utils/vec-tools.hpp"
+#include "algorithms/sorters/merge.hpp"
 
 namespace mini_tools {
 namespace algorithms {

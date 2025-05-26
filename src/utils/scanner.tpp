@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__UTILS__SCANNER_TPP__
 #define __MINI_TOOLS__UTILS__SCANNER_TPP__
 
+#include "utils/scanner.hpp"
+
 namespace mini_tools {
 namespace utils {
 

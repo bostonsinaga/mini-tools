@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_HPP__
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__COMB_HPP__
 
+#include "types.hpp"
+
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {
