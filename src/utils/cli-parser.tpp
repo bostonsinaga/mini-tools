@@ -76,7 +76,7 @@ namespace utils {
         CLI_NumberParser<T>::assignTryCatch(i, j);
       }
       // set titles in early iterations
-      else titles[raws[i]] = true;
+      else CLI_TitleParser::assign(raws[i]);
     }
   }
 
@@ -154,6 +154,11 @@ namespace utils {
   { assign(); }
 
   template <inspector::NUMBER T>
+  bool CLI_Parser<T>::entry(CR_STR input) {
+    return CLI_TitleParser::has(input);
+  }
+
+  template <inspector::NUMBER T>
   void CLI_Parser<T>::assign() {
     int j = -1;
 
@@ -192,13 +197,14 @@ namespace utils {
         }
       }
       // set titles in early iterations
-      else titles[raws[i]] = true;
+      else CLI_TitleParser::assign(raws[i]);
     }
   }
 
   template <inspector::NUMBER T>
   bool CLI_Parser<T>::has(CR_STR keyword) {
     return (
+      STRUNORMAP_BOL_FOUND(titles, keyword) ||
       STRUNORMAP_FOUND<VEC_STR>(words, keyword) ||
       STRUNORMAP_FOUND<VEC<T>>(CLI_NumberParser<T>::numbers, keyword) ||
       STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword)
@@ -243,6 +249,7 @@ namespace utils {
   template <inspector::NUMBER T>
   CLI_Parser<T>::CLI_VAL_TUPLE CLI_Parser<T>::at(CR_STR keyword, CR_SZ index) {
     return std::make_tuple(
+      CLI_TitleParser::at(keyword),
       CLI_WordParser::at(keyword, index),
       CLI_NumberParser<T>::at(keyword, index),
       CLI_ToggleParser::at(keyword, index)
@@ -252,6 +259,7 @@ namespace utils {
   template <inspector::NUMBER T>
   CLI_Parser<T>::CLI_VAL_TUPLE CLI_Parser<T>::last(CR_STR keyword) {
     return std::make_tuple(
+      lastEntry,
       CLI_WordParser::last(keyword),
       CLI_NumberParser<T>::last(keyword),
       CLI_ToggleParser::last(keyword)
@@ -261,6 +269,7 @@ namespace utils {
   template <inspector::NUMBER T>
   CLI_Parser<T>::CLI_VEC_TUPLE CLI_Parser<T>::extract(CR_STR keyword) {
     return std::make_tuple(
+      CLI_TitleParser::extract(),
       CLI_WordParser::extract(keyword),
       CLI_NumberParser<T>::extract(keyword),
       CLI_ToggleParser::extract(keyword)

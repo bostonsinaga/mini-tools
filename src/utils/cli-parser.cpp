@@ -21,12 +21,28 @@ namespace utils {
     }
   }
 
+  void CLI_TitleParser::assign(CR_STR raw) {
+    lastEntry = raw;
+    titles[lastEntry] = true;
+  }
+
   bool CLI_TitleParser::has(CR_STR keyword) {
     return STRUNORMAP_BOL_FOUND(titles, keyword);
   }
 
   size_t CLI_TitleParser::size() {
     return titles.size();
+  }
+
+  std::string CLI_TitleParser::at(CR_STR keyword) {
+    if (STRUNORMAP_BOL_FOUND(titles, keyword)) {
+      return keyword;
+    }
+    return "";
+  }
+
+  std::string CLI_TitleParser::last() {
+    return lastEntry;
   }
 
   VEC_STR CLI_TitleParser::extract() {
@@ -70,7 +86,7 @@ namespace utils {
         words[raws[j]].push_back(raws[i]);
       }
       // set titles in early iterations
-      else titles[raws[i]] = true;
+      else CLI_TitleParser::assign(raws[i]);
     }
   }
 
@@ -149,7 +165,7 @@ namespace utils {
         toggles[raws[j]].push_back(booleanize(raws[i]));
       }
       // set titles in early iterations
-      else titles[raws[i]] = true;
+      else CLI_TitleParser::assign(raws[i]);
     }
   }
 
