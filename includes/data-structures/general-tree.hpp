@@ -19,11 +19,9 @@ namespace data_structures {
     GT *parent = nullptr,
       *children = nullptr;
 
+    ~GeneralTree() {}
     void xsetParent(GT *object);
     void xaddChild(GT *object);
-
-  protected:
-    ~GeneralTree() {}
 
   public:
     size_t getLevel() { return level; }
@@ -35,9 +33,21 @@ namespace data_structures {
     void setParent(GT *object);
     void addChild(GT *object);
     void removeChild(GT *child);
-    void movePointer(CR_INT direction);
-    void resetPointer();
     void cleanChildren();
+    void resetPointer();
+
+    /**
+     * 'steps':
+     *   right = positive
+     *   left = negative
+     */
+    void movePointer(CR_INT steps);
+
+    /**
+     * 'direction':
+     *   right = true
+     *   left = false
+     */
     void traverse(CR_BOL direction, CR_CALLBACK callback);
     void branch(CR_BOL direction, CR_CALLBACK condition);
 

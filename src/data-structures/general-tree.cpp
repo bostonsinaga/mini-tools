@@ -42,14 +42,14 @@ namespace data_structures {
     }
   }
 
-  void GeneralTree::movePointer(CR_INT direction) {
+  void GeneralTree::movePointer(CR_INT steps) {
     if (children) {
-      if (direction < 0) {
-        for (int i = 0; i < std::abs(direction); i++) {
+      if (steps < 0) {
+        for (int i = 0; i < std::abs(steps); i++) {
           children = static_cast<GT*>(children->prev());
         }
       }
-      else for (int i = 0; i < direction; i++) {
+      else for (int i = 0; i < steps; i++) {
         children = static_cast<GT*>(children->next());
       }
     }
