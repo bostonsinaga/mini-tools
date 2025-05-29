@@ -7,6 +7,10 @@ namespace helper {
     mt::VEC_STR*, mt::VEC_STR*
   > TUP4PTR;
 
+  /**
+   * 'timerTitle' is test program name.
+   * 'logFilePath' is relative path to 'mini-tools/test/logs/'.
+   */
   void call(
     std::function<TUP4PTR(mt::VEC_INT&, mt::VEC_DBL&, mt::VEC_STR&, mt::VEC_STR&)> callback,
     mt::CR_STR timerTitle,
