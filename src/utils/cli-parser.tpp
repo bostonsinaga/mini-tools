@@ -6,99 +6,159 @@
 namespace mini_tools {
 namespace utils {
 
-  //_________|
-  // NUMBERS |
-  //_________|
-
   template <inspector::NUMBER T>
-  CLI_NumberParser<T>::CLI_NumberParser(
+  CLIParser<T>::CLIParser(
     CR_INT argc,
     char *argv[],
-    CR_VEC_STR keywords,
-    CR_BOL assigning
-  ) : CLI_TitleParser(argc, argv, keywords) {
+    CR_VEC_STR wordKeywords,
+    CR_VEC_STR numberKeywords,
+    CR_VEC_STR toggleKeywords
+  ) {
+    // strings converted from 'argv'
+    VEC_STR raws;
 
-    for (CR_STR key : keywords) {
+    /**
+     * Load the vector 'raws'.
+     * Skip the first 'argv' as it is the program name.
+     */
+    for (int i = 1; i < argc; i++) {
+      raws.push_back(std::string(argv[i]));
+    }
+
+    /** Initialize unordered maps with empty vector */
+
+    for (CR_STR key : wordKeywords) {
+      words[key] = {};
+    }
+
+    for (CR_STR key : numberKeywords) {
       numbers[key] = {};
     }
 
-    if (assigning) assign();
-  }
-
-  template <inspector::NUMBER T>
-  void CLI_NumberParser<T>::assignTryCatch(CR_INT i, CR_INT j) {
-
-    // try to all possible number types
-    try {
-      if constexpr (std::is_same_v<T, int>) {
-        numbers[raws[j]].push_back(std::stoi(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, LI>) {
-        numbers[raws[j]].push_back(std::stol(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, LLI>) {
-        numbers[raws[j]].push_back(std::stoll(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, ULI>) {
-        numbers[raws[j]].push_back(std::stoul(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, ULLI>) {
-        numbers[raws[j]].push_back(std::stoull(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, float>) {
-        numbers[raws[j]].push_back(std::stof(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, double>) {
-        numbers[raws[j]].push_back(std::stod(raws[i]));
-      }
-      else if constexpr (std::is_same_v<T, LD>) {
-        numbers[raws[j]].push_back(std::stold(raws[i]));
-      }
-      else numbers[raws[j]].push_back(0);
+    for (CR_STR key : toggleKeywords) {
+      toggles[key] = {};
     }
-    // the 'raws[i]' ​​start with non-numeric
-    catch (...) {
-      numbers[raws[j]].push_back(0);
-    }
-  }
 
-  template <inspector::NUMBER T>
-  void CLI_NumberParser<T>::assign() {
-    int j = -1;
+    /** Assign unordered maps with the 'raws' */
+
+    std::string keyword;
+    bool toggleHasInput = false;
+
+    enum FoundEnum {
+      entry_, word_, number_, toggle_
+    } found_ = entry_;
+
+    std::function<void(const FoundEnum&, CR_INT)> setKeyword = [&](
+      const FoundEnum& newFound,
+      CR_INT rawsIndex
+    )->void {
+      if (found_ == toggle_) {
+        toggles[keyword].push_back(true);
+      }
+
+      keyword = raws[rawsIndex];
+      found_ = newFound;
+    };
 
     for (int i = 0; i < raws.size(); i++) {
-      // keyword detected
-      if (has(raws[i])) {
-        j = i;
+
+      // keywords detected
+      if (STRUNORMAP_FOUND<VEC_STR>(words, raws[i])) {
+        setKeyword(word_, i);
       }
-      // input detected
-      else if (j >= 0) {
-        CLI_NumberParser<T>::assignTryCatch(i, j);
+      else if (STRUNORMAP_FOUND<VEC<T>>(numbers, raws[i])) {
+        setKeyword(number_, i);
       }
-      // set titles in early iterations
-      else CLI_TitleParser::assign(raws[i]);
+      else if (STRUNORMAP_FOUND<VEC_BOL>(toggles, raws[i])) {
+        toggleHasInput = false;
+        setKeyword(toggle_, i);
+      }
+      // inputs detected
+      else if (found_ == word_) {
+        words[keyword].push_back(raws[i]);
+      }
+      else if (found_ == number_) {
+        numbers[keyword].push_back(
+          StrTools::stringToNumber<T>(raws[i])
+        );
+      }
+      else if (found_ == toggle_) {
+        toggleHasInput = true;
+
+        toggles[keyword].push_back(
+          booleanize(raws[i])
+        );
+      }
+      // before any keyword (basic string)
+      else entries[raws[i]] = true;
+    }
+
+    // keyword toggle is specified without input at the last 'raws'
+    if (!toggleHasInput && found_ == toggle_) {
+      toggles[keyword].push_back(true);
     }
   }
 
   template <inspector::NUMBER T>
-  bool CLI_NumberParser<T>::has(CR_STR keyword) {
+  bool CLIParser<T>::enter(CR_VEC_STR expectedEntries) {
+    int found = 0;
+
+    for (CR_STR expected : expectedEntries) {
+
+      if (STRUNORMAP_BOL_FOUND(entries, expected)) {
+        found++;
+      }
+    }
+
+    return expectedEntries.size() == found;
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::booleanize(std::string &str) {
+
+    int num = 0;
+    StrTools::changeStringToUppercase(str);
+
+    try { num = std::stoi(str); }
+    catch (...) {}
+
+    return (
+      num != 0 || str == "TRUE" ||
+      str == "YES" || str == "Y"
+    );
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::wordsHas(CR_STR keyword) {
+    return STRUNORMAP_FOUND<VEC_STR>(words, keyword);
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::numbersHas(CR_STR keyword) {
     return STRUNORMAP_FOUND<VEC<T>>(numbers, keyword);
   }
 
   template <inspector::NUMBER T>
-  size_t CLI_NumberParser<T>::size(CR_STR keyword) {
-
-    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword)) {
-      return numbers[keyword].size();
-    }
-
-    return 0;
+  bool CLIParser<T>::togglesHas(CR_STR keyword) {
+    return STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword);
   }
 
   template <inspector::NUMBER T>
-  T CLI_NumberParser<T>::at(CR_STR keyword, CR_SZ index) {
+  std::string CLIParser<T>::getWordAt(CR_STR keyword, CR_SZ index) {
 
-    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword) &&
+    if (wordsHas(keyword) &&
+      index < words[keyword].size()
+    ) {
+      return words[keyword][index];
+    }
+
+    return "";
+  }
+
+  template <inspector::NUMBER T>
+  T CLIParser<T>::getNumberAt(CR_STR keyword, CR_SZ index) {
+
+    if (numbersHas(keyword) &&
       index < numbers[keyword].size()
     ) {
       return numbers[keyword][index];
@@ -108,172 +168,77 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  T CLI_NumberParser<T>::last(CR_STR keyword) {
+  bool CLIParser<T>::getToggleAt(CR_STR keyword, CR_SZ index) {
 
-    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword) &&
-      !numbers[keyword].empty()
+    if (togglesHas(keyword) &&
+      index < toggles[keyword].size()
     ) {
-      return numbers[keyword].back();
+      return toggles[keyword][index];
     }
 
-    return T();
+    return false;
   }
 
   template <inspector::NUMBER T>
-  VEC<T> CLI_NumberParser<T>::extract(CR_STR keyword) {
+  VEC_STR CLIParser<T>::extractBasicStrings() {
+    VEC_STR keywords;
 
-    if (STRUNORMAP_FOUND<VEC<T>>(numbers, keyword)) {
-      return std::move(numbers[keyword]);
+    for (CR_PAIR2<std::string, bool> pair : entries) {
+      keywords.push_back(pair.first);
+    }
+
+    return keywords;
+  }
+
+  template <inspector::NUMBER T>
+  VEC_STR CLIParser<T>::getWords(
+    CR_STR keyword,
+    CR_BOL needClean
+  ) {
+    if (wordsHas(keyword)) {
+
+      if (needClean) {
+        return std::move(words[keyword]);
+      }
+
+      return words[keyword];
     }
 
     return {};
   }
 
-  //________|
-  // UNITED |
-  //________|
-
   template <inspector::NUMBER T>
-  CLI_Parser<T>::CLI_Parser(
-    CR_INT argc,
-    char *argv[],
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ):
-  CLI_TitleParser(
-    argc, argv,
-    VecTools<std::string>::joinCopy(
-      VecTools<std::string>::joinCopy(wordKeywords, numberKeywords),
-      toggleKeywords
-    )
-  ),
-  CLI_WordParser(argc, argv, wordKeywords, false),
-  CLI_NumberParser<T>(argc, argv, numberKeywords, false),
-  CLI_ToggleParser(argc, argv, toggleKeywords, false)
-  { assign(); }
+  VEC<T> CLIParser<T>::getNumbers(
+    CR_STR keyword,
+    CR_BOL needClean
+  ) {
+    if (numbersHas(keyword)) {
 
-  template <inspector::NUMBER T>
-  bool CLI_Parser<T>::entry(CR_STR input) {
-    return CLI_TitleParser::has(input);
-  }
-
-  template <inspector::NUMBER T>
-  void CLI_Parser<T>::assign() {
-    int j = -1;
-
-    enum {
-      word_e, number_e, toggle_e
-    } index_e;
-
-    for (int i = 0; i < raws.size(); i++) {
-      // keyword detected WORDS
-      if (CLI_WordParser::has(raws[i])) {
-        index_e = word_e;
-        j = i;
-      }
-      // keyword detected NUMBERS
-      else if (CLI_NumberParser<T>::has(raws[i])) {
-        index_e = number_e;
-        j = i;
-      }
-      // keyword detected TOGGLES
-      else if (CLI_ToggleParser::has(raws[i])) {
-        index_e = toggle_e;
-        j = i;
-      }
-      else if (j >= 0) {
-        // input detected WORDS
-        if (index_e == word_e) {
-          words[raws[j]].push_back(raws[i]);
-        }
-        // input detected NUMBERS
-        else if (index_e == number_e) {
-          CLI_NumberParser<T>::assignTryCatch(i, j);
-        }
-        // input detected TOGGLES
-        else if (index_e == toggle_e) {
-          toggles[raws[j]].push_back(booleanize(raws[i]));
-        }
-      }
-      // set titles in early iterations
-      else CLI_TitleParser::assign(raws[i]);
-    }
-  }
-
-  template <inspector::NUMBER T>
-  bool CLI_Parser<T>::has(CR_STR keyword) {
-    return (
-      STRUNORMAP_BOL_FOUND(titles, keyword) ||
-      STRUNORMAP_FOUND<VEC_STR>(words, keyword) ||
-      STRUNORMAP_FOUND<VEC<T>>(CLI_NumberParser<T>::numbers, keyword) ||
-      STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword)
-    );
-  }
-
-  template <inspector::NUMBER T>
-  size_t CLI_Parser<T>::size(CR_STR keyword) {
-
-    size_t sz = CLI_TitleParser::size();
-
-    // select the class that the vector contains
-    if (!sz) {
-      sz = CLI_WordParser::size(keyword);
-
-      if (!sz) {
-        sz = CLI_NumberParser<T>::size(keyword);
-
-        if (!sz) {
-          return CLI_ToggleParser::size(keyword);
-        }
-
-        return sz;
+      if (needClean) {
+        return std::move(numbers[keyword]);
       }
 
-      return sz;
+      return numbers[keyword];
     }
 
-    return sz;
+    return {};
   }
 
   template <inspector::NUMBER T>
-  ARR_SZ<4> CLI_Parser<T>::sizes(CR_STR keyword) {
-    return {
-      CLI_TitleParser::size(),
-      CLI_WordParser::size(keyword),
-      CLI_NumberParser<T>::size(keyword),
-      CLI_ToggleParser::size(keyword)
-    };
-  }
+  VEC_BOL CLIParser<T>::getToggles(
+    CR_STR keyword,
+    CR_BOL needClean
+  ) {
+    if (togglesHas(keyword)) {
 
-  template <inspector::NUMBER T>
-  CLI_Parser<T>::CLI_VAL_TUPLE CLI_Parser<T>::at(CR_STR keyword, CR_SZ index) {
-    return std::make_tuple(
-      CLI_TitleParser::at(keyword),
-      CLI_WordParser::at(keyword, index),
-      CLI_NumberParser<T>::at(keyword, index),
-      CLI_ToggleParser::at(keyword, index)
-    );
-  }
+      if (needClean) {
+        return std::move(toggles[keyword]);
+      }
 
-  template <inspector::NUMBER T>
-  CLI_Parser<T>::CLI_VAL_TUPLE CLI_Parser<T>::last(CR_STR keyword) {
-    return std::make_tuple(
-      lastEntry,
-      CLI_WordParser::last(keyword),
-      CLI_NumberParser<T>::last(keyword),
-      CLI_ToggleParser::last(keyword)
-    );
-  }
+      return toggles[keyword];
+    }
 
-  template <inspector::NUMBER T>
-  CLI_Parser<T>::CLI_VEC_TUPLE CLI_Parser<T>::extract(CR_STR keyword) {
-    return std::make_tuple(
-      CLI_TitleParser::extract(),
-      CLI_WordParser::extract(keyword),
-      CLI_NumberParser<T>::extract(keyword),
-      CLI_ToggleParser::extract(keyword)
-    );
+    return {};
   }
 }}
 
