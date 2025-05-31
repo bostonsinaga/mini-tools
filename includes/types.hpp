@@ -52,7 +52,13 @@ namespace mini_tools {
     concept LETTER = std::is_same_v<T, char> || std::is_same_v<T, wchar_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
 
     template <typename T>
-    concept NUMBER = std::is_integral_v<T> || std::is_floating_point_v<T>;
+    concept INTEGRAL = std::is_integral_v<T>;
+
+    template <typename T>
+    concept FLOATING_POINT = std::is_floating_point_v<T>;
+
+    template <typename T>
+    concept NUMBER = INTEGRAL<T> || FLOATING_POINT<T>;
 
     template <typename T>
     concept ALPHANUMERIC = LETTER<T> || NUMBER<T>;
@@ -60,6 +66,18 @@ namespace mini_tools {
     template <typename T>
     concept NOT_NULLPTR = !std::is_same_v<T, std::nullptr_t>;
   }
+
+  /**
+   * Floating point precisions based on IEEE 754 standard:
+   * - Float = 6-7 digits.
+   * - Double = 15-17 digits.
+   * - Long Double = 19-21 digits.
+   */
+  enum PRECISION_ENUM {
+    FLT_PRECISION = 6,
+    DBL_PRECISION = 15,
+    LD_PRECISION = 19
+  };
 
   /** SHORTENED PRIMITIVE DATA TYPES */
 
