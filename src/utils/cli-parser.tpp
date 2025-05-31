@@ -128,6 +128,8 @@ namespace utils {
     );
   }
 
+  /** CHECKERS */
+
   template <inspector::NUMBER T>
   bool CLIParser<T>::wordsHas(CR_STR keyword) {
     return STRUNORMAP_FOUND<VEC_STR>(words, keyword);
@@ -142,6 +144,8 @@ namespace utils {
   bool CLIParser<T>::togglesHas(CR_STR keyword) {
     return STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword);
   }
+
+  /** GETTERS */
 
   template <inspector::NUMBER T>
   std::string CLIParser<T>::getWordAt(CR_STR keyword, CR_SZ index) {
@@ -239,6 +243,153 @@ namespace utils {
     }
 
     return {};
+  }
+
+  /** SIZE GETTERS */
+
+  template <inspector::NUMBER T>
+  size_t CLIParser<T>::getWordSize(CR_STR keyword) {
+    if (wordsHas(keyword)) {
+      return words[keyword].size();
+    }
+    return 0;
+  }
+
+  template <inspector::NUMBER T>
+  size_t CLIParser<T>::getNumberSize(CR_STR keyword) {
+    if (numbersHas(keyword)) {
+      return numbers[keyword].size();
+    }
+    return 0;
+  }
+
+  template <inspector::NUMBER T>
+  size_t CLIParser<T>::getToggleSize(CR_STR keyword) {
+    if (togglesHas(keyword)) {
+      return toggles[keyword].size();
+    }
+    return 0;
+  }
+
+  /** BALANCERS */
+
+  template <inspector::NUMBER T>
+  template <typename U>
+  size_t CLIParser<T>::getMax(
+    STRUNORMAP<VEC<U>> &unormap,
+    CR_VEC_PAIR2<std::string, U> keywordPaddingVector
+  ) {
+    size_t max = 0;
+
+    /**
+     * Only use keywords from 'keywordPaddingVector' instead of using keyword
+     * specific vector because 'balance' parameter contains 'keywordPaddingVector'
+     * as well and this function is called inside it in balancers. 
+     * This can avoid redundant keyword extraction process.
+     */
+    for (CR_PAIR2<std::string, U> keypad : keywordPaddingVector) {
+      if (STRUNORMAP_FOUND<VEC<U>>(unormap, keypad.first)) {
+
+        if (unormap[keypad.first].size() > max) {
+          max = unormap[keypad.first].size();
+        }
+      }
+    }
+
+    return max;
+  }
+
+  template <inspector::NUMBER T>
+  template <typename U>
+  void CLIParser<T>::balance(
+    STRUNORMAP<VEC<U>> &unormap,
+    CR_VEC_PAIR2<std::string, U> keywordPaddingVector,
+    CR_SZ max
+  ) {
+    VEC<U> additions;
+    size_t difference = 0;
+
+    /**
+     * Equalize the vectors of 'unormap' with padding
+     * values from 'keywordPaddingVector' ​​to balance them.
+     */
+    for (CR_PAIR2<std::string, U> keypad : keywordPaddingVector) {
+      if (STRUNORMAP_FOUND<VEC<U>>(unormap, keypad.first)) {
+
+        difference = max - unormap[keypad.first].size();
+        additions = VEC<U>(difference, keypad.second);
+
+        unormap[keypad.first].reserve(
+          unormap[keypad.first].size() + difference
+        );
+
+        unormap[keypad.first].insert(
+          unormap[keypad.first].end(),
+          additions.begin(),
+          additions.end()
+        );
+      }
+    }
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balanceWords(
+    CR_VEC_PAIR<std::string> keywordPaddingVector
+  ) {
+    balance<std::string>(
+      words,
+      keywordPaddingVector,
+      getMax<std::string>(words, keywordPaddingVector)
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balanceNumbers(
+    CR_VEC_PAIR<T> keywordPaddingVector
+  ) {
+    balance<T>(
+      numbers,
+      keywordPaddingVector,
+      getMax<T>(numbers, keywordPaddingVector)
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balanceToggles(
+    CR_VEC_PAIR<bool> keywordPaddingVector
+  ) {
+    balance<bool>(
+      toggles,
+      keywordPaddingVector,
+      getMax<bool>(toggles, keywordPaddingVector)
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balanceAll(
+    CR_VEC_PAIR2<std::string, std::string> keywordPaddingWords,
+    CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
+    CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
+  ) {
+    size_t max[4] = {
+      getMax<std::string>(words, keywordPaddingWords),
+      getMax<T>(numbers, keywordPaddingNumbers),
+      getMax<bool>(toggles, keywordPaddingToggles),
+      0
+    };
+
+    /** Find the highest value from the array as 'max[3]' */
+
+    if (max[0] > max[1]) max[3] = max[0];
+    else max[3] = max[1];
+
+    if (max[2] > max[3]) max[3] = max[2];
+
+    /** Balance 3 unordered maps up to size 'max[3]' */
+
+    balance<std::string>(words, keywordPaddingWords, max[3]);
+    balance<T>(numbers, keywordPaddingNumbers, max[3]);
+    balance<bool>(toggles, keywordPaddingToggles, max[3]);
   }
 }}
 

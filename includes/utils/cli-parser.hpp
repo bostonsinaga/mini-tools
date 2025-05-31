@@ -35,6 +35,24 @@ namespace utils {
      */
     bool booleanize(std::string &str);
 
+    // finds the largest size of an unordered map vector
+    template <typename U>
+    size_t getMax(
+      STRUNORMAP<VEC<U>> &unormap,
+      CR_VEC_PAIR2<std::string, U> keywordPaddingVector
+    );
+
+    /**
+     * Equalizes the vectors of an unordered map
+     * with padding values ​​to balance them.
+     */
+    template <typename U>
+    void balance(
+      STRUNORMAP<VEC<U>> &unormap,
+      CR_VEC_PAIR2<std::string, U> keywordPaddingVector,
+      CR_SZ max
+    );
+
   public:
     CLIParser() = delete;
 
@@ -64,7 +82,7 @@ namespace utils {
     );
 
     /**
-     * Check 'expectedEntries' existence inside the 'entries'.
+     * Checks 'expectedEntries' existence inside the 'entries'.
      * The order of 'expectedEntries' is ignored.
      */
     bool enter(CR_VEC_STR expectedEntries);
@@ -81,7 +99,7 @@ namespace utils {
     T getNumberAt(CR_STR keyword, CR_SZ index);
     bool getToggleAt(CR_STR keyword, CR_SZ index);
 
-    // extract keywords of 'entries'
+    // extracts keywords of 'entries'
     VEC_STR extractBasicStrings();
 
     VEC_STR getWords(
@@ -97,6 +115,43 @@ namespace utils {
     VEC_BOL getToggles(
       CR_STR keyword,
       CR_BOL needClean = false
+    );
+
+    /**
+     * SIZE GETTERS
+     * Will return 0 for an empty vector or a keyword
+     * that is not yet registered in an unordered map.
+     */
+    size_t getWordSize(CR_STR keyword);
+    size_t getNumberSize(CR_STR keyword);
+    size_t getToggleSize(CR_STR keyword);
+
+    /**
+     * BALANCERS
+     * Equalize the vectors of an unordered map
+     * with padding values ​​to balance them.
+     */
+
+    void balanceWords(CR_VEC_PAIR<std::string> keywordPaddingVector);
+    void balanceNumbers(CR_VEC_PAIR<T> keywordPaddingVector);
+    void balanceToggles(CR_VEC_PAIR<bool> keywordPaddingVector);
+
+    /**
+     * Equalizes the vectors of multiple unordered maps
+     * with padding values ​​to balance them.
+     * 
+     * Call example:
+     * 
+     * cli.balanceAll(
+     *   { {"word_A", "A"}, {"word_A", "A"} },
+     *   { {"number_A", 1}, {"number_A", 1} },
+     *   { {"toggle_A", false}, {"toggle_A", false} }
+     * );
+     */
+    void balanceAll(
+      CR_VEC_PAIR2<std::string, std::string> keywordPaddingWords,
+      CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
+      CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
     );
   };
 }}
