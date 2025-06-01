@@ -63,13 +63,13 @@ namespace utils {
     for (int i = 0; i < raws.size(); i++) {
 
       // keywords detected
-      if (STRUNORMAP_FOUND<VEC_STR>(words, raws[i])) {
+      if (wordsHas(raws[i])) {
         setKeyword(word_, i);
       }
-      else if (STRUNORMAP_FOUND<VEC<T>>(numbers, raws[i])) {
+      else if (numbersHas(raws[i])) {
         setKeyword(number_, i);
       }
-      else if (STRUNORMAP_FOUND<VEC_BOL>(toggles, raws[i])) {
+      else if (togglesHas(raws[i])) {
         toggleHasInput = false;
         setKeyword(toggle_, i);
       }
@@ -143,6 +143,21 @@ namespace utils {
   template <inspector::NUMBER T>
   bool CLIParser<T>::togglesHas(CR_STR keyword) {
     return STRUNORMAP_FOUND<VEC_BOL>(toggles, keyword);
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::wordContains(CR_STR keyword) {
+    return getWordSize(keyword) > 0;
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::numberContains(CR_STR keyword) {
+    return getNumberSize(keyword) > 0;
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::toggleContains(CR_STR keyword) {
+    return getToggleSize(keyword) > 0;
   }
 
   /** GETTERS */

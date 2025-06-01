@@ -35,7 +35,7 @@ namespace utils {
      */
     bool booleanize(std::string &str);
 
-    // finds the largest size of an unordered map vector
+    // find the largest size of an unordered map vector
     template <typename U>
     size_t getMax(
       STRUNORMAP<VEC<U>> &unormap,
@@ -43,7 +43,7 @@ namespace utils {
     );
 
     /**
-     * Equalizes the vectors of an unordered map
+     * Equalize the vectors of an unordered map
      * with padding values ​​to balance them.
      */
     template <typename U>
@@ -66,9 +66,9 @@ namespace utils {
      * - Obtain the parameters (unordered maps) value with getters.
      * 
      * You do not need to exclusively specify the 'entries'.
-     * Ask their existance with 'enter'.
+     * Ask their existence with 'enter'.
      * 
-     * Does not provide a default value.
+     * This class does not provide a default value.
      * Except to keyword toggle that specified
      * without input, will push the vector of unordered
      * map at keyword with 1 'true' by default.
@@ -82,16 +82,22 @@ namespace utils {
     );
 
     /**
-     * Checks 'expectedEntries' existence inside the 'entries'.
+     * Check 'expectedEntries' existence inside the 'entries'.
      * The order of 'expectedEntries' is ignored.
      */
     bool enter(CR_VEC_STR expectedEntries);
 
     /** CHECKERS */
 
+    // check for the existence of an unordered map
     bool wordsHas(CR_STR keyword);
     bool numbersHas(CR_STR keyword);
     bool togglesHas(CR_STR keyword);
+
+    // check for the existence of a vector or unordered map itself
+    bool wordContains(CR_STR keyword);
+    bool numberContains(CR_STR keyword);
+    bool toggleContains(CR_STR keyword);
 
     /** GETTERS */
 
@@ -99,7 +105,7 @@ namespace utils {
     T getNumberAt(CR_STR keyword, CR_SZ index);
     bool getToggleAt(CR_STR keyword, CR_SZ index);
 
-    // extracts keywords of 'entries'
+    // extract keywords of 'entries'
     VEC_STR extractBasicStrings();
 
     VEC_STR getWords(
@@ -119,8 +125,7 @@ namespace utils {
 
     /**
      * SIZE GETTERS
-     * Will return 0 for an empty vector or a keyword
-     * that is not yet registered in an unordered map.
+     * Will return 0 for an empty vector or unregistered unordered map.
      */
     size_t getWordSize(CR_STR keyword);
     size_t getNumberSize(CR_STR keyword);
@@ -137,7 +142,7 @@ namespace utils {
     void balanceToggles(CR_VEC_PAIR<bool> keywordPaddingVector);
 
     /**
-     * Equalizes the vectors of multiple unordered maps
+     * Equalize the vectors of multiple unordered maps
      * with padding values ​​to balance them.
      * 
      * Call example:
