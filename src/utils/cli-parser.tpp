@@ -43,6 +43,7 @@ namespace utils {
 
     std::string keyword;
     bool toggleHasInput = false;
+    UI entriesOrderIndex = 0;
 
     enum FoundEnum {
       entry_, word_, number_, toggle_
@@ -89,8 +90,11 @@ namespace utils {
           booleanize(raws[i])
         );
       }
-      // before any keyword (basic string)
-      else entries[raws[i]] = true;
+      // before any keyword of main unordered maps (basic string)
+      else {
+        entries[raws[i]] = entriesOrderIndex;
+        entriesOrderIndex++;
+      }
     }
 
     // keyword toggle is specified without input at the last 'raws'
@@ -99,13 +103,33 @@ namespace utils {
     }
   }
 
+  /** INQUIRIES */
+
   template <inspector::NUMBER T>
   bool CLIParser<T>::enter(CR_VEC_STR expectedEntries) {
-    int found = 0;
+    UI found = 0, previousOrder = 0;
 
     for (CR_STR expected : expectedEntries) {
 
-      if (STRUNORMAP_BOL_FOUND(entries, expected)) {
+      if (STRUNORMAP_UI_FOUND(entries, expected) &&
+        entries[expected] >= previousOrder
+      ) {
+        found++;
+        previousOrder = entries[expected];
+      }
+      else return false;
+    }
+
+    return expectedEntries.size() == found;
+  }
+
+  template <inspector::NUMBER T>
+  bool CLIParser<T>::query(CR_VEC_STR expectedEntries) {
+    UI found = 0;
+
+    for (CR_STR expected : expectedEntries) {
+
+      if (STRUNORMAP_UI_FOUND(entries, expected)) {
         found++;
       }
     }
@@ -127,8 +151,6 @@ namespace utils {
       str == "YES" || str == "Y"
     );
   }
-
-  /** CHECKERS */
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::wordsHas(CR_STR keyword) {
@@ -202,7 +224,7 @@ namespace utils {
   VEC_STR CLIParser<T>::extractBasicStrings() {
     VEC_STR keywords;
 
-    for (CR_PAIR2<std::string, bool> pair : entries) {
+    for (CR_PAIR2<std::string, UI> pair : entries) {
       keywords.push_back(pair.first);
     }
 
@@ -212,15 +234,12 @@ namespace utils {
   template <inspector::NUMBER T>
   VEC_STR CLIParser<T>::getWords(
     CR_STR keyword,
-    CR_BOL needClean
+    CR_BOL onlyCopy
   ) {
     if (wordsHas(keyword)) {
 
-      if (needClean) {
-        return std::move(words[keyword]);
-      }
-
-      return words[keyword];
+      if (onlyCopy) return words[keyword];
+      return std::move(words[keyword]);
     }
 
     return {};
@@ -229,15 +248,12 @@ namespace utils {
   template <inspector::NUMBER T>
   VEC<T> CLIParser<T>::getNumbers(
     CR_STR keyword,
-    CR_BOL needClean
+    CR_BOL onlyCopy
   ) {
     if (numbersHas(keyword)) {
 
-      if (needClean) {
-        return std::move(numbers[keyword]);
-      }
-
-      return numbers[keyword];
+      if (onlyCopy) return numbers[keyword];
+      return std::move(numbers[keyword]);
     }
 
     return {};
@@ -246,15 +262,12 @@ namespace utils {
   template <inspector::NUMBER T>
   VEC_BOL CLIParser<T>::getToggles(
     CR_STR keyword,
-    CR_BOL needClean
+    CR_BOL onlyCopy
   ) {
     if (togglesHas(keyword)) {
 
-      if (needClean) {
-        return std::move(toggles[keyword]);
-      }
-
-      return toggles[keyword];
+      if (onlyCopy) return toggles[keyword];
+      return std::move(toggles[keyword]);
     }
 
     return {};
@@ -264,25 +277,31 @@ namespace utils {
 
   template <inspector::NUMBER T>
   size_t CLIParser<T>::getWordSize(CR_STR keyword) {
+
     if (wordsHas(keyword)) {
       return words[keyword].size();
     }
+
     return 0;
   }
 
   template <inspector::NUMBER T>
   size_t CLIParser<T>::getNumberSize(CR_STR keyword) {
+
     if (numbersHas(keyword)) {
       return numbers[keyword].size();
     }
+
     return 0;
   }
 
   template <inspector::NUMBER T>
   size_t CLIParser<T>::getToggleSize(CR_STR keyword) {
+
     if (togglesHas(keyword)) {
       return toggles[keyword].size();
     }
+
     return 0;
   }
 

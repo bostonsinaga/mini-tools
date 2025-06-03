@@ -7,20 +7,36 @@
 namespace mini_tools {
 namespace utils {
 
+  /**
+   * CLI Parser uses 'std::unordered_map' to store values,
+   * instead of 'std::vector' to avoid keyword duplication.
+   * 
+   * This class does not support the built-in hyphen prefix
+   * for word/number with '-' or toggle with '--'.
+   * You have to set it manually as part of the keyword.
+   * 
+   * Also this class does not provide a default value.
+   * Except to keyword toggle that specified without arguments
+   * will push the vector at keyword with 1 'true' by default.
+   */
   template <inspector::NUMBER T>
   class CLIParser {
   private:
     /**
-     * This is a collection of keywords used as a function selection
-     * to be executed by the program or can also be used as basic string input
-     * if you do not want to use the 3 unordered maps below.
+     * This is an unordered map which used as function selection that will
+     * be executed by the program or can also be used as basic string
+     * input if you don't want to use the main unordered maps below.
      * 
-     * They contain boolean values ​​as markers of their existence.
-     * To get the collection of keywords, use the extractor method.
+     * They store an integer for the order of registration index.
+     * To get a set of keywords or the basic strings,
+     * use the 'extractBasicStrings' method.
      */
-    STRUNORMAP_BOL entries;
+    STRUNORMAP_UI entries;
 
-    // use getters and extractors to interact with these
+    /**
+     * Main Unordered Maps:
+     * Use the getters to interact with these variables.
+     */
     STRUNORMAP<VEC_STR> words;
     STRUNORMAP<VEC<T>> numbers;
     STRUNORMAP<VEC_BOL> toggles;
@@ -61,17 +77,13 @@ namespace utils {
      * to the actual number of 'argv' or both are parameters of the main function.
      * 
      * How to use (sequentially):
-     * - Create object.
-     * - Check expected entries with 'enter'.
-     * - Obtain the parameters (unordered maps) value with getters.
+     * - Create the object using constructor.
+     * - Verify expected entries or keywords using the inquiries.
+     * - [OPTIONAL] Use the balancers to equalize the vectors of some unordered maps.
+     * - Retrieve parameters stored as a vector in main unordered maps using the getters.
      * 
-     * You do not need to exclusively specify the 'entries'.
-     * Ask their existence with 'enter'.
-     * 
-     * This class does not provide a default value.
-     * Except to keyword toggle that specified
-     * without input, will push the vector of unordered
-     * map at keyword with 1 'true' by default.
+     * You are not required to specify the entries exclusively.
+     * Verify their existence using the inquiries.
      */
     CLIParser(
       CR_INT argc,
@@ -81,13 +93,14 @@ namespace utils {
       CR_VEC_STR toggleKeywords
     );
 
-    /**
-     * Check 'expectedEntries' existence inside the 'entries'.
-     * The order of 'expectedEntries' is ignored.
-     */
-    bool enter(CR_VEC_STR expectedEntries);
+    /** INQUIRIES */
 
-    /** CHECKERS */
+    /**
+     * Check for the existence of
+     * 'expectedEntries' inside the 'entries'.
+     */
+    bool enter(CR_VEC_STR expectedEntries); // ordered
+    bool query(CR_VEC_STR expectedEntries); // unordered
 
     // check for the existence of an unordered map
     bool wordsHas(CR_STR keyword);
@@ -105,22 +118,27 @@ namespace utils {
     T getNumberAt(CR_STR keyword, CR_SZ index);
     bool getToggleAt(CR_STR keyword, CR_SZ index);
 
-    // extract keywords of 'entries'
+    // extract keywords from the 'entries'
     VEC_STR extractBasicStrings();
+
+    /**
+     * If 'onlyCopy' is set to false, the vector at keyword will be moved to
+     * the container that receives the return and then the vector will be emptied.
+     */
 
     VEC_STR getWords(
       CR_STR keyword,
-      CR_BOL needClean = false
+      CR_BOL onlyCopy = true
     );
 
     VEC<T> getNumbers(
       CR_STR keyword,
-      CR_BOL needClean = false
+      CR_BOL onlyCopy = true
     );
 
     VEC_BOL getToggles(
       CR_STR keyword,
-      CR_BOL needClean = false
+      CR_BOL onlyCopy = true
     );
 
     /**
@@ -148,9 +166,9 @@ namespace utils {
      * Call example:
      * 
      * cli.balanceAll(
-     *   { {"word_A", "A"}, {"word_A", "A"} },
-     *   { {"number_A", 1}, {"number_A", 1} },
-     *   { {"toggle_A", false}, {"toggle_A", false} }
+     *   { {"foo-word", "A"}, {"foo-word", "A"} },
+     *   { {"foo-number", 1}, {"foo-number", 1} },
+     *   { {"foo-toggle", false}, {"foo-toggle", false} }
      * );
      */
     void balanceAll(
