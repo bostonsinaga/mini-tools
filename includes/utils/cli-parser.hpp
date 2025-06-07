@@ -11,13 +11,18 @@ namespace utils {
    * CLI Parser uses 'std::unordered_map' to store values,
    * instead of 'std::vector' to avoid keyword duplication.
    * 
+   * Input is captured during object construction, but you can
+   * reset all member variables later using cleaners and setters.
+   * 
    * This class does not support the built-in hyphen prefix
    * for word/number with '-' or toggle with '--'.
    * You have to set it manually as part of the keyword.
    * 
-   * Also this class does not provide a default value.
-   * Except to keyword toggle that specified without arguments
-   * will push the vector at keyword with 1 'true' by default.
+   * How to use (sequentially):
+   * - Create an object using any of the constructors below.
+   * - Verify expected entries or keywords using the inquiries.
+   * - [OPTIONAL] Use the balancers to equalize the vectors of some unordered maps.
+   * - Retrieve parameters stored as a vector in main unordered maps using the getters.
    */
   template <inspector::NUMBER T>
   class CLIParser {
@@ -30,16 +35,80 @@ namespace utils {
      * They store an integer for the order of registration index.
      * To get a set of keywords or the basic strings,
      * use the 'extractBasicStrings' method.
+     * 
+     * You don't need to specify the entries exclusively like the main
+     * unordered maps since they are just basic string inputs.
+     * Verify their existence using the inquiries.
      */
     STRUNORMAP_UI entries;
 
+    /** Abbreviations of the main types */
+
+    template <typename U>
+    using PAIR_MAIN = PAIR2<VEC<U>, U>;
+
+    template <typename U>
+    using MAIN_STRUNORMAP = STRUNORMAP<PAIR_MAIN<U>>;
+
     /**
-     * Main Unordered Maps:
+     * MAIN UNORDERED MAPS
      * Use the getters to interact with these variables.
+     * They contain a pair consisting of a vector and a default value.
      */
-    STRUNORMAP<VEC_STR> words;
-    STRUNORMAP<VEC<T>> numbers;
-    STRUNORMAP<VEC_BOL> toggles;
+
+    typedef PAIR_MAIN<std::string> PAIR_WORDS;
+    typedef PAIR_MAIN<T> PAIR_NUMBERS;
+    typedef PAIR_MAIN<bool> PAIR_TOGGLES;
+
+    STRUNORMAP<PAIR_WORDS> words;
+    STRUNORMAP<PAIR_NUMBERS> numbers;
+    STRUNORMAP<PAIR_TOGGLES> toggles;
+
+    /** Indicators for the main 'set' method */
+
+    enum FoundEnum {
+      FoundEntry, FoundWord, FoundNumber, FoundToggle
+    };
+
+    typedef const FoundEnum& CR_FoundEnum;
+
+    /**
+     * Set the default value for the vector of main
+     * unordered maps if only the keyword is specified in 'raws'.
+     */
+    void pushDefault(
+      CR_STR keyword,
+      CR_FoundEnum found
+    );
+
+    /**
+     * KEYWORD IGNORED VECTORS GENERATOR
+     * Convert vectors of keywords into vectors of keyword-default pairs,
+     * where the default values are either empty, zero, or false.
+     */
+
+    typedef std::tuple<
+      VEC_PAIR<std::string>,
+      VEC_PAIR2<std::string, T>,
+      VEC_PAIR2<std::string, bool>
+    > KeywordIgnoredVectorsTuple;
+
+    KeywordIgnoredVectorsTuple convertKeywordIgnoredVectorsTuple(
+      CR_VEC_STR wordKeywords,
+      CR_VEC_STR numberKeywords,
+      CR_VEC_STR toggleKeywords
+    );
+
+    /**
+     * KEYWORD PREDEFINED VECTORS GENERATOR
+     * Convert vectors of keywords into vectors of keyword-default pairs,
+     * where the default values are predefined in the setters.
+     */
+    template <typename U>
+    VEC_PAIR2<std::string, U> convertKeywordPredefinedVector(
+      MAIN_STRUNORMAP<U> &unormap,
+      CR_VEC_STR keywords
+    );
 
     /**
      * Expected string conversions are:
@@ -49,55 +118,193 @@ namespace utils {
      * The value of 'str' will come from
      * the 'argv' input after the toggle keyword.
      */
-    bool booleanize(std::string &str);
+    bool booleanize(std::string str);
 
     // find the largest size of an unordered map vector
     template <typename U>
     size_t getMax(
-      STRUNORMAP<VEC<U>> &unormap,
+      MAIN_STRUNORMAP<U> &unormap,
       CR_VEC_PAIR2<std::string, U> keywordPaddingVector
     );
 
     /**
+     * SINGLE BALANCERS
      * Equalize the vectors of an unordered map
      * with padding values ​​to balance them.
      */
+
+    // explicit
     template <typename U>
     void balance(
-      STRUNORMAP<VEC<U>> &unormap,
+      MAIN_STRUNORMAP<U> &unormap,
       CR_VEC_PAIR2<std::string, U> keywordPaddingVector,
       CR_SZ max
+    );
+
+    // ignored
+    template <typename U>
+    void balance(
+      MAIN_STRUNORMAP<U> &unormap,
+      CR_VEC_STR keywords
     );
 
   public:
     CLIParser() = delete;
 
     /**
-     * The 'argc' is expected to have a value that corresponds
-     * to the actual number of 'argv' or both are parameters of the main function.
+     * EXPLICIT CONSTRUCTORS
      * 
-     * How to use (sequentially):
-     * - Create the object using constructor.
-     * - Verify expected entries or keywords using the inquiries.
-     * - [OPTIONAL] Use the balancers to equalize the vectors of some unordered maps.
-     * - Retrieve parameters stored as a vector in main unordered maps using the getters.
+     * The default values will be added to the vectors
+     * within the main unordered maps in the setters
+     * if the detected keywords are specified without arguments.
      * 
-     * You are not required to specify the entries exclusively.
-     * Verify their existence using the inquiries.
+     * Call example:
+     *   CLIParser<int> cli(
+     *     CLIParser<int>::argvToStringVector(argc, argv),
+     *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
+     *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
+     *     { std::make_pair("foo-toggle-1", false), std::make_pair("foo-toggle-2", true) }
+     *   );
      */
+
     CLIParser(
-      CR_INT argc,
-      char *argv[],
+      CR_VEC_STR raws,
+      CR_VEC_PAIR<std::string> keywordDefaultWords,
+      CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers,
+      CR_VEC_PAIR2<std::string, bool> keywordDefaultToggles
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR<std::string> keywordDefaultWords
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR2<std::string, bool> keywordDefaultToggles
+    );
+
+    /**
+     * IGNORED CONSTRUCTORS
+     * 
+     * They basically use the setters.
+     * The default values will be empty, zero, or false.
+     * 
+     * Call example:
+     *   CLIParser<int> cli(
+     *     CLIParser<int>::argvToStringVector(argc, argv),
+     *     { "foo-word-1", "foo-word-2" },
+     *     { "foo-number-1", "foo-number-2" },
+     *     { "foo-toggle-1", "foo-toggle-2" }
+     *   );
+     */
+
+    CLIParser(
+      CR_VEC_STR raws,
       CR_VEC_STR wordKeywords,
       CR_VEC_STR numberKeywords,
       CR_VEC_STR toggleKeywords
     );
 
-    /** INQUIRIES */
+    static CLIParser createWords(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    static CLIParser createNumbers(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    static CLIParser createToggles(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    /**
+     * SETTERS
+     * 
+     * These methods will initialize the main unordered maps and
+     * parse inputs as vector to each keywords from the 'raws'.
+     * 
+     * You can use the 'argvToStringVector' method to obtain the 'raws'
+     * argument if the sources are parameters of the main function.
+     * 
+     * Also, you can perform a reset by sequentially
+     * using a combination of cleaners and setters.
+     */
+
+    /** EXPLICIT SETTERS */
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR<std::string> newKeywordDefaultWords,
+      CR_VEC_PAIR2<std::string, T> newKeywordDefaultNumbers,
+      CR_VEC_PAIR2<std::string, bool> newKeywordDefaultToggles
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR<std::string> keywordDefaultVector
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR2<std::string, T> keywordDefaultVector
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_PAIR2<std::string, bool> keywordDefaultVector
+    );
+
+    /** IGNORED SETTERS */
+
+    void set (
+      CR_VEC_STR raws,
+      CR_VEC_STR wordKeywords,
+      CR_VEC_STR numberKeywords,
+      CR_VEC_STR toggleKeywords
+    );
+
+    void setWords(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    void setNumbers(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    void setToggles(
+      CR_VEC_STR raws,
+      CR_VEC_STR keywords
+    );
+
+    /**
+     * CLEANERS
+     * If 'fullyClean' is true, the vectors and all of unordered 
+     * maps will be cleared, and their memory will be deallocated.
+     */
+    void clean(CR_BOL fullyClean = false);
+    void cleanWords(CR_BOL fullyClean = false);
+    void cleanNumbers(CR_BOL fullyClean = false);
+    void cleanToggles(CR_BOL fullyClean = false);
+
+    /**
+     * INQUIRIES
+     * Verify expected entries or keywords.
+     */
 
     /**
      * Check for the existence of
-     * 'expectedEntries' inside the 'entries'.
+     * 'expectedEntries' inside the entries.
      */
     bool enter(CR_VEC_STR expectedEntries); // ordered
     bool query(CR_VEC_STR expectedEntries); // unordered
@@ -118,7 +325,7 @@ namespace utils {
     T getNumberAt(CR_STR keyword, CR_SZ index);
     bool getToggleAt(CR_STR keyword, CR_SZ index);
 
-    // extract keywords from the 'entries'
+    // extract keywords from the entries
     VEC_STR extractBasicStrings();
 
     /**
@@ -142,6 +349,15 @@ namespace utils {
     );
 
     /**
+     * The 'argc' is expected to have a value that corresponds
+     * to the actual number of 'argv' or both are parameters of the main function.
+     */
+    static VEC_STR argvToStringVector(
+      CR_INT argc,
+      char *argv[]
+    );
+
+    /**
      * SIZE GETTERS
      * Will return 0 for an empty vector or unregistered unordered map.
      */
@@ -150,32 +366,60 @@ namespace utils {
     size_t getToggleSize(CR_STR keyword);
 
     /**
-     * BALANCERS
+     * MULTIPLE EXPLICIT BALANCERS
+     * 
+     * Equalize the vectors of multiple unordered maps
+     * with padding values ​​to balance them.
+     * 
+     * Call example:
+     *   cli.balance(
+     *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
+     *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
+     *     { std::make_pair("foo-toggle-1", false), std::make_pair("foo-toggle-2", true) }
+     *   );
+     */
+    void balance(
+      CR_VEC_PAIR<std::string> keywordPaddingWords,
+      CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
+      CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
+    );
+
+    /**
+     * MULTIPLE IGNORED BALANCERS
+     * 
+     * Similar to the above, but it will use the default
+     * values of the main unordered maps as the padding values.
+     * 
+     * Call example:
+     *   cli.balance(
+     *     { "foo-word-1", "foo-word-2" },
+     *     { "foo-number-1", "foo-number-2" },
+     *     { "foo-toggle-1", "foo-toggle-2" }
+     *   );
+     */
+    void balance(
+      CR_VEC_STR wordKeywords,
+      CR_VEC_STR numberKeywords,
+      CR_VEC_STR toggleKeywords
+    );
+
+    /**
+     * SINGLE EXPLICIT BALANCERS
      * Equalize the vectors of an unordered map
      * with padding values ​​to balance them.
      */
-
     void balanceWords(CR_VEC_PAIR<std::string> keywordPaddingVector);
     void balanceNumbers(CR_VEC_PAIR<T> keywordPaddingVector);
     void balanceToggles(CR_VEC_PAIR<bool> keywordPaddingVector);
 
     /**
-     * Equalize the vectors of multiple unordered maps
-     * with padding values ​​to balance them.
-     * 
-     * Call example:
-     * 
-     * cli.balanceAll(
-     *   { {"foo-word", "A"}, {"foo-word", "A"} },
-     *   { {"foo-number", 1}, {"foo-number", 1} },
-     *   { {"foo-toggle", false}, {"foo-toggle", false} }
-     * );
+     * SINGLE IGNORED BALANCERS
+     * Similar to the above, but these will use the default
+     * values of the main unordered maps as the padding values.
      */
-    void balanceAll(
-      CR_VEC_PAIR2<std::string, std::string> keywordPaddingWords,
-      CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
-      CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
-    );
+    void balanceWords(CR_VEC_STR keywords);
+    void balanceNumbers(CR_VEC_STR keywords);
+    void balanceToggles(CR_VEC_STR keywords);
   };
 }}
 
