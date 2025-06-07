@@ -47,10 +47,8 @@ namespace utils {
       return Scanner::findPath(path, false, upward);
     }
 
-    static void getFile(
-      CR_FS_PATH path,
-      std::string &textHook
-    );
+    // read text file
+    static std::string getFileString(CR_FS_PATH path);
 
     /** Advanced Detectors */
 

@@ -143,19 +143,16 @@ namespace utils {
     return FS::current_path();
   }
 
-  /** WARNING. Unable to read '\n' character */
-  void Scanner::getFile(
-    CR_FS_PATH path,
-    std::string &textHook
-  ) {
-    std::string line;
+  std::string Scanner::getFileString(CR_FS_PATH path) {
+    std::string text, line;
     std::ifstream reader(path);
 
     while (std::getline(reader, line)) {
-      textHook += line;
+      text += line + '\n';
     }
 
     reader.close();
+    return text;
   }
 }}
 
