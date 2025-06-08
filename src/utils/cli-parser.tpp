@@ -80,7 +80,7 @@ namespace utils {
     CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers,
     CR_VEC_PAIR2<std::string, bool> keywordDefaultToggles
   ) {
-    set(
+    setAll(
       raws,
       keywordDefaultWords,
       keywordDefaultNumbers,
@@ -93,7 +93,7 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_PAIR<std::string> keywordDefaultVector
   ) {
-    set(raws, keywordDefaultVector, {}, {});
+    setAll(raws, keywordDefaultVector, {}, {});
   }
 
   template <inspector::NUMBER T>
@@ -101,7 +101,7 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_PAIR2<std::string, T> keywordDefaultVector
   ) {
-    set(raws, {}, keywordDefaultVector, {});
+    setAll(raws, {}, keywordDefaultVector, {});
   }
 
   template <inspector::NUMBER T>
@@ -109,7 +109,7 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_PAIR2<std::string, bool> keywordDefaultVector
   ) {
-    set(raws, {}, {}, keywordDefaultVector);
+    setAll(raws, {}, {}, keywordDefaultVector);
   }
 
   /** IGNORED CONSTRUCTORS */
@@ -121,7 +121,7 @@ namespace utils {
     CR_VEC_STR numberKeywords,
     CR_VEC_STR toggleKeywords
   ) {
-    set(
+    setAll(
       raws,
       wordKeywords,
       numberKeywords,
@@ -156,7 +156,7 @@ namespace utils {
   /** EXPLICIT SETTERS */
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::set(
+  void CLIParser<T>::setAll(
     CR_VEC_STR raws,
     CR_VEC_PAIR<std::string> keywordDefaultWords,
     CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers,
@@ -226,33 +226,33 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::set(
+  void CLIParser<T>::setWords(
     CR_VEC_STR raws,
     CR_VEC_PAIR<std::string> newKeywordDefaultVector
   ) {
-    set(raws, newKeywordDefaultVector, {}, {});
+    setAll(raws, newKeywordDefaultVector, {}, {});
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::set(
+  void CLIParser<T>::setNumbers(
     CR_VEC_STR raws,
     CR_VEC_PAIR2<std::string, T> newKeywordDefaultVector
   ) {
-    set(raws, {}, newKeywordDefaultVector, {});
+    setAll(raws, {}, newKeywordDefaultVector, {});
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::set(
+  void CLIParser<T>::setToggles(
     CR_VEC_STR raws,
     CR_VEC_PAIR2<std::string, bool> newKeywordDefaultVector
   ) {
-    set(raws, {}, {}, newKeywordDefaultVector);
+    setAll(raws, {}, {}, newKeywordDefaultVector);
   }
 
   /** IGNORED SETTERS */
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::set(
+  void CLIParser<T>::setAll(
     CR_VEC_STR raws,
     CR_VEC_STR wordKeywords,
     CR_VEC_STR numberKeywords,
@@ -262,7 +262,7 @@ namespace utils {
       wordKeywords, numberKeywords, toggleKeywords
     );
 
-    set(
+    setAll(
       raws,
       std::get<0>(tuple),
       std::get<1>(tuple),
@@ -275,7 +275,7 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_STR newKeywords
   ) {
-    set(raws, newKeywords, {}, {});
+    setAll(raws, newKeywords, {}, {});
   }
 
   template <inspector::NUMBER T>
@@ -283,7 +283,7 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_STR newKeywords
   ) {
-    set(raws, {}, newKeywords, {});
+    setAll(raws, {}, newKeywords, {});
   }
 
   template <inspector::NUMBER T>
@@ -291,7 +291,48 @@ namespace utils {
     CR_VEC_STR raws,
     CR_VEC_STR newKeywords
   ) {
-    set(raws, {}, {}, newKeywords);
+    setAll(raws, {}, {}, newKeywords);
+  }
+
+  /** CLEANERS */
+
+  template <inspector::NUMBER T>
+  template <typename U>
+  void CLIParser<T>::clean(
+    MAIN_STRUNORMAP<U> &unormap,
+    CR_BOL fullyClean
+  ) {
+    if (fullyClean) MAIN_STRUNORMAP<U>().swap(unormap);
+    else unormap.clear();
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::cleanAll(CR_BOL fullyClean) {
+    cleanEntries(fullyClean);
+    cleanWords(fullyClean);
+    cleanNumbers(fullyClean);
+    cleanToggles(fullyClean);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::cleanEntries(CR_BOL fullyClean) {
+    if (fullyClean) STRUNORMAP_UI().swap(entries);
+    else entries.clear();
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::cleanWords(CR_BOL fullyClean) {
+    clean<std::string>(words, fullyClean);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::cleanNumbers(CR_BOL fullyClean) {
+    clean<T>(numbers, fullyClean);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::cleanToggles(CR_BOL fullyClean) {
+    clean<bool>(toggles, fullyClean);
   }
 
   /** INQUIRIES */
@@ -345,32 +386,32 @@ namespace utils {
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::wordsHas(CR_STR keyword) {
-    return STRUNORMAP_FOUND<PAIR_WORDS>(words, keyword);
+    return STRUNORMAP_FOUND<PAIR_WORD>(words, keyword);
   }
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::numbersHas(CR_STR keyword) {
-    return STRUNORMAP_FOUND<PAIR_NUMBERS>(numbers, keyword);
+    return STRUNORMAP_FOUND<PAIR_NUMBER>(numbers, keyword);
   }
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::togglesHas(CR_STR keyword) {
-    return STRUNORMAP_FOUND<PAIR_TOGGLES>(toggles, keyword);
+    return STRUNORMAP_FOUND<PAIR_TOGGLE>(toggles, keyword);
   }
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::wordContains(CR_STR keyword) {
-    return getWordSize(keyword) > 0;
+    return getSizeAtWords(keyword) > 0;
   }
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::numberContains(CR_STR keyword) {
-    return getNumberSize(keyword) > 0;
+    return getSizeAtNumbers(keyword) > 0;
   }
 
   template <inspector::NUMBER T>
   bool CLIParser<T>::toggleContains(CR_STR keyword) {
-    return getToggleSize(keyword) > 0;
+    return getSizeAtToggles(keyword) > 0;
   }
 
   /** GETTERS */
@@ -423,7 +464,7 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  VEC_STR CLIParser<T>::getWords(
+  VEC_STR CLIParser<T>::getVectorAtWords(
     CR_STR keyword,
     CR_BOL onlyCopy
   ) {
@@ -437,7 +478,7 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  VEC<T> CLIParser<T>::getNumbers(
+  VEC<T> CLIParser<T>::getVectorAtNumbers(
     CR_STR keyword,
     CR_BOL onlyCopy
   ) {
@@ -451,7 +492,7 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  VEC_BOL CLIParser<T>::getToggles(
+  VEC_BOL CLIParser<T>::getVectorAtToggles(
     CR_STR keyword,
     CR_BOL onlyCopy
   ) {
@@ -486,7 +527,7 @@ namespace utils {
   /** SIZE GETTERS */
 
   template <inspector::NUMBER T>
-  size_t CLIParser<T>::getWordSize(CR_STR keyword) {
+  size_t CLIParser<T>::getSizeAtWords(CR_STR keyword) {
 
     if (wordsHas(keyword)) {
       return words[keyword].first.size();
@@ -496,7 +537,7 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  size_t CLIParser<T>::getNumberSize(CR_STR keyword) {
+  size_t CLIParser<T>::getSizeAtNumbers(CR_STR keyword) {
 
     if (numbersHas(keyword)) {
       return numbers[keyword].first.size();
@@ -506,7 +547,7 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  size_t CLIParser<T>::getToggleSize(CR_STR keyword) {
+  size_t CLIParser<T>::getSizeAtToggles(CR_STR keyword) {
 
     if (togglesHas(keyword)) {
       return toggles[keyword].first.size();
@@ -541,60 +582,7 @@ namespace utils {
     return max;
   }
 
-  /** MULTIPLE EXPLICIT BALANCERS */
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balance(
-    CR_VEC_PAIR<std::string> keywordPaddingWords,
-    CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
-    CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
-  ) {
-    size_t max[4] = {
-      getMax<std::string>(words, keywordPaddingWords),
-      getMax<T>(numbers, keywordPaddingNumbers),
-      getMax<bool>(toggles, keywordPaddingToggles),
-      0
-    };
-
-    /** Find the highest value from the array as 'max[3]' */
-
-    if (max[0] > max[1]) max[3] = max[0];
-    else max[3] = max[1];
-
-    if (max[2] > max[3]) max[3] = max[2];
-
-    /** Balance 3 unordered maps up to size 'max[3]' */
-
-    balance<std::string>(words, keywordPaddingWords, max[3]);
-    balance<T>(numbers, keywordPaddingNumbers, max[3]);
-    balance<bool>(toggles, keywordPaddingToggles, max[3]);
-  }
-
-  /** MULTIPLE IGNORED BALANCERS */
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balance(
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ) {
-    VEC_PAIR<std::string> keywordPaddingWords
-      = convertKeywordPredefinedVector<std::string>(words, wordKeywords);
-
-    VEC_PAIR2<std::string, T> keywordPaddingNumbers
-      = convertKeywordPredefinedVector<T>(numbers, numberKeywords);
-
-    VEC_PAIR2<std::string, bool> keywordPaddingToggles
-      = convertKeywordPredefinedVector<bool>(toggles, toggleKeywords);
-
-    balance(
-      keywordPaddingWords,
-      keywordPaddingNumbers,
-      keywordPaddingToggles
-    );
-  }
-
-  /** SINGLE EXPLICIT BALANCERS */
+  /** BASIC BALANCERS */
 
   template <inspector::NUMBER T>
   template <typename U>
@@ -630,6 +618,24 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
+  template <typename U>
+  void CLIParser<T>::balance(
+    MAIN_STRUNORMAP<U> &unormap,
+    CR_VEC_STR keywords
+  ) {
+    VEC_PAIR2<std::string, U> keywordPaddingVector
+      = convertKeywordPredefinedVector<U>(unormap, keywords);
+
+    balance<U>(
+      unormap,
+      keywordPaddingVector,
+      getMax<U>(unormap, keywordPaddingVector)
+    );
+  }
+
+  /** EXPLICIT BALANCERS */
+
+  template <inspector::NUMBER T>
   void CLIParser<T>::balanceWords(
     CR_VEC_PAIR<std::string> keywordPaddingVector
   ) {
@@ -662,23 +668,34 @@ namespace utils {
     );
   }
 
-  /** SINGLE IGNORED BALANCERS */
-
   template <inspector::NUMBER T>
-  template <typename U>
-  void CLIParser<T>::balance(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_VEC_STR keywords
+  void CLIParser<T>::balanceAll(
+    CR_VEC_PAIR<std::string> keywordPaddingWords,
+    CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
+    CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
   ) {
-    VEC_PAIR2<std::string, U> keywordPaddingVector
-      = convertKeywordPredefinedVector<U>(unormap, keywords);
+    size_t max[4] = {
+      getMax<std::string>(words, keywordPaddingWords),
+      getMax<T>(numbers, keywordPaddingNumbers),
+      getMax<bool>(toggles, keywordPaddingToggles),
+      0
+    };
 
-    balance<U>(
-      unormap,
-      keywordPaddingVector,
-      getMax<U>(unormap, keywordPaddingVector)
-    );
+    /** Find the highest value from the array as 'max[3]' */
+
+    if (max[0] > max[1]) max[3] = max[0];
+    else max[3] = max[1];
+
+    if (max[2] > max[3]) max[3] = max[2];
+
+    /** Balance 3 unordered maps up to size 'max[3]' */
+
+    balance<std::string>(words, keywordPaddingWords, max[3]);
+    balance<T>(numbers, keywordPaddingNumbers, max[3]);
+    balance<bool>(toggles, keywordPaddingToggles, max[3]);
   }
+
+  /** IGNORED BALANCERS */
 
   template <inspector::NUMBER T>
   void CLIParser<T>::balanceWords(CR_VEC_STR keywords) {
@@ -693,6 +710,28 @@ namespace utils {
   template <inspector::NUMBER T>
   void CLIParser<T>::balanceToggles(CR_VEC_STR keywords) {
     balance<bool>(toggles, keywords);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balanceAll(
+    CR_VEC_STR wordKeywords,
+    CR_VEC_STR numberKeywords,
+    CR_VEC_STR toggleKeywords
+  ) {
+    VEC_PAIR<std::string> keywordPaddingWords
+      = convertKeywordPredefinedVector<std::string>(words, wordKeywords);
+
+    VEC_PAIR2<std::string, T> keywordPaddingNumbers
+      = convertKeywordPredefinedVector<T>(numbers, numberKeywords);
+
+    VEC_PAIR2<std::string, bool> keywordPaddingToggles
+      = convertKeywordPredefinedVector<bool>(toggles, toggleKeywords);
+
+    balanceAll(
+      keywordPaddingWords,
+      keywordPaddingNumbers,
+      keywordPaddingToggles
+    );
   }
 }}
 
