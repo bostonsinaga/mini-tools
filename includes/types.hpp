@@ -49,10 +49,18 @@ namespace mini_tools {
     }
 
     template <typename T>
-    concept LETTER = std::is_same_v<T, char> || std::is_same_v<T, wchar_t> || std::is_same_v<T, std::string> || std::is_same_v<T, std::wstring>;
+    concept LETTER =
+      std::is_same_v<T, char> ||
+      std::is_same_v<T, wchar_t> ||
+      std::is_same_v<T, std::string> ||
+      std::is_same_v<T, std::wstring>;
 
     template <typename T>
-    concept INTEGRAL = std::is_integral_v<T>;
+    concept INTEGRAL =
+      std::is_integral_v<T> &&
+      !std::is_same_v<T, bool> &&
+      !std::is_same_v<T, char> &&
+      !std::is_same_v<T, wchar_t>;
 
     template <typename T>
     concept FLOATING_POINT = std::is_floating_point_v<T>;
