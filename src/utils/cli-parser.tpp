@@ -7,6 +7,34 @@ namespace mini_tools {
 namespace utils {
 
   template <inspector::NUMBER T>
+  template <typename U>
+  void CLIParser<T>::pushDefault(
+    UNORMAP_MAIN<U> unormap,
+    CR_STR keyword,
+    CR_FoundEnum found
+  ) {
+    if (found == limitFoundEnum<U>()) {
+      unormap[keyword].first.push_back(unormap[keyword].second);
+    }
+  }
+
+  template <inspector::NUMBER T>
+  template <typename U, typename V>
+  void CLIParser<T>::pushDefault(
+    UNORMAP_MAIN<U> unormap_U,
+    UNORMAP_MAIN<V> unormap_V,
+    CR_STR keyword,
+    CR_FoundEnum found
+  ) {
+    if (found == limitFoundEnum<U>()) {
+      unormap_U[keyword].first.push_back(unormap_U[keyword].second);
+    }
+    else if (found == limitFoundEnum<V>()) {
+      unormap_V[keyword].first.push_back(unormap_V[keyword].second);
+    }
+  }
+
+  template <inspector::NUMBER T>
   void CLIParser<T>::pushDefault(
     CR_STR keyword,
     CR_FoundEnum found
@@ -23,64 +51,40 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  CLIParser<T>::KeywordIgnoredVectorsTuple CLIParser<T>::convertKeywordIgnoredVectorsTuple(
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ) {
-    VEC_PAIR<std::string> keywordDefaultWords;
-    VEC_PAIR2<std::string, T> keywordDefaultNumbers;
-    VEC_PAIR2<std::string, bool> keywordDefaultToggles;
-
-    for (CR_STR key : wordKeywords) {
-      keywordDefaultWords.push_back({key, ""});
+  template <typename U>
+  constexpr CLIParser<T>::FoundEnum CLIParser<T>::limitFoundEnum() const {
+    if constexpr (std::is_same<U, std::string>::value) {
+      return FoundWord;
     }
-
-    for (CR_STR key : numberKeywords) {
-      keywordDefaultNumbers.push_back({key, T()});
+    else if constexpr (std::is_same<U, bool>::value) {
+      return FoundToggle;
     }
-
-    for (CR_STR key : toggleKeywords) {
-      keywordDefaultToggles.push_back({key, false});
-    }
-
-    return std::make_tuple(
-      keywordDefaultWords,
-      keywordDefaultNumbers,
-      keywordDefaultToggles
-    );
+    return FoundNumber;
   }
 
   template <inspector::NUMBER T>
   template <typename U>
-  VEC_PAIR2<std::string, U> CLIParser<T>::convertKeywordPredefinedVector(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_VEC_STR keywords
-  ) {
-    VEC_PAIR2<std::string, U> keywordPaddingVector;
+  constexpr CLIParser<T>::FoundEnum CLIParser<T>::limitFoundEnumInput() const {
 
-    // get the predefined default values
-    for (CR_STR key : keywords) {
-      if (STRUNORMAP_FOUND<PAIR_MAIN<U>>(unormap, key)) {
-        keywordPaddingVector.push_back(
-          {key, unormap[key].second}
-        );
-      }
+    if constexpr (std::is_same<U, std::string>::value) {
+      return FoundWordInput;
     }
-
-    return keywordPaddingVector;
+    else if constexpr (std::is_same<U, bool>::value) {
+      return FoundToggleInput;
+    }
+    return FoundNumberInput;
   }
 
-  /** EXPLICIT CONSTRUCTORS */
+  /** CONSTRUCTORS */
 
   template <inspector::NUMBER T>
   CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_PAIR<std::string> keywordDefaultWords,
-    CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers,
-    CR_VEC_PAIR2<std::string, bool> keywordDefaultToggles
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
-    setAll(
+    set(
       raws,
       keywordDefaultWords,
       keywordDefaultNumbers,
@@ -91,76 +95,175 @@ namespace utils {
   template <inspector::NUMBER T>
   CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_PAIR<std::string> keywordDefaultVector
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
   ) {
-    setAll(raws, keywordDefaultVector, {}, {});
-  }
-
-  template <inspector::NUMBER T>
-  CLIParser<T>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_PAIR2<std::string, T> keywordDefaultVector
-  ) {
-    setAll(raws, {}, keywordDefaultVector, {});
-  }
-
-  template <inspector::NUMBER T>
-  CLIParser<T>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_PAIR2<std::string, bool> keywordDefaultVector
-  ) {
-    setAll(raws, {}, {}, keywordDefaultVector);
-  }
-
-  /** IGNORED CONSTRUCTORS */
-
-  template <inspector::NUMBER T>
-  CLIParser<T>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ) {
-    setAll(
-      raws,
-      wordKeywords,
-      numberKeywords,
-      toggleKeywords
+    set<std::string, T>(
+      words, numbers, raws,
+      keywordDefaultWords,
+      keywordDefaultNumbers
     );
   }
 
   template <inspector::NUMBER T>
-  CLIParser<T> CLIParser<T>::createWords(
+  CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_STR keywords
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
-    return CLIParser<T>(raws, keywords, {}, {});
+    set<T, bool>(
+      numbers, toggles, raws,
+      keywordDefaultNumbers,
+      keywordDefaultToggles
+    );
   }
 
   template <inspector::NUMBER T>
-  CLIParser<T> CLIParser<T>::createNumbers(
+  CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_STR keywords
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
-    return CLIParser<T>(raws, {}, keywords, {});
+    set<std::string, bool>(
+      words, toggles, raws,
+      keywordDefaultWords,
+      keywordDefaultToggles
+    );
   }
 
   template <inspector::NUMBER T>
-  CLIParser<T> CLIParser<T>::createToggles(
+  CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_STR keywords
+    CR_VEC_KEYDEF_WORD keywordDefaultWords
   ) {
-    return CLIParser<T>(raws, {}, {}, keywords);
+    set<std::string>(words, raws, keywordDefaultWords);
   }
 
-  /** EXPLICIT SETTERS */
+  template <inspector::NUMBER T>
+  CLIParser<T>::CLIParser(
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+  ) {
+    set<T>(numbers, raws, keywordDefaultNumbers);
+  }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::setAll(
+  CLIParser<T>::CLIParser(
     CR_VEC_STR raws,
-    CR_VEC_PAIR<std::string> keywordDefaultWords,
-    CR_VEC_PAIR2<std::string, T> keywordDefaultNumbers,
-    CR_VEC_PAIR2<std::string, bool> keywordDefaultToggles
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+  ) {
+    set<bool>(toggles, raws, keywordDefaultToggles);
+  }
+
+  /** SETTERS */
+
+  template <inspector::NUMBER T>
+  template <typename U>
+  void CLIParser<T>::set(
+    UNORMAP_MAIN<U> &unormap,
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF<U> keywordDefaultVector
+  ) {
+    /** Initialization */
+
+    for (CR_KEYDEF<U> pair : keywordDefaultVector) {
+      unormap[pair.first] = {{}, pair.second};
+    }
+
+    std::string keyword;
+    UI entriesOrderIndex = 0;
+    FoundEnum found = FoundEntry;
+
+    /** 'raws' iteration */
+
+    for (int i = 0; i < raws.size(); i++) {
+
+      // keyword detected
+      if (has<U>(unormap, raws[i])) {
+        pushDefault<U>(unormap, keyword, found);
+        found = limitFoundEnum<U>();
+        keyword = raws[i];
+      }
+      // input detected
+      else if (found == limitFoundEnum<U>() && found == limitFoundEnumInput<U>()) {
+        found = limitFoundEnumInput<U>();
+        unormap[keyword].first.push_back(raws[i]);
+      }
+      // before any keyword of 'unormap' (basic string)
+      else {
+        entries[raws[i]] = entriesOrderIndex;
+        entriesOrderIndex++;
+      }
+    }
+
+    // a keyword is specified without input at the last 'raws'
+    pushDefault<U>(unormap, keyword, found);
+  }
+
+  template <inspector::NUMBER T>
+  template <typename U, typename V>
+  void CLIParser<T>::set(
+    UNORMAP_MAIN<U> &unormap_U,
+    UNORMAP_MAIN<U> &unormap_V,
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF<U> keywordDefaultVector_U,
+    CR_VEC_KEYDEF<V> keywordDefaultVector_V
+  ) {
+    /** Initialization */
+
+    for (CR_KEYDEF<U> pair : keywordDefaultVector_U) {
+      unormap_U[pair.first] = {{}, pair.second};
+    }
+
+    for (CR_KEYDEF<V> pair : keywordDefaultVector_V) {
+      unormap_V[pair.first] = {{}, pair.second};
+    }
+
+    std::string keyword;
+    UI entriesOrderIndex = 0;
+    FoundEnum found = FoundEntry;
+
+    /** 'raws' iteration */
+
+    for (int i = 0; i < raws.size(); i++) {
+
+      // keywords detected
+      if (has<U>(unormap_U, raws[i])) {
+        pushDefault<U, V>(unormap_U, unormap_V, keyword, found);
+        found = limitFoundEnum<U>();
+        keyword = raws[i];
+      }
+      else if (has<V>(unormap_V, raws[i])) {
+        pushDefault<U, V>(unormap_U, unormap_V, keyword, found);
+        found = limitFoundEnum<V>();
+        keyword = raws[i];
+      }
+      // inputs detected
+      else if (found == limitFoundEnum<U>() && found == limitFoundEnumInput<U>()) {
+        found = limitFoundEnumInput<U>();
+        unormap_U[keyword].first.push_back(raws[i]);
+      }
+      else if (found == limitFoundEnum<V>() && found == limitFoundEnumInput<V>()) {
+        found = limitFoundEnumInput<V>();
+        unormap_V[keyword].first.push_back(raws[i]);
+      }
+      // before any keyword of 'unormap_' (basic string)
+      else {
+        entries[raws[i]] = entriesOrderIndex;
+        entriesOrderIndex++;
+      }
+    }
+
+    // a keyword is specified without input at the last 'raws'
+    pushDefault<U, V>(unormap_U, unormap_V, keyword, found);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::set(
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
     /** Initialize main unordered maps with empty vectors and default values */
 
@@ -226,113 +329,113 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::setWords(
+  void CLIParser<T>::set(
     CR_VEC_STR raws,
-    CR_VEC_PAIR<std::string> newKeywordDefaultVector
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
   ) {
-    setAll(raws, newKeywordDefaultVector, {}, {});
-  }
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::setNumbers(
-    CR_VEC_STR raws,
-    CR_VEC_PAIR2<std::string, T> newKeywordDefaultVector
-  ) {
-    setAll(raws, {}, newKeywordDefaultVector, {});
-  }
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::setToggles(
-    CR_VEC_STR raws,
-    CR_VEC_PAIR2<std::string, bool> newKeywordDefaultVector
-  ) {
-    setAll(raws, {}, {}, newKeywordDefaultVector);
-  }
-
-  /** IGNORED SETTERS */
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::setAll(
-    CR_VEC_STR raws,
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ) {
-    KeywordIgnoredVectorsTuple tuple = convertKeywordIgnoredVectorsTuple(
-      wordKeywords, numberKeywords, toggleKeywords
-    );
-
-    setAll(
-      raws,
-      std::get<0>(tuple),
-      std::get<1>(tuple),
-      std::get<2>(tuple)
+    set<std::string, T>(
+      words, numbers, raws,
+      keywordDefaultWords, keywordDefaultNumbers
     );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::setWords(
+  void CLIParser<T>::set(
     CR_VEC_STR raws,
-    CR_VEC_STR newKeywords
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
-    setAll(raws, newKeywords, {}, {});
+    set<T, bool>(
+      numbers, toggles, raws,
+      keywordDefaultNumbers, keywordDefaultToggles
+    );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::setNumbers(
+  void CLIParser<T>::set(
     CR_VEC_STR raws,
-    CR_VEC_STR newKeywords
+    CR_VEC_KEYDEF_WORD keywordDefaultWords,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
   ) {
-    setAll(raws, {}, newKeywords, {});
+    set<std::string, bool>(
+      words, toggles, raws,
+      keywordDefaultWords, keywordDefaultToggles
+    );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::setToggles(
+  void CLIParser<T>::set(
     CR_VEC_STR raws,
-    CR_VEC_STR newKeywords
+    CR_VEC_KEYDEF_WORD keywordDefaultWords
   ) {
-    setAll(raws, {}, {}, newKeywords);
+    set<std::string>(words, raws, keywordDefaultWords);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::set(
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+  ) {
+    set<T>(numbers, raws, keywordDefaultNumbers);
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::set(
+    CR_VEC_STR raws,
+    CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+  ) {
+    set<bool>(toggles, raws, keywordDefaultToggles);
   }
 
   /** CLEANERS */
 
   template <inspector::NUMBER T>
-  template <typename U>
-  void CLIParser<T>::clean(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_BOL fullyClean
-  ) {
-    if (fullyClean) MAIN_STRUNORMAP<U>().swap(unormap);
-    else unormap.clear();
-  }
-
-  template <inspector::NUMBER T>
   void CLIParser<T>::cleanAll(CR_BOL fullyClean) {
-    cleanEntries(fullyClean);
-    cleanWords(fullyClean);
-    cleanNumbers(fullyClean);
-    cleanToggles(fullyClean);
+    if (fullyClean) {
+      STRUNORMAP_UI().swap(entries);
+      STRUNORMAP<PAIR_WORD>().swap(words);
+      STRUNORMAP<PAIR_NUMBER>().swap(numbers);
+      STRUNORMAP<PAIR_TOGGLE>().swap(toggles);
+    }
+    else {
+      entries.clear();
+      words.clear();
+      numbers.clear();
+      toggles.clear();
+    }
   }
 
   template <inspector::NUMBER T>
   void CLIParser<T>::cleanEntries(CR_BOL fullyClean) {
-    if (fullyClean) STRUNORMAP_UI().swap(entries);
+    if (fullyClean) {
+      STRUNORMAP_UI().swap(entries);
+    }
     else entries.clear();
   }
 
   template <inspector::NUMBER T>
   void CLIParser<T>::cleanWords(CR_BOL fullyClean) {
-    clean<std::string>(words, fullyClean);
+    if (fullyClean) {
+      STRUNORMAP<PAIR_WORD>().swap(words);
+    }
+    else words.clear();
   }
 
   template <inspector::NUMBER T>
   void CLIParser<T>::cleanNumbers(CR_BOL fullyClean) {
-    clean<T>(numbers, fullyClean);
+    if (fullyClean) {
+      STRUNORMAP<PAIR_NUMBER>().swap(numbers);
+    }
+    else numbers.clear();
   }
 
   template <inspector::NUMBER T>
   void CLIParser<T>::cleanToggles(CR_BOL fullyClean) {
-    clean<bool>(toggles, fullyClean);
+    if (fullyClean) {
+      STRUNORMAP<PAIR_TOGGLE>().swap(toggles);
+    }
+    else toggles.clear();
   }
 
   /** INQUIRIES */
@@ -382,6 +485,15 @@ namespace utils {
       num != 0 || str == "TRUE" ||
       str == "YES" || str == "Y"
     );
+  }
+
+  template <inspector::NUMBER T>
+  template <typename U>
+  bool CLIParser<T>::has(
+    UNORMAP_MAIN<U> &unormap,
+    CR_STR keyword
+  ) {
+    return STRUNORMAP_FOUND<PAIR_MAIN<U>>(unormap, keyword);
   }
 
   template <inspector::NUMBER T>
@@ -559,8 +671,8 @@ namespace utils {
   template <inspector::NUMBER T>
   template <typename U>
   size_t CLIParser<T>::getMax(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_VEC_PAIR2<std::string, U> keywordPaddingVector
+    UNORMAP_MAIN<U> &unormap,
+    CR_VEC_KEYDEF<U> keywordPaddingVector
   ) {
     size_t max = 0;
 
@@ -570,8 +682,8 @@ namespace utils {
      * as well and this function is called inside it in balancers. 
      * This can avoid redundant keyword extraction process.
      */
-    for (CR_PAIR2<std::string, U> keypad : keywordPaddingVector) {
-      if (STRUNORMAP_FOUND<PAIR_MAIN<U>>(unormap, keypad.first)) {
+    for (CR_KEYDEF<U> keypad : keywordPaddingVector) {
+      if (has<U>(unormap, keypad.first)) {
 
         if (unormap[keypad.first].first.size() > max) {
           max = unormap[keypad.first].first.size();
@@ -582,13 +694,13 @@ namespace utils {
     return max;
   }
 
-  /** BASIC BALANCERS */
+  /** BALANCERS */
 
   template <inspector::NUMBER T>
   template <typename U>
   void CLIParser<T>::balance(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_VEC_PAIR2<std::string, U> keywordPaddingVector,
+    UNORMAP_MAIN<U> &unormap,
+    CR_VEC_KEYDEF<U> keywordPaddingVector,
     CR_SZ max
   ) {
     VEC<U> additions;
@@ -598,8 +710,8 @@ namespace utils {
      * Equalize the vectors of 'unormap' with padding
      * values from 'keywordPaddingVector' ​​to balance them.
      */
-    for (CR_PAIR2<std::string, U> keypad : keywordPaddingVector) {
-      if (STRUNORMAP_FOUND<PAIR_MAIN<U>>(unormap, keypad.first)) {
+    for (CR_KEYDEF<U> keypad : keywordPaddingVector) {
+      if (has<U>(unormap, keypad.first)) {
 
         difference = max - unormap[keypad.first].first.size();
         additions = VEC<U>(difference, keypad.second);
@@ -618,61 +730,107 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  template <typename U>
+  template <typename U, typename V>
   void CLIParser<T>::balance(
-    MAIN_STRUNORMAP<U> &unormap,
-    CR_VEC_STR keywords
+    UNORMAP_MAIN<U> &unormap_U,
+    UNORMAP_MAIN<V> &unormap_V,
+    CR_VEC_KEYDEF<U> keywordPaddingVector_U,
+    CR_VEC_KEYDEF<V> keywordPaddingVector_V
   ) {
-    VEC_PAIR2<std::string, U> keywordPaddingVector
-      = convertKeywordPredefinedVector<U>(unormap, keywords);
+    size_t max[3] = {
+      getMax<U>(unormap_U, keywordPaddingVector_U),
+      getMax<V>(unormap_V, keywordPaddingVector_V),
+      0
+    };
 
-    balance<U>(
-      unormap,
-      keywordPaddingVector,
-      getMax<U>(unormap, keywordPaddingVector)
-    );
+    /** Find the highest value from the array as 'max[2]' */
+
+    if (max[0] > max[1]) max[2] = max[0];
+    else max[2] = max[1];
+
+    /** Balance 2 unordered maps up to size 'max[2]' */
+
+    balance<U>(unormap_U, keywordPaddingVector_U, max[2]);
+    balance<V>(unormap_V, keywordPaddingVector_V, max[2]);
   }
 
-  /** EXPLICIT BALANCERS */
-
   template <inspector::NUMBER T>
-  void CLIParser<T>::balanceWords(
-    CR_VEC_PAIR<std::string> keywordPaddingVector
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_WORD keywordPaddingWords
   ) {
     balance<std::string>(
       words,
-      keywordPaddingVector,
-      getMax<std::string>(words, keywordPaddingVector)
+      keywordPaddingWords,
+      getMax<std::string>(words, keywordPaddingWords)
     );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::balanceNumbers(
-    CR_VEC_PAIR<T> keywordPaddingVector
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers
   ) {
     balance<T>(
       numbers,
-      keywordPaddingVector,
-      getMax<T>(numbers, keywordPaddingVector)
+      keywordPaddingNumbers,
+      getMax<T>(numbers, keywordPaddingNumbers)
     );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::balanceToggles(
-    CR_VEC_PAIR<bool> keywordPaddingVector
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
   ) {
     balance<bool>(
       toggles,
-      keywordPaddingVector,
-      getMax<bool>(toggles, keywordPaddingVector)
+      keywordPaddingToggles,
+      getMax<bool>(toggles, keywordPaddingToggles)
     );
   }
 
   template <inspector::NUMBER T>
-  void CLIParser<T>::balanceAll(
-    CR_VEC_PAIR<std::string> keywordPaddingWords,
-    CR_VEC_PAIR2<std::string, T> keywordPaddingNumbers,
-    CR_VEC_PAIR2<std::string, bool> keywordPaddingToggles
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_WORD keywordPaddingWords,
+    CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers
+  ) {
+    balance<std::string, T>(
+      words,
+      numbers,
+      keywordPaddingWords,
+      keywordPaddingNumbers
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
+  ) {
+    balance<T, bool>(
+      numbers,
+      toggles,
+      keywordPaddingNumbers,
+      keywordPaddingToggles
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_WORD keywordPaddingWords,
+    CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
+  ) {
+    balance<std::string, bool>(
+      words,
+      toggles,
+      keywordPaddingWords,
+      keywordPaddingToggles
+    );
+  }
+
+  template <inspector::NUMBER T>
+  void CLIParser<T>::balance(
+    CR_VEC_KEYDEF_WORD keywordPaddingWords,
+    CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers,
+    CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
   ) {
     size_t max[4] = {
       getMax<std::string>(words, keywordPaddingWords),
@@ -693,45 +851,6 @@ namespace utils {
     balance<std::string>(words, keywordPaddingWords, max[3]);
     balance<T>(numbers, keywordPaddingNumbers, max[3]);
     balance<bool>(toggles, keywordPaddingToggles, max[3]);
-  }
-
-  /** IGNORED BALANCERS */
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balanceWords(CR_VEC_STR keywords) {
-    balance<std::string>(words, keywords);
-  }
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balanceNumbers(CR_VEC_STR keywords) {
-    balance<T>(numbers, keywords);
-  }
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balanceToggles(CR_VEC_STR keywords) {
-    balance<bool>(toggles, keywords);
-  }
-
-  template <inspector::NUMBER T>
-  void CLIParser<T>::balanceAll(
-    CR_VEC_STR wordKeywords,
-    CR_VEC_STR numberKeywords,
-    CR_VEC_STR toggleKeywords
-  ) {
-    VEC_PAIR<std::string> keywordPaddingWords
-      = convertKeywordPredefinedVector<std::string>(words, wordKeywords);
-
-    VEC_PAIR2<std::string, T> keywordPaddingNumbers
-      = convertKeywordPredefinedVector<T>(numbers, numberKeywords);
-
-    VEC_PAIR2<std::string, bool> keywordPaddingToggles
-      = convertKeywordPredefinedVector<bool>(toggles, toggleKeywords);
-
-    balanceAll(
-      keywordPaddingWords,
-      keywordPaddingNumbers,
-      keywordPaddingToggles
-    );
   }
 }}
 
