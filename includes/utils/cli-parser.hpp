@@ -136,9 +136,24 @@ namespace utils {
       CR_FoundEnum found
     );
 
+    template <typename U, typename V, typename W>
     void pushDefault(
+      UNORMAP_MAIN<U> unormap_U,
+      UNORMAP_MAIN<V> unormap_V,
+      UNORMAP_MAIN<W> unormap_W,
       CR_STR keyword,
       CR_FoundEnum found
+    );
+
+    /**
+     * Select the addition of 'raws' to the vector
+     * that corresponds to the main unordered map type.
+     */
+    template <typename U>
+    constexpr void pushRaw(
+      UNORMAP_MAIN<U> &unormap,
+      CR_STR keyword,
+      CR_STR raw
     );
 
     /**
@@ -168,18 +183,29 @@ namespace utils {
 
     template <typename U>
     void set(
-      UNORMAP_MAIN<U> &unormap,
       CR_VEC_STR raws,
+      UNORMAP_MAIN<U> &unormap,
       CR_VEC_KEYDEF<U> keywordDefaultVector
     );
 
     template <typename U, typename V>
     void set(
-      UNORMAP_MAIN<U> &unormap_U,
-      UNORMAP_MAIN<U> &unormap_V,
       CR_VEC_STR raws,
+      UNORMAP_MAIN<U> &unormap_U,
+      UNORMAP_MAIN<V> &unormap_V,
       CR_VEC_KEYDEF<U> keywordDefaultVector_U,
       CR_VEC_KEYDEF<V> keywordDefaultVector_V
+    );
+
+    template <typename U, typename V, typename W>
+    void set(
+      CR_VEC_STR raws,
+      UNORMAP_MAIN<U> &unormap_U,
+      UNORMAP_MAIN<V> &unormap_V,
+      UNORMAP_MAIN<W> &unormap_W,
+      CR_VEC_KEYDEF<U> keywordDefaultVector_U,
+      CR_VEC_KEYDEF<V> keywordDefaultVector_V,
+      CR_VEC_KEYDEF<W> keywordDefaultVector_W
     );
 
     /**
@@ -220,6 +246,16 @@ namespace utils {
       CR_VEC_KEYDEF<V> keywordPaddingVector_V
     );
 
+    template <typename U, typename V, typename W>
+    void balance(
+      UNORMAP_MAIN<U> &unormap_U,
+      UNORMAP_MAIN<V> &unormap_V,
+      UNORMAP_MAIN<W> &unormap_W,
+      CR_VEC_KEYDEF<U> keywordPaddingVector_U,
+      CR_VEC_KEYDEF<V> keywordPaddingVector_V,
+      CR_VEC_KEYDEF<W> keywordPaddingVector_W
+    );
+
   public:
     /**
      * Creating a plain object but having to call a setter
@@ -245,31 +281,6 @@ namespace utils {
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
       CR_VEC_KEYDEF_WORD keywordDefaultWords
     );
 
@@ -280,6 +291,31 @@ namespace utils {
 
     CLIParser(
       CR_VEC_STR raws,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    CLIParser(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
       CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
     );
 
@@ -295,31 +331,6 @@ namespace utils {
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
       CR_VEC_KEYDEF_WORD keywordDefaultWords
     );
 
@@ -330,6 +341,31 @@ namespace utils {
 
     void set(
       CR_VEC_STR raws,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+    );
+
+    void set(
+      CR_VEC_STR raws,
+      CR_VEC_KEYDEF_WORD keywordDefaultWords,
+      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
       CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
     );
 
