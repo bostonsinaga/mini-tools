@@ -1,10 +1,11 @@
-#include "mini-tools.hpp"
+#include "helper.hpp"
 
-/**
- * Register username, pin, and premium status in sequence.
- * -username<WORD> -pin<NUMBER> -premium<TOGGLE>
- */
 int main(int argc, char *argv[]) {
+
+  helper::Helperr helperr(
+    "Register username, pin, and premium status in sequence.",
+    "--test -username<WORD> -pin<NUMBER> -premium<TOGGLE>"
+  );
 
   // registration
   mt_uti::CLIParser<int> cli(
@@ -15,16 +16,16 @@ int main(int argc, char *argv[]) {
   );
 
   // entry
-  if (cli.query({"--test"})) {
+  if (cli.enter({"--test"})) {
 
     // help
-    if (cli.enter({"--test", "--help"})) {
-      std::cout
-        << "\nRegister username, pin, and premium status in sequence.\n"
-        << "\033[3m-username<WORD> -pin<NUMBER> -premium<TOGGLE>\033[0m\n";
+    if (cli.enter({"--test", "--help"}) ||
+      cli.enter({"--test", "-h"})
+    ) {
+      helperr.printDescription();
     }
     // parse inputs
-    else {
+    else if (cli.enter({"--test"})) {
       cli.balance(
         {std::make_pair("-username", "")},
         {std::make_pair("-pin", 0)},
@@ -58,20 +59,23 @@ int main(int argc, char *argv[]) {
       for (mt::CR_BOL premium : cli.getVectorAtToggles("-premium")) {
         std::cout << "  " << premium << std::endl;
       }
+
+      // clear and release all unordered maps
+      cli.cleanAll(true);
+      std::cout << "\n\033[3mAll unordered maps are cleared and released\033[0m\n";
+
+      // show proof of cleaning
+      std::cout << " Entries Size = " << cli.getEntriesSize() << std::endl;
+      std::cout << " Words Size = " << cli.getWordsSize() << std::endl;
+      std::cout << " Numbers Size = " << cli.getNumbersSize() << std::endl;
+      std::cout << " Toggles Size = " << cli.getTogglesSize() << std::endl;
     }
-
-    // clear and release all unordered maps
-    cli.cleanAll(true);
-    std::cout << "\033[3mAll unordered maps are cleared and released\033[0m\n";
-
-    // show proof of cleaning
-    std::cout << "Entries Size = " << cli.getEntriesSize() << std::endl;
-    std::cout << "Words Size = " << cli.getWordsSize() << std::endl;
-    std::cout << "Numbers Size = " << cli.getNumbersSize() << std::endl;
-    std::cout << "Toggles Size = " << cli.getTogglesSize() << std::endl;
+  }
+  else if (cli.enter({"--help"}) || cli.enter({"-h"})) {
+    helperr.printDescription();
   }
   // error
-  else std::cout << "\n\033[31mINVALID ARGUMENTS\033[0m\n";
+  else helperr.printInvalid();
 
   return 0;
 }
