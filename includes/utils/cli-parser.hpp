@@ -79,7 +79,7 @@ namespace utils {
 
     template <typename U>
     using UNORMAP_MAIN = STRUNORMAP<PAIR_MAIN<U>>;
-    
+
     typedef PAIR_MAIN<std::string> PAIR_WORD;
     typedef PAIR_MAIN<T> PAIR_NUMBER;
     typedef PAIR_MAIN<bool> PAIR_TOGGLE;
@@ -136,11 +136,7 @@ namespace utils {
       CR_FoundEnum found
     );
 
-    template <typename U, typename V, typename W>
     void pushDefault(
-      UNORMAP_MAIN<U> unormap_U,
-      UNORMAP_MAIN<V> unormap_V,
-      UNORMAP_MAIN<W> unormap_W,
       CR_STR keyword,
       CR_FoundEnum found
     );
@@ -197,17 +193,6 @@ namespace utils {
       CR_VEC_KEYDEF<V> keywordDefaultVector_V
     );
 
-    template <typename U, typename V, typename W>
-    void set(
-      CR_VEC_STR raws,
-      UNORMAP_MAIN<U> &unormap_U,
-      UNORMAP_MAIN<V> &unormap_V,
-      UNORMAP_MAIN<W> &unormap_W,
-      CR_VEC_KEYDEF<U> keywordDefaultVector_U,
-      CR_VEC_KEYDEF<V> keywordDefaultVector_V,
-      CR_VEC_KEYDEF<W> keywordDefaultVector_W
-    );
-
     /**
      * Warning! Dynamically allocated memory in vectors is not
      * properly released. So you need to deallocate it manually.
@@ -244,16 +229,6 @@ namespace utils {
       UNORMAP_MAIN<V> &unormap_V,
       CR_VEC_KEYDEF<U> keywordPaddingVector_U,
       CR_VEC_KEYDEF<V> keywordPaddingVector_V
-    );
-
-    template <typename U, typename V, typename W>
-    void balance(
-      UNORMAP_MAIN<U> &unormap_U,
-      UNORMAP_MAIN<V> &unormap_V,
-      UNORMAP_MAIN<W> &unormap_W,
-      CR_VEC_KEYDEF<U> keywordPaddingVector_U,
-      CR_VEC_KEYDEF<V> keywordPaddingVector_V,
-      CR_VEC_KEYDEF<W> keywordPaddingVector_W
     );
 
   public:
@@ -497,7 +472,6 @@ namespace utils {
       CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
     );
 
-    // equalize multiple unordered maps
     void balance(
       CR_VEC_KEYDEF_WORD keywordPaddingWords,
       CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers,
