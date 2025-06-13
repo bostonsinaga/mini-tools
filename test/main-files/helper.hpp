@@ -72,5 +72,33 @@ namespace helper {
     // display elapsed time
     mt_uti::TimeDate::print(false, timerTitle + ":");
   }
+
+  // help and error message
+  class Helperr {
+  private:
+    std::string description,
+      parameterList;
+
+  public:
+    Helperr() = delete;
+
+    Helperr(
+      mt::CR_STR about,
+      mt::CR_STR paramList
+    ) {
+      description = about;
+      parameterList = paramList;
+    }
+
+    void printDescription() {
+      std::cout << std::endl << description << std::endl
+        << "\033[3m" << parameterList << "\033[0m\n";
+    }
+
+    void printInvalid() {
+      std::cout << "\n\033[31mINVALID ARGUMENTS\033[0m\n"
+        << "\033[3mplease type --help or -h to see available parameters\033[0m\n";
+    }
+  };
 }
 
