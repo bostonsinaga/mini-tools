@@ -26,9 +26,9 @@ int main(int argc, char *argv[]) {
     // parse inputs
     else {
       cli.balance(
-        {{"-username", ""}},
-        {{"-pin", 0}},
-        {{"--premium", false}}
+        {std::make_pair("-username", "")},
+        {std::make_pair("-pin", 0)},
+        {std::make_pair("--premium", false)}
       );
 
       // word input
