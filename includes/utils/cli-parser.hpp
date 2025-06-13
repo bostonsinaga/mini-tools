@@ -358,21 +358,40 @@ namespace utils {
     void cleanToggles(CR_BOL fullyClean = false);
 
     /**
-     * INQUIRIES
-     * Verify expected entries or keywords.
+     * ENTRY INQUIRIES
+     * 
+     * Check 'expectedEntries' existence inside the entries.
+     * 
+     * Set 'fromAllEntries' to false if you only want to check
+     * whether 'expectedEntries' are included in entries.
+     *
+     * Set 'fromAllEntries' to true if 'expectedEntries' should
+     * represent all entries, with any others considered as random entries.
      */
 
-    // check 'expectedEntries' existence inside the entries
-    bool enter(CR_VEC_STR expectedEntries); // ordered
-    bool query(CR_VEC_STR expectedEntries); // unordered
+    // ordered
+    bool enter(
+      CR_VEC_STR expectedEntries,
+      CR_BOL fromAllEntries = true
+    );
 
-    // check 'keyword' existence in unordered map
+    // unordered
+    bool query(
+      CR_VEC_STR expectedEntries,
+      CR_BOL fromAllEntries = true
+    );
+
+    /**
+     * KEYWORD INQUIRIES
+     * Check 'keyword' existence in main unordered map.
+     */
     bool wordsHas(CR_STR keyword);
     bool numbersHas(CR_STR keyword);
     bool togglesHas(CR_STR keyword);
 
     /**
-     * Check 'keyword' existence in unordered map
+     * VECTOR INQUIRIES
+     * Check 'keyword' existence in main unordered map
      * or emptiness of vector at 'keyword'.
      */
     bool wordContains(CR_STR keyword);

@@ -466,7 +466,10 @@ namespace utils {
   /** INQUIRIES */
 
   template <inspector::NUMBER T>
-  bool CLIParser<T>::enter(CR_VEC_STR expectedEntries) {
+  bool CLIParser<T>::enter(
+    CR_VEC_STR expectedEntries,
+    CR_BOL fromAllEntries
+  ) {
     UI found = 0, previousOrder = 0;
 
     for (CR_STR expected : expectedEntries) {
@@ -480,11 +483,16 @@ namespace utils {
       else return false;
     }
 
-    return expectedEntries.size() == found;
+    return fromAllEntries ?
+      entries.size() == found :
+      expectedEntries.size() == found;
   }
 
   template <inspector::NUMBER T>
-  bool CLIParser<T>::query(CR_VEC_STR expectedEntries) {
+  bool CLIParser<T>::query(
+    CR_VEC_STR expectedEntries,
+    CR_BOL fromAllEntries
+  ) {
     UI found = 0;
 
     for (CR_STR expected : expectedEntries) {
@@ -494,7 +502,9 @@ namespace utils {
       }
     }
 
-    return expectedEntries.size() == found;
+    return fromAllEntries ?
+      entries.size() == found :
+      expectedEntries.size() == found;
   }
 
   template <inspector::NUMBER T>
