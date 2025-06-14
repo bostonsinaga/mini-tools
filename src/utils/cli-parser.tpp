@@ -205,7 +205,7 @@ namespace utils {
         keyword = raws[i];
       }
       // input detected
-      else if (found == limitFoundEnum<U>() && found == limitFoundEnumInput<U>()) {
+      else if (found == limitFoundEnum<U>() || found == limitFoundEnumInput<U>()) {
         found = limitFoundEnumInput<U>();
         pushRaw<U>(unormap, keyword, raws[i]);
       }
@@ -259,11 +259,11 @@ namespace utils {
         keyword = raws[i];
       }
       // inputs detected
-      else if (found == limitFoundEnum<U>() && found == limitFoundEnumInput<U>()) {
+      else if (found == limitFoundEnum<U>() || found == limitFoundEnumInput<U>()) {
         found = limitFoundEnumInput<U>();
         pushRaw<U>(unormap_U, keyword, raws[i]);
       }
-      else if (found == limitFoundEnum<V>() && found == limitFoundEnumInput<V>()) {
+      else if (found == limitFoundEnum<V>() || found == limitFoundEnumInput<V>()) {
         found = limitFoundEnumInput<V>();
         pushRaw<V>(unormap_V, keyword, raws[i]);
       }
@@ -384,18 +384,18 @@ namespace utils {
         keyword = raws[i];
       }
       // inputs detected
-      else if (found == FoundWord && found == FoundWordInput) {
+      else if (found == FoundWord || found == FoundWordInput) {
         found = FoundWordInput;
         words[keyword].first.push_back(raws[i]);
       }
-      else if (found == FoundNumber && found == FoundNumberInput) {
+      else if (found == FoundNumber || found == FoundNumberInput) {
         found = FoundNumberInput;
 
         numbers[keyword].first.push_back(
           StrTools::stringToNumber<T>(raws[i])
         );
       }
-      else if (found == FoundToggle && found == FoundToggleInput) {
+      else if (found == FoundToggle || found == FoundToggleInput) {
         found = FoundToggleInput;
 
         toggles[keyword].first.push_back(
