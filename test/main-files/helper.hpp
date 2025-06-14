@@ -77,17 +77,23 @@ namespace helper {
   class Helperr {
   private:
     std::string description,
-      parameterList;
+      parameterList,
+      doneMessage,
+      errorMessage;
 
   public:
     Helperr() = delete;
 
     Helperr(
       mt::CR_STR about,
-      mt::CR_STR paramList
+      mt::CR_STR paramList,
+      mt::CR_STR doneMsg = "DONE",
+      mt::CR_STR errMsg = "INVALID ARGUMENTS"
     ) {
       description = about;
       parameterList = paramList;
+      doneMessage = doneMsg;
+      errorMessage = errMsg;
     }
 
     void printDescription() {
@@ -95,10 +101,58 @@ namespace helper {
         << "\033[3m" << parameterList << "\033[0m\n";
     }
 
+    void printDone() {
+      std::cout << "\n\033[32m" << doneMessage << "\033[0m\n";
+    }
+
     void printInvalid() {
-      std::cout << "\n\033[31mINVALID ARGUMENTS\033[0m\n"
+      std::cout << "\n\033[31m" << errorMessage << "\033[0m\n"
         << "\033[3mplease type --help or -h to see available parameters\033[0m\n";
     }
   };
+
+  /** Default entries: '--test', '--help', and '-h' */
+
+  template <mt::inspector::NUMBER T>
+  void CLIWrapper(
+    Helperr *helperr,
+    mt_uti::CLIParser<T> *cli,
+    const std::function<bool(mt_uti::CLIParser<T>*)> &callback
+  ) {
+    if (!helperr || !cli) return;
+
+    // entry
+    if (cli->enter({"--test"})) {
+
+      // help
+      if (cli->enter({"--test", "--help"}) ||
+        cli->enter({"--test", "-h"})
+      ) {
+        helperr->printDescription();
+      }
+      // parse inputs
+      else if (cli->enter({"--test"})) {
+        if (!callback(cli)) {
+          helperr->printInvalid();
+        }
+        else helperr->printDone();
+      }
+    }
+    // help
+    else if (cli->enter({"--help"}) || cli->enter({"-h"})) {
+      helperr->printDescription();
+    }
+    // error
+    else helperr->printInvalid();
+  }
+
+  template <mt::inspector::NUMBER T>
+  void CLIWrapper(
+    Helperr helperr,
+    mt_uti::CLIParser<T> cli,
+    const std::function<bool(mt_uti::CLIParser<T>*)> &callback
+  ) {
+    CLIWrapper(&helperr, &cli, callback);
+  }
 }
 
