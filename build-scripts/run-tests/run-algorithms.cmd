@@ -8,4 +8,4 @@
 "../../build/test/main-files/algorithms/sorters/algorithms_sorters_quick.exe"
 "../../build/test/main-files/algorithms/sorters/algorithms_sorters_selection.exe"
 echo.
-powershell -command "& {Write-Host 'ALGORITHMS TESTS COMPLETED' -ForegroundColor Green}"
+powershell -command "& {Write-Host 'ALGORITHMS TEST COMPLETED' -ForegroundColor Blue}"

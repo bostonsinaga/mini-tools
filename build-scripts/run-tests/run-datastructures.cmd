@@ -7,4 +7,4 @@
 "../../build/test/main-files/data-structures/trees/datastructures_trees_binary.exe"
 "../../build/test/main-files/data-structures/trees/datastructures_trees_general.exe"
 echo.
-powershell -command "& {Write-Host 'DATA_STRUCTURES TESTS COMPLETED' -ForegroundColor Green}"
+powershell -command "& {Write-Host 'DATA_STRUCTURES TEST COMPLETED' -ForegroundColor Blue}"

@@ -6,4 +6,4 @@
 "../../build/test/main-files/utils/utils_timedate.exe"
 "../../build/test/main-files/utils/utils_vectools.exe"
 echo.
-powershell -command "& {Write-Host 'UTILS TESTS COMPLETED' -ForegroundColor Green}"
+powershell -command "& {Write-Host 'UTILS TEST COMPLETED' -ForegroundColor Blue}"
