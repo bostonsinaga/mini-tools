@@ -107,7 +107,7 @@ namespace helper {
 
     void printInvalid() {
       std::cout << "\n\033[31m" << errorMessage << "\033[0m\n"
-        << "\033[3mplease type --help or -h to see available parameters\033[0m\n";
+        << "\033[3mPlease type --help or -h to see available parameters\033[0m\n";
     }
   };
 
@@ -117,7 +117,8 @@ namespace helper {
   void CLIWrapper(
     Helperr *helperr,
     mt_uti::CLIParser<T> *cli,
-    const std::function<bool(mt_uti::CLIParser<T>*)> &callback
+    const std::function<bool(mt_uti::CLIParser<T>*)> &callback,
+    mt::CR_VEC_STR additionalEntries = {}
   ) {
     if (!helperr || !cli) return;
 
@@ -138,6 +139,15 @@ namespace helper {
         else helperr->printDone();
       }
     }
+    // additional entries
+    else if (!additionalEntries.empty() &&
+      cli->enter(additionalEntries)
+    ) {
+      if (!callback(cli)) {
+        helperr->printInvalid();
+      }
+      else helperr->printDone();
+    }
     // help
     else if (cli->enter({"--help"}) || cli->enter({"-h"})) {
       helperr->printDescription();
@@ -150,9 +160,13 @@ namespace helper {
   void CLIWrapper(
     Helperr helperr,
     mt_uti::CLIParser<T> cli,
-    const std::function<bool(mt_uti::CLIParser<T>*)> &callback
+    const std::function<bool(mt_uti::CLIParser<T>*)> &callback,
+    mt::CR_VEC_STR additionalEntries = {}
   ) {
-    CLIWrapper(&helperr, &cli, callback);
+    CLIWrapper(
+      &helperr, &cli,
+      callback, additionalEntries
+    );
   }
 }
 
