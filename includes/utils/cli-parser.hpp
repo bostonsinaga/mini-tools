@@ -7,6 +7,12 @@
 namespace mini_tools {
 namespace utils {
 
+  template <typename T>
+  concept CLIType =
+    std::is_same_v<T, std::string> ||
+    inspector::NUMBER<T> ||
+    std::is_same_v<T, bool>;
+
   /**
    * CLI Parser uses 'std::unordered_map' to store values,
    * instead of 'std::vector' to avoid keyword duplication.
@@ -24,7 +30,7 @@ namespace utils {
    * - [OPTIONAL] Use the balancers to equalize the vectors of some unordered maps.
    * - Retrieve parameters stored as a vector in main unordered maps using the getters.
    */
-  template <inspector::NUMBER T>
+  template <CLIType T = std::string, CLIType U = int, CLIType V = bool>
   class CLIParser {
   private:
     /**
@@ -44,113 +50,49 @@ namespace utils {
 
     /** Abbreviations of keyword-default */
 
-    template <typename U>
-    using KEYDEF = PAIR2<std::string, U>;
+    template <typename W>
+    using KEYDEF = PAIR2<std::string, W>;
 
-    template <typename U>
-    using CR_KEYDEF = const KEYDEF<U>&;
+    template <typename W>
+    using CR_KEYDEF = const KEYDEF<W>&;
 
-    template <typename U>
-    using VEC_KEYDEF = VEC<KEYDEF<U>>;
+    template <typename W>
+    using VEC_KEYDEF = VEC<KEYDEF<W>>;
 
-    template <typename U>
-    using CR_VEC_KEYDEF = const VEC_KEYDEF<U>&;
-
-    typedef KEYDEF<std::string> KEYDEF_WORD;
-    typedef KEYDEF<T> KEYDEF_NUMBER;
-    typedef KEYDEF<bool> KEYDEF_TOGGLE;
-
-    typedef const KEYDEF_WORD& CR_KEYDEF_WORD;
-    typedef const KEYDEF_NUMBER& CR_KEYDEF_NUMBER;
-    typedef const KEYDEF_TOGGLE& CR_KEYDEF_TOGGLE;
-
-    typedef VEC<KEYDEF_WORD> VEC_KEYDEF_WORD;
-    typedef VEC<KEYDEF_NUMBER> VEC_KEYDEF_NUMBER;
-    typedef VEC<KEYDEF_TOGGLE> VEC_KEYDEF_TOGGLE;
-
-    typedef const VEC_KEYDEF_WORD& CR_VEC_KEYDEF_WORD;
-    typedef const VEC_KEYDEF_NUMBER& CR_VEC_KEYDEF_NUMBER;
-    typedef const VEC_KEYDEF_TOGGLE& CR_VEC_KEYDEF_TOGGLE;
+    template <typename W>
+    using CR_VEC_KEYDEF = const VEC_KEYDEF<W>&;
 
     /** Abbreviations of vector-default */
 
-    template <typename U>
-    using PAIR_MAIN = PAIR2<VEC<U>, U>;
+    template <typename W>
+    using PAIR_MAIN = PAIR2<VEC<W>, W>;
 
-    template <typename U>
-    using UNORMAP_MAIN = STRUNORMAP<PAIR_MAIN<U>>;
-
-    typedef PAIR_MAIN<std::string> PAIR_WORD;
-    typedef PAIR_MAIN<T> PAIR_NUMBER;
-    typedef PAIR_MAIN<bool> PAIR_TOGGLE;
-
-    typedef STRUNORMAP<PAIR_WORD> UNORMAP_WORD;
-    typedef STRUNORMAP<PAIR_NUMBER> UNORMAP_NUMBER;
-    typedef STRUNORMAP<PAIR_TOGGLE> UNORMAP_TOGGLE;
+    template <typename W>
+    using UNORMAP_MAIN = STRUNORMAP<PAIR_MAIN<W>>;
 
     /**
      * MAIN UNORDERED MAPS
      * Use the getters to interact with these variables.
      * They contain a pair consisting of a vector and a default value.
      */
-    UNORMAP_WORD words;
-    UNORMAP_NUMBER numbers;
-    UNORMAP_TOGGLE toggles;
+    UNORMAP_MAIN<T> mainUnormap_T;
+    UNORMAP_MAIN<U> mainUnormap_U;
+    UNORMAP_MAIN<V> mainUnormap_V;
 
     /**
      * Indicator for 'raws' iteration in setters
      * to differentiate between input and keyword.
      */
-
     enum FoundEnum {
-      FoundEntry, FoundWord, FoundWordInput,
-      FoundNumber, FoundNumberInput,
-      FoundToggle, FoundToggleInput
+      FoundEntry,
+      Found_T, FoundInput_T,
+      Found_U, FoundInput_U,
+      Found_V, FoundInput_V
     };
 
-    typedef const FoundEnum& CR_FoundEnum;
-
-    template <typename U>
-    constexpr FoundEnum limitFoundEnum() const;
-
-    template <typename U>
-    constexpr FoundEnum limitFoundEnumInput() const;
-
-    /**
-     * Set the default value for the vector of main
-     * unordered maps if only the keyword is specified in 'raws'.
-     */
-
-    template <typename U>
-    void pushDefault(
-      UNORMAP_MAIN<U> unormap,
-      CR_STR keyword,
-      CR_FoundEnum found
-    );
-
-    template <typename U, typename V>
-    void pushDefault(
-      UNORMAP_MAIN<U> unormap_U,
-      UNORMAP_MAIN<V> unormap_V,
-      CR_STR keyword,
-      CR_FoundEnum found
-    );
-
-    void pushDefault(
-      CR_STR keyword,
-      CR_FoundEnum found
-    );
-
-    /**
-     * Select the addition of 'raws' to the vector
-     * that corresponds to the main unordered map type.
-     */
-    template <typename U>
-    constexpr void pushRaw(
-      UNORMAP_MAIN<U> &unormap,
-      CR_STR keyword,
-      CR_STR raw
-    );
+    // select main unordered maps
+    template <typename W>
+    constexpr UNORMAP_MAIN<W> selectMainUnormap();
 
     /**
      * Convert string to boolean.
@@ -164,71 +106,39 @@ namespace utils {
      */
     bool booleanize(std::string str);
 
-    // check 'keyword' existence in unordered map
-    template <typename U>
-    bool has(
-      UNORMAP_MAIN<U> &unormap,
-      CR_STR keyword
+    /**
+     * Set the default value for the vector of main
+     * unordered maps if only the keyword is specified in 'raws'.
+     * 
+     * The 'N' means number of 'FoundEnum' check conditions.
+     */
+    template <int N>
+    void pushDefault(
+      CR_STR keyword,
+      const FoundEnum &found
     );
 
     /**
-     * SETTERS
-     * These methods will initialize the main unordered map and
-     * parse input as vector to each keyword from the 'raws'.
+     * Select the addition of 'raws' to the vector
+     * that corresponds to the main unordered map type.
      */
-
-    template <typename U>
-    void set(
-      CR_VEC_STR raws,
-      UNORMAP_MAIN<U> &unormap,
-      CR_VEC_KEYDEF<U> keywordDefaultVector
-    );
-
-    template <typename U, typename V>
-    void set(
-      CR_VEC_STR raws,
-      UNORMAP_MAIN<U> &unormap_U,
-      UNORMAP_MAIN<V> &unormap_V,
-      CR_VEC_KEYDEF<U> keywordDefaultVector_U,
-      CR_VEC_KEYDEF<V> keywordDefaultVector_V
-    );
-
-    /**
-     * Warning! Dynamically allocated memory in vectors is not
-     * properly released. So you need to deallocate it manually.
-     */
-    template <typename U>
-    void clean(
-      UNORMAP_MAIN<U> &unormap,
-      CR_BOL fullyClean
+    template <typename W>
+    void pushRaw(
+      CR_STR keyword,
+      CR_STR raw
     );
 
     // find the largest size of an unordered map vector
-    template <typename U>
-    size_t getMax(
-      UNORMAP_MAIN<U> &unormap,
-      CR_VEC_KEYDEF<U> keywordPaddingVector
-    );
+    template <typename W>
+    size_t getMax(CR_VEC_KEYDEF<W> keywordPaddingVector);
 
     /**
-     * BALANCERS
      * Equalize the vectors of an unordered map
      * with padding values ​​to balance them.
      */
-
-    template <typename U>
     void balance(
-      UNORMAP_MAIN<U> &unormap,
-      CR_VEC_KEYDEF<U> keywordPaddingVector,
+      CR_VEC_KEYDEF<T> keywordPaddingVector_T,
       CR_SZ max
-    );
-
-    template <typename U, typename V>
-    void balance(
-      UNORMAP_MAIN<U> &unormap_U,
-      UNORMAP_MAIN<V> &unormap_V,
-      CR_VEC_KEYDEF<U> keywordPaddingVector_U,
-      CR_VEC_KEYDEF<V> keywordPaddingVector_V
     );
 
   public:
@@ -256,46 +166,27 @@ namespace utils {
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords
+      CR_VEC_KEYDEF<T> keywordDefault_T
     );
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+      CR_VEC_KEYDEF<T> keywordDefault_T,
+      CR_VEC_KEYDEF<U> keywordDefault_U
     );
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    CLIParser(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+      CR_VEC_KEYDEF<T> keywordDefault_T,
+      CR_VEC_KEYDEF<U> keywordDefault_U,
+      CR_VEC_KEYDEF<V> keywordDefault_V
     );
 
     /**
      * SETTERS
+     * 
+     * These methods will initialize the main unordered map and
+     * parse input as vector to each keyword from the 'raws'.
      * 
      * You can use the 'argvToStringVector' method to obtain the 'raws'
      * argument if the sources are parameters of the main function.
@@ -306,42 +197,20 @@ namespace utils {
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords
+      CR_VEC_KEYDEF<T> keywordDefaultVector_T
     );
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
+      CR_VEC_KEYDEF<T> keywordDefaultVector_T,
+      CR_VEC_KEYDEF<U> keywordDefaultVector_U
     );
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
-    );
-
-    void set(
-      CR_VEC_STR raws,
-      CR_VEC_KEYDEF_WORD keywordDefaultWords,
-      CR_VEC_KEYDEF_NUMBER keywordDefaultNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordDefaultToggles
+      CR_VEC_KEYDEF<T> keywordDefaultVector_T,
+      CR_VEC_KEYDEF<U> keywordDefaultVector_U,
+      CR_VEC_KEYDEF<V> keywordDefaultVector_V
     );
 
     /**
@@ -351,11 +220,12 @@ namespace utils {
      * However, this does not apply to dynamically allocated memory.
      * You need to deallocate it manually.
      */
+
+    template <typename W>
+    void clean(CR_BOL fullyClean);
+
     void cleanAll(CR_BOL fullyClean = false);
     void cleanEntries(CR_BOL fullyClean = false);
-    void cleanWords(CR_BOL fullyClean = false);
-    void cleanNumbers(CR_BOL fullyClean = false);
-    void cleanToggles(CR_BOL fullyClean = false);
 
     /**
      * ENTRY INQUIRIES
@@ -385,24 +255,21 @@ namespace utils {
      * KEYWORD INQUIRIES
      * Check 'keyword' existence in main unordered map.
      */
-    bool wordsHas(CR_STR keyword);
-    bool numbersHas(CR_STR keyword);
-    bool togglesHas(CR_STR keyword);
+    template <typename W>
+    bool has(CR_STR keyword);
 
     /**
      * VECTOR INQUIRIES
      * Check 'keyword' existence in main unordered map
      * or emptiness of vector at 'keyword'.
      */
-    bool wordContains(CR_STR keyword);
-    bool numberContains(CR_STR keyword);
-    bool toggleContains(CR_STR keyword);
+    template <typename W>
+    bool contains(CR_STR keyword);
 
     /** GETTERS */
 
-    std::string getWordAt(CR_STR keyword, CR_SZ index);
-    T getNumberAt(CR_STR keyword, CR_SZ index);
-    bool getToggleAt(CR_STR keyword, CR_SZ index);
+    template <typename W>
+    W getAt(CR_STR keyword, CR_SZ index);
 
     // extract keywords from the entries
     VEC_STR extractBasicStrings();
@@ -411,18 +278,8 @@ namespace utils {
      * If 'onlyCopy' is set to false, the vector at keyword will be moved to
      * the container that receives the return and then the vector will be emptied.
      */
-
-    VEC_STR getVectorAtWords(
-      CR_STR keyword,
-      CR_BOL onlyCopy = true
-    );
-
-    VEC<T> getVectorAtNumbers(
-      CR_STR keyword,
-      CR_BOL onlyCopy = true
-    );
-
-    VEC_BOL getVectorAtToggles(
+    template <typename W>
+    VEC<W> getVectorAt(
       CR_STR keyword,
       CR_BOL onlyCopy = true
     );
@@ -440,21 +297,20 @@ namespace utils {
      * SIZE GETTERS
      * Will return 0 for an empty vector or unregistered unordered map.
      */
-    size_t getSizeAtWords(CR_STR keyword);
-    size_t getSizeAtNumbers(CR_STR keyword);
-    size_t getSizeAtToggles(CR_STR keyword);
 
-    // unordered maps size getters
+    template <typename W>
+    size_t getSizeAt(CR_STR keyword);
+
+    template <typename W>
+    size_t getSize() { return selectMainUnormap<W>().size(); }
+
     size_t getEntriesSize() { return entries.size(); }
-    size_t getWordsSize() { return words.size(); }
-    size_t getNumbersSize() { return numbers.size(); }
-    size_t getTogglesSize() { return toggles.size(); }
 
     /**
      * BALANCERS
      * 
-     * Equalize the vectors of an unordered map
-     * with padding values ​​to balance them.
+     * Equalize the vectors of main unordered
+     * maps with padding values ​​to balance them.
      * 
      * Call example:
      *   cli.balance(
@@ -464,37 +320,17 @@ namespace utils {
      *   );
      */
 
+    void balance(CR_VEC_KEYDEF<T> keywordPaddingVector_T);
+
     void balance(
-      CR_VEC_KEYDEF_WORD keywordPaddingWords
+      CR_VEC_KEYDEF<T> keywordPaddingVector_T,
+      CR_VEC_KEYDEF<U> keywordPaddingVector_U
     );
 
     void balance(
-      CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers
-    );
-
-    void balance(
-      CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
-    );
-
-    void balance(
-      CR_VEC_KEYDEF_WORD keywordPaddingWords,
-      CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers
-    );
-
-    void balance(
-      CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
-    );
-
-    void balance(
-      CR_VEC_KEYDEF_WORD keywordPaddingWords,
-      CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
-    );
-
-    void balance(
-      CR_VEC_KEYDEF_WORD keywordPaddingWords,
-      CR_VEC_KEYDEF_NUMBER keywordPaddingNumbers,
-      CR_VEC_KEYDEF_TOGGLE keywordPaddingToggles
+      CR_VEC_KEYDEF<T> keywordPaddingVector_T,
+      CR_VEC_KEYDEF<U> keywordPaddingVector_U,
+      CR_VEC_KEYDEF<V> keywordPaddingVector_V
     );
   };
 }}
