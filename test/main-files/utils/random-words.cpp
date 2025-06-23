@@ -139,21 +139,21 @@ bool initInputsFun(mt_uti::CLIParser<size_t> *cli) {
 
 int main(int argc, char *argv[]) {
 
-  /** Help and error messages */
+  /** Help and Error Messages */
 
   helper::CLIMessage helperTest(
     "--test",
     "Generate random values and display them on command line.",
-    "--test -amount<NUMBER> -max-number<NUMBER> -word-length-start<NUMBER> -word-length-end<NUMBER>"
+    "-amount<NUMBER> -max-number<NUMBER> -word-length-start<NUMBER> -word-length-end<NUMBER>"
   );
 
   helper::CLIMessage helperInitInputs(
     "--init-inputs",
     "Generate random values and write them to files at 'test/samples' directory.",
-    "--init-inputs -amount<NUMBER> -max-number<NUMBER> -word-length-start<NUMBER> -word-length-end<NUMBER>"
+    "-amount<NUMBER> -max-number<NUMBER> -word-length-start<NUMBER> -word-length-end<NUMBER>"
   );
 
-  /** CLI registrations */
+  /** CLI Registrations */
 
   mt_uti::CLIParser<size_t> cliTest(
     mt_uti::CLIParser<size_t>::argvToStringVector(argc, argv),
