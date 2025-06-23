@@ -74,23 +74,26 @@ namespace helper {
   }
 
   // help and error message
-  class Helperr {
+  class CLIMessage {
   private:
-    std::string description,
+    std::string mainEntry,
+      description,
       parameterList,
       doneMessage,
       errorMessage;
 
   public:
-    Helperr() = delete;
+    CLIMessage() = delete;
 
-    Helperr(
-      mt::CR_STR about,
+    CLIMessage(
+      mt::CR_STR mEntry,
+      mt::CR_STR desc,
       mt::CR_STR paramList,
       mt::CR_STR doneMsg = "DONE",
       mt::CR_STR errMsg = "INVALID ARGUMENTS"
     ) {
-      description = about;
+      mainEntry = mEntry;
+      description = desc;
       parameterList = paramList;
       doneMessage = doneMsg;
       errorMessage = errMsg;
@@ -109,64 +112,72 @@ namespace helper {
       std::cout << "\n\033[31m" << errorMessage << "\033[0m\n"
         << "\033[3mPlease type --help or -h to see available parameters\033[0m\n";
     }
+
+    std::string getMainEntry() {
+      return mainEntry;
+    }
   };
 
-  /** Default entries: '--test', '--help', and '-h' */
-
-  template <mt::inspector::NUMBER T>
+  /**
+   * The '--help' and '-h' entries are included
+   * by default to call 'CLIMessage::printDescription'.
+   */
+  template <
+    typename T = mt_uti::CLIDefault_T::type,
+    typename U = mt_uti::CLIDefault_U<T>::type,
+    typename V = mt_uti::CLIDefault_V<T, U>::type
+  >
+  requires mt_uti::CLIUniqueType<T, U, V>
   void CLIWrapper(
-    Helperr *helperr,
-    mt_uti::CLIParser<T> *cli,
-    const std::function<bool(mt_uti::CLIParser<T>*)> &callback,
+    const mt::VEC<CLIMessage*> &cliMessageVec,
+    const mt::VEC<mt_uti::CLIParser<T, U, V>*> &cliVec,
+    const mt::VEC<std::function<bool(mt_uti::CLIParser<T, U, V>*)>> &callbackVec,
     mt::CR_VEC_STR additionalEntries = {}
   ) {
-    if (!helperr || !cli) return;
+    // the vectors must contain and be the same size
+    if (cliMessageVec.empty() || cliVec.empty() || callbackVec.empty() ||
+      cliMessageVec.size() != cliVec.size() ||
+      cliVec.size() != callbackVec.size() ||
+      callbackVec.size() != cliMessageVec.size()
+    ) return;
 
-    // entry
-    if (cli->enter({"--test"})) {
+    bool entered = false;
+    int i = 0;
 
-      // help
-      if (cli->enter({"--test", "--help"}) ||
-        cli->enter({"--test", "-h"})
-      ) {
-        helperr->printDescription();
-      }
-      // parse inputs
-      else if (cli->enter({"--test"})) {
-        if (!callback(cli)) {
-          helperr->printInvalid();
+    for (i = 0; i < cliMessageVec.size(); i++) {
+      // entry
+      if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry()})) {
+
+        // help
+        if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry(), "--help"}) ||
+          cliVec[i]->enter({cliMessageVec[i]->getMainEntry(), "-h"})
+        ) {
+          entered = true;
+          cliMessageVec[i]->printDescription();
+          break;
         }
-        else helperr->printDone();
-      }
-    }
-    // additional entries
-    else if (!additionalEntries.empty() &&
-      cli->enter(additionalEntries)
-    ) {
-      if (!callback(cli)) {
-        helperr->printInvalid();
-      }
-      else helperr->printDone();
-    }
-    // help
-    else if (cli->enter({"--help"}) || cli->enter({"-h"})) {
-      helperr->printDescription();
-    }
-    // error
-    else helperr->printInvalid();
-  }
+        // parse inputs
+        else if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry()})) {
+          entered = true;
 
-  template <mt::inspector::NUMBER T>
-  void CLIWrapper(
-    Helperr helperr,
-    mt_uti::CLIParser<T> cli,
-    const std::function<bool(mt_uti::CLIParser<T>*)> &callback,
-    mt::CR_VEC_STR additionalEntries = {}
-  ) {
-    CLIWrapper(
-      &helperr, &cli,
-      callback, additionalEntries
-    );
+          if (!callbackVec[i](cliVec[i])) {
+            cliMessageVec[i]->printInvalid();
+          }
+          else cliMessageVec[i]->printDone();
+
+          break;
+        }
+      }
+    }
+
+    if (!entered) {
+      // help
+      if (cliVec[i]->enter({"--help"}) || cliVec[i]->enter({"-h"})) {
+        cliMessageVec[i]->printDescription();
+      }
+      // error
+      else cliMessageVec[i]->printInvalid();
+    }
   }
 }
 
