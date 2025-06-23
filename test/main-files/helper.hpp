@@ -100,16 +100,16 @@ namespace helper {
     }
 
     void printDescription() {
-      std::cout << std::endl << description << std::endl
+      std::cout << std::endl << mainEntry << ":\n" << description << std::endl
         << "\033[3m" << parameterList << "\033[0m\n";
     }
 
     void printDone() {
-      std::cout << "\n\033[32m" << doneMessage << "\033[0m\n";
+      std::cout << std::endl << mainEntry << ":\n" << "\033[32m" << doneMessage << "\033[0m\n";
     }
 
     void printInvalid() {
-      std::cout << "\n\033[31m" << errorMessage << "\033[0m\n"
+      std::cout << std::endl << mainEntry << ":\n" << "\033[31m" << errorMessage << "\033[0m\n"
         << "\033[3mPlease type --help or -h to see available parameters\033[0m\n";
     }
 
@@ -143,9 +143,8 @@ namespace helper {
 
     std::string mainEntry;
     bool entered = false;
-    int i = 0;
 
-    for (i = 0; i < cliMessageVec.size(); i++) {
+    for (int i = 0; i < cliMessageVec.size(); i++) {
       mainEntry = cliMessageVec[i]->getMainEntry();
 
       // entry
@@ -171,16 +170,17 @@ namespace helper {
     }
 
     if (!entered) {
-      i--;
+      for (int i = 0; i < cliMessageVec.size(); i++) {
 
-      // help
-      if (cliVec[i]->query({"--help"}, false) ||
-        cliVec[i]->query({"-h"}, false)
-      ) {
-        cliMessageVec[i]->printDescription();
+        // help
+        if (cliVec[i]->query({"--help"}, false) ||
+          cliVec[i]->query({"-h"}, false)
+        ) {
+          cliMessageVec[i]->printDescription();
+        }
+        // error
+        else cliMessageVec[i]->printInvalid();
       }
-      // error
-      else cliMessageVec[i]->printInvalid();
     }
   }
 }
