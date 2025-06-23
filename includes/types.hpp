@@ -35,7 +35,7 @@ namespace mini_tools {
 
     template <typename T>
     constexpr bool isNumber() {
-      if (!isLetter<T>()) {
+      if constexpr (!isLetter<T>()) {
         return
           std::is_integral<T>::value ||
           std::is_floating_point<T>::value;
