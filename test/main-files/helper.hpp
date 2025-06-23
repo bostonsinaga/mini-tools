@@ -138,41 +138,45 @@ namespace helper {
     if (cliMessageVec.empty() || cliVec.empty() || callbackVec.empty() ||
       cliMessageVec.size() != cliVec.size() ||
       cliVec.size() != callbackVec.size() ||
-      callbackVec.size() != cliMessageVec.size()
+      cliMessageVec.size() != callbackVec.size()
     ) return;
 
+    std::string mainEntry;
     bool entered = false;
     int i = 0;
 
     for (i = 0; i < cliMessageVec.size(); i++) {
+      mainEntry = cliMessageVec[i]->getMainEntry();
+
       // entry
-      if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry()})) {
+      if (cliVec[i]->enter({mainEntry})) {
+        entered = true;
 
         // help
-        if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry(), "--help"}) ||
-          cliVec[i]->enter({cliMessageVec[i]->getMainEntry(), "-h"})
+        if (cliVec[i]->enter({mainEntry, "--help"}) ||
+          cliVec[i]->enter({mainEntry, "-h"})
         ) {
-          entered = true;
           cliMessageVec[i]->printDescription();
-          break;
         }
         // parse inputs
-        else if (cliVec[i]->enter({cliMessageVec[i]->getMainEntry()})) {
-          entered = true;
-
+        else {
           if (!callbackVec[i](cliVec[i])) {
             cliMessageVec[i]->printInvalid();
           }
           else cliMessageVec[i]->printDone();
-
-          break;
         }
+
+        break;
       }
     }
 
     if (!entered) {
+      i--;
+
       // help
-      if (cliVec[i]->enter({"--help"}) || cliVec[i]->enter({"-h"})) {
+      if (cliVec[i]->query({"--help"}, false) ||
+        cliVec[i]->query({"-h"}, false)
+      ) {
         cliMessageVec[i]->printDescription();
       }
       // error
