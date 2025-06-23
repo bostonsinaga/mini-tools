@@ -9,7 +9,7 @@ namespace utils {
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
   template <typename W>
-  constexpr CLIParser<T, U, V>::UNORMAP_MAIN<W> CLIParser<T, U, V>::selectMainUnormap() {
+  constexpr CLIParser<T, U, V>::UNORMAP_MAIN<W>& CLIParser<T, U, V>::selectMainUnormap() {
 
     if constexpr (std::is_same_v<W, T>) {
       return mainUnormap_T;
@@ -326,9 +326,9 @@ namespace utils {
   void CLIParser<T, U, V>::cleanAll(CR_BOL fullyClean) {
     if (fullyClean) {
       STRUNORMAP_UI().swap(entries);
-      STRUNORMAP<PAIR_MAIN<T>>().swap(mainUnormap_T);
-      STRUNORMAP<PAIR_MAIN<U>>().swap(mainUnormap_U);
-      STRUNORMAP<PAIR_MAIN<V>>().swap(mainUnormap_V);
+      UNORMAP_MAIN<T>().swap(mainUnormap_T);
+      UNORMAP_MAIN<U>().swap(mainUnormap_U);
+      UNORMAP_MAIN<V>().swap(mainUnormap_V);
     }
     else {
       entries.clear();
@@ -343,7 +343,7 @@ namespace utils {
   template <typename W>
   void CLIParser<T, U, V>::clean(CR_BOL fullyClean) {
     if (fullyClean) {
-      STRUNORMAP<W>().swap(selectMainUnormap<W>());
+      UNORMAP_MAIN<W>().swap(selectMainUnormap<W>());
     }
     else selectMainUnormap<W>().clear();
   }
@@ -516,29 +516,30 @@ namespace utils {
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
+  template <typename W>
   void CLIParser<T, U, V>::balance(
-    CR_VEC_KEYDEF<T> keywordPaddingVector_T,
+    CR_VEC_KEYDEF<W> keywordPaddingVector_W,
     CR_SZ max
   ) {
-    VEC<U> additions;
+    VEC<W> additions;
     size_t difference = 0;
 
     /**
-     * Equalize the vectors of 'mainUnormap_T' with padding
-     * values from 'keywordPaddingVector_T' ​​to balance them.
+     * Equalize the vectors of 'selectMainUnormap<W>()' with padding
+     * values from 'keywordPaddingVector_W' ​​to balance them.
      */
-    for (CR_KEYDEF<T> keypad : keywordPaddingVector_T) {
-      if (has<T>(keypad.first)) {
+    for (CR_KEYDEF<W> keypad : keywordPaddingVector_W) {
+      if (has<W>(keypad.first)) {
 
-        difference = max - mainUnormap_T[keypad.first].first.size();
-        additions = VEC<T>(difference, keypad.second);
+        difference = max - selectMainUnormap<W>()[keypad.first].first.size();
+        additions = VEC<W>(difference, keypad.second);
 
-        mainUnormap_T[keypad.first].first.reserve(
-          mainUnormap_T[keypad.first].first.size() + difference
+        selectMainUnormap<W>()[keypad.first].first.reserve(
+          selectMainUnormap<W>()[keypad.first].first.size() + difference
         );
 
-        mainUnormap_T[keypad.first].first.insert(
-          mainUnormap_T[keypad.first].first.end(),
+        selectMainUnormap<W>()[keypad.first].first.insert(
+          selectMainUnormap<W>()[keypad.first].first.end(),
           additions.begin(),
           additions.end()
         );

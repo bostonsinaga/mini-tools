@@ -136,7 +136,7 @@ namespace utils {
 
     // select main unordered maps
     template <typename W>
-    constexpr UNORMAP_MAIN<W> selectMainUnormap();
+    constexpr UNORMAP_MAIN<W>& selectMainUnormap();
 
     /**
      * Convert string to boolean.
@@ -180,8 +180,9 @@ namespace utils {
      * Equalize the vectors of an unordered map
      * with padding values ​​to balance them.
      */
+    template <typename W>
     void balance(
-      CR_VEC_KEYDEF<T> keywordPaddingVector_T,
+      CR_VEC_KEYDEF<W> keywordPaddingVector_W,
       CR_SZ max
     );
 
