@@ -14,5 +14,5 @@ function(register_test target_filename_list)
 endfunction()
 
 # add_subdirectory(algorithms)
-add_subdirectory(data-structures)
-# add_subdirectory(utils)
+# add_subdirectory(data-structures)
+add_subdirectory(utils)
