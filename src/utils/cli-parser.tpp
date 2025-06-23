@@ -6,7 +6,8 @@
 namespace mini_tools {
 namespace utils {
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   constexpr CLIParser<T, U, V>::UNORMAP_MAIN<W> CLIParser<T, U, V>::selectMainUnormap() {
 
@@ -19,7 +20,8 @@ namespace utils {
     else return mainUnormap_V;
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   bool CLIParser<T, U, V>::booleanize(std::string str) {
 
     int num = 0;
@@ -34,7 +36,8 @@ namespace utils {
     );
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <int N>
   void CLIParser<T, U, V>::pushDefault(
     CR_STR keyword,
@@ -78,7 +81,8 @@ namespace utils {
     }
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   void CLIParser<T, U, V>::pushRaw(
     CR_STR keyword,
@@ -97,7 +101,8 @@ namespace utils {
 
   /** CONSTRUCTORS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   CLIParser<T, U, V>::CLIParser(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefault_T
@@ -105,7 +110,8 @@ namespace utils {
     set(raws, keywordDefault_T);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   CLIParser<T, U, V>::CLIParser(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefault_T,
@@ -118,7 +124,8 @@ namespace utils {
     );
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   CLIParser<T, U, V>::CLIParser(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefault_T,
@@ -135,7 +142,8 @@ namespace utils {
 
   /** SETTERS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefaultVector_T
@@ -176,7 +184,8 @@ namespace utils {
     pushDefault<1>(keyword, found);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefaultVector_T,
@@ -231,7 +240,8 @@ namespace utils {
     pushDefault<2>(keyword, found);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefaultVector_T,
@@ -302,7 +312,8 @@ namespace utils {
 
   /** CLEANERS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::cleanEntries(CR_BOL fullyClean) {
     if (fullyClean) {
       STRUNORMAP_UI().swap(entries);
@@ -310,7 +321,8 @@ namespace utils {
     else entries.clear();
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::cleanAll(CR_BOL fullyClean) {
     if (fullyClean) {
       STRUNORMAP_UI().swap(entries);
@@ -326,7 +338,8 @@ namespace utils {
     }
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   void CLIParser<T, U, V>::clean(CR_BOL fullyClean) {
     if (fullyClean) {
@@ -337,7 +350,8 @@ namespace utils {
 
   /** INQUIRIES */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   bool CLIParser<T, U, V>::enter(
     CR_VEC_STR expectedEntries,
     CR_BOL fromAllEntries
@@ -360,7 +374,8 @@ namespace utils {
       expectedEntries.size() == found;
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   bool CLIParser<T, U, V>::query(
     CR_VEC_STR expectedEntries,
     CR_BOL fromAllEntries
@@ -379,13 +394,15 @@ namespace utils {
       expectedEntries.size() == found;
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   bool CLIParser<T, U, V>::has(CR_STR keyword) {
     return STRUNORMAP_FOUND<PAIR_MAIN<W>>(selectMainUnormap<W>(), keyword);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   bool CLIParser<T, U, V>::contains(CR_STR keyword) {
     return getSizeAt<W>(keyword) > 0;
@@ -393,7 +410,8 @@ namespace utils {
 
   /** GETTERS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   W CLIParser<T, U, V>::getAt(CR_STR keyword, CR_SZ index) {
 
@@ -406,7 +424,8 @@ namespace utils {
     return W();
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   VEC_STR CLIParser<T, U, V>::extractBasicStrings() {
     VEC_STR keywords;
 
@@ -417,7 +436,8 @@ namespace utils {
     return keywords;
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   VEC<W> CLIParser<T, U, V>::getVectorAt(
     CR_STR keyword,
@@ -432,7 +452,8 @@ namespace utils {
     return {};
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   VEC_STR CLIParser<T, U, V>::argvToStringVector(
     CR_INT argc,
     char *argv[]
@@ -453,7 +474,8 @@ namespace utils {
 
   /** SIZE GETTERS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   size_t CLIParser<T, U, V>::getSizeAt(CR_STR keyword) {
 
@@ -464,7 +486,8 @@ namespace utils {
     return 0;
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename W>
   size_t CLIParser<T, U, V>::getMax(
     CR_VEC_KEYDEF<W> keywordPaddingVector
@@ -491,7 +514,8 @@ namespace utils {
 
   /** BALANCERS */
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::balance(
     CR_VEC_KEYDEF<T> keywordPaddingVector_T,
     CR_SZ max
@@ -522,7 +546,8 @@ namespace utils {
     }
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::balance(
     CR_VEC_KEYDEF<T> keywordPaddingVector_T
   ) {
@@ -534,7 +559,8 @@ namespace utils {
     balance<T>(keywordPaddingVector_T, max[1]);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::balance(
     CR_VEC_KEYDEF<T> keywordPaddingVector_T,
     CR_VEC_KEYDEF<U> keywordPaddingVector_U
@@ -552,7 +578,8 @@ namespace utils {
     balance<U>(keywordPaddingVector_U, max[2]);
   }
 
-  template <CLIType T, CLIType U, CLIType V>
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::balance(
     CR_VEC_KEYDEF<T> keywordPaddingVector_T,
     CR_VEC_KEYDEF<U> keywordPaddingVector_U,

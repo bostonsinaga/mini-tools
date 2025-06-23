@@ -7,11 +7,50 @@
 namespace mini_tools {
 namespace utils {
 
+  /** Template Parameter Constraints */
+
   template <typename T>
   concept CLIType =
     std::is_same_v<T, std::string> ||
     inspector::NUMBER<T> ||
     std::is_same_v<T, bool>;
+
+  template <typename T, typename U, typename V>
+  concept CLIUniqueType =
+    CLIType<T> && CLIType<U> && CLIType<V> &&
+    !std::is_same_v<T, U> &&
+    !std::is_same_v<U, V> &&
+    !std::is_same_v<V, T>;
+
+  /** Default Template Arguments */
+
+  struct CLIDefault_T {
+    using type = std::string;
+  };
+
+  template <CLIType T>
+  struct CLIDefault_U {
+    using type = std::conditional_t<
+      std::is_same_v<T, std::string>,
+      int, std::conditional_t<
+        std::is_same_v<T, int>,
+        bool, std::string
+      >
+    >;
+  };
+
+  template <CLIType T, CLIType U>
+  struct CLIDefault_V {
+    using type = std::conditional_t<
+      (std::is_same_v<T, std::string> && inspector::NUMBER<U>) ||
+      (inspector::NUMBER<T> && std::is_same_v<U, std::string>),
+      bool, std::conditional_t<
+        (inspector::NUMBER<T> && std::is_same_v<U, bool>) ||
+        (std::is_same_v<T, bool> && inspector::NUMBER<U>),
+        std::string, int
+      >
+    >;
+  };
 
   /**
    * CLI Parser uses 'std::unordered_map' to store values,
@@ -30,7 +69,12 @@ namespace utils {
    * - [OPTIONAL] Use the balancers to equalize the vectors of some unordered maps.
    * - Retrieve parameters stored as a vector in main unordered maps using the getters.
    */
-  template <CLIType T = std::string, CLIType U = int, CLIType V = bool>
+  template <
+    typename T = CLIDefault_T::type,
+    typename U = CLIDefault_U<T>::type,
+    typename V = CLIDefault_V<T, U>::type
+  >
+  requires CLIUniqueType<T, U, V>
   class CLIParser {
   private:
     /**
