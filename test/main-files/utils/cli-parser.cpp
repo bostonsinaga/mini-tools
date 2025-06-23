@@ -2,21 +2,21 @@
 
 int main(int argc, char *argv[]) {
 
-  helper::CLIWrapper<int>(
+  helper::CLIWrapper<int, std::string>(
     // help and error message
-    helper::Helperr(
-      "Enter product name, price, and edibility in sequence.",
+    helper::CLIMessage(
+      "Register product name, price, and edibility in sequence.",
       "--test -name<WORD> -price<NUMBER> -edible<TOGGLE>"
     ),
     // CLI registration
-    mt_uti::CLIParser<int>(
-      mt_uti::CLIParser<int>::argvToStringVector(argc, argv),
+    mt_uti::CLIParser<int, std::string>(
+      mt_uti::CLIParser<int, std::string>::argvToStringVector(argc, argv),
       {std::make_pair("-name", "Noname")},
       {std::make_pair("-price", 0)},
       {std::make_pair("--edible", true)}
     ),
     // on 'cli->enter("--test")'
-    [](mt_uti::CLIParser<int> *cli)->bool {
+    [](mt_uti::CLIParser<int, std::string> *cli)->bool {
       cli->balance(
         {std::make_pair("-name", "Unknown")},
         {std::make_pair("-price", 0)},
@@ -26,14 +26,14 @@ int main(int argc, char *argv[]) {
       // word input
       std::cout << "\nName:\n";
 
-      for (mt::CR_STR name : cli->getVectorAtWords("-name")) {
+      for (std::string &name : cli->getVectorAt<std::string>("-name")) {
         std::cout << "  " << name << std::endl;
       }
 
       // number input
       std::cout << "\nPrice:\n";
 
-      for (mt::CR<int> price : cli->getVectorAtNumbers("-price")) {
+      for (int &price : cli->getVectorAt<int>("-price")) {
 
         if (price <= 0) {
           std::cout << "  " << "free" << std::endl;
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
       // toggle input
       std::cout << "\nEdibility:\n";
 
-      for (mt::CR_BOL edible : cli->getVectorAtToggles("--edible")) {
+      for (bool &edible : cli->getVectorAt<bool>("--edible")) {
         std::cout << "  " << (edible ? "Edible" : "Not Edible") << std::endl;
       }
 
@@ -57,17 +57,17 @@ int main(int argc, char *argv[]) {
       cli->cleanEntries(true);
       std::cout << " to " << cli->getEntriesSize() << std::endl;
 
-      std::cout << " Words from " << cli->getSizeAtWords("-name");
-      cli->cleanWords(true);
-      std::cout << " to " << cli->getSizeAtWords("-name") << std::endl;
+      std::cout << " Words from " << cli->getSizeAt<std::string>("-name");
+      cli->clean<std::string>(true);
+      std::cout << " to " << cli->getSizeAt<std::string>("-name") << std::endl;
 
-      std::cout << " Numbers from " << cli->getSizeAtNumbers("-price");
-      cli->cleanNumbers(true);
-      std::cout << " to " << cli->getSizeAtNumbers("-price") << std::endl;
+      std::cout << " Numbers from " << cli->getSizeAt<int>("-price");
+      cli->clean<int>(true);
+      std::cout << " to " << cli->getSizeAt<int>("-price") << std::endl;
 
-      std::cout << " Toggles from " << cli->getSizeAtToggles("--edible");
-      cli->cleanToggles(true);
-      std::cout << " to " << cli->getSizeAtToggles("--edible") << std::endl;
+      std::cout << " Toggles from " << cli->getSizeAt<bool>("--edible");
+      cli->clean<bool>(true);
+      std::cout << " to " << cli->getSizeAt<bool>("--edible") << std::endl;
 
       return true;
     }
