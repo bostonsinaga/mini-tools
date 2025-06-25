@@ -2,7 +2,7 @@
 
 typedef std::tuple<mt::VEC_INT, mt::VEC_FLT, mt::VEC_STR, mt::VEC_STR> FourVectorTypes;
 
-FourVectorTypes generateRandomValues(mt_uti::CLIParser<size_t> *cli) {
+FourVectorTypes generateRandomValues(mt_uti::CLIParser<mt::LD> *cli) {
 
   /** Initialization */
 
@@ -11,20 +11,20 @@ FourVectorTypes generateRandomValues(mt_uti::CLIParser<size_t> *cli) {
     wordLengthStart = 0,
     wordLengthEnd = 0;
 
-  if (cli->getSizeAt<size_t>("-amount")) {
-    amount = cli->getVectorAt<size_t>("-amount").back();
+  if (cli->getSizeAt<mt::LD>("-amount")) {
+    amount = cli->getVectorAt<mt::LD>("-amount").back();
   }
 
-  if (cli->getSizeAt<size_t>("-max-number")) {
-    maxNumber = cli->getVectorAt<size_t>("-max-number").back();
+  if (cli->getSizeAt<mt::LD>("-max-number")) {
+    maxNumber = cli->getVectorAt<mt::LD>("-max-number").back();
   }
 
-  if (cli->getSizeAt<size_t>("-word-length-start")) {
-    wordLengthStart = cli->getVectorAt<size_t>("-word-length-start").back();
+  if (cli->getSizeAt<mt::LD>("-word-length-start")) {
+    wordLengthStart = cli->getVectorAt<mt::LD>("-word-length-start").back();
   }
 
-  if (cli->getSizeAt<size_t>("-word-length-end")) {
-    wordLengthEnd = cli->getVectorAt<size_t>("-word-length-end").back();
+  if (cli->getSizeAt<mt::LD>("-word-length-end")) {
+    wordLengthEnd = cli->getVectorAt<mt::LD>("-word-length-end").back();
   }
 
   /** Limiting sizes */
@@ -74,7 +74,7 @@ FourVectorTypes generateRandomValues(mt_uti::CLIParser<size_t> *cli) {
 }
 
 // on 'cli->enter("--test")'
-bool testFun(mt_uti::CLIParser<size_t> *cli) {
+bool testFun(mt_uti::CLIParser<mt::LD> *cli) {
 
   FourVectorTypes randomValues = generateRandomValues(cli);
 
@@ -108,7 +108,7 @@ bool testFun(mt_uti::CLIParser<size_t> *cli) {
 }
 
 // on 'cli->enter("--init-inputs")'
-bool initInputsFun(mt_uti::CLIParser<size_t> *cli) {
+bool initInputsFun(mt_uti::CLIParser<mt::LD> *cli) {
 
   FourVectorTypes randomValues = generateRandomValues(cli);
 
@@ -155,28 +155,28 @@ int main(int argc, char *argv[]) {
 
   /** CLI Registrations */
 
-  mt_uti::CLIParser<size_t> cliTest(
-    mt_uti::CLIParser<size_t>::argvToStringVector(argc, argv),
+  mt_uti::CLIParser<mt::LD> cliTest(
+    mt_uti::CLIParser<mt::LD>::argvToStringVector(argc, argv),
     {
-      std::make_pair("-amount", size_t()),
-      std::make_pair("-max-number", size_t()),
-      std::make_pair("-word-length-start", size_t()),
-      std::make_pair("-word-length-end", size_t())
+      std::make_pair("-amount", 0),
+      std::make_pair("-max-number", 0),
+      std::make_pair("-word-length-start", 0),
+      std::make_pair("-word-length-end", 0)
     }
   );
 
-  mt_uti::CLIParser<size_t> cliInitInputs(
-    mt_uti::CLIParser<size_t>::argvToStringVector(argc, argv),
+  mt_uti::CLIParser<mt::LD> cliInitInputs(
+    mt_uti::CLIParser<mt::LD>::argvToStringVector(argc, argv),
     {
-      std::make_pair("-amount", size_t()),
-      std::make_pair("-max-number", size_t()),
-      std::make_pair("-word-length-start", size_t()),
-      std::make_pair("-word-length-end", size_t())
+      std::make_pair("-amount", 0),
+      std::make_pair("-max-number", 0),
+      std::make_pair("-word-length-start", 0),
+      std::make_pair("-word-length-end", 0)
     }
   );
 
   // process CLI input
-  helper::CLIWrapper<size_t>(
+  helper::CLIWrapper<mt::LD>(
     {&helperTest, &helperInitInputs},
     {&cliTest, &cliInitInputs},
     {testFun, initInputsFun}

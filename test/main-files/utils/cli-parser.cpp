@@ -1,7 +1,7 @@
 #include "helper.hpp"
 
 // on 'cli->enter("--test")'
-bool testFun(mt_uti::CLIParser<std::string, int, bool> *cli) {
+bool testFun(mt_uti::CLIParser<std::string, mt::LD, bool> *cli) {
 
   cli->balance(
     {std::make_pair("-name", "Unknown")},
@@ -19,7 +19,7 @@ bool testFun(mt_uti::CLIParser<std::string, int, bool> *cli) {
   // number input
   std::cout << "\nPrice:\n";
 
-  for (mt::CR_INT price : cli->getVectorAt<int>("-price")) {
+  for (mt::CR_INT price : cli->getVectorAt<mt::LD>("-price")) {
 
     if (price <= 0) {
       std::cout << "  " << "free" << std::endl;
@@ -47,9 +47,9 @@ bool testFun(mt_uti::CLIParser<std::string, int, bool> *cli) {
   cli->clean<std::string>(true);
   std::cout << " to " << cli->getSizeAt<std::string>("-name") << std::endl;
 
-  std::cout << " Numbers from " << cli->getSizeAt<int>("-price");
-  cli->clean<int>(true);
-  std::cout << " to " << cli->getSizeAt<int>("-price") << std::endl;
+  std::cout << " Numbers from " << cli->getSizeAt<mt::LD>("-price");
+  cli->clean<mt::LD>(true);
+  std::cout << " to " << cli->getSizeAt<mt::LD>("-price") << std::endl;
 
   std::cout << " Toggles from " << cli->getSizeAt<bool>("--edible");
   cli->clean<bool>(true);
@@ -68,15 +68,15 @@ int main(int argc, char *argv[]) {
   );
 
   // CLI registration
-  mt_uti::CLIParser<std::string, int, bool> cliTest(
-    mt_uti::CLIParser<std::string, int, bool>::argvToStringVector(argc, argv),
+  mt_uti::CLIParser<std::string, mt::LD, bool> cliTest(
+    mt_uti::CLIParser<std::string, mt::LD, bool>::argvToStringVector(argc, argv),
     {std::make_pair("-name", "Noname")},
     {std::make_pair("-price", 0)},
     {std::make_pair("--edible", true)}
   );
 
   // process CLI input
-  helper::CLIWrapper<std::string, int, bool>(
+  helper::CLIWrapper<std::string, mt::LD, bool>(
     {&helperTest},
     {&cliTest},
     {testFun}
