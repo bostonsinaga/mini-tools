@@ -89,7 +89,9 @@ namespace utils {
     CR_STR raw
   ) {
     if constexpr (std::is_same_v<W, bool>) {
-      selectMainUnormap<W>()[keyword].first.push_back(booleanize(raw));
+      selectMainUnormap<W>()[keyword].first.push_back(
+        CLIParser<T, U, V>::booleanize(raw)
+      );
     }
     else if constexpr (std::is_same_v<W, LD>) {
       selectMainUnormap<W>()[keyword].first.push_back(

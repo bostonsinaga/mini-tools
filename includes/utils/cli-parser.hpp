@@ -139,18 +139,6 @@ namespace utils {
     constexpr UNORMAP_MAIN<W>& selectMainUnormap();
 
     /**
-     * Convert string to boolean.
-     * 
-     * Expected string conversions are:
-     * "TRUE", "FALSE", "YES", "NO", "Y", "N"
-     * or a number (non-zero is true).
-     * 
-     * The value of 'str' will come from
-     * the 'argv' input after the toggle keyword.
-     */
-    bool booleanize(std::string str);
-
-    /**
      * Set the default value for the vector of main
      * unordered maps if only the keyword is specified in 'raws'.
      * 
@@ -271,6 +259,18 @@ namespace utils {
 
     void cleanAll(CR_BOL fullyClean = false);
     void cleanEntries(CR_BOL fullyClean = false);
+
+    /**
+     * Convert string to boolean.
+     * 
+     * Expected string conversions are:
+     * "TRUE", "FALSE", "YES", "NO", "Y", "N"
+     * or a number (non-zero is true).
+     * 
+     * The value of 'str' will come from
+     * the 'argv' input after the toggle keyword.
+     */
+    static bool booleanize(std::string str);
 
     /**
      * ENTRY INQUIRIES
