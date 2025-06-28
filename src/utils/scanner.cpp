@@ -6,10 +6,7 @@
 namespace mini_tools {
 namespace utils {
 
-  /** Simple Detectors */
-
-  VEC_CH Scanner::separators_ch {' ', ',', '\n'};
-  VEC_STR Scanner::separators_str {" ", ",", "\n"};
+  /** Text Separator Detectors */
 
   bool Scanner::isSeparator(CR_CH ch) {
     for (CR_CH c : separators_ch) {
@@ -143,7 +140,7 @@ namespace utils {
     return FS::current_path();
   }
 
-  std::string Scanner::getFileString(CR_FS_PATH path) {
+  std::string Scanner::readFileString(CR_FS_PATH path) {
     std::string text, line;
     std::ifstream reader(path);
 
