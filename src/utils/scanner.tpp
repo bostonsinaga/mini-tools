@@ -6,48 +6,52 @@
 namespace mini_tools {
 namespace utils {
 
-  /** Advanced Detectors */
+  /** Primitive Data Type Detectors */
 
   template <inspector::NUMBER T>
-  T Scanner::stringToNumber(CR_STR numStr) {
-    if constexpr (
-      std::is_same_v<T, int> ||
-      std::is_same_v<T, UI> ||
-      std::is_same_v<T, SI> ||
-      std::is_same_v<T, USI>
-    ) {
-      return std::stoi(numStr);
+  T Scanner::stringToNumber(CR_STR str) {
+
+    // select all available number conversion types
+    try {
+      if constexpr (std::is_same_v<T, int>) {
+        return std::stoi(str);
+      }
+      else if constexpr (std::is_same_v<T, long>) {
+        return std::stol(str);
+      }
+      else if constexpr (std::is_same_v<T, LLI>) {
+        return std::stoll(str);
+      }
+      else if constexpr (std::is_same_v<T, ULI>) {
+        return std::stoul(str);
+      }
+      else if constexpr (std::is_same_v<T, ULLI>) {
+        return std::stoull(str);
+      }
+      else if constexpr (std::is_same_v<T, float>) {
+        return std::stof(str);
+      }
+      else if constexpr (std::is_same_v<T, double>) {
+        return std::stod(str);
+      }
+      else if constexpr (std::is_same_v<T, LD>) {
+        return std::stold(str);
+      }
+      else return std::stoi(str);
     }
-    else if constexpr (std::is_same_v<T, float>) {
-      return std::stof(numStr);
-    }
-    else if constexpr (std::is_same_v<T, double>) {
-      return std::stod(numStr);
-    }
-    else if constexpr (std::is_same_v<T, LD>) {
-      return std::stold(numStr);
-    }
-    else if constexpr (
-      std::is_same_v<T, LI> ||
-      std::is_same_v<T, ULI>
-    ) {
-      return std::stol(numStr);
-    }
-    else if constexpr (
-      std::is_same_v<T, LLI> ||
-      std::is_same_v<T, ULLI> ||
-      std::is_same_v<T, size_t> ||
-      std::is_same_v<T, time_t>
-    ) {
-      return std::stoll(numStr);
-    }
+    catch (...) {}
+
+    /**
+     * The 'str' is empty or 'str' does not contain numbers
+     * or does not start with a number or decimal point.
+     */
+    return T();
   }
 
   template <inspector::NUMBER T>
-  void Scanner::parseNumbers(
-    CR_STR text,
-    VEC<T> &vecHook
-  ) {
+  VEC<T> Scanner::parseNumbers(CR_STR text) {
+
+    VEC<T> numVec;
     std::string numStr;
 
     bool separated = false,
@@ -78,19 +82,20 @@ namespace utils {
           Scanner::isSeparator(text, i) &&
           numStr.length() > 0
         ) {
-          vecHook.push_back(Scanner::stringToNumber<T>(numStr));
+          numVec.push_back(StrTools::stringToNumber<T>(numStr));
           hasDecimalPoint = false;
           numStr = "";
         }
       }
     }
+
+    return numVec;
   }
 
   template <inspector::LETTER T>
-  void Scanner::parseLetters(
-    CR_STR text,
-    VEC<T> &vecHook
-  ) {
+  VEC<T> Scanner::parseLetters(CR_STR text) {
+
+    VEC<T> wordVec;
     bool separated = false;
     std::string chars;
 
@@ -104,33 +109,21 @@ namespace utils {
         chars += text[i];
 
         if (Scanner::isSeparator(text, i)) {
-          vecHook.push_back(chars);
+          wordVec.push_back(chars);
           separated = true;
           chars = "";
         }
       }
     }
-  }
 
-  template <inspector::NUMBER T>
-  VEC<T> Scanner::parseNumbers(CR_STR text) {
-    VEC<T> numbers;
-    Scanner::parseNumbers<T>(text, numbers);
-    return numbers;
-  }
-
-  template <inspector::LETTER T>
-  VEC<T> Scanner::parseLetters(CR_STR text) {
-    VEC<T> letters;
-    Scanner::parseLetters<T>(text, letters);
-    return letters;
+    return wordVec;
   }
 
   template <inspector::NUMBER T>
   VEC<T> Scanner::txtToNumbers(CR_FS_PATH filename) {
 
     return Scanner::parseNumbers<T>(
-      Scanner::getFileString(filename)
+      Scanner::readFileString(filename)
     );
   }
 
@@ -138,7 +131,7 @@ namespace utils {
   VEC<T> Scanner::txtToLetters(CR_FS_PATH filename) {
 
     return Scanner::parseLetters<T>(
-      Scanner::getFileString(filename)
+      Scanner::readFileString(filename)
     );
   }
 }}
