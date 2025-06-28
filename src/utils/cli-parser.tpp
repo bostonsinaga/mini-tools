@@ -95,7 +95,7 @@ namespace utils {
     }
     else if constexpr (std::is_same_v<W, LD>) {
       selectMainUnormap<W>()[keyword].first.push_back(
-        utils::StrTools::stringToNumber<LD>(raw)
+        utils::Scanner::stringToNumber<LD>(raw)
       );
     }
     else selectMainUnormap<W>()[keyword].first.push_back(raw);
