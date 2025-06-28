@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__UTILS__CLI_PARSER_HPP__
 
 #include "types.hpp"
+#include "scanner.hpp"
 #include "str-tools.hpp"
 
 namespace mini_tools {
