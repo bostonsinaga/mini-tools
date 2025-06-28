@@ -54,6 +54,43 @@ namespace utils {
   };
 
   /**
+   * Interpret string as boolean. 
+   */
+  class Booleanizer {
+  private:
+    /**
+     * All strings are expected to be interpreted
+     * as representing the boolean value 'true'.
+     * 
+     * Default as english.
+     */
+    inline static STRUNORMAP<VEC_STR> terms = {
+      {"en", {"TRUE", "YES", "Y"}}
+    };
+
+  public:
+    /**
+     * Compare each selected 'terms' vector with 'str'.
+     * 
+     * Return false for 'str' that interpreted as
+     * 'false', zero number, or not included in the 'terms'.
+     */
+    static bool test(
+      std::string str,
+      CR_VEC_STR languageCodes = {"en"}
+    );
+
+    /** Change extension for other languages */
+
+    static void addBooleanizeTerms(
+      CR_VEC_STR newTerms,
+      CR_STR languageCode
+    );
+
+    static void cleanBooleanizeTerms(CR_STR languageCode);
+  };
+
+  /**
    * CLI Parser uses 'std::unordered_map' to store values,
    * instead of 'std::vector' to avoid keyword duplication.
    * 
@@ -260,18 +297,6 @@ namespace utils {
 
     void cleanAll(CR_BOL fullyClean = false);
     void cleanEntries(CR_BOL fullyClean = false);
-
-    /**
-     * Convert string to boolean.
-     * 
-     * Expected string conversions are:
-     * "TRUE", "FALSE", "YES", "NO", "Y", "N"
-     * or a number (non-zero is true).
-     * 
-     * The value of 'str' will come from
-     * the 'argv' input after the toggle keyword.
-     */
-    static bool booleanize(std::string str);
 
     /**
      * ENTRY INQUIRIES

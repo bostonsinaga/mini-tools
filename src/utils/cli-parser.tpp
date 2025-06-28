@@ -6,6 +6,54 @@
 namespace mini_tools {
 namespace utils {
 
+  //_____________|
+  // BOOLEANIZER |
+  //_____________|
+
+  bool Booleanizer::test(
+    std::string str,
+    CR_VEC_STR languageCodes
+  ) {
+    // 'str' is zero
+    if (!Scanner::stringToNumber<int>(str)) {
+
+      utils::StrTools::modifyStringToUppercase(str);
+
+      for (CR_STR code : languageCodes) {
+        if (!code.empty() &&
+          STRUNORMAP_FOUND<VEC_STR>(terms, code)
+        ) {
+          for (CR_STR term : terms[code]) {
+            if (str == term) return true;
+          }
+        }
+      }
+
+      // 'str' does not match any terms
+      return false;
+    }
+
+    // 'str' is not zero
+    return true;
+  }
+
+  void Booleanizer::addBooleanizeTerms(
+    CR_VEC_STR newTerms,
+    CR_STR languageCode
+  ) {
+    terms[languageCode] = newTerms;
+  }
+
+  void Booleanizer::cleanBooleanizeTerms(CR_STR languageCode) {
+    if (STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)) {
+      terms.erase(languageCode);
+    }
+  }
+
+  //____________|
+  // CLI PARSER |
+  //____________|
+
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
   template <typename W>
@@ -18,22 +66,6 @@ namespace utils {
       return mainUnormap_U;
     }
     else return mainUnormap_V;
-  }
-
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  bool CLIParser<T, U, V>::booleanize(std::string str) {
-
-    int num = 0;
-    utils::StrTools::changeStringToUppercase(str);
-
-    try { num = std::stoi(str); }
-    catch (...) {}
-
-    return (
-      num != 0 || str == "TRUE" ||
-      str == "YES" || str == "Y"
-    );
   }
 
   template <typename T, typename U, typename V>
@@ -90,7 +122,7 @@ namespace utils {
   ) {
     if constexpr (std::is_same_v<W, bool>) {
       selectMainUnormap<W>()[keyword].first.push_back(
-        CLIParser<T, U, V>::booleanize(raw)
+        Booleanizer::test(raw)
       );
     }
     else if constexpr (std::is_same_v<W, LD>) {
