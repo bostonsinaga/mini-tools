@@ -6,76 +6,74 @@
 namespace mini_tools {
 namespace utils {
 
-  void StrTools::changeCase(char &ch, CR_BOL isUpper) {
+  void StrTools::modifyCase(char &ch, CR_BOL isUpper) {
     if (isUpper) {
       ch = std::toupper(ch);
     }
     else ch = std::tolower(ch);
   }
 
-  void StrTools::changeToLowercase(char &ch) {
-    changeCase(ch, false);
+  void StrTools::modifyToLowercase(char &ch) {
+    modifyCase(ch, false);
   }
 
-  void StrTools::changeToUppercase(char &ch) {
-    changeCase(ch, true);
+  void StrTools::modifyToUppercase(char &ch) {
+    modifyCase(ch, true);
   }
 
-  char StrTools::getToLowercase(char ch) {
-    changeCase(ch, false);
+  char StrTools::copyToLowercase(char ch) {
+    modifyCase(ch, false);
     return ch;
   }
 
-  char StrTools::getToUppercase(char ch) {
-    changeCase(ch, true);
+  char StrTools::copyToUppercase(char ch) {
+    modifyCase(ch, true);
     return ch;
   }
 
-  void StrTools::changeCharCase(
+  void StrTools::modifyCharCase(
     std::string &str,
     CR_LI index,
     CR_BOL isUpper
   ) {
     if (index >= 0 && index < str.length()) {
-      changeCase(str[index], isUpper);
+      modifyCase(str[index], isUpper);
     }
   }
 
-  void StrTools::changeCharToLowercase(
+  void StrTools::modifyCharToLowercase(
     std::string &str,
     CR_LI index
   ) {
-    changeCharCase(str, index, false);
+    modifyCharCase(str, index, false);
   }
 
-  void StrTools::changeCharToUppercase(
+  void StrTools::modifyCharToUppercase(
     std::string &str,
     CR_LI index
   ) {
-    changeCharCase(str, index, true);
+    modifyCharCase(str, index, true);
   }
 
-  std::string StrTools::getCharToLowercase(
+  std::string StrTools::copyCharToLowercase(
     std::string str,
     CR_LI index
   ) {
-    changeCharCase(str, index, false);
+    modifyCharCase(str, index, false);
     return str;
   }
 
-  std::string StrTools::getCharToUppercase(
+  std::string StrTools::copyCharToUppercase(
     std::string str,
     CR_LI index
   ) {
-    changeCharCase(str, index, true);
+    modifyCharCase(str, index, true);
     return str;
   }
 
-  void StrTools::changeStringCase(std::string &str, CR_BOL isUpper) {
+  void StrTools::modifyStringCase(std::string &str, CR_BOL isUpper) {
     std::transform(
-      str.begin(),
-      str.end(),
-      str.begin(),
+      str.begin(), str.end(), str.begin(),
       [&](unsigned char c) {
         if (isUpper) return std::toupper(c);
         else return std::tolower(c);
@@ -83,39 +81,39 @@ namespace utils {
     );
   }
 
-  void StrTools::changeStringsCase(VEC_STR &vecStr, CR_BOL isUpper) {
+  void StrTools::modifyStringsCase(VEC_STR &vecStr, CR_BOL isUpper) {
     for (int i = 0; i < vecStr.size(); i++) {
-      changeStringCase(vecStr.at(i), isUpper);
+      modifyStringCase(vecStr.at(i), isUpper);
     }
   }
 
-  void StrTools::changeStringToLowercase(std::string &str) {
-    changeStringCase(str, false);
+  void StrTools::modifyStringToLowercase(std::string &str) {
+    modifyStringCase(str, false);
   }
 
-  void StrTools::changeStringToUppercase(std::string &str) {
-    changeStringCase(str, true);
+  void StrTools::modifyStringToUppercase(std::string &str) {
+    modifyStringCase(str, true);
   }
 
-  std::string StrTools::getStringToLowercase(std::string str) {
-    changeStringCase(str, false);
+  std::string StrTools::copyStringToLowercase(std::string str) {
+    modifyStringCase(str, false);
     return str;
   }
 
-  std::string StrTools::getStringToUppercase(std::string str) {
-    changeStringCase(str, true);
+  std::string StrTools::copyStringToUppercase(std::string str) {
+    modifyStringCase(str, true);
     return str;
   }
 
-  void StrTools::changeStringsToLowercase(VEC_STR &vecStr) {
-    changeStringsCase(vecStr, false);
+  void StrTools::modifyStringsToLowercase(VEC_STR &vecStr) {
+    modifyStringsCase(vecStr, false);
   }
 
-  void StrTools::changeStringsToUppercase(VEC_STR &vecStr) {
-    changeStringsCase(vecStr, true);
+  void StrTools::modifyStringsToUppercase(VEC_STR &vecStr) {
+    modifyStringsCase(vecStr, true);
   }
 
-  std::string StrTools::uniteVector(
+  std::string StrTools::joinVector(
     CR_VEC_STR &vecStr,
     CR_STR separator,
     CR_BOL separatedExceptLast
@@ -176,7 +174,7 @@ namespace utils {
       i < text.length(); i++
     ) {
       if (!isWhitespace(text[i])) {
-        changeCharToUppercase(text, i);
+        modifyCharToUppercase(text, i);
         break;
       }
     }
@@ -223,7 +221,7 @@ namespace utils {
 
         // letter after the dot changed to uppercase
         if (willCapitalized) {
-          changeToUppercase(text[i]);
+          modifyToUppercase(text[i]);
           willCapitalized = false;
         }
       }

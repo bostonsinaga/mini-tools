@@ -8,59 +8,59 @@ namespace utils {
 
   class StrTools final {
   private:
-    static void changeCase(char &ch, CR_BOL isUpper);
+    static void modifyCase(char &ch, CR_BOL isUpper);
 
   public:
     StrTools() = delete;
 
-    static void changeToLowercase(char &ch);
-    static void changeToUppercase(char &ch);
-    static char getToLowercase(char ch);
-    static char getToUppercase(char ch);
+    static void modifyToLowercase(char &ch);
+    static void modifyToUppercase(char &ch);
+    static char copyToLowercase(char ch);
+    static char copyToUppercase(char ch);
 
   private:
-    static void changeCharCase(
+    static void modifyCharCase(
       std::string &str,
       CR_LI index,
       CR_BOL isUpper
     );
 
   public:
-    static void changeCharToLowercase(
+    static void modifyCharToLowercase(
       std::string &str,
       CR_LI index
     );
 
-    static void changeCharToUppercase(
+    static void modifyCharToUppercase(
       std::string &str,
       CR_LI index
     );
 
-    static std::string getCharToLowercase(
+    static std::string copyCharToLowercase(
       std::string str,
       CR_LI index
     );
 
-    static std::string getCharToUppercase(
+    static std::string copyCharToUppercase(
       std::string str,
       CR_LI index
     );
 
   private:
-    static void changeStringCase(std::string &str, CR_BOL isUpper);
-    static void changeStringsCase(VEC_STR &vecStr, CR_BOL isUpper);
+    static void modifyStringCase(std::string &str, CR_BOL isUpper);
+    static void modifyStringsCase(VEC_STR &vecStr, CR_BOL isUpper);
 
   public:
-    static void changeStringToLowercase(std::string &str);
-    static void changeStringToUppercase(std::string &str);
+    static void modifyStringToLowercase(std::string &str);
+    static void modifyStringToUppercase(std::string &str);
 
-    static std::string getStringToLowercase(std::string str);
-    static std::string getStringToUppercase(std::string str);
+    static std::string copyStringToLowercase(std::string str);
+    static std::string copyStringToUppercase(std::string str);
 
-    static void changeStringsToLowercase(VEC_STR &vecStr);
-    static void changeStringsToUppercase(VEC_STR &vecStr);
+    static void modifyStringsToLowercase(VEC_STR &vecStr);
+    static void modifyStringsToUppercase(VEC_STR &vecStr);
 
-    static std::string uniteVector(
+    static std::string joinVector(
       CR_VEC_STR &vecStr,
       CR_STR separator = " ",
       CR_BOL separatedExceptLast = true
