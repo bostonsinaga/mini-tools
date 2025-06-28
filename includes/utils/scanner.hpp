@@ -52,7 +52,7 @@ namespace utils {
     /** Primitive Data Type Detectors */
 
     template <inspector::NUMBER T>
-    T stringToNumber(CR_STR str);
+    static T stringToNumber(CR_STR str);
 
     template <inspector::NUMBER T>
     static VEC<T> parseNumbers(CR_STR text);
