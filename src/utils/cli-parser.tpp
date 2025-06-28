@@ -10,6 +10,15 @@ namespace utils {
   // BOOLEANIZER |
   //_____________|
 
+  Booleanizer::Booleanizer(
+    CR_STR languageCode,
+    CR_VEC_STR newTerms
+  ) {
+    addBooleanizeTerms(
+      languageCode, newTerms
+    );
+  }
+
   bool Booleanizer::test(
     std::string str,
     CR_VEC_STR languageCodes
@@ -38,8 +47,8 @@ namespace utils {
   }
 
   void Booleanizer::addBooleanizeTerms(
-    CR_VEC_STR newTerms,
-    CR_STR languageCode
+    CR_STR languageCode,
+    CR_VEC_STR newTerms
   ) {
     terms[languageCode] = newTerms;
   }
@@ -122,7 +131,7 @@ namespace utils {
   ) {
     if constexpr (std::is_same_v<W, bool>) {
       selectMainUnormap<W>()[keyword].first.push_back(
-        Booleanizer::test(raw)
+        booleanizer.test(raw)
       );
     }
     else if constexpr (std::is_same_v<W, LD>) {

@@ -54,7 +54,7 @@ namespace utils {
   };
 
   /**
-   * Interpret string as boolean. 
+   * Interpret string as boolean.
    */
   class Booleanizer {
   private:
@@ -62,32 +62,39 @@ namespace utils {
      * All strings are expected to be interpreted
      * as representing the boolean value 'true'.
      * 
-     * Default as english.
+     * Default is english.
      */
-    inline static STRUNORMAP<VEC_STR> terms = {
+    STRUNORMAP<VEC_STR> terms = {
       {"en", {"TRUE", "YES", "Y"}}
     };
 
   public:
+    Booleanizer() {}
+
+    Booleanizer(
+      CR_STR languageCode,
+      CR_VEC_STR newTerms
+    );
+
     /**
      * Compare each selected 'terms' vector with 'str'.
      * 
      * Return false for 'str' that interpreted as
      * 'false', zero number, or not included in the 'terms'.
      */
-    static bool test(
+    bool test(
       std::string str,
       CR_VEC_STR languageCodes = {"en"}
     );
 
     /** Change extension for other languages */
 
-    static void addBooleanizeTerms(
-      CR_VEC_STR newTerms,
-      CR_STR languageCode
+    void addBooleanizeTerms(
+      CR_STR languageCode,
+      CR_VEC_STR newTerms
     );
 
-    static void cleanBooleanizeTerms(CR_STR languageCode);
+    void cleanBooleanizeTerms(CR_STR languageCode);
   };
 
   /**
@@ -213,6 +220,9 @@ namespace utils {
     );
 
   public:
+    // interpret string as boolean
+    Booleanizer booleanizer;
+
     /**
      * Creating a plain object but having to call a setter
      * afterwards so that the CLI input can be processed.
