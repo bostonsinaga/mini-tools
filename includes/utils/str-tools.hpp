@@ -117,46 +117,6 @@ namespace utils {
       CR_STR str,
       CR_CH decPtSign = '.'
     );
-
-    template <inspector::NUMBER T>
-    static T stringToNumber(CR_STR str) {
-
-      // select all available number conversion types
-      try {
-        if constexpr (std::is_same_v<T, int>) {
-          return std::stoi(str);
-        }
-        else if constexpr (std::is_same_v<T, long>) {
-          return std::stol(str);
-        }
-        else if constexpr (std::is_same_v<T, LLI>) {
-          return std::stoll(str);
-        }
-        else if constexpr (std::is_same_v<T, ULI>) {
-          return std::stoul(str);
-        }
-        else if constexpr (std::is_same_v<T, ULLI>) {
-          return std::stoull(str);
-        }
-        else if constexpr (std::is_same_v<T, float>) {
-          return std::stof(str);
-        }
-        else if constexpr (std::is_same_v<T, double>) {
-          return std::stod(str);
-        }
-        else if constexpr (std::is_same_v<T, LD>) {
-          return std::stold(str);
-        }
-        else return std::stoi(str);
-      }
-      catch (...) {}
-
-      /**
-       * The 'str' is empty or 'str' does not contain numbers
-       * or does not start with a number or decimal point.
-       */
-      return T();
-    }
   };
 }}
 
