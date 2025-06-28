@@ -10,10 +10,10 @@ namespace utils {
   public:
     Scanner() = delete;
 
-    /** Simple Detectors */
+    /** Text Separator Detectors */
 
-    static VEC_CH separators_ch;
-    static VEC_STR separators_str;
+    inline static VEC_CH separators_ch = {' ', ',', '\n'};
+    inline static VEC_STR separators_str = {" ", ",", "\n"};
 
     static bool isSeparator(CR_CH ch);
     static bool isSeparator(CR_STR str);
@@ -47,19 +47,12 @@ namespace utils {
       return Scanner::findPath(path, false, upward);
     }
 
-    // read text file
-    static std::string getFileString(CR_FS_PATH path);
+    static std::string readFileString(CR_FS_PATH path);
 
-    /** Advanced Detectors */
-
-    template <inspector::NUMBER T>
-    static T stringToNumber(CR_STR numStr);
+    /** Primitive Data Type Detectors */
 
     template <inspector::NUMBER T>
-    static void parseNumbers(CR_STR text, VEC<T> &vecHook);
-
-    template <inspector::LETTER T>
-    static void parseLetters(CR_STR text, VEC<T> &vecHook);
+    T stringToNumber(CR_STR str);
 
     template <inspector::NUMBER T>
     static VEC<T> parseNumbers(CR_STR text);
