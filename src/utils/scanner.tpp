@@ -82,7 +82,7 @@ namespace utils {
           Scanner::isSeparator(text, i) &&
           numStr.length() > 0
         ) {
-          numVec.push_back(StrTools::stringToNumber<T>(numStr));
+          numVec.push_back(Scanner::stringToNumber<T>(numStr));
           hasDecimalPoint = false;
           numStr = "";
         }
