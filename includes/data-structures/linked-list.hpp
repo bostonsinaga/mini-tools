@@ -89,7 +89,7 @@ namespace data_structures {
 
     // from 'this' to 'left' loop
     void iterate(
-      CR_BOL direction,
+      const DIRECTION &direction,
       CR_CALLBACK callback
     );
 

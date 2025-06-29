@@ -105,7 +105,7 @@ namespace data_structures {
   }
 
   void LinkedList::iterate(
-    CR_BOL direction,
+    const DIRECTION &direction,
     CR_CALLBACK &callback
   ) {
     LinkedListMetadata::iteratings[start] = true;
