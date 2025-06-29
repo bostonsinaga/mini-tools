@@ -117,6 +117,15 @@ namespace utils {
       CR_STR str,
       CR_CH decPtSign = '.'
     );
+
+    /**
+     * The 'argc' is expected to have a value that corresponds
+     * to the actual number of 'argv' or both are parameters of the main function.
+     */
+    static VEC_STR argvToStringVector(
+      CR_INT argc,
+      char *argv[]
+    );
   };
 }}
 

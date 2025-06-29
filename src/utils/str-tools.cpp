@@ -314,6 +314,24 @@ namespace utils {
 
     return true;
   }
+
+  VEC_STR StrTools::argvToStringVector(
+    CR_INT argc,
+    char *argv[]
+  ) {
+    // strings converted from 'argv'
+    VEC_STR raws;
+
+    /**
+     * Load the vector 'raws'.
+     * Skip the first 'argv' as it is the program name.
+     */
+    for (int i = 1; i < argc; i++) {
+      raws.push_back(std::string(argv[i]));
+    }
+
+    return raws;
+  }
 }}
 
 #endif // __MINI_TOOLS__UTILS__STR_TOOLS_CPP__

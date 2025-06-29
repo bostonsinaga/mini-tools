@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
   /** CLI Registrations */
 
   mt_uti::CLIParser<mt::LD> cliTest(
-    mt_uti::CLIParser<mt::LD>::argvToStringVector(argc, argv),
+    mt_uti::StrTools::argvToStringVector(argc, argv),
     {
       std::make_pair("-amount", 0),
       std::make_pair("-max-number", 0),
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
   );
 
   mt_uti::CLIParser<mt::LD> cliInitInputs(
-    mt_uti::CLIParser<mt::LD>::argvToStringVector(argc, argv),
+    mt_uti::StrTools::argvToStringVector(argc, argv),
     {
       std::make_pair("-amount", 0),
       std::make_pair("-max-number", 0),

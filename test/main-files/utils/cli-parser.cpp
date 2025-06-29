@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
 
   // CLI registration
   mt_uti::CLIParser<std::string, mt::LD, bool> cliTest(
-    mt_uti::CLIParser<std::string, mt::LD, bool>::argvToStringVector(argc, argv),
+    mt_uti::StrTools::argvToStringVector(argc, argv),
     {std::make_pair("-name", "Noname")},
     {std::make_pair("-price", 0)},
     {std::make_pair("--edible", true)}

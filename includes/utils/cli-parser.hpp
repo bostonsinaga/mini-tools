@@ -238,7 +238,7 @@ namespace utils {
      * 
      * Call example:
      *   CLIParser<int> cli(
-     *     CLIParser<int>::argvToStringVector(argc, argv),
+     *     StrTools::argvToStringVector(argc, argv),
      *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
      *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
      *     { std::make_pair("foo-toggle-1", false), std::make_pair("foo-toggle-2", true) }
@@ -269,7 +269,7 @@ namespace utils {
      * These methods will initialize the main unordered map and
      * parse input as vector to each keyword from the 'raws'.
      * 
-     * You can use the 'argvToStringVector' method to obtain the 'raws'
+     * You can use the 'StrTools::argvToStringVector' method to obtain the 'raws'
      * argument if the sources are parameters of the main function.
      * 
      * Also, you can perform a reset by sequentially
@@ -363,15 +363,6 @@ namespace utils {
     VEC<W> getVectorAt(
       CR_STR keyword,
       CR_BOL onlyCopy = true
-    );
-
-    /**
-     * The 'argc' is expected to have a value that corresponds
-     * to the actual number of 'argv' or both are parameters of the main function.
-     */
-    static VEC_STR argvToStringVector(
-      CR_INT argc,
-      char *argv[]
     );
 
     /**

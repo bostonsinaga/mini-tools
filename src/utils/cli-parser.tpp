@@ -495,26 +495,6 @@ namespace utils {
     return {};
   }
 
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  VEC_STR CLIParser<T, U, V>::argvToStringVector(
-    CR_INT argc,
-    char *argv[]
-  ) {
-    // strings converted from 'argv'
-    VEC_STR raws;
-
-    /**
-     * Load the vector 'raws'.
-     * Skip the first 'argv' as it is the program name.
-     */
-    for (int i = 1; i < argc; i++) {
-      raws.push_back(std::string(argv[i]));
-    }
-
-    return raws;
-  }
-
   /** SIZE GETTERS */
 
   template <typename T, typename U, typename V>
