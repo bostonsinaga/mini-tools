@@ -18,7 +18,7 @@ namespace data_structures {
     object->parent = this;
   }
 
-  size_t GeneralTree::childrenCount() {
+  size_t GeneralTree::numberOfChildren() {
     if (children) return children->count();
     else return 0;
   }
