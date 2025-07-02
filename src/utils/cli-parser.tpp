@@ -10,40 +10,37 @@ namespace utils {
   // BOOLEANIZER |
   //_____________|
 
-  Booleanizer::Booleanizer(
-    CR_STR languageCode,
-    CR_VEC_STR newTerms
-  ) {
-    addBooleanizeTerms(
-      languageCode, newTerms
-    );
-  }
-
-  VEC_STR Booleanizer::getTerms(CR_STR languageCode) {
-    if (STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)) {
-      return terms[languageCode];
+  VEC_STR Booleanizer::getCurrentTrueTerms() {
+    if (STRUNORMAP_FOUND<VEC_STR>(trueTerms, currentISOCode)) {
+      return trueTerms[currentISOCode];
     }
     return {};
   }
 
-  bool Booleanizer::test(
-    std::string input,
-    CR_STR languageCode
-  ) {
+  VEC_STR Booleanizer::getCurrentFalseTerms() {
+    if (STRUNORMAP_FOUND<VEC_STR>(falseTerms, currentISOCode)) {
+      return falseTerms[currentISOCode];
+    }
+    return {};
+  }
+
+  // only evaluate the 'trueTerms' to return true
+  bool Booleanizer::test(std::string input) {
+
     // 'input' is zero
     if (!Scanner::stringToNumber<int>(input)) {
 
       utils::StrTools::modifyStringToUppercase(input);
 
-      if (!languageCode.empty() &&
-        STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)
+      if (!currentISOCode.empty() &&
+        STRUNORMAP_FOUND<VEC_STR>(trueTerms, currentISOCode)
       ) {
-        for (CR_STR term : terms[languageCode]) {
+        for (CR_STR term : trueTerms[currentISOCode]) {
           if (input == term) return true;
         }
       }
 
-      // 'input' does not match any terms
+      // 'input' does not match any 'trueTerms'
       return false;
     }
 
@@ -52,14 +49,23 @@ namespace utils {
   }
 
   void Booleanizer::addBooleanizeTerms(
-    CR_STR languageCode,
-    CR_VEC_STR newTerms
+    CR_STR newISOCode,
+    CR_VEC_STR newTrueTerms,
+    CR_VEC_STR newFalseTerms
   ) {
-    terms[languageCode] = newTerms;
+    trueTerms[newISOCode] = newTrueTerms;
+    falseTerms[newISOCode] = newFalseTerms;
   }
 
-  void Booleanizer::cleanBooleanizeTerms(CR_STR languageCode) {
-    terms.erase(languageCode);
+  void Booleanizer::removeBooleanizeTerms(CR_STR existingISOCode) {
+    trueTerms.erase(existingISOCode);
+    falseTerms.erase(existingISOCode);
+  }
+
+  void Booleanizer::selectISOCode(CR_STR existingISOCode) {
+    if (STRUNORMAP_FOUND<VEC_STR>(trueTerms, existingISOCode)) {
+      currentISOCode = existingISOCode;
+    }
   }
 
   //____________|

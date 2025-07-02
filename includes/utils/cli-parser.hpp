@@ -58,44 +58,48 @@ namespace utils {
    */
   class Booleanizer {
   private:
+    std::string currentISOCode = "en";
+
     /**
+     * UNORDERED MAPS
+     * 
      * All strings are expected to be interpreted
-     * as representing the boolean value 'true'.
+     * as representing the boolean values.
      * 
      * Default is english.
      */
-    STRUNORMAP<VEC_STR> terms = {
-      {"en", {"TRUE", "YES", "Y"}}
-    };
+
+    STRUNORMAP<VEC_STR>
+      trueTerms = {{ "en", {"TRUE", "YES", "Y"} }},
+      falseTerms = {{ "en", {"FALSE", "NO", "N"} }};
 
   public:
     Booleanizer() {}
-
-    Booleanizer(
-      CR_STR languageCode,
-      CR_VEC_STR newTerms
-    );
-
-    VEC_STR getTerms(CR_STR languageCode);
+    VEC_STR getCurrentTrueTerms();
+    VEC_STR getCurrentFalseTerms();
 
     /**
-     * Compare each selected 'terms' vector with 'input'.
-     * Return false for 'input' that interpreted as
-     * 'false', zero number, or not included in the 'terms'.
+     * Compare each selected 'trueTerms' vector with 'input'.
+     * Return false if the input is interpreted as:
+     * - The string 'false'
+     * - The numeric value zero
+     * - A term in 'falseTerms'
+     * - Or a term not included in the allowed list
      */
-    bool test(
-      std::string input,
-      CR_STR languageCode = "en"
-    );
+    bool test(std::string input);
 
-    /** Change extension for other languages */
+    /** Modify extension for other languages */
 
     void addBooleanizeTerms(
-      CR_STR languageCode,
-      CR_VEC_STR newTerms
+      CR_STR newISOCode,
+      CR_VEC_STR newTrueTerms,
+      CR_VEC_STR newFalseTerms
     );
 
-    void cleanBooleanizeTerms(CR_STR languageCode);
+    void removeBooleanizeTerms(CR_STR existingISOCode);
+
+    // change language before using getter and test
+    void selectISOCode(CR_STR existingISOCode);
   };
 
   /**
