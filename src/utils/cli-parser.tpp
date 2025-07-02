@@ -19,30 +19,35 @@ namespace utils {
     );
   }
 
+  VEC_STR Booleanizer::getTerms(CR_STR languageCode) {
+    if (STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)) {
+      return terms[languageCode];
+    }
+    return {};
+  }
+
   bool Booleanizer::test(
-    std::string str,
-    CR_VEC_STR languageCodes
+    std::string input,
+    CR_STR languageCode
   ) {
-    // 'str' is zero
-    if (!Scanner::stringToNumber<int>(str)) {
+    // 'input' is zero
+    if (!Scanner::stringToNumber<int>(input)) {
 
-      utils::StrTools::modifyStringToUppercase(str);
+      utils::StrTools::modifyStringToUppercase(input);
 
-      for (CR_STR code : languageCodes) {
-        if (!code.empty() &&
-          STRUNORMAP_FOUND<VEC_STR>(terms, code)
-        ) {
-          for (CR_STR term : terms[code]) {
-            if (str == term) return true;
-          }
+      if (!languageCode.empty() &&
+        STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)
+      ) {
+        for (CR_STR term : terms[languageCode]) {
+          if (input == term) return true;
         }
       }
 
-      // 'str' does not match any terms
+      // 'input' does not match any terms
       return false;
     }
 
-    // 'str' is not zero
+    // 'input' is not zero
     return true;
   }
 
@@ -54,9 +59,7 @@ namespace utils {
   }
 
   void Booleanizer::cleanBooleanizeTerms(CR_STR languageCode) {
-    if (STRUNORMAP_FOUND<VEC_STR>(terms, languageCode)) {
-      terms.erase(languageCode);
-    }
+    terms.erase(languageCode);
   }
 
   //____________|

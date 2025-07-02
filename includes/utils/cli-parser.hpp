@@ -76,15 +76,16 @@ namespace utils {
       CR_VEC_STR newTerms
     );
 
+    VEC_STR getTerms(CR_STR languageCode);
+
     /**
-     * Compare each selected 'terms' vector with 'str'.
-     * 
-     * Return false for 'str' that interpreted as
+     * Compare each selected 'terms' vector with 'input'.
+     * Return false for 'input' that interpreted as
      * 'false', zero number, or not included in the 'terms'.
      */
     bool test(
-      std::string str,
-      CR_VEC_STR languageCodes = {"en"}
+      std::string input,
+      CR_STR languageCode = "en"
     );
 
     /** Change extension for other languages */
