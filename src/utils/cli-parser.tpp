@@ -11,14 +11,14 @@ namespace utils {
   //_____________|
 
   VEC_STR Booleanizer::getCurrentTrueTerms(CR_STR existingISOCode) {
-    if (termsFound(existingISOCode)) {
+    if (hasISOCode(existingISOCode)) {
       return trueTerms[existingISOCode];
     }
     return {};
   }
 
   VEC_STR Booleanizer::getCurrentFalseTerms(CR_STR existingISOCode) {
-    if (termsFound(existingISOCode)) {
+    if (hasISOCode(existingISOCode)) {
       return falseTerms[existingISOCode];
     }
     return {};
@@ -34,7 +34,7 @@ namespace utils {
 
       utils::StrTools::modifyStringToUppercase(input);
 
-      if (termsFound(existingISOCode)) {
+      if (hasISOCode(existingISOCode)) {
         for (CR_STR term : trueTerms[existingISOCode]) {
           if (input == term) return true;
         }
@@ -48,7 +48,7 @@ namespace utils {
     return true;
   }
 
-  bool Booleanizer::termsFound(CR_STR existingISOCode) {
+  bool Booleanizer::hasISOCode(CR_STR existingISOCode) {
     return STRUNORMAP_FOUND<VEC_STR>(trueTerms, existingISOCode);
   }
 

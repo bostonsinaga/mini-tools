@@ -92,7 +92,7 @@ namespace utils {
 
     /** Modify extension for other languages */
 
-    bool termsFound(CR_STR existingISOCode);
+    bool hasISOCode(CR_STR existingISOCode);
 
     void addTerms(
       CR_STR newISOCode,
