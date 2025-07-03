@@ -10,32 +10,32 @@ namespace utils {
   // BOOLEANIZER |
   //_____________|
 
-  VEC_STR Booleanizer::getCurrentTrueTerms() {
-    if (STRUNORMAP_FOUND<VEC_STR>(trueTerms, currentISOCode)) {
-      return trueTerms[currentISOCode];
+  VEC_STR Booleanizer::getCurrentTrueTerms(CR_STR existingISOCode) {
+    if (termsFound(existingISOCode)) {
+      return trueTerms[existingISOCode];
     }
     return {};
   }
 
-  VEC_STR Booleanizer::getCurrentFalseTerms() {
-    if (STRUNORMAP_FOUND<VEC_STR>(falseTerms, currentISOCode)) {
-      return falseTerms[currentISOCode];
+  VEC_STR Booleanizer::getCurrentFalseTerms(CR_STR existingISOCode) {
+    if (termsFound(existingISOCode)) {
+      return falseTerms[existingISOCode];
     }
     return {};
   }
 
   // only evaluate the 'trueTerms' to return true
-  bool Booleanizer::test(std::string input) {
-
+  bool Booleanizer::test(
+    CR_STR existingISOCode,
+    std::string input
+  ) {
     // 'input' is zero
     if (!Scanner::stringToNumber<int>(input)) {
 
       utils::StrTools::modifyStringToUppercase(input);
 
-      if (!currentISOCode.empty() &&
-        STRUNORMAP_FOUND<VEC_STR>(trueTerms, currentISOCode)
-      ) {
-        for (CR_STR term : trueTerms[currentISOCode]) {
+      if (termsFound(existingISOCode)) {
+        for (CR_STR term : trueTerms[existingISOCode]) {
           if (input == term) return true;
         }
       }
@@ -48,7 +48,11 @@ namespace utils {
     return true;
   }
 
-  void Booleanizer::addBooleanizeTerms(
+  bool Booleanizer::termsFound(CR_STR existingISOCode) {
+    return STRUNORMAP_FOUND<VEC_STR>(trueTerms, existingISOCode);
+  }
+
+  void Booleanizer::addTerms(
     CR_STR newISOCode,
     CR_VEC_STR newTrueTerms,
     CR_VEC_STR newFalseTerms
@@ -57,15 +61,9 @@ namespace utils {
     falseTerms[newISOCode] = newFalseTerms;
   }
 
-  void Booleanizer::removeBooleanizeTerms(CR_STR existingISOCode) {
+  void Booleanizer::removeTerms(CR_STR existingISOCode) {
     trueTerms.erase(existingISOCode);
     falseTerms.erase(existingISOCode);
-  }
-
-  void Booleanizer::selectISOCode(CR_STR existingISOCode) {
-    if (STRUNORMAP_FOUND<VEC_STR>(trueTerms, existingISOCode)) {
-      currentISOCode = existingISOCode;
-    }
   }
 
   //____________|
@@ -140,7 +138,7 @@ namespace utils {
   ) {
     if constexpr (std::is_same_v<W, bool>) {
       selectMainUnormap<W>()[keyword].first.push_back(
-        booleanizer.test(raw)
+        booleanizer.test(booleanizerISOCode, raw)
       );
     }
     else if constexpr (std::is_same_v<W, LD>) {

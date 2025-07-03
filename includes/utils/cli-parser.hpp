@@ -58,25 +58,24 @@ namespace utils {
    */
   class Booleanizer {
   private:
-    std::string currentISOCode = "en";
-
     /**
      * UNORDERED MAPS
+     * Default is english.
      * 
      * All strings are expected to be interpreted
      * as representing the boolean values.
      * 
-     * Default is english.
+     * The 'falseTerms' is actually used as example of false input in
+     * description of user class. The tester only evaluates 'trueTerms'.
      */
-
     STRUNORMAP<VEC_STR>
       trueTerms = {{ "en", {"TRUE", "YES", "Y"} }},
       falseTerms = {{ "en", {"FALSE", "NO", "N"} }};
 
   public:
     Booleanizer() {}
-    VEC_STR getCurrentTrueTerms();
-    VEC_STR getCurrentFalseTerms();
+    VEC_STR getCurrentTrueTerms(CR_STR existingISOCode);
+    VEC_STR getCurrentFalseTerms(CR_STR existingISOCode);
 
     /**
      * Compare each selected 'trueTerms' vector with 'input'.
@@ -86,20 +85,22 @@ namespace utils {
      * - A term in 'falseTerms'
      * - Or a term not included in the allowed list
      */
-    bool test(std::string input);
+    bool test(
+      CR_STR existingISOCode,
+      std::string input
+    );
 
     /** Modify extension for other languages */
 
-    void addBooleanizeTerms(
+    bool termsFound(CR_STR existingISOCode);
+
+    void addTerms(
       CR_STR newISOCode,
       CR_VEC_STR newTrueTerms,
       CR_VEC_STR newFalseTerms
     );
 
-    void removeBooleanizeTerms(CR_STR existingISOCode);
-
-    // change language before using getter and test
-    void selectISOCode(CR_STR existingISOCode);
+    void removeTerms(CR_STR existingISOCode);
   };
 
   /**
@@ -225,8 +226,14 @@ namespace utils {
     );
 
   public:
-    // interpret string as boolean
+    /** Interpret string as boolean */
+
     Booleanizer booleanizer;
+    std::string booleanizerISOCode = "en";
+
+    void setBooleanizerISOCode(CR_STR newISOCode) {
+      booleanizerISOCode = newISOCode;
+    }
 
     /**
      * Creating a plain object but having to call a setter
