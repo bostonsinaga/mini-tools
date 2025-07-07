@@ -61,6 +61,20 @@ namespace utils {
     falseTerms[newISOCode] = newFalseTerms;
   }
 
+  void Booleanizer::changeTerms(
+    CR_STR existingISOCode,
+    CR_VEC_STR existingTrueTerms,
+    CR_VEC_STR existingFalseTerms
+  ) {
+    if (hasISOCode(existingISOCode)) {
+      addTerms(
+        existingISOCode,
+        existingTrueTerms,
+        existingFalseTerms
+      );
+    }
+  }
+
   void Booleanizer::removeTerms(CR_STR existingISOCode) {
     trueTerms.erase(existingISOCode);
     falseTerms.erase(existingISOCode);

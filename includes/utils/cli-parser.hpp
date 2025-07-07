@@ -100,6 +100,12 @@ namespace utils {
       CR_VEC_STR newFalseTerms
     );
 
+    void changeTerms(
+      CR_STR existingISOCode,
+      CR_VEC_STR existingTrueTerms,
+      CR_VEC_STR existingFalseTerms
+    );
+
     void removeTerms(CR_STR existingISOCode);
   };
 
