@@ -74,8 +74,8 @@ namespace utils {
 
   public:
     Booleanizer() {}
-    VEC_STR getCurrentTrueTerms(CR_STR existingISOCode);
-    VEC_STR getCurrentFalseTerms(CR_STR existingISOCode);
+    VEC_STR getTrueTerms(CR_STR existingISOCode);
+    VEC_STR getFalseTerms(CR_STR existingISOCode);
 
     /**
      * Compare each selected 'trueTerms' vector with 'input'.

@@ -10,14 +10,14 @@ namespace utils {
   // BOOLEANIZER |
   //_____________|
 
-  VEC_STR Booleanizer::getCurrentTrueTerms(CR_STR existingISOCode) {
+  VEC_STR Booleanizer::getTrueTerms(CR_STR existingISOCode) {
     if (hasISOCode(existingISOCode)) {
       return trueTerms[existingISOCode];
     }
     return {};
   }
 
-  VEC_STR Booleanizer::getCurrentFalseTerms(CR_STR existingISOCode) {
+  VEC_STR Booleanizer::getFalseTerms(CR_STR existingISOCode) {
     if (hasISOCode(existingISOCode)) {
       return falseTerms[existingISOCode];
     }
