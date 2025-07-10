@@ -49,7 +49,7 @@ namespace utils {
 
     static std::string readFileString(CR_FS_PATH path);
 
-    /** Primitive Data Type Detectors */
+    /** Primitive Data Type Parsers */
 
     template <inspector::NUMBER T>
     static T stringToNumber(CR_STR str);
@@ -59,6 +59,8 @@ namespace utils {
 
     template <inspector::LETTER T>
     static VEC<T> parseLetters(CR_STR text);
+
+    /** Read TXT File */
 
     template <inspector::NUMBER T>
     static VEC<T> txtToNumbers(CR_FS_PATH filename);
