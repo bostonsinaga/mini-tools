@@ -57,7 +57,7 @@ namespace data_structures {
     friend class GeneralTree;
 
   protected:
-    ~LinkedList() {}
+    ~LinkedList() = default;
 
   public:
     enum DIRECTION { LEFT, RIGHT };

@@ -19,9 +19,11 @@ namespace data_structures {
     GT *parent = nullptr,
       *children = nullptr;
 
-    ~GeneralTree() {}
     void xsetParent(GT *object);
     void xaddChild(GT *object);
+
+  protected:
+    ~GeneralTree() = default;
 
   public:
     size_t getLevel() { return level; }
