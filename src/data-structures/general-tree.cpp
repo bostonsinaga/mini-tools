@@ -69,7 +69,7 @@ namespace data_structures {
   }
 
   // postorder traversal
-  void GeneralTree::traverse(CR_BOL direction, CR_CALLBACK callback) {
+  void GeneralTree::traverse(const DIRECTION &direction, CR_CALLBACK callback) {
 
     LinkedListMetadata::iteratings[start] = true;
     GT *current = static_cast<GT*>(neighbors[direction]);
@@ -91,20 +91,20 @@ namespace data_structures {
   }
 
   // preorder traversal
-  void GeneralTree::branch(CR_BOL direction, CR_CALLBACK condition) {
+  void GeneralTree::branch(const DIRECTION &direction, CR_CALLBACK condition) {
 
     LinkedListMetadata::iteratings[start] = true;
     GT *current = static_cast<GT*>(neighbors[direction]);
 
     if (condition(this)) {
-      branch(this, condition);
+      branch(direction, condition);
       current = nullptr;
     }
 
     while (current && current != this) {
 
       if (condition(current)){
-        branch(current, condition);
+        current->branch(direction, condition);
         break;
       }
 

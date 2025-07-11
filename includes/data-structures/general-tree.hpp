@@ -40,21 +40,16 @@ namespace data_structures {
     void resetPointer();
 
     /**
-     * 'steps':
-     *   right = positive
-     *   left = negative
+     * Move left or right by a number of steps
+     * to select a linked list node.
      */
     void movePointer(CR_INT steps);
 
-    /**
-     * 'direction':
-     *   right = true
-     *   left = false
-     */
-    void traverse(CR_BOL direction, CR_CALLBACK callback);
-    void branch(CR_BOL direction, CR_CALLBACK condition);
+    // iterate through child nodes until reaching the leaves
+    void traverse(const DIRECTION &direction, CR_CALLBACK callback);
+    void branch(const DIRECTION &direction, CR_CALLBACK condition);
 
-    /** OVERRIDES */
+    /** Override behavior through parent-child relationship configuration */
 
     void join(LinkedList *object) override;
     void accept(LinkedList *object) override;
