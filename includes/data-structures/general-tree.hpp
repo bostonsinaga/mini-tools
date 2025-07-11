@@ -29,6 +29,7 @@ namespace data_structures {
     size_t getLevel() { return level; }
     size_t numberOfChildren();
 
+    GT *getParent() { return parent; }
     GT *getChildren() { return children; }
     bool hasChild(GT *child);
 
