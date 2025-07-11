@@ -12,6 +12,9 @@ namespace data_structures {
 
   class LinkedList;
 
+  // return false to force stop the loop
+  typedef std::function<bool(LinkedList*)> LinkedListCallback;
+
   class LinkedListMetadata final {
   public:
     LinkedListMetadata() = delete;
@@ -39,11 +42,6 @@ namespace data_structures {
   };
 
   class LinkedList {
-  public:
-    // return false to force stop the loop
-    typedef std::function<bool(LinkedList*)> CALLBACK;
-    typedef const CALLBACK& CR_CALLBACK;
-
   private:
     LinkedList *start,
       *neighbors[2] = {nullptr, nullptr};
@@ -90,7 +88,7 @@ namespace data_structures {
     // from 'this' to 'left' loop
     void iterate(
       const DIRECTION &direction,
-      CR_CALLBACK callback
+      const LinkedListCallback &callback
     );
 
     bool hasMember(LinkedList *member);

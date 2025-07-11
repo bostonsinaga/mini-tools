@@ -45,9 +45,17 @@ namespace data_structures {
      */
     void movePointer(CR_INT steps);
 
-    // iterate through child nodes until reaching the leaves
-    void traverse(const DIRECTION &direction, CR_CALLBACK callback);
-    void branch(const DIRECTION &direction, CR_CALLBACK condition);
+    /** Iterate through child nodes until reaching the leaves */
+
+    void traverse(
+      const DIRECTION &direction,
+      const LinkedListCallback &callback
+    );
+
+    void branch(
+      const DIRECTION &direction,
+      const LinkedListCallback &callback
+    );
 
     /** Override behavior through parent-child relationship configuration */
 
