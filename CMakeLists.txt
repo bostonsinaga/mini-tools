@@ -1,10 +1,18 @@
 cmake_minimum_required(VERSION 3.20)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+project(mini-tools VERSION 1.0.0)
 
-project(mini-tools)
+message(STATUS "Project version: ${PROJECT_VERSION}")
+message(STATUS "Major version: ${PROJECT_VERSION_MAJOR}")
+message(STATUS "Minor version: ${PROJECT_VERSION_MINOR}")
+message(STATUS "Patch version: ${PROJECT_VERSION_PATCH}")
+
 add_subdirectory(src)
-add_subdirectory(test)
 
-target_include_directories(mini-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
-target_include_directories(mini-tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+  add_subdirectory(test)
+endif()
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/includes)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
