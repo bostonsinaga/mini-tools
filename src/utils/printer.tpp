@@ -4,13 +4,6 @@
 namespace mini_tools {
 namespace utils {
 
-  std::string Printer::getNewlines(
-    CR_STR text,
-    CR_SZ endNewlinesCount
-  ) {
-    return text + std::string(endNewlinesCount, '\n');
-  }
-
   template <inspector::ALPHANUMERIC T>
   std::string Printer::getHeader(CR_SZ endNewlinesCount) {
 
@@ -76,23 +69,6 @@ namespace utils {
   ) {
     std::cout << Printer::getHeader<T>(endNewlinesCount)
       << Printer::barStringify<T>(vec, endNewlinesCount, barStyle);
-  }
-
-  void Printer::write(
-    CR_STR text,
-    CR_FS_PATH filename,
-    CR_BOL extended,
-    CR_SZ endNewlinesCount
-  ) {
-    std::ofstream output;
-
-    if (extended) {
-      output.open(filename, std::ios_base::app);
-    }
-    else output.open(filename);
-
-    output << Printer::getNewlines(text, endNewlinesCount);
-    output.close();
   }
 
   template <inspector::ALPHANUMERIC T>
