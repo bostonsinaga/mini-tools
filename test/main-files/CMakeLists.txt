@@ -8,7 +8,7 @@ function(register_test target_filename_list)
     project(${target})
     add_executable(${target} ${filename})
 
-    target_link_libraries(${target} mini-tools)
+    target_link_libraries(${target} ${PROJECT_NAME})
     target_include_directories(${target} PUBLIC ${main_files_dir})
   endforeach()
 endfunction()
