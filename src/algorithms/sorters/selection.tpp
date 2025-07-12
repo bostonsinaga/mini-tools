@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__SORTERS__SELECTION_TPP__
 #define __MINI_TOOLS__SORTERS__SELECTION_TPP__
 
-#include "algorithms/sorters/selection.hpp"
-
 namespace mini_tools {
 namespace algorithms {
 namespace sorters {

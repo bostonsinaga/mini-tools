@@ -1,8 +1,6 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 #define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 
-#include "algorithms/round-robin.hpp"
-
 namespace mini_tools {
 namespace algorithms {
 
