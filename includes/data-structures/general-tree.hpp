@@ -57,6 +57,9 @@ namespace data_structures {
       const LinkedListCallback &callback
     );
 
+    // iterate from this to the root */
+    void bubble(const LinkedListCallback &callback);
+
     /** Override behavior through parent-child relationship configuration */
 
     void join(LinkedList *object) override;

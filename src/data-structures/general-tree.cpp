@@ -107,7 +107,7 @@ namespace data_structures {
 
     while (current && current != this) {
 
-      if (callback(current)){
+      if (callback(current)) {
         current->branch(direction, callback);
         break;
       }
@@ -116,6 +116,14 @@ namespace data_structures {
     }
 
     LinkedListMetadata::iteratings[start] = false;
+  }
+
+  void GeneralTree::bubble(const LinkedListCallback &callback) {
+    GT *current = this;
+
+    while (current && callback(current)) {
+      current = current->parent;
+    }
   }
 
   /** OVERRIDES */
