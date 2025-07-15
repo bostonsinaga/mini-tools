@@ -75,10 +75,10 @@ namespace data_structures {
      *  Returns 'neighbors[RIGHT]' if this the 'start'.
      *  Returns 'nullptr' if this is single.
      */
-    LinkedList *slice();
+    virtual LinkedList *slice();
 
     // merged list will have this 'start' as the 'start'
-    void merge(LinkedList *outsider);
+    virtual void merge(LinkedList *outsider);
 
     bool isolated() { return !neighbors[RIGHT]; }
     bool atFront() { return this == start; }
@@ -86,19 +86,19 @@ namespace data_structures {
     size_t count() { return LinkedListMetadata::numbers[start]; }
 
     // from 'this' to 'left' loop
-    void iterate(
+    virtual void iterate(
       const DIRECTION &direction,
       const LinkedListCallback &callback
     );
 
     bool hasMember(LinkedList *member);
-    void detach();
+    virtual void detach();
 
     /**
      * The list will be iterated by assigning
      * each of their 'start' with 'newStart'.
      */
-    void appoint(LinkedList *newStart);
+    virtual void appoint(LinkedList *newStart);
 
     virtual void join(LinkedList *insider);
     virtual void accept(LinkedList *outsider);
