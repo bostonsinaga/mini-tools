@@ -13,14 +13,13 @@ namespace data_structures {
    */
   class GeneralTree : public LinkedList {
   private:
-    typedef GeneralTree GT;
     size_t level = 0;
 
-    GT *parent = nullptr,
+    GeneralTree *parent = nullptr,
       *children = nullptr;
 
-    void xsetParent(GT *object);
-    void xaddChild(GT *object);
+    void xsetParent(GeneralTree *object);
+    void xaddChild(GeneralTree *object);
 
   protected:
     ~GeneralTree() = default;
@@ -29,36 +28,38 @@ namespace data_structures {
     size_t getLevel() { return level; }
     size_t numberOfChildren();
 
-    GT *getParent() { return parent; }
-    GT *getChildren() { return children; }
-    bool hasChild(GT *child);
+    GeneralTree *getParent() { return parent; }
+    GeneralTree *getChildren() { return children; }
+    bool hasChild(GeneralTree *child);
 
-    void setParent(GT *object);
-    void addChild(GT *object);
-    void removeChild(GT *child);
-    void cleanChildren();
-    void resetPointer();
+    virtual void setParent(GeneralTree *object);
+    virtual void addChild(GeneralTree *object);
+    virtual void removeChild(GeneralTree *child);
+    virtual void cleanChildren();
+
+    // change 'children' address to 'children->start'
+    virtual void resetPointer();
 
     /**
      * Move left or right by a number of steps
-     * to select a linked list node.
+     * to select a linked list node (the children).
      */
-    void movePointer(CR_INT steps);
+    virtual void movePointer(CR_INT steps);
 
     /** Iterate through child nodes until reaching the leaves */
 
-    void traverse(
+    virtual void traverse(
       const DIRECTION &direction,
       const LinkedListCallback &callback
     );
 
-    void branch(
+    virtual void branch(
       const DIRECTION &direction,
       const LinkedListCallback &callback
     );
 
     // iterate from this to the root */
-    void bubble(const LinkedListCallback &callback);
+    virtual void bubble(const LinkedListCallback &callback);
 
     /** Override behavior through parent-child relationship configuration */
 

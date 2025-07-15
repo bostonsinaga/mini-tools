@@ -6,13 +6,13 @@
 namespace mini_tools {
 namespace data_structures {
 
-  void GeneralTree::xsetParent(GT *object) {
+  void GeneralTree::xsetParent(GeneralTree *object) {
     if (parent) parent->removeChild(this);
     parent = object;
     level = object->level + 1;
   }
 
-  void GeneralTree::xaddChild(GT *object) {
+  void GeneralTree::xaddChild(GeneralTree *object) {
     children->xaccept(object);
     object->level = level + 1;
     object->parent = this;
@@ -23,41 +23,41 @@ namespace data_structures {
     else return 0;
   }
 
-  bool GeneralTree::hasChild(GT *child) {
+  bool GeneralTree::hasChild(GeneralTree *child) {
     if (children) return children->hasMember(child);
     return false;
   }
 
-  void GeneralTree::setParent(GT *object) {
+  void GeneralTree::setParent(GeneralTree *object) {
     if (object) xsetParent(object);
   }
 
-  void GeneralTree::addChild(GT *object) {
+  void GeneralTree::addChild(GeneralTree *object) {
     if (children) xaddChild(object);
   }
 
-  void GeneralTree::removeChild(GT *child) {
+  void GeneralTree::removeChild(GeneralTree *child) {
     if (child && hasChild(child)) {
       child->destroy();
     }
   }
 
   void GeneralTree::movePointer(CR_INT steps) {
-    if (children) {
+    if (children && !children->isolated()) {
       if (steps < 0) {
         for (int i = 0; i < std::abs(steps); i++) {
-          children = static_cast<GT*>(children->prev());
+          children = static_cast<GeneralTree*>(children->prev());
         }
       }
       else for (int i = 0; i < steps; i++) {
-        children = static_cast<GT*>(children->next());
+        children = static_cast<GeneralTree*>(children->next());
       }
     }
   }
 
   void GeneralTree::resetPointer() {
     if (children) {
-      children = static_cast<GT*>(children->head());
+      children = static_cast<GeneralTree*>(children->head());
     }
   }
 
@@ -74,7 +74,7 @@ namespace data_structures {
     const LinkedListCallback &callback
   ) {
     LinkedListMetadata::iteratings[start] = true;
-    GT *current = static_cast<GT*>(neighbors[direction]);
+    GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (children) children->traverse(direction, callback);
     callback(this);
@@ -86,7 +86,7 @@ namespace data_structures {
       }
 
       callback(current);
-      current = static_cast<GT*>(current->neighbors[direction]);
+      current = static_cast<GeneralTree*>(current->neighbors[direction]);
     }
 
     LinkedListMetadata::iteratings[start] = false;
@@ -98,7 +98,7 @@ namespace data_structures {
     const LinkedListCallback &callback
   ) {
     LinkedListMetadata::iteratings[start] = true;
-    GT *current = static_cast<GT*>(neighbors[direction]);
+    GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (callback(this)) {
       branch(direction, callback);
@@ -112,18 +112,22 @@ namespace data_structures {
         break;
       }
 
-      current = static_cast<GT*>(current->neighbors[direction]);
+      current = static_cast<GeneralTree*>(current->neighbors[direction]);
     }
 
     LinkedListMetadata::iteratings[start] = false;
   }
 
   void GeneralTree::bubble(const LinkedListCallback &callback) {
-    GT *current = this;
+
+    LinkedListMetadata::iteratings[start] = true;
+    GeneralTree *current = this;
 
     while (current && callback(current)) {
       current = current->parent;
     }
+
+    LinkedListMetadata::iteratings[start] = false;
   }
 
   /** OVERRIDES */
@@ -131,7 +135,7 @@ namespace data_structures {
   void GeneralTree::join(LinkedList *object) {
     if (object) {
       LinkedList::xjoin(object);
-      static_cast<GT*>(object)->xsetParent(parent);
+      static_cast<GeneralTree*>(object)->xsetParent(parent);
     }
   }
 
@@ -146,7 +150,7 @@ namespace data_structures {
 
   // postorder traversal
   void GeneralTree::annihilate() {
-    GT *current = static_cast<GT*>(neighbors[RIGHT]);
+    GeneralTree *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
     while (current && current != this) {
 
@@ -155,7 +159,7 @@ namespace data_structures {
       }
 
       delete current;
-      current = static_cast<GT*>(current->neighbors[RIGHT]);
+      current = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
     }
 
     delete this;
