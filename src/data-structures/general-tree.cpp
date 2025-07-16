@@ -8,12 +8,12 @@ namespace data_structures {
 
   void GeneralTree::xsetParent(GeneralTree *object) {
     if (parent) parent->removeChild(this);
-    parent = object;
-    level = object->level + 1;
+    object->xaddChild(this);
   }
 
   void GeneralTree::xaddChild(GeneralTree *object) {
-    children->xaccept(object);
+    if (children) children->xaccept(object);
+    else children = object;
     object->level = level + 1;
     object->parent = this;
   }
@@ -33,7 +33,7 @@ namespace data_structures {
   }
 
   void GeneralTree::addChild(GeneralTree *object) {
-    if (children) xaddChild(object);
+    if (object) xaddChild(object);
   }
 
   void GeneralTree::removeChild(GeneralTree *child) {
