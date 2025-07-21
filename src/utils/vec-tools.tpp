@@ -148,7 +148,7 @@ namespace utils {
   void VecTools<T>::eraseSingleStable(
     VEC<T> &vec,
     CR_SZ index,
-    T extracted
+    T &extracted
   ) {
     extracted = vec[index];
     vec.erase(vec.begin() + index);
@@ -179,6 +179,35 @@ namespace utils {
   ) {
     for (CR_SZ i : indices) {
       extracted.push_back(vec[i]);
+      vec.erase(vec.begin() + i);
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseSingleStable(
+    VEC<T> &vec,
+    CR_SZ index
+  ) {
+    vec.erase(vec.begin() + index);
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIntervalStable(
+    VEC<T> &vec,
+    CR_PAIR_SZ interval
+  ) {
+    vec.erase(
+      vec.begin() + interval.first,
+      vec.begin() + interval.second + 1
+    );
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIndicesStable(
+    VEC<T> &vec,
+    CR_VEC_SZ indices
+  ) {
+    for (CR_SZ i : indices) {
       vec.erase(vec.begin() + i);
     }
   }
@@ -221,6 +250,37 @@ namespace utils {
   ) {
     for (CR_SZ i : indices) {
       extracted.push_back(vec[i]);
+      vec[i] = vec.back();
+      vec.pop_back();
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseSingleUnstable(
+    VEC<T> &vec,
+    CR_SZ index
+  ) {
+    vec[index] = vec.back();
+    vec.pop_back();
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIntervalUnstable(
+    VEC<T> &vec,
+    CR_PAIR_SZ interval
+  ) {
+    for (size_t i = interval.first; i <= interval.second; i++) {
+      vec[i] = vec.back();
+      vec.pop_back();
+    }
+  }
+
+  template <typename T>
+  void VecTools<T>::eraseIndicesUnstable(
+    VEC<T> &vec,
+    CR_VEC_SZ indices
+  ) {
+    for (CR_SZ i : indices) {
       vec[i] = vec.back();
       vec.pop_back();
     }

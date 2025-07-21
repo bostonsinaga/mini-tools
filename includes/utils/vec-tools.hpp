@@ -81,7 +81,7 @@ namespace utils {
     static void eraseSingleStable(
       VEC<T> &vec,
       CR_SZ index,
-      T extracted
+      T &extracted
     );
 
     static void eraseIntervalStable(
@@ -94,6 +94,21 @@ namespace utils {
       VEC<T> &vec,
       CR_VEC_SZ indices,
       VEC<T> &extracted
+    );
+
+    static void eraseSingleStable(
+      VEC<T> &vec,
+      CR_SZ index
+    );
+
+    static void eraseIntervalStable(
+      VEC<T> &vec,
+      CR_PAIR_SZ interval
+    );
+
+    static void eraseIndicesStable(
+      VEC<T> &vec,
+      CR_VEC_SZ indices
     );
 
     /** UNSTABLE ERASERS (FASTER) */
@@ -114,6 +129,21 @@ namespace utils {
       VEC<T> &vec,
       CR_VEC_SZ indices,
       VEC<T> &extracted
+    );
+
+    static void eraseSingleUnstable(
+      VEC<T> &vec,
+      CR_SZ index
+    );
+
+    static void eraseIntervalUnstable(
+      VEC<T> &vec,
+      CR_PAIR_SZ inter
+    );
+
+    static void eraseIndicesUnstable(
+      VEC<T> &vec,
+      CR_VEC_SZ indice
     );
 
     /** STABLE EXTRACTORS */
