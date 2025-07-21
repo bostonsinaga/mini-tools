@@ -37,9 +37,7 @@ namespace data_structures {
   }
 
   void GeneralTree::removeChild(GeneralTree *child) {
-    if (child && hasChild(child)) {
-      child->destroy();
-    }
+    if (hasChild(child)) child->destroy();
   }
 
   void GeneralTree::movePointer(CR_INT steps) {
@@ -131,6 +129,15 @@ namespace data_structures {
   }
 
   /** OVERRIDES */
+
+  void GeneralTree::detach() {
+    if (parent && parent->children->isolated()) {
+      parent->children = nullptr;
+    }
+
+    LinkedList::detach();
+    parent = nullptr;
+  }
 
   void GeneralTree::join(LinkedList *object) {
     if (object) {

@@ -63,6 +63,7 @@ namespace data_structures {
 
     /** Override behavior through parent-child relationship configuration */
 
+    void detach() override;
     void join(LinkedList *object) override;
     void accept(LinkedList *object) override;
     void destroy() override;
