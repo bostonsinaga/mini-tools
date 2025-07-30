@@ -157,19 +157,22 @@ namespace data_structures {
 
   // postorder traversal
   void GeneralTree::annihilate() {
-    GeneralTree *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
-    while (current && current != this) {
+    if (!LinkedListMetadata::iteratings[start]) {
+      GeneralTree *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
-      if (current->children) {
-        current->children->annihilate();
+      while (current && current != this) {
+
+        if (current->children) {
+          current->children->annihilate();
+        }
+
+        delete current;
+        current = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
       }
 
-      delete current;
-      current = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
+      delete this;
     }
-
-    delete this;
   }
 }}
 
