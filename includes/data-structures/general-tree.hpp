@@ -20,6 +20,7 @@ namespace data_structures {
 
     void xsetParent(GeneralTree *object);
     void xaddChild(GeneralTree *object);
+    void xannihilate();
 
   protected:
     ~GeneralTree() = default;
@@ -35,6 +36,7 @@ namespace data_structures {
     virtual void setParent(GeneralTree *object);
     virtual void addChild(GeneralTree *object);
     virtual void removeChild(GeneralTree *child);
+    virtual void releaseChild(GeneralTree *child);
     virtual void cleanChildren();
 
     // change 'children' address to 'children->start'
@@ -66,7 +68,11 @@ namespace data_structures {
     void detach() override;
     void join(LinkedList *object) override;
     void accept(LinkedList *object) override;
+
+    // delete this and its children vertically and horizontally
     void destroy() override;
+
+    // delete this and the neighbors vertically and horizontally
     void annihilate() override;
   };
 }}

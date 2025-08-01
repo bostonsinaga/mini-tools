@@ -40,6 +40,10 @@ namespace data_structures {
     if (hasChild(child)) child->destroy();
   }
 
+  void GeneralTree::releaseChild(GeneralTree *child) {
+    if (hasChild(child)) child->detach();
+  }
+
   void GeneralTree::movePointer(CR_INT steps) {
     if (children && !children->isolated()) {
       if (steps < 0) {
@@ -61,7 +65,7 @@ namespace data_structures {
 
   void GeneralTree::cleanChildren() {
     if (children) {
-      children->annihilate();
+      children->xannihilate();
       children = nullptr;
     }
   }
@@ -131,12 +135,16 @@ namespace data_structures {
   /** OVERRIDES */
 
   void GeneralTree::detach() {
-    if (parent && parent->children->isolated()) {
-      parent->children = nullptr;
+
+    if (parent) {
+      if (parent->children->isolated()) {
+        parent->children = nullptr;
+      }
+
+      parent = nullptr;
     }
 
     LinkedList::detach();
-    parent = nullptr;
   }
 
   void GeneralTree::join(LinkedList *object) {
@@ -151,28 +159,40 @@ namespace data_structures {
   }
 
   void GeneralTree::destroy() {
+    if (parent && parent->children->isolated()) {
+      parent->children = nullptr;
+    }
+
     if (children) children->annihilate();
     LinkedList::destroy();
   }
 
   // postorder traversal
-  void GeneralTree::annihilate() {
+  void GeneralTree::xannihilate() {
 
     if (!LinkedListMetadata::iteratings[start]) {
+
+      LinkedListMetadata::remove(start);
       GeneralTree *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
+      // vertically and horizontally recursive deletion
       while (current && current != this) {
 
         if (current->children) {
-          current->children->annihilate();
+          current->children->xannihilate();
         }
 
         delete current;
-        current = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
+        current = static_cast<GeneralTree*>(neighbors[RIGHT]);
       }
 
       delete this;
     }
+  }
+
+  void GeneralTree::annihilate() {
+    if (parent) parent->children = nullptr;
+    xannihilate();
   }
 }}
 
