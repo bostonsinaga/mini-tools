@@ -163,17 +163,18 @@ namespace data_structures {
       parent->children = nullptr;
     }
 
-    if (children) children->annihilate();
-    LinkedList::destroy();
+    if (children) children->xannihilate();
+    // LinkedList::destroy();
   }
 
   // postorder traversal
   void GeneralTree::xannihilate() {
 
     if (!LinkedListMetadata::iteratings[start]) {
-
       LinkedListMetadata::remove(start);
-      GeneralTree *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
+
+      GeneralTree *newCurrent,
+        *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
       // vertically and horizontally recursive deletion
       while (current && current != this) {
@@ -182,8 +183,9 @@ namespace data_structures {
           current->children->xannihilate();
         }
 
+        newCurrent = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
         delete current;
-        current = static_cast<GeneralTree*>(neighbors[RIGHT]);
+        current = newCurrent;
       }
 
       delete this;

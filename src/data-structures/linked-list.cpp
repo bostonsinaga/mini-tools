@@ -215,14 +215,17 @@ namespace data_structures {
   }
 
   void LinkedList::annihilate() {
-    if (!LinkedListMetadata::iteratings[start]) {
 
+    if (!LinkedListMetadata::iteratings[start]) {
       LinkedListMetadata::remove(start);
-      LinkedList *current = neighbors[RIGHT];
+
+      LinkedList *newCurrent,
+        *current = neighbors[RIGHT];
 
       while (current && current != this) {
+        newCurrent = current->neighbors[RIGHT];
         delete current;
-        current = current->neighbors[RIGHT];
+        current = newCurrent;
       }
 
       delete this;
