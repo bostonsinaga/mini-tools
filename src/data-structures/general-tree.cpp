@@ -13,7 +13,7 @@ namespace data_structures {
 
   void GeneralTree::xaddChild(GeneralTree *object) {
     if (children) children->xaccept(object);
-    else children = object;
+    children = object;
     object->level = level + 1;
     object->parent = this;
   }
