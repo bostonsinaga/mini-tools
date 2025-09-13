@@ -65,9 +65,13 @@ namespace utils {
     /**
      * Set the 'extended' parameter to determine
      * whether to overwrite or continue the file.
+     * 
+     * If the path or filename is valid, permission is granted,
+     * and the disk is still available, the file will be created
+     * and these methods will return true.
      */
 
-    static void write(
+    static bool write(
       CR_STR text,
       CR_FS_PATH filename,
       CR_BOL extended,
@@ -75,7 +79,7 @@ namespace utils {
     );
 
     template <inspector::ALPHANUMERIC T>
-    static void write(
+    static bool write(
       CR_VEC<T> vec,
       CR_FS_PATH filename,
       CR_BOL extended,
@@ -84,7 +88,7 @@ namespace utils {
     );
 
     template <inspector::ALPHANUMERIC T>
-    static void logf(
+    static bool logf(
       CR_VEC<T> vec,
       CR_FS_PATH filename,
       CR_BOL extended,
@@ -93,7 +97,7 @@ namespace utils {
     );
 
     template <inspector::NUMBER T>
-    static void barLogf(
+    static bool barLogf(
       CR_VEC<T> vec,
       CR_FS_PATH filename,
       CR_BOL extended,

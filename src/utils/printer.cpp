@@ -13,7 +13,7 @@ namespace utils {
     return text + std::string(endNewlinesCount, '\n');
   }
 
-  void Printer::write(
+  bool Printer::write(
     CR_STR text,
     CR_FS_PATH filename,
     CR_BOL extended,
@@ -26,8 +26,13 @@ namespace utils {
     }
     else output.open(filename);
 
+    // invalid path, invalid filename, permission not granted, or disk full
+    if (!output.is_open()) return false;
+
+    // write text into file
     output << Printer::getNewlines(text, endNewlinesCount);
     output.close();
+    return true;
   }
 }}
 

@@ -72,28 +72,28 @@ namespace utils {
   }
 
   template <inspector::ALPHANUMERIC T>
-  void Printer::write(
+  bool Printer::write(
     CR_VEC<T> vec,
     CR_FS_PATH filename,
     CR_BOL extended,
     CR_SZ endNewlinesCount,
     CR_STR separator
   ) {
-    Printer::write(
+    return Printer::write(
       Printer::stringify<T>(vec, endNewlinesCount, separator),
       filename, extended, endNewlinesCount
     );
   }
 
   template <inspector::ALPHANUMERIC T>
-  void Printer::logf(
+  bool Printer::logf(
     CR_VEC<T> vec,
     CR_FS_PATH filename,
     CR_BOL extended,
     CR_SZ endNewlinesCount,
     CR_STR separator
   ) {
-    Printer::write(
+    return Printer::write(
       Printer::getHeader<T>(endNewlinesCount) +
       Printer::stringify<T>(vec, endNewlinesCount, separator),
       filename, extended, endNewlinesCount
@@ -101,14 +101,14 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  void Printer::barLogf(
+  bool Printer::barLogf(
     CR_VEC<T> vec,
     CR_FS_PATH filename,
     CR_BOL extended,
     CR_SZ endNewlinesCount,
     CR_STR barStyle
   ) {
-    Printer::write(
+    return Printer::write(
       Printer::getHeader<T>(endNewlinesCount) +
       Printer::barStringify<T>(vec, endNewlinesCount, barStyle),
       filename, extended, endNewlinesCount
