@@ -132,6 +132,12 @@ namespace data_structures {
     LinkedListMetadata::iteratings[start] = false;
   }
 
+  GeneralTree *GeneralTree::getRoot() {
+    GeneralTree *current = this;
+    while (current->parent) current = current->parent;
+    return current;
+  }
+
   /** OVERRIDES */
 
   void GeneralTree::detach() {
