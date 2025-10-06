@@ -119,48 +119,82 @@ namespace helper {
   };
 
   /**
-   * The '--help' and '-h' entries are included
-   * by default to invoke 'CLIMessage::printDescription'.
+   * Wrapper to evaluate input, print messages,
+   * and invoke callback in single 'run()' call.
    */
-  template <
-    typename T = mt_uti::CLIDefault_T::type,
-    typename U = mt_uti::CLIDefault_U<T>::type,
-    typename V = mt_uti::CLIDefault_V<T, U>::type
-  >
-  requires mt_uti::CLIUniqueType<T, U, V>
-  void CLIWrapper(
-    CLIMessage &message,
-    mt_uti::CLIParser<T, U, V> &cli,
-    bool (&callback)(mt_uti::CLIParser<T, U, V>&)
-  ) {
-    std::string mainEntry = message.getMainEntry();
+  class CLIWrapper final {
+  private:
+    bool mainEntryEntered = false;
+    int numberOfCLIs, numberOfRegistered = 0;
+    mt::VEC<CLIMessage*> messagesForInvalid;
 
-    // entry
-    if (cli.enter({mainEntry})) {
+  public:
+    CLIWrapper() = delete;
 
-      // help
-      if (cli.enter({mainEntry, "--help"}) ||
-        cli.enter({mainEntry, "-h"})
-      ) {
-        message.printDescription();
-      }
-      // parse inputs
-      else {
-        if (!callback(cli)) {
-          message.printInvalid();
-        }
-        else message.printDone();
-      }
+    CLIWrapper(mt::CR_INT numberOfCLIs_in) {
+      numberOfCLIs = numberOfCLIs_in;
     }
-    else {
-      // help
-      if (cli.query({"--help"}, false) ||
-        cli.query({"-h"}, false)
-      ) {
-        message.printDescription();
+
+    /**
+     * The '--help' and '-h' entries are included
+     * by default to invoke 'CLIMessage::printDescription'.
+     */
+    template <
+      typename T = mt_uti::CLIDefault_T::type,
+      typename U = mt_uti::CLIDefault_U<T>::type,
+      typename V = mt_uti::CLIDefault_V<T, U>::type
+    >
+    requires mt_uti::CLIUniqueType<T, U, V>
+    void run(
+      CLIMessage &message,
+      mt_uti::CLIParser<T, U, V> &cli,
+      bool (&callback)(mt_uti::CLIParser<T, U, V>&)
+    ) {
+      if (numberOfRegistered < numberOfCLIs) {
+        numberOfRegistered++;
       }
-      // error
-      else message.printInvalid();
+      else return;
+
+      std::string mainEntry = message.getMainEntry();
+
+      // entry
+      if (cli.enter({mainEntry})) {
+        mainEntryEntered = true;
+
+        // help
+        if (cli.enter({mainEntry, "--help"}) ||
+          cli.enter({mainEntry, "-h"})
+        ) {
+          message.printDescription();
+        }
+        // parse inputs
+        else {
+          if (!callback(cli)) {
+            message.printInvalid();
+          }
+          else message.printDone();
+        }
+      }
+      else {
+        // help
+        if (cli.query({"--help"}, false) ||
+          cli.query({"-h"}, false)
+        ) {
+          message.printDescription();
+        }
+        // error
+        else messagesForInvalid.push_back(&message);
+      }
+
+      /**
+       * Print an invalid message by all registered CLIs
+       * if any main entry is not entered or not found.
+       */
+      if (numberOfRegistered == numberOfCLIs && !mainEntryEntered) {
+        for (CLIMessage *message : messagesForInvalid) {
+          message->printInvalid();
+        }
+      }
     }
   };
 }
