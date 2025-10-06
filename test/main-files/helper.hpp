@@ -70,7 +70,7 @@ namespace helper {
     }
 
     // display elapsed time
-    mt_uti::TimeDate::print(false, timerTitle + ":");
+    mt_uti::Timer::Stopwatch::print(false, timerTitle + ":");
   }
 
   // help and error message
@@ -120,7 +120,7 @@ namespace helper {
 
   /**
    * The '--help' and '-h' entries are included
-   * by default to call 'CLIMessage::printDescription'.
+   * by default to invoke 'CLIMessage::printDescription'.
    */
   template <
     typename T = mt_uti::CLIDefault_T::type,
@@ -129,59 +129,38 @@ namespace helper {
   >
   requires mt_uti::CLIUniqueType<T, U, V>
   void CLIWrapper(
-    const mt::VEC<CLIMessage*> &cliMessageVec,
-    const mt::VEC<mt_uti::CLIParser<T, U, V>*> &cliVec,
-    const mt::VEC<std::function<bool(mt_uti::CLIParser<T, U, V>*)>> &callbackVec,
-    mt::CR_VEC_STR additionalEntries = {}
+    CLIMessage &message,
+    mt_uti::CLIParser<T, U, V> &cli,
+    bool (&callback)(mt_uti::CLIParser<T, U, V>&)
   ) {
-    // the vectors must contain and be the same size
-    if (cliMessageVec.empty() || cliVec.empty() || callbackVec.empty() ||
-      cliMessageVec.size() != cliVec.size() ||
-      cliVec.size() != callbackVec.size() ||
-      cliMessageVec.size() != callbackVec.size()
-    ) return;
+    std::string mainEntry = message.getMainEntry();
 
-    std::string mainEntry;
-    bool entered = false;
+    // entry
+    if (cli.enter({mainEntry})) {
 
-    for (int i = 0; i < cliMessageVec.size(); i++) {
-      mainEntry = cliMessageVec[i]->getMainEntry();
-
-      // entry
-      if (cliVec[i]->enter({mainEntry})) {
-        entered = true;
-
-        // help
-        if (cliVec[i]->enter({mainEntry, "--help"}) ||
-          cliVec[i]->enter({mainEntry, "-h"})
-        ) {
-          cliMessageVec[i]->printDescription();
+      // help
+      if (cli.enter({mainEntry, "--help"}) ||
+        cli.enter({mainEntry, "-h"})
+      ) {
+        message.printDescription();
+      }
+      // parse inputs
+      else {
+        if (!callback(cli)) {
+          message.printInvalid();
         }
-        // parse inputs
-        else {
-          if (!callbackVec[i](cliVec[i])) {
-            cliMessageVec[i]->printInvalid();
-          }
-          else cliMessageVec[i]->printDone();
-        }
-
-        break;
+        else message.printDone();
       }
     }
-
-    if (!entered) {
-      for (int i = 0; i < cliMessageVec.size(); i++) {
-
-        // help
-        if (cliVec[i]->query({"--help"}, false) ||
-          cliVec[i]->query({"-h"}, false)
-        ) {
-          cliMessageVec[i]->printDescription();
-        }
-        // error
-        else cliMessageVec[i]->printInvalid();
+    else {
+      // help
+      if (cli.query({"--help"}, false) ||
+        cli.query({"-h"}, false)
+      ) {
+        message.printDescription();
       }
+      // error
+      else message.printInvalid();
     }
-  }
+  };
 }
-
