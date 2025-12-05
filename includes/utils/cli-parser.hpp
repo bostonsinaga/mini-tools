@@ -61,7 +61,7 @@ namespace utils {
    * but you can reset all member variables later using the cleaners and setters.
    * 
    * This class does not support the built-in hyphen prefix
-   * for word/number with '-' or toggle with '--'.
+   * for word/number with '-' or boolean with '--'.
    * You have to set it manually as part of the keyword.
    * 
    * How to use (sequentially):
@@ -203,7 +203,7 @@ namespace utils {
      *     StrTools::argvToStringVector(argc, argv),
      *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
      *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
-     *     { std::make_pair("foo-toggle-1", false), std::make_pair("foo-toggle-2", true) }
+     *     { std::make_pair("foo-boolean-1", false), std::make_pair("foo-boolean-2", true) }
      *   );
      */
 
@@ -350,7 +350,7 @@ namespace utils {
      *   cli.balance(
      *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
      *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
-     *     { std::make_pair("foo-toggle-1", false), std::make_pair("foo-toggle-2", true) }
+     *     { std::make_pair("foo-boolean-1", false), std::make_pair("foo-boolean-2", true) }
      *   );
      */
 
