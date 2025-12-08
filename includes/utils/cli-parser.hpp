@@ -178,6 +178,12 @@ namespace utils {
       CR_SZ max
     );
 
+    /**
+     * Get strings free from spaces on the left and right.
+     * The only spaces will not be included.
+     */
+    VEC_STR getTrimmedRaws(CR_VEC_STR raws);
+
   public:
     /** Interpret string as boolean */
 
@@ -200,6 +206,8 @@ namespace utils {
      * The default values will be added to the vectors
      * within the main unordered maps in setters if the
      * detected keywords are specified without arguments.
+     * 
+     * The 'Raws' will be cleaned with 'getTrimmedRaws' before use.
      * 
      * Call example:
      *   CLIParser<std::string, int, bool> cli(

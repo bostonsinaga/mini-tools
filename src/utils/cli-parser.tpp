@@ -83,6 +83,23 @@ namespace utils {
     else selectMainUnormap<W>()[keyword].first.push_back(raw);
   }
 
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  VEC_STR CLIParser<T, U, V>::getTrimmedRaws(CR_VEC_STR raws) {
+    VEC_STR trimmedRaws;
+    std::string buffer;
+
+    for (CR_STR str : raws) {
+      buffer = StrTools::trim(str);
+
+      if (!buffer.empty()) {
+        trimmedRaws.push_back(buffer);
+      }
+    }
+
+    return trimmedRaws;
+  }
+
   /** CONSTRUCTORS */
 
   template <typename T, typename U, typename V>
@@ -135,8 +152,10 @@ namespace utils {
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(CR_VEC_STR raws) {
-    for (int i = 0; i < raws.size(); i++) {
-      entries[raws[i]] = i;
+    VEC_STR trimmedRaws = getTrimmedRaws(raws);
+
+    for (int i = 0; i < trimmedRaws.size(); i++) {
+      entries[trimmedRaws[i]] = i;
     }
   }
 
@@ -155,30 +174,31 @@ namespace utils {
     std::string keyword;
     UI entriesOrderIndex = 0;
     FoundEnum found = FoundEntry;
+    VEC_STR trimmedRaws = getTrimmedRaws(raws);
 
-    /** Iteration of 'raws' */
+    /** Iteration of trimmed raws */
 
-    for (int i = 0; i < raws.size(); i++) {
+    for (int i = 0; i < trimmedRaws.size(); i++) {
 
       // keyword detected
-      if (has<T>(raws[i])) {
+      if (has<T>(trimmedRaws[i])) {
         pushDefault<FoundCountOne>(keyword, found);
         found = Found_T;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
       // input detected
       else if (found == Found_T || found == FoundInput_T) {
         found = FoundInput_T;
-        pushRaw<T>(keyword, raws[i]);
+        pushRaw<T>(keyword, trimmedRaws[i]);
       }
       // before any keyword of 'mainUnormap_T' (basic string)
       else {
-        entries[raws[i]] = entriesOrderIndex;
+        entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
       }
     }
 
-    // a keyword is specified without input at the last 'raws'
+    // a keyword is specified without input at the last trimmed raws
     pushDefault<FoundCountOne>(keyword, found);
   }
 
@@ -202,39 +222,40 @@ namespace utils {
     std::string keyword;
     UI entriesOrderIndex = 0;
     FoundEnum found = FoundEntry;
+    VEC_STR trimmedRaws = getTrimmedRaws(raws);
 
-    /** Iteration of 'raws' */
+    /** Iteration of trimmed raws */
 
-    for (int i = 0; i < raws.size(); i++) {
+    for (int i = 0; i < trimmedRaws.size(); i++) {
 
       // keywords detected
-      if (has<T>(raws[i])) {
+      if (has<T>(trimmedRaws[i])) {
         pushDefault<FoundCountTwo>(keyword, found);
         found = Found_T;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
-      else if (has<U>(raws[i])) {
+      else if (has<U>(trimmedRaws[i])) {
         pushDefault<FoundCountTwo>(keyword, found);
         found = Found_U;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
       // inputs detected
       else if (found == Found_T || found == FoundInput_T) {
         found = FoundInput_T;
-        pushRaw<T>(keyword, raws[i]);
+        pushRaw<T>(keyword, trimmedRaws[i]);
       }
       else if (found == Found_U || found == FoundInput_U) {
         found = FoundInput_U;
-        pushRaw<U>(keyword, raws[i]);
+        pushRaw<U>(keyword, trimmedRaws[i]);
       }
       // before any keyword of main unordered maps (basic string)
       else {
-        entries[raws[i]] = entriesOrderIndex;
+        entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
       }
     }
 
-    // a keyword is specified without input at the last 'raws'
+    // a keyword is specified without input at the last trimmed raws
     pushDefault<FoundCountTwo>(keyword, found);
   }
 
@@ -263,48 +284,49 @@ namespace utils {
     std::string keyword;
     UI entriesOrderIndex = 0;
     FoundEnum found = FoundEntry;
+    VEC_STR trimmedRaws = getTrimmedRaws(raws);
 
-    /** Iteration of 'raws' */
+    /** Iteration of trimmed raws */
 
-    for (int i = 0; i < raws.size(); i++) {
+    for (int i = 0; i < trimmedRaws.size(); i++) {
 
       // keywords detected
-      if (has<T>(raws[i])) {
+      if (has<T>(trimmedRaws[i])) {
         pushDefault<FoundCountThree>(keyword, found);
         found = Found_T;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
-      else if (has<U>(raws[i])) {
+      else if (has<U>(trimmedRaws[i])) {
         pushDefault<FoundCountThree>(keyword, found);
         found = Found_U;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
-      else if (has<V>(raws[i])) {
+      else if (has<V>(trimmedRaws[i])) {
         pushDefault<FoundCountThree>(keyword, found);
         found = Found_V;
-        keyword = raws[i];
+        keyword = trimmedRaws[i];
       }
       // inputs detected
       else if (found == Found_T || found == FoundInput_T) {
         found = FoundInput_T;
-        pushRaw<T>(keyword, raws[i]);
+        pushRaw<T>(keyword, trimmedRaws[i]);
       }
       else if (found == Found_U || found == FoundInput_U) {
         found = FoundInput_U;
-        pushRaw<U>(keyword, raws[i]);
+        pushRaw<U>(keyword, trimmedRaws[i]);
       }
       else if (found == Found_V || found == FoundInput_V) {
         found = FoundInput_V;
-        pushRaw<V>(keyword, raws[i]);
+        pushRaw<V>(keyword, trimmedRaws[i]);
       }
       // before any keyword of main unordered maps (basic string)
       else {
-        entries[raws[i]] = entriesOrderIndex;
+        entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
       }
     }
 
-    // a keyword is specified without input at the last 'raws'
+    // a keyword is specified without input at the last trimmed raws
     pushDefault<FoundCountThree>(keyword, found);
   }
 
