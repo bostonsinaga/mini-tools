@@ -73,14 +73,55 @@ namespace helper {
     mt_uti::Timer::Stopwatch::print(false, timerTitle + ":");
   }
 
-  // help and error message
+  /**
+   * Stringified Keyword-Type.
+   */
+  class CLITypeLabel {
+  protected:
+    std::string keyword, label;
+
+  public:
+    CLITypeLabel(std::string keyword_in) {
+      keyword = keyword_in;
+    }
+
+    std::string getString() {
+      return keyword + '<' + label + "> ";
+    }
+  };
+
+  class CLIWordLabel : public CLITypeLabel {
+  public:
+    CLIWordLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
+      label = "WORD";
+    }
+  };
+
+  class CLINumberLabel : public CLITypeLabel {
+  public:
+    CLINumberLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
+      label = "NUMBER";
+    }
+  };
+
+  class CLIBooleanLabel : public CLITypeLabel {
+  public:
+    CLIBooleanLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
+      label = "BOOLEAN";
+    }
+  };
+
+  /**
+   * Help and Error Messages.
+   */
   class CLIMessage {
   private:
     std::string mainEntry,
       description,
-      parameterList,
       doneMessage,
       errorMessage;
+
+    mt::VEC<CLITypeLabel> parameterList;
 
   public:
     CLIMessage() = delete;
@@ -88,7 +129,7 @@ namespace helper {
     CLIMessage(
       mt::CR_STR mEntry,
       mt::CR_STR desc,
-      mt::CR_STR paramList,
+      mt::CR_VEC<CLITypeLabel> paramList = {},
       mt::CR_STR doneMsg = "DONE",
       mt::CR_STR errMsg = "INVALID ARGUMENTS"
     ) {
@@ -99,18 +140,30 @@ namespace helper {
       errorMessage = errMsg;
     }
 
+    // with italic style
     void printDescription() {
-      std::cout << std::endl << mainEntry << ":\n" << description << std::endl
-        << "\033[3m" << parameterList << "\033[0m\n";
+      std::cout << std::endl << mainEntry << ":\n" << description << std::endl;
+
+      if (!parameterList.empty()) {
+        std::cout << "\x1b[3m";
+
+        for (CLITypeLabel &param : parameterList) {
+          std::cout << param.getString();
+        }
+
+        std::cout << "\x1b[0m\n";
+      }
     }
 
+    // with green color
     void printDone() {
-      std::cout << std::endl << mainEntry << ":\n" << "\033[32m" << doneMessage << "\033[0m\n";
+      std::cout << std::endl << mainEntry << ":\n" << "\x1b[32m" << doneMessage << "\x1b[0m\n";
     }
 
+    // with red color
     void printInvalid() {
-      std::cout << std::endl << mainEntry << ":\n" << "\033[31m" << errorMessage << "\033[0m\n"
-        << "\033[3mPlease type --help or -h to see available parameters\033[0m\n";
+      std::cout << std::endl << mainEntry << ":\n" << "\x1b[31m" << errorMessage << "\x1b[0m\n"
+        << "\x1b[3mPlease type --help or -h to see available parameters\x1b[0m\n";
     }
 
     std::string getMainEntry() {
