@@ -286,6 +286,57 @@ namespace utils {
     }
   }
 
+  std::string StrTools::trim(CR_STR text) {
+    size_t i = 0, index = 0, length = 0;
+
+    for (; i < text.length(); i++) {
+      if (isWhitespace(text[i])) {
+        index++;
+      }
+      else break;
+    }
+
+    for (int j = i; j < text.length(); j++) {
+      if (isWhitespace(text[j])) {
+        break;
+      }
+      else length++;
+    }
+
+    return text.substr(index, length);
+  }
+
+  /** Character Detectors */
+
+  bool StrTools::isWhitespace(CR_CH ch) {
+    return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
+  }
+
+  bool StrTools::isWhitespaces(CR_STR str) {
+    for (CR_CH ch : str) {
+      if (!isWhitespace(ch)) return false;
+    }
+    return true;
+  }
+
+  bool StrTools::isUppercaseLetter(CR_CH ch) {
+    return ch >= 'A' && ch <= 'Z';
+  }
+
+  bool StrTools::isLowercaseLetter(CR_CH ch) {
+    return ch >= 'a' && ch <= 'z';
+  }
+
+  bool StrTools::isLetter(CR_CH ch) {
+    return isUppercaseLetter(ch) || isLowercaseLetter(ch);
+  }
+
+  /** Number Detectors */
+
+  bool StrTools::isDigit(CR_CH ch) {
+    return ch >= '0' && ch <= '9';
+  }
+
   bool StrTools::isInteger(CR_STR str) {
 
     for (CR_CH ch : str) {
@@ -298,8 +349,7 @@ namespace utils {
   }
 
   bool StrTools::isFloatingPoint(
-    CR_STR str,
-    CR_CH decPtSign
+    CR_STR str, CR_CH decPtSign
   ) {
     bool decPtFound = false;
 
@@ -316,8 +366,7 @@ namespace utils {
   }
 
   VEC_STR StrTools::argvToStringVector(
-    CR_INT argc,
-    char *argv[]
+    CR_INT argc, char *argv[]
   ) {
     // strings converted from 'argv'
     VEC_STR raws;

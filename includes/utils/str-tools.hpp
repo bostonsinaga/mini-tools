@@ -87,35 +87,27 @@ namespace utils {
       CR_INT reverseSpaceBoundaryIndex = -1
     );
 
-    /** Character detectors */
+    /**
+     * Remove spaces from the left
+     * and right sides of a string.
+     */
+    static std::string trim(CR_STR text);
 
-    static bool isWhitespace(CR_CH ch) {
-      return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
-    }
+    /** Character Detectors */
 
-    static bool isUppercaseLetter(CR_CH ch) {
-      return ch >= 'A' && ch <= 'Z';
-    }
+    static bool isWhitespace(CR_CH ch);
+    static bool isWhitespaces(CR_STR str);
+    static bool isUppercaseLetter(CR_CH ch);
+    static bool isLowercaseLetter(CR_CH ch);
+    static bool isLetter(CR_CH ch);
 
-    static bool isLowercaseLetter(CR_CH ch) {
-      return ch >= 'a' && ch <= 'z';
-    }
+    /** Number Detectors */
 
-    static bool isLetter(CR_CH ch) {
-      return isUppercaseLetter(ch) || isLowercaseLetter(ch);
-    }
-
-    /** Number detectors */
-
-    static bool isDigit(CR_CH ch) {
-      return ch >= '0' && ch <= '9';
-    }
-
+    static bool isDigit(CR_CH ch);
     static bool isInteger(CR_STR str);
 
     static bool isFloatingPoint(
-      CR_STR str,
-      CR_CH decPtSign = '.'
+      CR_STR str, CR_CH decPtSign = '.'
     );
 
     /**
@@ -123,8 +115,7 @@ namespace utils {
      * to the actual number of 'argv' or both are parameters of the main function.
      */
     static VEC_STR argvToStringVector(
-      CR_INT argc,
-      char *argv[]
+      CR_INT argc, char *argv[]
     );
   };
 }}
