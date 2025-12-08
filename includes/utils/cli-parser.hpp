@@ -142,10 +142,13 @@ namespace utils {
     /**
      * Set the default value for the vector of main
      * unordered maps if only the keyword is specified in 'raws'.
-     * 
-     * The 'N' means number of 'FoundEnum' check conditions.
      */
-    template <int N>
+
+    enum FoundCountEnum {
+      FoundCountOne, FoundCountTwo, FoundCountThree
+    };
+
+    template <FoundCountEnum N>
     void pushDefault(
       CR_STR keyword,
       const FoundEnum &found
@@ -199,13 +202,15 @@ namespace utils {
      * detected keywords are specified without arguments.
      * 
      * Call example:
-     *   CLIParser<int> cli(
+     *   CLIParser<std::string, int, bool> cli(
      *     StrTools::argvToStringVector(argc, argv),
      *     { std::make_pair("foo-word-1", "A"), std::make_pair("foo-word-2", "B") },
      *     { std::make_pair("foo-number-1", 0), std::make_pair("foo-number-2", 1) },
      *     { std::make_pair("foo-boolean-1", false), std::make_pair("foo-boolean-2", true) }
      *   );
      */
+
+    CLIParser(CR_VEC_STR raws);
 
     CLIParser(
       CR_VEC_STR raws,
@@ -237,6 +242,8 @@ namespace utils {
      * Also, you can perform a reset by sequentially
      * using a combination of cleaners and setters.
      */
+
+    void set(CR_VEC_STR raws);
 
     void set(
       CR_VEC_STR raws,

@@ -20,19 +20,19 @@ namespace utils {
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
-  template <int N>
+  template <typename CLIParser<T, U, V>::FoundCountEnum N>
   void CLIParser<T, U, V>::pushDefault(
     CR_STR keyword,
     const FoundEnum &found
   ) {
-    if constexpr (N == 1) {
+    if constexpr (N == FoundCountOne) {
       if (found == Found_T) {
         mainUnormap_T[keyword].first.push_back(
           mainUnormap_T[keyword].second
         );
       }
     }
-    else if constexpr (N == 2) {
+    else if constexpr (N == FoundCountTwo) {
       if (found == Found_T) {
         mainUnormap_T[keyword].first.push_back(
           mainUnormap_T[keyword].second
@@ -44,7 +44,7 @@ namespace utils {
         );
       }
     }
-    else {
+    else { // 'FoundCountThree'
       if (found == Found_T) {
         mainUnormap_T[keyword].first.push_back(
           mainUnormap_T[keyword].second
@@ -84,6 +84,12 @@ namespace utils {
   }
 
   /** CONSTRUCTORS */
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  CLIParser<T, U, V>::CLIParser(CR_VEC_STR raws) {
+    set(raws);
+  }
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
@@ -128,6 +134,14 @@ namespace utils {
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
+  void CLIParser<T, U, V>::set(CR_VEC_STR raws) {
+    for (int i = 0; i < raws.size(); i++) {
+      entries[raws[i]] = i;
+    }
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
     CR_VEC_KEYDEF<T> keywordDefaultVector_T
@@ -148,7 +162,7 @@ namespace utils {
 
       // keyword detected
       if (has<T>(raws[i])) {
-        pushDefault<1>(keyword, found);
+        pushDefault<FoundCountOne>(keyword, found);
         found = Found_T;
         keyword = raws[i];
       }
@@ -165,7 +179,7 @@ namespace utils {
     }
 
     // a keyword is specified without input at the last 'raws'
-    pushDefault<1>(keyword, found);
+    pushDefault<FoundCountOne>(keyword, found);
   }
 
   template <typename T, typename U, typename V>
@@ -195,12 +209,12 @@ namespace utils {
 
       // keywords detected
       if (has<T>(raws[i])) {
-        pushDefault<2>(keyword, found);
+        pushDefault<FoundCountTwo>(keyword, found);
         found = Found_T;
         keyword = raws[i];
       }
       else if (has<U>(raws[i])) {
-        pushDefault<2>(keyword, found);
+        pushDefault<FoundCountTwo>(keyword, found);
         found = Found_U;
         keyword = raws[i];
       }
@@ -221,7 +235,7 @@ namespace utils {
     }
 
     // a keyword is specified without input at the last 'raws'
-    pushDefault<2>(keyword, found);
+    pushDefault<FoundCountTwo>(keyword, found);
   }
 
   template <typename T, typename U, typename V>
@@ -256,17 +270,17 @@ namespace utils {
 
       // keywords detected
       if (has<T>(raws[i])) {
-        pushDefault<3>(keyword, found);
+        pushDefault<FoundCountThree>(keyword, found);
         found = Found_T;
         keyword = raws[i];
       }
       else if (has<U>(raws[i])) {
-        pushDefault<3>(keyword, found);
+        pushDefault<FoundCountThree>(keyword, found);
         found = Found_U;
         keyword = raws[i];
       }
       else if (has<V>(raws[i])) {
-        pushDefault<3>(keyword, found);
+        pushDefault<FoundCountThree>(keyword, found);
         found = Found_V;
         keyword = raws[i];
       }
@@ -291,7 +305,7 @@ namespace utils {
     }
 
     // a keyword is specified without input at the last 'raws'
-    pushDefault<3>(keyword, found);
+    pushDefault<FoundCountThree>(keyword, found);
   }
 
   /** CLEANERS */
