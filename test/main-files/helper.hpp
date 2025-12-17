@@ -1,7 +1,7 @@
 #include "mini-tools.hpp"
 
-namespace helper {
-
+class Helper {
+public:
   typedef std::tuple<
     mt::VEC_INT*, mt::VEC_DBL*,
     mt::VEC_STR*, mt::VEC_STR*
@@ -11,7 +11,7 @@ namespace helper {
    * 'timerTitle' is test program name.
    * 'logFilePath' is relative path to 'mini-tools/test/logs/'.
    */
-  void getSamples(
+  static void getSamples(
     const std::function<TUP4PTR(mt::VEC_INT&, mt::VEC_DBL&, mt::VEC_STR&, mt::VEC_STR&)> &callback,
     mt::CR_STR timerTitle,
     mt::CR_STR logFilePath
@@ -74,180 +74,237 @@ namespace helper {
   }
 
   /**
-   * Stringified Keyword-Type.
+   * Simplifying the use of 'CLIParser'. Providing final responses
+   * and descriptions of commands from one class. The '--help' and '-h'
+   * commands are provided by default. One of the callback calls must
+   * return 'true' for the response to display the completed message.
+   * 
+   * Steps of use:
+   * 1. Define callbacks.
+   * 2. Create 'CLIParser' objects.
+   * 3. Set optional values.
+   * 4. Call 'run' method.
    */
-  class CLITypeLabel {
-  protected:
-    std::string keyword, label;
-
-  public:
-    CLITypeLabel(std::string keyword_in) {
-      keyword = keyword_in;
-    }
-
-    std::string getString() {
-      return keyword + '<' + label + "> ";
-    }
-  };
-
-  class CLIWordLabel : public CLITypeLabel {
-  public:
-    CLIWordLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
-      label = "WORD";
-    }
-  };
-
-  class CLINumberLabel : public CLITypeLabel {
-  public:
-    CLINumberLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
-      label = "NUMBER";
-    }
-  };
-
-  class CLIBooleanLabel : public CLITypeLabel {
-  public:
-    CLIBooleanLabel(std::string keyword_in) : CLITypeLabel(keyword_in) {
-      label = "BOOLEAN";
-    }
-  };
-
-  /**
-   * Help and Error Messages.
-   */
-  class CLIMessage {
+  class CLIWrapper {
   private:
-    std::string mainEntry,
-      description,
-      doneMessage,
-      errorMessage;
+    inline static int numberOfRuns = 0;
 
-    mt::VEC<CLITypeLabel> parameterList;
+    inline static bool
+      displayingFinalMessage = true,
+      mainMenuDetected = false,
+      maxRunsReached = false,
+      entryDetected = false;
 
-  public:
-    CLIMessage() = delete;
+    inline static std::string
+      completedMessage = "**PROGRAM COMPLETED**",
+      failedMessage = "**PROGRAM FAILED**",
+      invalidMessage = "**INVALID ARGUMENT**",
+      defaultDescription = "No description.";
 
-    CLIMessage(
-      mt::CR_STR mEntry,
-      mt::CR_STR desc,
-      mt::CR_VEC<CLITypeLabel> paramList = {},
-      mt::CR_STR doneMsg = "DONE",
-      mt::CR_STR errMsg = "INVALID ARGUMENTS"
-    ) {
-      mainEntry = mEntry;
-      description = desc;
-      parameterList = paramList;
-      doneMessage = doneMsg;
-      errorMessage = errMsg;
-    }
+    inline static mt::PAIR2<mt::VEC_CH, int>
+      lastDefaultEntry = {{'a'}, 1};
 
-    // with italic style
-    void printDescription() {
-      std::cout << std::endl << mainEntry << ":\n" << description << std::endl;
+    // keywords and entries always contain strings
+    static std::string generateDefaultEntry() {
+      lastDefaultEntry.second++;
 
-      if (!parameterList.empty()) {
-        std::cout << "\x1b[3m";
-
-        for (CLITypeLabel &param : parameterList) {
-          std::cout << param.getString();
-        }
-
-        std::cout << "\x1b[0m\n";
+      // limit counter
+      if (lastDefaultEntry.second > 26) {
+        lastDefaultEntry.second = 1;
+        lastDefaultEntry.first.push_back('a');
       }
+      else lastDefaultEntry.first.back()++;
+
+      // combine characters
+      std::string generatedEntry;
+
+      for (char &ch : lastDefaultEntry.first) {
+        generatedEntry += ch;
+      }
+
+      // combine letters with number
+      return generatedEntry + std::to_string(lastDefaultEntry.second);
     }
 
-    // with green color
-    void printDone() {
-      std::cout << std::endl << mainEntry << ":\n" << "\x1b[32m" << doneMessage << "\x1b[0m\n";
+    static void printHeader(
+      std::string &entry,
+      std::string &description
+    ) {
+      std::cout << "\x1b[36m" << entry << ":\x1b[0m\n"
+        << "\x1b[3m" << description << "\x1b[0m";
     }
 
-    // with red color
-    void printInvalid() {
-      std::cout << std::endl << mainEntry << ":\n" << "\x1b[31m" << errorMessage << "\x1b[0m\n"
-        << "\x1b[3mPlease type --help or -h to see available parameters\x1b[0m\n";
+    static void printAbout(
+      std::string &entry,
+      std::string &description
+    ) {
+      std::cout << std::endl;
+      CLIWrapper::printHeader(entry, description);
+      std::cout << std::endl;
     }
 
-    std::string getMainEntry() {
-      return mainEntry;
-    }
-  };
-
-  /**
-   * Wrapper to evaluate input, print messages,
-   * and invoke callback in single 'run()' call.
-   */
-  class CLIWrapper final {
-  private:
-    bool mainEntryEntered = false;
-    int numberOfCLIs, numberOfRegistered = 0;
-    mt::VEC<CLIMessage*> messagesForInvalid;
-
-  public:
-    CLIWrapper() = delete;
-
-    CLIWrapper(mt::CR_INT numberOfCLIs_in) {
-      numberOfCLIs = numberOfCLIs_in;
-    }
-
-    /**
-     * The '--help' and '-h' entries are included
-     * by default to invoke 'CLIMessage::printDescription'.
-     */
     template <
       typename T = mt_uti::CLIDefault_T::type,
       typename U = mt_uti::CLIDefault_U<T>::type,
       typename V = mt_uti::CLIDefault_V<T, U>::type
     >
     requires mt_uti::CLIUniqueType<T, U, V>
-    void run(
-      CLIMessage &message,
-      mt_uti::CLIParser<T, U, V> &cli,
-      bool (&callback)(mt_uti::CLIParser<T, U, V>&)
+    static void printKeywords(
+      std::string &entry,
+      std::string &description,
+      mt_uti::CLIParser<T, U, V> &parser
     ) {
-      if (numberOfRegistered < numberOfCLIs) {
-        numberOfRegistered++;
+      std::cout << std::endl;
+      CLIWrapper::printHeader(entry, description);
+
+      for (mt::CR_STR keyword : parser.template extractStringsFromMainUnormap<T>()) {
+        std::cout << "\n  " << keyword << " <"
+          << mt_uti::CLIParser<T, U, V>::template getStringifiedType<T>() << '>';
       }
-      else return;
 
-      std::string mainEntry = message.getMainEntry();
+      for (mt::CR_STR keyword : parser.template extractStringsFromMainUnormap<U>()) {
+        std::cout << "\n  " << keyword << " <"
+          << mt_uti::CLIParser<T, U, V>::template getStringifiedType<U>() << '>';
+      }
 
-      // entry
-      if (cli.enter({mainEntry})) {
-        mainEntryEntered = true;
+      for (mt::CR_STR keyword : parser.template extractStringsFromMainUnormap<V>()) {
+        std::cout << "\n  " << keyword << " <"
+          << mt_uti::CLIParser<T, U, V>::template getStringifiedType<V>() << '>';
+      }
 
-        // help
-        if (cli.enter({mainEntry, "--help"}) ||
-          cli.enter({mainEntry, "-h"})
-        ) {
-          message.printDescription();
+      std::cout << std::endl;
+    }
+
+    static void displayFinalMessage(bool &callbackCompleted) {
+      static int currentRunNumber = 1;
+
+      if (CLIWrapper::displayingFinalMessage) {
+        if (callbackCompleted) {
+          std::cout << "\n\x1b[032m" << CLIWrapper::completedMessage << "\x1b[0m\n";
         }
-        // parse inputs
-        else {
-          if (!callback(cli)) {
-            message.printInvalid();
-          }
-          else message.printDone();
+        else if (CLIWrapper::entryDetected) {
+          std::cout << "\n\x1b[031m" << CLIWrapper::failedMessage << "\x1b[0m\n";
+        }
+        else if (CLIWrapper::numberOfRuns == currentRunNumber) {
+          CLIWrapper::maxRunsReached = true;
+          std::cout << "\n\x1b[033m" << CLIWrapper::invalidMessage << "\x1b[0m\n";
         }
       }
-      else {
-        // help
-        if (cli.query({"--help"}, false) ||
-          cli.query({"-h"}, false)
-        ) {
-          message.printDescription();
-        }
-        // error
-        else messagesForInvalid.push_back(&message);
+
+      currentRunNumber++;
+    }
+
+  public:
+    CLIWrapper() = delete;
+
+    template <
+      typename T = mt_uti::CLIDefault_T::type,
+      typename U = mt_uti::CLIDefault_U<T>::type,
+      typename V = mt_uti::CLIDefault_V<T, U>::type
+    >
+    requires mt_uti::CLIUniqueType<T, U, V>
+    static void run(
+      std::string entry,
+      std::string description,
+      mt_uti::CLIParser<T, U, V> &parser,
+      bool (*callback)(mt_uti::CLIParser<T, U, V>&)
+    ) {
+      /**
+       * Skip this run.
+       * An entry was detected in the previous runs
+       * or the number of runs has exceeded the limit.
+       */
+      if (CLIWrapper::entryDetected || CLIWrapper::maxRunsReached) return;
+
+      /** Assign default strings */
+
+      if (entry.empty()) {
+        entry = CLIWrapper::generateDefaultEntry();
+      }
+
+      if (description.empty()) {
+        description = CLIWrapper::defaultDescription;
       }
 
       /**
-       * Print an invalid message by all registered CLIs
-       * if any main entry is not entered or not found.
+       * Displaying main menu.
+       * Main menu was already detected in previous runs.
        */
-      if (numberOfRegistered == numberOfCLIs && !mainEntryEntered) {
-        for (CLIMessage *message : messagesForInvalid) {
-          message->printInvalid();
+      if (CLIWrapper::mainMenuDetected) {
+        CLIWrapper::printAbout(entry, description);
+        return;
+      }
+
+      /** Entry Detection */
+
+      bool callbackCompleted = false;
+
+      // main menu
+      if (parser.query({"-h"}) ||
+        parser.query({"--help"})
+      ) {
+        CLIWrapper::mainMenuDetected = true;
+        CLIWrapper::printAbout(entry, description);
+        return;
+      }
+      // individual description
+      else if (
+        parser.enter({entry, "-h"}) ||
+        parser.enter({entry, "--help"})
+      ) {
+        CLIWrapper::entryDetected = true;
+        CLIWrapper::printKeywords<T, U, V>(entry, description, parser);
+        return;
+      }
+      // invoke callback
+      else if (parser.query({entry})) {
+        CLIWrapper::entryDetected = true;
+
+        if (callback && callback(parser)) {
+          callbackCompleted = true;
         }
       }
+
+      // display final message
+      CLIWrapper::displayFinalMessage(callbackCompleted);
+    }
+
+    /**
+     * OPTIONS
+     * Call these methods before calling 'run' because
+     * 'run' will use the values ​​set in these methods.
+     */
+
+    static void setCompletedMessage(mt::CR_STR message) {
+      CLIWrapper::completedMessage = message;
+    }
+
+    static void setFailedMessage(mt::CR_STR message) {
+      CLIWrapper::failedMessage = message;
+    }
+
+    static void setInvalidMessage(mt::CR_STR message) {
+      CLIWrapper::invalidMessage = message;
+    }
+
+    // the description in 'run' cannot be empty
+    static void setDefaultDescription(mt::CR_STR description) {
+      if (!description.empty()) {
+        CLIWrapper::defaultDescription = description;
+      }
+    }
+
+    // empty or invalid argument will not be responded
+    static void hideFinalMessage() {
+      CLIWrapper::displayingFinalMessage = false;
+    }
+
+    /**
+     * Less than one will cause the invalid message
+     * to never be printed at the end of 'run' call.
+     */
+    static void setNumberOfRuns(mt::CR_INT count) {
+      CLIWrapper::numberOfRuns = count;
     }
   };
-}
+};
