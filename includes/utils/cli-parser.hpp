@@ -124,6 +124,14 @@ namespace utils {
     UNORMAP_MAIN<V> mainUnormap_V;
 
     /**
+     * Count the order of main unordered map keywords according
+     * to the order in which they are called in the terminal.
+     */
+    int latestMainUnormapOrder = 0;
+    STRUNORMAP_INT mainUnormapOrders;
+    void setMainUnormapOrder(CR_STR keyword);
+
+    /**
      * Indicator for 'raws' iteration in setters
      * to differentiate between input and keyword.
      */
@@ -333,6 +341,9 @@ namespace utils {
 
     template <typename W>
     W getAt(CR_STR keyword, CR_SZ index);
+
+    // return -1 if keyword is not found
+    int getMainUnormapOrder(CR_STR keyword);
 
     // extract strings from the entries
     VEC_STR extractStringsFromEntries();

@@ -19,11 +19,32 @@ namespace utils {
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
+  void CLIParser<T, U, V>::setMainUnormapOrder(CR_STR keyword) {
+    mainUnormapOrders[keyword] = latestMainUnormapOrder;
+    latestMainUnormapOrder++;
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  int CLIParser<T, U, V>::getMainUnormapOrder(CR_STR keyword) {
+
+    if (STRUNORMAP_INT_FOUND(mainUnormapOrders, keyword)) {
+      return mainUnormapOrders[keyword];
+    }
+
+    // not found
+    return -1;
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
   template <typename CLIParser<T, U, V>::FoundCountEnum N>
   void CLIParser<T, U, V>::pushDefault(
     CR_STR keyword,
     const FoundEnum &found
   ) {
+    setMainUnormapOrder(keyword);
+
     if constexpr (N == FoundCountOne) {
       if (found == Found_T) {
         mainUnormap_T[keyword].first.push_back(
@@ -69,6 +90,8 @@ namespace utils {
     CR_STR keyword,
     CR_STR raw
   ) {
+    setMainUnormapOrder(keyword);
+
     if constexpr (std::is_same_v<W, bool>) {
       selectMainUnormap<W>()[keyword].first.push_back(
         booleanizer.test(booleanizerISOCode, raw)
