@@ -34,7 +34,7 @@ public:
    */
   class CLIWrapper {
   private:
-    inline static int numberOfRuns = 0;
+    inline static int numberOfRuns = 1;
 
     inline static bool
       displayingFinalMessage = true,
@@ -43,9 +43,10 @@ public:
       entryDetected = false;
 
     inline static std::string
-      completedMessage = "**PROGRAM COMPLETED**",
-      failedMessage = "**PROGRAM FAILED**",
-      invalidMessage = "**INVALID ARGUMENT**",
+      finalMessageBorderStyle = "--",
+      completedMessage = "PROGRAM COMPLETED",
+      failedMessage = "PROGRAM FAILED",
+      invalidMessage = "INVALID ARGUMENT",
       defaultDescription = "No description.";
 
     inline static mt::PAIR2<mt::VEC_CH, int>
@@ -108,6 +109,7 @@ public:
      * 'run' will use the values ​​set in these methods.
      */
 
+    static void setFinalMessageBorderStyle(mt::CR_STR style);
     static void setCompletedMessage(mt::CR_STR message);
     static void setFailedMessage(mt::CR_STR message);
     static void setInvalidMessage(mt::CR_STR message);

@@ -70,14 +70,21 @@ void Helper::CLIWrapper::displayFinalMessage(bool &callbackCompleted) {
 
   if (CLIWrapper::displayingFinalMessage) {
     if (callbackCompleted) {
-      std::cout << Helper::CLIWrapper::greenFontColor << CLIWrapper::completedMessage << "\x1b[0m\n";
+      std::cout << Helper::CLIWrapper::greenFontColor
+        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::completedMessage
+        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
     else if (CLIWrapper::entryDetected) {
-      std::cout << Helper::CLIWrapper::redFontColor << CLIWrapper::failedMessage << "\x1b[0m\n";
+      std::cout << Helper::CLIWrapper::redFontColor
+        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::failedMessage
+        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
     else if (CLIWrapper::numberOfRuns == currentRunNumber) {
       CLIWrapper::maxRunsReached = true;
-      std::cout << Helper::CLIWrapper::yellowFontColor << CLIWrapper::invalidMessage << "\x1b[0m\n";
+
+      std::cout << Helper::CLIWrapper::yellowFontColor
+        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::invalidMessage
+        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
   }
 
@@ -122,16 +129,26 @@ void Helper::CLIWrapper::printAbout(
   std::cout << std::endl;
 }
 
+void Helper::CLIWrapper::setFinalMessageBorderStyle(mt::CR_STR style) {
+  CLIWrapper::finalMessageBorderStyle = style;
+}
+
 void Helper::CLIWrapper::setCompletedMessage(mt::CR_STR message) {
-  CLIWrapper::completedMessage = message;
+  if (!message.empty()) {
+    CLIWrapper::completedMessage = message;
+  }
 }
 
 void Helper::CLIWrapper::setFailedMessage(mt::CR_STR message) {
-  CLIWrapper::failedMessage = message;
+  if (!message.empty()) {
+    CLIWrapper::failedMessage = message;
+  }
 }
 
 void Helper::CLIWrapper::setInvalidMessage(mt::CR_STR message) {
-  CLIWrapper::invalidMessage = message;
+  if (!message.empty()) {
+    CLIWrapper::invalidMessage = message;
+  }
 }
 
 void Helper::CLIWrapper::setDefaultDescription(mt::CR_STR description) {
