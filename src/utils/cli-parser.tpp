@@ -7,8 +7,7 @@ namespace utils {
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
   template <typename W>
-  constexpr CLIParser<T, U, V>::UNORMAP_MAIN<W>& CLIParser<T, U, V>::selectMainUnormap() {
-
+  CLIParser<T, U, V>::UNORMAP_MAIN<W> &CLIParser<T, U, V>::selectMainUnormap() {
     if constexpr (std::is_same_v<W, T>) {
       return mainUnormap_T;
     }
@@ -191,7 +190,7 @@ namespace utils {
         found = FoundInput_T;
         pushRaw<T>(keyword, trimmedRaws[i]);
       }
-      // before any keyword of 'mainUnormap_T' (basic string)
+      // before any keyword of 'mainUnormap_T' (initial string)
       else {
         entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
@@ -248,7 +247,7 @@ namespace utils {
         found = FoundInput_U;
         pushRaw<U>(keyword, trimmedRaws[i]);
       }
-      // before any keyword of main unordered maps (basic string)
+      // before any keyword of main unordered maps (initial string)
       else {
         entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
@@ -319,7 +318,7 @@ namespace utils {
         found = FoundInput_V;
         pushRaw<V>(keyword, trimmedRaws[i]);
       }
-      // before any keyword of main unordered maps (basic string)
+      // before any keyword of main unordered maps (initial string)
       else {
         entries[trimmedRaws[i]] = entriesOrderIndex;
         entriesOrderIndex++;
@@ -376,6 +375,7 @@ namespace utils {
     CR_VEC_STR expectedEntries,
     CR_BOL fromAllEntries
   ) {
+    if (entries.empty()) return false;
     UI found = 0, previousOrder = 0;
 
     for (CR_STR expected : expectedEntries) {
@@ -400,10 +400,10 @@ namespace utils {
     CR_VEC_STR expectedEntries,
     CR_BOL fromAllEntries
   ) {
+    if (entries.empty()) return false;
     UI found = 0;
 
     for (CR_STR expected : expectedEntries) {
-
       if (STRUNORMAP_UI_FOUND(entries, expected)) {
         found++;
       }
@@ -446,14 +446,27 @@ namespace utils {
 
   template <typename T, typename U, typename V>
   requires CLIUniqueType<T, U, V>
-  VEC_STR CLIParser<T, U, V>::extractBasicStrings() {
-    VEC_STR keywords;
+  VEC_STR CLIParser<T, U, V>::extractStringsFromEntries() {
+    VEC_STR vecstr;
 
     for (CR_PAIR2<std::string, UI> pair : entries) {
-      keywords.push_back(pair.first);
+      vecstr.push_back(pair.first);
     }
 
-    return keywords;
+    return vecstr;
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  template <typename W>
+  VEC_STR CLIParser<T, U, V>::extractStringsFromMainUnormap() {
+    VEC_STR vecstr;
+
+    for (CR_PAIR2<std::string, PAIR_MAIN<W>> pair : selectMainUnormap<W>()) {
+      vecstr.push_back(pair.first);
+    }
+
+    return vecstr;
   }
 
   template <typename T, typename U, typename V>
@@ -605,6 +618,34 @@ namespace utils {
     balance<T>(keywordPaddingVector_T, max[3]);
     balance<U>(keywordPaddingVector_U, max[3]);
     balance<V>(keywordPaddingVector_V, max[3]);
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  template <typename W>
+  std::string CLIParser<T, U, V>::getStringifiedType() {
+    if constexpr (std::is_same_v<W, T>) {
+      return CLIParser::stringified_T;
+    }
+    else if constexpr (std::is_same_v<W, U>) {
+      return CLIParser::stringified_U;
+    }
+    else return CLIParser::stringified_V;
+  }
+
+  template <typename T, typename U, typename V>
+  requires CLIUniqueType<T, U, V>
+  template <typename W>
+  void CLIParser<T, U, V>::setStringifiedType(CR_STR term) {
+    if (!term.empty()) {
+      if constexpr (std::is_same_v<W, T>) {
+        CLIParser::stringified_T = term;
+      }
+      else if constexpr (std::is_same_v<W, U>) {
+        CLIParser::stringified_U = term;
+      }
+      else CLIParser::stringified_V = term;
+    }
   }
 }}
 

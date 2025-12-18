@@ -80,15 +80,14 @@ namespace utils {
   private:
     /**
      * This is an unordered map which used as function selection that will
-     * be executed by the program or can also be used as basic string
+     * be executed by the program or can also be used as initial string
      * input if you don't want to use the main unordered maps below.
      * 
      * They store an integer for the order of registration index.
-     * To get a set of keywords or the basic strings,
-     * use the 'extractBasicStrings' method.
+     * To get a set of initial strings, use the 'extractStringsFromEntries' method.
      * 
      * You don't need to specify the entries exclusively like the main
-     * unordered maps since they are just basic string inputs.
+     * unordered maps since they are just initial string inputs.
      * Verify their existence using the inquiries.
      */
     STRUNORMAP_UI entries;
@@ -135,9 +134,15 @@ namespace utils {
       Found_V, FoundInput_V
     };
 
-    // select main unordered maps
+    // multilingual term for type
+    inline static std::string
+      stringified_T = "WORD",
+      stringified_U = "NUMBER",
+      stringified_V = "BOOLEAN";
+
+    // select a main unordered map
     template <typename W>
-    constexpr UNORMAP_MAIN<W>& selectMainUnormap();
+    UNORMAP_MAIN<W> &selectMainUnormap();
 
     /**
      * Set the default value for the vector of main
@@ -329,8 +334,12 @@ namespace utils {
     template <typename W>
     W getAt(CR_STR keyword, CR_SZ index);
 
-    // extract keywords from the entries
-    VEC_STR extractBasicStrings();
+    // extract strings from the entries
+    VEC_STR extractStringsFromEntries();
+
+    // extract strings from a main unordered map
+    template <typename W>
+    VEC_STR extractStringsFromMainUnormap();
 
     /**
      * If 'onlyCopy' is set to false, the vector at keyword will be moved to
@@ -381,6 +390,14 @@ namespace utils {
       CR_VEC_KEYDEF<U> keywordPaddingVector_U,
       CR_VEC_KEYDEF<V> keywordPaddingVector_V
     );
+
+    /** Multilingual term for type */
+
+    template <typename W>
+    static std::string getStringifiedType();
+
+    template <typename W>
+    static void setStringifiedType(CR_STR term);
   };
 }}
 
