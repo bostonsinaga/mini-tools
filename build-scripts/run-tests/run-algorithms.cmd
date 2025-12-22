@@ -1,11 +1,37 @@
-@echo off
-"../../build/test/main-files/algorithms/algorithms_numbersequence.exe"
-"../../build/test/main-files/algorithms/algorithms_roundrobin.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_bubble.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_comb.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_insertion.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_merge.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_quick.exe"
-"../../build/test/main-files/algorithms/sorters/algorithms_sorters_selection.exe"
-echo.
-powershell -command "& {Write-Host 'ALGORITHMS TEST COMPLETED' -ForegroundColor Blue}"
+set STATUS_PRINTER_FAILED_ALGORITHMS="--message -failed TEST QUEUE STOPPED @ ALGORITHMS"
+
+call var-status-printer.cmd
+call ALGORITHMS/number-sequence.cmd
+
+if (%ERRORLEVEL% EQU 0) (
+  call ALGORITHMS/round-robin.cmd
+
+  if (%ERRORLEVEL% EQU 0) (
+    call ALGORITHMS/bubble.cmd
+
+    if (%ERRORLEVEL% EQU 0) (
+      call ALGORITHMS/comb.cmd
+
+      if (%ERRORLEVEL% EQU 0) (
+        call ALGORITHMS/insertion.cmd
+
+        if (%ERRORLEVEL% EQU 0) (
+          call ALGORITHMS/merge.cmd
+
+          if (%ERRORLEVEL% EQU 0) (
+            call ALGORITHMS/quick.cmd
+
+            if (%ERRORLEVEL% EQU 0) (
+              call ALGORITHMS/selection.cmd
+
+              if (%ERRORLEVEL% EQU 0) (
+                %STATUS_PRINTER% --message -completed "ALGORITHMS TEST PASSED"
+
+              ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+            ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+          ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+        ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+      ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+    ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+  ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )
+) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_ALGORITHMS% )

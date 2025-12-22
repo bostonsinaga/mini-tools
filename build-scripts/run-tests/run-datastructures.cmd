@@ -1,10 +1,13 @@
-@echo off
-"../../build/test/main-files/data-structures/linked-lists/datastructures_linkedlists_circular.exe"
-"../../build/test/main-files/data-structures/linked-lists/datastructures_linkedlists_circulardoubly.exe"
-"../../build/test/main-files/data-structures/linked-lists/datastructures_linkedlists_doubly.exe"
-"../../build/test/main-files/data-structures/linked-lists/datastructures_linkedlists_singly.exe"
-"../../build/test/main-files/data-structures/trees/datastructures_trees_binarytree.exe"
-"../../build/test/main-files/data-structures/trees/datastructures_trees_binary.exe"
-"../../build/test/main-files/data-structures/trees/datastructures_trees_general.exe"
-echo.
-powershell -command "& {Write-Host 'DATA_STRUCTURES TEST COMPLETED' -ForegroundColor Blue}"
+set STATUS_PRINTER_FAILED_DATA_STRUCTURES="--message -failed TEST QUEUE STOPPED @ DATA STRUCTURES"
+
+call var-status-printer.cmd
+call utils/general-tree.cmd
+
+if (%ERRORLEVEL% EQU 0) (
+  call utils/linked-list.cmd
+
+  if (%ERRORLEVEL% EQU 0) (
+    %STATUS_PRINTER% --message -completed "DATA STRUCTURES TEST PASSED"
+
+  ) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_DATA_STRUCTURES% )
+) else ( %STATUS_PRINTER% %STATUS_PRINTER_FAILED_DATA_STRUCTURES% )

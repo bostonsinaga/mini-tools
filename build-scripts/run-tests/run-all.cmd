@@ -1,5 +1,3 @@
-call run-algorithms.cmd
-call run-datastructures.cmd
-call run-utils.cmd
-echo.
-powershell -command "& {Write-Host 'ALL TESTS COMPLETED' -ForegroundColor Blue}"
+call algorithms.cmd
+call datastructures.cmd
+call utils.cmd
