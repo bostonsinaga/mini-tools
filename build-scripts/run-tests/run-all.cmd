@@ -1,3 +1,5 @@
 call algorithms.cmd
-call datastructures.cmd
+echo.
+call data-structures.cmd
+echo.
 call utils.cmd
