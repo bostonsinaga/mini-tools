@@ -287,21 +287,32 @@ namespace utils {
   }
 
   std::string StrTools::trim(CR_STR text) {
-    size_t i = 0, index = 0, length = 0;
+    if (text.empty()) return "";
+    int i = 0, j = text.length() - 1;
 
+    // forward space detection
     for (; i < text.length(); i++) {
-      if (isWhitespace(text[i])) {
-        index++;
-      }
-      else break;
-    }
-
-    for (int j = i; j < text.length(); j++) {
-      if (isWhitespace(text[j])) {
+      if (!isWhitespace(text[i])) {
+        i--;
         break;
       }
-      else length++;
     }
+
+    // the 'text' contains only blank spaces
+    if (i == text.length() - 1) {
+      return "";
+    }
+
+    // reverse space detection
+    for (; j >= 0; j--) {
+      if (!isWhitespace(text[j])) {
+        j++;
+        break;
+      }
+    }
+
+    int index = i + 1,
+      length = j - index;
 
     return text.substr(index, length);
   }
