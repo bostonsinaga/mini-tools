@@ -16,6 +16,8 @@ public:
     STATUS_COMPLETED, STATUS_FAILED
   };
 
+  inline static const std::string defaultBorderStyle = "**";
+
   static void displayStatusMessage(
     mt::CR_VEC_STR words,
     mt::CR_STR borderStyle,
@@ -81,6 +83,11 @@ bool messageCallback(mt_uti::CLIParser<std::string> &cli) {
     mt::VEC_STR words = cli.getVectorAt<std::string>(foundKeyword);
     std::string borderStyle = cli.getAt<std::string>("-border-style", 0);
 
+    // set default border style
+    if (borderStyle.empty()) {
+      borderStyle = StatusPrinter::defaultBorderStyle;
+    }
+
     // the keyword followed by input
     if (!words.empty()) {
       StatusPrinter::displayStatusMessage(
@@ -99,7 +106,7 @@ int main(int argc, char *argv[]) {
   mt_uti::CLIParser<std::string> messageCLI(
     mt_uti::StrTools::argvToStringVector(argc, argv),
     {
-      std::make_pair("-border-style", "**"),
+      std::make_pair("-border-style", ""),
       std::make_pair("-failed", ""),
       std::make_pair("-completed", "")
     }
