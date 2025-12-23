@@ -70,19 +70,19 @@ void Helper::CLIWrapper::displayFinalMessage(bool &callbackCompleted) {
 
   if (CLIWrapper::displayingFinalMessage) {
     if (callbackCompleted) {
-      std::cout << Helper::CLIWrapper::greenFontColor
+      std::cout << std::endl << Helper::CLIWrapper::greenFontColor
         << CLIWrapper::finalMessageBorderStyle << CLIWrapper::completedMessage
         << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
     else if (CLIWrapper::entryDetected) {
-      std::cout << Helper::CLIWrapper::redFontColor
+      std::cout << std::endl << Helper::CLIWrapper::redFontColor
         << CLIWrapper::finalMessageBorderStyle << CLIWrapper::failedMessage
         << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
     else if (CLIWrapper::numberOfRuns == currentRunNumber) {
       CLIWrapper::maxRunsReached = true;
 
-      std::cout << Helper::CLIWrapper::yellowFontColor
+      std::cout << std::endl << Helper::CLIWrapper::yellowFontColor
         << CLIWrapper::finalMessageBorderStyle << CLIWrapper::invalidMessage
         << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
     }
