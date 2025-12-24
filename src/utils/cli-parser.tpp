@@ -1,6 +1,9 @@
 #ifndef __MINI_TOOLS__UTILS__CLI_PARSER_TPP__
 #define __MINI_TOOLS__UTILS__CLI_PARSER_TPP__
 
+#include "utils/scanner.hpp"
+#include "utils/str-tools.hpp"
+
 namespace mini_tools {
 namespace utils {
 

@@ -2,10 +2,8 @@
 #define __MINI_TOOLS__UTILS__BOOLEANIZER_HPP__
 
 #include "types.hpp"
-#include "scanner.hpp"
-#include "str-tools.hpp"
 
-namespace mini_tools{
+namespace mini_tools {
 namespace utils {
 
   /**
