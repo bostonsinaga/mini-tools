@@ -20,34 +20,10 @@ namespace utils {
     static bool isSeparator(CR_STR text, CR_INT idx);
     static bool isSeparator(CR_VEC_STR textVec, CR_INT idx);
 
-    /** Text File or Directory Readers */
+    /** File Readers */
 
-    static bool isFileExist(CR_FS_PATH path);
-    static bool isDirectoryExist(CR_FS_PATH path);
-    static bool createNotExistFile(CR_FS_PATH path);
-    static bool createNotExistDirectory(CR_FS_PATH path);
-
-    static FS_PATH findPath(
-      FS_PATH &path,
-      CR_BOL toFile,
-      CR_BOL upward
-    );
-
-    static FS_PATH findFile(
-      FS_PATH path,
-      CR_BOL upward
-    ) {
-      return Scanner::findPath(path, true, upward);
-    }
-
-    static FS_PATH findDirectory(
-      FS_PATH path,
-      CR_BOL upward
-    ) {
-      return Scanner::findPath(path, false, upward);
-    }
-
-    static std::string readFileString(CR_FS_PATH path);
+    static std::string readFileString(CR_FS_PATH filename);
+    static VEC_CH readFileBinary(CR_FS_PATH filename);
 
     /** Primitive Data Type Parsers */
 

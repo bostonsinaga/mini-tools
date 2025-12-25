@@ -118,18 +118,18 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
-  VEC<T> Scanner::txtToNumbers(CR_FS_PATH filename) {
+  VEC<T> Scanner::txtToNumbers(CR_FS_PATH path) {
 
     return Scanner::parseNumbers<T>(
-      Scanner::readFileString(filename)
+      Scanner::readFileString(path)
     );
   }
 
   template <inspector::LETTER T>
-  VEC<T> Scanner::txtToLetters(CR_FS_PATH filename) {
+  VEC<T> Scanner::txtToLetters(CR_FS_PATH path) {
 
     return Scanner::parseLetters<T>(
-      Scanner::readFileString(filename)
+      Scanner::readFileString(path)
     );
   }
 }}

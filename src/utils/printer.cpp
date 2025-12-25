@@ -13,18 +13,18 @@ namespace utils {
     return text + std::string(endNewlinesCount, '\n');
   }
 
-  bool Printer::write(
+  bool Printer::writeFileString(
     CR_STR text,
-    CR_FS_PATH filename,
+    CR_FS_PATH path,
     CR_BOL extended,
     CR_SZ endNewlinesCount
   ) {
     std::ofstream output;
 
     if (extended) {
-      output.open(filename, std::ios_base::app);
+      output.open(path, std::ios::app);
     }
-    else output.open(filename);
+    else output.open(path);
 
     // invalid path, invalid filename, permission not granted, or disk full
     if (!output.is_open()) return false;

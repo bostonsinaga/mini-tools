@@ -37,7 +37,7 @@ namespace utils {
     static std::string stringify(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
-      CR_STR separator = ", "
+      CR_STR separator = "\n"
     );
 
     /** Warning! Floating numbers will be rounded down */
@@ -52,7 +52,7 @@ namespace utils {
     static void log(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
-      CR_STR separator = ", "
+      CR_STR separator = "\n"
     );
 
     template <inspector::NUMBER T>
@@ -71,35 +71,42 @@ namespace utils {
      * and these methods will return true.
      */
 
-    static bool write(
+    static bool writeFileString(
       CR_STR text,
-      CR_FS_PATH filename,
+      CR_FS_PATH path,
       CR_BOL extended,
       CR_SZ endNewlinesCount = 0
     );
 
     template <inspector::ALPHANUMERIC T>
-    static bool write(
+    static bool writeFileString(
       CR_VEC<T> vec,
-      CR_FS_PATH filename,
+      CR_FS_PATH path,
       CR_BOL extended,
       CR_SZ endNewlinesCount = 0,
-      CR_STR separator = ", "
+      CR_STR separator = "\n"
+    );
+
+    template <typename T>
+    static bool writeFileBinary(
+      T data,
+      CR_FS_PATH path,
+      CR_BOL extended
     );
 
     template <inspector::ALPHANUMERIC T>
     static bool logf(
       CR_VEC<T> vec,
-      CR_FS_PATH filename,
+      CR_FS_PATH path,
       CR_BOL extended,
       CR_SZ endNewlinesCount = 0,
-      CR_STR separator = ", "
+      CR_STR separator = "\n"
     );
 
     template <inspector::NUMBER T>
     static bool barLogf(
       CR_VEC<T> vec,
-      CR_FS_PATH filename,
+      CR_FS_PATH path,
       CR_BOL extended,
       CR_SZ endNewlinesCount = 0,
       CR_STR barStyle = "="
