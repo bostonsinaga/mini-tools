@@ -11,7 +11,7 @@ namespace utils {
   template <typename T>
   concept CLIType =
     std::is_same_v<T, std::string> ||
-    std::is_same_v<T, LD> ||
+    std::is_same_v<T, double> ||
     std::is_same_v<T, bool>;
 
   template <typename T, typename U, typename V>
@@ -31,8 +31,8 @@ namespace utils {
   struct CLIDefault_U {
     using type = std::conditional_t<
       std::is_same_v<T, std::string>,
-      LD, std::conditional_t<
-        std::is_same_v<T, LD>,
+      double, std::conditional_t<
+        std::is_same_v<T, double>,
         bool, std::string
       >
     >;
@@ -41,11 +41,11 @@ namespace utils {
   template <CLIType T, CLIType U>
   struct CLIDefault_V {
     using type = std::conditional_t<
-      (std::is_same_v<T, std::string> && std::is_same_v<U, LD>) ||
-      (std::is_same_v<T, LD> && std::is_same_v<U, std::string>),
+      (std::is_same_v<T, std::string> && std::is_same_v<U, double>) ||
+      (std::is_same_v<T, double> && std::is_same_v<U, std::string>),
       bool, std::conditional_t<
-        (std::is_same_v<T, LD> && std::is_same_v<U, bool>) ||
-        (std::is_same_v<T, bool> && std::is_same_v<U, LD>),
+        (std::is_same_v<T, double> && std::is_same_v<U, bool>) ||
+        (std::is_same_v<T, bool> && std::is_same_v<U, double>),
         std::string, int
       >
     >;

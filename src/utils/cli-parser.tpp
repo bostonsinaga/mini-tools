@@ -100,9 +100,9 @@ namespace utils {
         booleanizer.test(booleanizerISOCode, raw)
       );
     }
-    else if constexpr (std::is_same_v<W, LD>) {
+    else if constexpr (std::is_same_v<W, double>) {
       selectMainUnormap<W>()[keyword].first.push_back(
-        utils::Scanner::stringToNumber<LD>(raw)
+        utils::Scanner::stringToNumber<double>(raw)
       );
     }
     else selectMainUnormap<W>()[keyword].first.push_back(raw);
