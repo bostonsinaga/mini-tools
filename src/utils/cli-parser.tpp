@@ -125,53 +125,6 @@ namespace utils {
     return trimmedRaws;
   }
 
-  /** CONSTRUCTORS */
-
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  CLIParser<T, U, V>::CLIParser(CR_VEC_STR raws) {
-    set(raws);
-  }
-
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  CLIParser<T, U, V>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefault_T
-  ) {
-    set(raws, keywordDefault_T);
-  }
-
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  CLIParser<T, U, V>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefault_T,
-    CR_VEC_KEYDEF<U> keywordDefault_U
-  ) {
-    set(
-      raws,
-      keywordDefault_T,
-      keywordDefault_U
-    );
-  }
-
-  template <typename T, typename U, typename V>
-  requires CLIUniqueType<T, U, V>
-  CLIParser<T, U, V>::CLIParser(
-    CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefault_T,
-    CR_VEC_KEYDEF<U> keywordDefault_U,
-    CR_VEC_KEYDEF<V> keywordDefault_V
-  ) {
-    set(
-      raws,
-      keywordDefault_T,
-      keywordDefault_U,
-      keywordDefault_V
-    );
-  }
-
   /** SETTERS */
 
   template <typename T, typename U, typename V>
@@ -188,11 +141,11 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefaultVector_T
+    CR_VEC_KEYDEF<T> vecKeyDef_T
   ) {
     /** Initialization */
 
-    for (CR_KEYDEF<T> pair : keywordDefaultVector_T) {
+    for (CR_KEYDEF<T> pair : vecKeyDef_T) {
       mainUnormap_T[pair.first] = {{}, pair.second};
     }
 
@@ -231,16 +184,16 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefaultVector_T,
-    CR_VEC_KEYDEF<U> keywordDefaultVector_U
+    CR_VEC_KEYDEF<T> vecKeyDef_T,
+    CR_VEC_KEYDEF<U> vecKeyDef_U
   ) {
     /** Initialization */
 
-    for (CR_KEYDEF<T> pair : keywordDefaultVector_T) {
+    for (CR_KEYDEF<T> pair : vecKeyDef_T) {
       mainUnormap_T[pair.first] = {{}, pair.second};
     }
 
-    for (CR_KEYDEF<U> pair : keywordDefaultVector_U) {
+    for (CR_KEYDEF<U> pair : vecKeyDef_U) {
       mainUnormap_U[pair.first] = {{}, pair.second};
     }
 
@@ -288,21 +241,21 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::set(
     CR_VEC_STR raws,
-    CR_VEC_KEYDEF<T> keywordDefaultVector_T,
-    CR_VEC_KEYDEF<U> keywordDefaultVector_U,
-    CR_VEC_KEYDEF<V> keywordDefaultVector_V
+    CR_VEC_KEYDEF<T> vecKeyDef_T,
+    CR_VEC_KEYDEF<U> vecKeyDef_U,
+    CR_VEC_KEYDEF<V> vecKeyDef_V
   ) {
     /** Initialization */
 
-    for (CR_KEYDEF<T> pair : keywordDefaultVector_T) {
+    for (CR_KEYDEF<T> pair : vecKeyDef_T) {
       mainUnormap_T[pair.first] = {{}, pair.second};
     }
 
-    for (CR_KEYDEF<U> pair : keywordDefaultVector_U) {
+    for (CR_KEYDEF<U> pair : vecKeyDef_U) {
       mainUnormap_U[pair.first] = {{}, pair.second};
     }
 
-    for (CR_KEYDEF<V> pair : keywordDefaultVector_V) {
+    for (CR_KEYDEF<V> pair : vecKeyDef_V) {
       mainUnormap_V[pair.first] = {{}, pair.second};
     }
 
@@ -461,12 +414,18 @@ namespace utils {
   template <typename W>
   W CLIParser<T, U, V>::getAt(CR_STR keyword, CR_SZ index) {
 
-    if (has<W>(keyword) &&
-      index < selectMainUnormap<W>()[keyword].first.size()
-    ) {
-      return selectMainUnormap<W>()[keyword].first[index];
+    if (has<W>(keyword)) {
+
+      // has argument
+      if (index < selectMainUnormap<W>()[keyword].first.size()) {
+        return selectMainUnormap<W>()[keyword].first[index];
+      }
+
+      // default value
+      return selectMainUnormap<W>()[keyword].second;
     }
 
+    // unknown keyword
     return W();
   }
 

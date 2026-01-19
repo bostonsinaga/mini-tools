@@ -229,25 +229,33 @@ namespace utils {
      *   );
      */
 
-    CLIParser(CR_VEC_STR raws);
+    CLIParser(CR_VEC_STR raws) {
+      set(raws);
+    }
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefault_T
-    );
+      CR_VEC_KEYDEF<T> vecKeyDef_T
+    ) {
+      set(raws, vecKeyDef_T);
+    }
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefault_T,
-      CR_VEC_KEYDEF<U> keywordDefault_U
-    );
+      CR_VEC_KEYDEF<T> vecKeyDef_T,
+      CR_VEC_KEYDEF<U> vecKeyDef_U
+    ) {
+      set(raws, vecKeyDef_T, vecKeyDef_U);
+    }
 
     CLIParser(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefault_T,
-      CR_VEC_KEYDEF<U> keywordDefault_U,
-      CR_VEC_KEYDEF<V> keywordDefault_V
-    );
+      CR_VEC_KEYDEF<T> vecKeyDef_T,
+      CR_VEC_KEYDEF<U> vecKeyDef_U,
+      CR_VEC_KEYDEF<V> vecKeyDef_V
+    ) {
+      set(raws, vecKeyDef_T, vecKeyDef_U, vecKeyDef_V);
+    }
 
     /**
      * SETTERS
@@ -266,20 +274,20 @@ namespace utils {
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefaultVector_T
+      CR_VEC_KEYDEF<T> vecKeyDef_T
     );
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefaultVector_T,
-      CR_VEC_KEYDEF<U> keywordDefaultVector_U
+      CR_VEC_KEYDEF<T> vecKeyDef_T,
+      CR_VEC_KEYDEF<U> vecKeyDef_U
     );
 
     void set(
       CR_VEC_STR raws,
-      CR_VEC_KEYDEF<T> keywordDefaultVector_T,
-      CR_VEC_KEYDEF<U> keywordDefaultVector_U,
-      CR_VEC_KEYDEF<V> keywordDefaultVector_V
+      CR_VEC_KEYDEF<T> vecKeyDef_T,
+      CR_VEC_KEYDEF<U> vecKeyDef_U,
+      CR_VEC_KEYDEF<V> vecKeyDef_V
     );
 
     /**
@@ -338,7 +346,7 @@ namespace utils {
     /** GETTERS */
 
     template <typename W>
-    W getAt(CR_STR keyword, CR_SZ index);
+    W getAt(CR_STR keyword, CR_SZ index = 0);
 
     // return -1 if keyword is not found
     int getMainUnormapOrder(CR_STR keyword);
