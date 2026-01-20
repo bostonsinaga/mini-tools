@@ -11,6 +11,7 @@ public:
   > TUP4PTR;
 
   /**
+   * Description of parameters:
    * 'timerTitle' is test program name.
    * 'logFilePath' is relative path to 'mini-tools/test/logs/'.
    */
