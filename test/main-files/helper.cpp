@@ -8,6 +8,7 @@ void Helper::getSamples(
   mt::CR_STR timerTitle,
   mt::CR_STR logFilePath
 ) {
+  mt_uti::Timer::Stopwatch stopwatch;
   mt::FS_PATH testPath = mt_uti::FileTool::findDirectory("test", true);
 
   mt::VEC_INT integers = mt_uti::Scanner::txtToNumbers<int>(
@@ -62,9 +63,8 @@ void Helper::getSamples(
   }
 
   // display elapsed time
-  mt_uti::Timer::Stopwatch stopwatch;
-  stopwatch.setTitle(timerTitle + ":");
-  stopwatch.getMilliseconds();
+  stopwatch.check();
+  std::cout << timerTitle << ": " << stopwatch.getMillisecondsString() << std::endl;
 }
 
 void Helper::CLIWrapper::displayFinalMessage(bool &callbackCompleted) {
