@@ -1,10 +1,10 @@
-set(algorithms_sorters
-  algorithms_sorters_bubble@bubble.cpp
-  algorithms_sorters_comb@comb.cpp
-  algorithms_sorters_insertion@insertion.cpp
-  algorithms_sorters_merge@merge.cpp
-  algorithms_sorters_quick@quick.cpp
-  algorithms_sorters_selection@selection.cpp
+set(sorters
+  sorters_bubble@bubble.cpp
+  sorters_comb@comb.cpp
+  sorters_insertion@insertion.cpp
+  sorters_merge@merge.cpp
+  sorters_quick@quick.cpp
+  sorters_selection@selection.cpp
 )
 
-register_test(algorithms_sorters)
+register_test(sorters)

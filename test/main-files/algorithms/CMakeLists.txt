@@ -1,6 +1,6 @@
 set(algorithms
-  algorithms_roundrobin@round-robin.cpp
-  algorithms_numbersequence@number-sequence.cpp
+  round-robin@round-robin.cpp
+  number-sequence@number-sequence.cpp
 )
 
 register_test(algorithms)

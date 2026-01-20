@@ -18,7 +18,7 @@ endfunction()
 
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/algorithms)
 # add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/data-structures)
-# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/utils)
 
-set(status_printer status_printer@status-printer.cpp)
-register_test(status_printer)
+set(status-printer status-printer@status-printer.cpp)
+register_test(status-printer)
