@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__ALGORITHMS__SORTERS__MERGE_HPP__
 
 #include "types.hpp"
-#include "utils/vec-tools.hpp"
 
 namespace mini_tools {
 namespace algorithms {

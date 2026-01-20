@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
   /** PARSERS */
 
   mt_uti::CLIParser<std::string> messageCLI(
-    mt_uti::StrTools::argvToStringVector(argc, argv),
+    mt_uti::StrTool::argvToStringVector(argc, argv),
     {
       std::make_pair("-border-style", ""),
       std::make_pair("-failed", ""),

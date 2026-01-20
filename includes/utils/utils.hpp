@@ -4,13 +4,13 @@
 #include "booleanizer.hpp"
 #include "cli-parser.hpp"
 #include "file-tool.hpp"
-#include "pair-tools.hpp"
+#include "pair-tool.hpp"
 #include "printer.hpp"
 #include "random-words.hpp"
 #include "scanner.hpp"
-#include "str-tools.hpp"
-#include "time-date.hpp"
-#include "vec-tools.hpp"
+#include "str-tool.hpp"
+#include "timer.hpp"
+#include "vec-tool.hpp"
 
 namespace mt_uti = mini_tools::utils;
 

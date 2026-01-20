@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__BOOLEANIZER_CPP__
 
 #include "utils/scanner.hpp"
-#include "utils/str-tools.hpp"
+#include "utils/str-tool.hpp"
 #include "utils/booleanizer.hpp"
 
 namespace mini_tools{
@@ -29,7 +29,7 @@ namespace utils {
   ) {
     // 'input' is zero
     if (!Scanner::stringToNumber<int>(input)) {
-      StrTools::modifyStringToUppercase(input);
+      StrTool::modifyStringToUppercase(input);
 
       if (hasISOCode(existingISOCode)) {
         for (CR_STR term : trueTerms[existingISOCode]) {

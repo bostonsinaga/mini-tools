@@ -1,6 +1,8 @@
 #ifndef __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 #define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_TPP__
 
+#include "utils/vec-tool.hpp"
+
 namespace mini_tools {
 namespace algorithms {
 
@@ -51,7 +53,7 @@ namespace algorithms {
 
         VEC<T> wasted;
 
-        utils::VecTools<T>::cutInterval(
+        utils::VecTool<T>::cutInterval(
           currentTask.load,
           wasted,
           currentTask.load.size() - 1 - sizeLimit,

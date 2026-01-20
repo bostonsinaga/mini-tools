@@ -1,7 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS__STR_TOOL_CPP__
 #define __MINI_TOOLS__UTILS__STR_TOOL_CPP__
 
-#include "utils/str-tools.hpp"
+#include "utils/str-tool.hpp"
 
 namespace mini_tools {
 namespace utils {

@@ -2,7 +2,6 @@
 #define __MINI_TOOLS__ALGORITHMS__ROUND_ROBIN_HPP__
 
 #include "types.hpp"
-#include "utils/vec-tools.hpp"
 
 namespace mini_tools {
 namespace algorithms {

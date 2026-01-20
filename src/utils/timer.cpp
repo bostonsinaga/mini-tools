@@ -1,9 +1,9 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_CPP__
 #define __MINI_TOOLS__UTILS__TIMER_CPP__
 
-#include "utils/time-date.hpp"
+#include "utils/timer.hpp"
 #include "utils/scanner.hpp"
-#include "utils/str-tools.hpp"
+#include "utils/str-tool.hpp"
 
 namespace mini_tools {
 namespace utils {
@@ -194,13 +194,13 @@ namespace Timer {
   }
 
   std::string Date::getCapitalizedNamedMonth(CR_INT longShortIndex) const {
-    return StrTools::copyCharToUppercase(
+    return StrTool::copyCharToUppercase(
       Date::monthNames[Date::languageKey][longShortIndex][mm - 1], 0
     );
   }
 
   std::string Date::getAllCapsNamedMonth(CR_INT longShortIndex) const {
-    return StrTools::copyStringToUppercase(
+    return StrTool::copyStringToUppercase(
       Date::monthNames[Date::languageKey][longShortIndex][mm - 1]
     );
   }
@@ -275,10 +275,10 @@ namespace Timer {
     for (int i = 0; i < text.length(); i++) {
 
       // start only from number or word
-      if (StrTools::isDigit(text[i])) {
+      if (StrTool::isDigit(text[i])) {
         first_value = value_number;
       }
-      else if (StrTools::isLetter(text[i])) {
+      else if (StrTool::isLetter(text[i])) {
         first_value = value_word;
       }
 
@@ -290,10 +290,10 @@ namespace Timer {
         for (int j = i; j < text.length(); j++) {
           eqdiff[0] = eqdiff[1];
 
-          if (StrTools::isDigit(text[j])) {
+          if (StrTool::isDigit(text[j])) {
             eqdiff[1] = value_number;
           }
-          else if (StrTools::isLetter(text[j])) {
+          else if (StrTool::isLetter(text[j])) {
             eqdiff[1] = value_word;
           }
           else { // non-number and non-word
@@ -471,7 +471,7 @@ namespace Timer {
         int detected_mm = 0;
 
         // convert to lowercase
-        StrTools::modifyStringToLowercase(valcod[i].first);
+        StrTool::modifyStringToLowercase(valcod[i].first);
 
         // 2D array loop
         for (int j = 0; j < 2; j++) {

@@ -2,7 +2,7 @@
 #define __MINI_TOOLS__UTILS__CLI_PARSER_TPP__
 
 #include "utils/scanner.hpp"
-#include "utils/str-tools.hpp"
+#include "utils/str-tool.hpp"
 
 namespace mini_tools {
 namespace utils {
@@ -115,7 +115,7 @@ namespace utils {
     std::string buffer;
 
     for (CR_STR str : raws) {
-      buffer = StrTools::trim(str);
+      buffer = StrTool::trim(str);
 
       if (!buffer.empty()) {
         trimmedRaws.push_back(buffer);
