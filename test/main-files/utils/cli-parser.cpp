@@ -60,7 +60,7 @@ bool testFun(mt_uti::CLIParser<std::string, mt::LD, bool> *cli) {
 
 int main(int argc, char *argv[]) {
 
-  // help and error message
+  // CLI message
   helper::CLIMessage helperTest(
     "--test",
     "Register product name, price, and edibility in sequence.",
@@ -84,4 +84,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
