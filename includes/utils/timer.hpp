@@ -13,8 +13,6 @@ namespace Timer {
 
   class Stopwatch final {
   private:
-    std::string title = "DURATION";
-
     typedef std::chrono::time_point<std::chrono::high_resolution_clock> TP;
     std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
     TP prior = std::chrono::high_resolution_clock::now();
@@ -24,7 +22,6 @@ namespace Timer {
 
     void reset(); // reset elapsed time
     void check(); // save elapsed time
-    void setTitle(CR_STR title_in);
 
     // get elapsed time
     double getMilliseconds();
@@ -32,11 +29,11 @@ namespace Timer {
     double getMinutes();
     double getHours();
 
-    // display elapsed time
-    void printInMilliseconds(CR_STR timeUnit = "ms");
-    void printInSeconds(CR_STR timeUnit = "s");
-    void printInMinutes(CR_STR timeUnit = "m");
-    void printInHours(CR_STR timeUnit = "h");
+    // get elapsed time in string
+    std::string getMillisecondsString(CR_STR timeUnit = "ms");
+    std::string getSecondsString(CR_STR timeUnit = "s");
+    std::string getMinutesString(CR_STR timeUnit = "m");
+    std::string getHoursString(CR_STR timeUnit = "h");
   };
 
   //______|

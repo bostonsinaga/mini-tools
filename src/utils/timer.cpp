@@ -26,10 +26,6 @@ namespace Timer {
     prior = now;
   }
 
-  void Stopwatch::setTitle(CR_STR title_in) {
-    title = title_in;
-  }
-
   /** GETTERS */
 
   double Stopwatch::getMilliseconds() {
@@ -50,26 +46,20 @@ namespace Timer {
     return getMinutes() / 60;
   }
 
-  /** DISPLAYERS */
-
-  void Stopwatch::printInMilliseconds(CR_STR timeUnit) {
-    std::cout << title << std::endl;
-    std::cout << Stopwatch::getMilliseconds() << timeUnit << std::endl;
+  std::string Stopwatch::getMillisecondsString(CR_STR timeUnit) {
+    return std::to_string(Stopwatch::getMilliseconds()) + timeUnit;
   }
 
-  void Stopwatch::printInSeconds(CR_STR timeUnit) {
-    std::cout << title << std::endl;
-    std::cout << Stopwatch::getSeconds() << timeUnit << std::endl;
+  std::string Stopwatch::getSecondsString(CR_STR timeUnit) {
+    return std::to_string(Stopwatch::getSeconds()) + timeUnit;
   }
 
-  void Stopwatch::printInMinutes(CR_STR timeUnit) {
-    std::cout << title << std::endl;
-    std::cout << Stopwatch::getMinutes() << timeUnit << std::endl;
+  std::string Stopwatch::getMinutesString(CR_STR timeUnit) {
+    return std::to_string(Stopwatch::getMinutes()) + timeUnit;
   }
 
-  void Stopwatch::printInHours(CR_STR timeUnit) {
-    std::cout << title << std::endl;
-    std::cout << Stopwatch::getHours() << timeUnit << std::endl;
+  std::string Stopwatch::getHoursString(CR_STR timeUnit) {
+    return std::to_string(Stopwatch::getHours()) + timeUnit;
   }
 
   //______|
