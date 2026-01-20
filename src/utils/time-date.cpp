@@ -187,9 +187,6 @@ namespace Timer {
     }
 
     mm = mm_index + 1;
-
-    // value sign of BC or AD
-    yearSign = std::abs(yyyy) / yyyy;
   }
 
   bool Date::isLanguageKeyExist(CR_STR languageKey_in) {
@@ -345,16 +342,16 @@ namespace Timer {
         int absAffixYear = std::abs(Date::implicitCentury.affixYear);
         int absBuffer = std::abs(buffer);
         int absBufferDiv = absBuffer;
-        int bufferDigitsCount = 0;
+        int numberOfBufferDigits = 0;
 
         // find buffer digits count
         while (absBufferDiv > 0) {
           absBufferDiv /= 10;
-          bufferDigitsCount++;
+          numberOfBufferDigits++;
         }
 
         // buffer digits count is equals to year pattern digits count
-        if (bufferDigitsCount == Date::implicitCentury.patternDigitsCount) {
+        if (numberOfBufferDigits == Date::implicitCentury.numberOfPatternDigits) {
 
           int vsignAffixYear = 1;
           int vsignBuffer = 1;
@@ -552,11 +549,11 @@ namespace Timer {
 
   int Date::countDaysFromZero() const {
     // years in days
-    int count = (yyyy - yearSign) * 365;
+    int count = (yyyy - (yyyy / std::abs(yyyy))) * 365;
     count + Date::countLeapYearsFromZero();
 
     // this year in days
-    if (yearSign > 0) {
+    if (yyyy > 0) {
       return count + countDaysThisYear();
     }
     return count + reverseCountDaysThisYear();
@@ -577,10 +574,10 @@ namespace Timer {
 
   int Date::countMonthsFromZero() const {
     // years in months
-    int count = (yyyy - yearSign) * 12;
+    int count = (yyyy - (yyyy / std::abs(yyyy))) * 12;
 
     // this year in months
-    if (yearSign > 0) {
+    if (yyyy > 0) {
       return count + countMonthsThisYear();
     }
     return count + reverseCountMonthsThisYear();
@@ -593,14 +590,16 @@ namespace Timer {
   /** YEARS COUNTERS */
 
   int Date::countYearsFromZero(const Date &date) const {
-    return yyyy - yearSign;
+    return yyyy - (yyyy / std::abs(yyyy));
   }
 
   int Date::countYearsFrom(const Date &date) const {
     int dateYear = date.yyyy;
+    int thisYearSign = yyyy / std::abs(yyyy);
+    int dateYearSign = dateYear / std::abs(dateYear);
 
-    if (date.yearSign < yearSign) dateYear++;
-    else if (date.yearSign > yearSign) dateYear--;
+    if (dateYearSign < thisYearSign) dateYear++;
+    else if (dateYearSign > thisYearSign) dateYear--;
 
     return yyyy - dateYear;
   }
@@ -620,21 +619,33 @@ namespace Timer {
   }
 
   std::string Date::applyZeroPrefixDate() const {
-    return (dd < 10 ? '0' : '\0') + std::to_string(dd);
+    return (dd < 10 && Date::usingZeroPrefix ? '0' : '\0') + std::to_string(dd);
   }
 
   std::string Date::applyZeroPrefixMonth() const {
-    return (mm < 10 ? '0' : '\0') + std::to_string(mm);
+    return (mm < 10 && Date::usingZeroPrefix ? '0' : '\0') + std::to_string(mm);
+  }
+
+  int Date::countLeadingZeros() const {
+    int absYear = std::abs(yyyy);
+    int numberOfLeadingZeros = Date::maxNumberOfLeadingZeros;
+
+    while (absYear >= 10 && numberOfLeadingZeros > 0) {
+      absYear /= 10;
+      numberOfLeadingZeros--;
+    }
+
+    return numberOfLeadingZeros;
   }
 
   std::string Date::applyZeroPrefixYearWithChristTimeSign() const {
-    return std::string(4 - std::log10(std::abs(yyyy)), '0')
+    return (Date::usingZeroPrefix ? std::string(countLeadingZeros(), '0') : "")
       + std::to_string(std::abs(yyyy)) + applyChristTimeSign();
   }
 
   std::string Date::applyZeroPrefixYearWithNumberSign() const {
     return (yyyy < 0 ? '-' : '\0')
-      + std::string(4 - std::log10(std::abs(yyyy)), '0')
+      + (Date::usingZeroPrefix ? std::string(countLeadingZeros(), '0') : "")
       + std::to_string(std::abs(yyyy));
   }
 

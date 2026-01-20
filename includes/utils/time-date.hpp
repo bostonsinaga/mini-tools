@@ -53,21 +53,21 @@ namespace Timer {
 
     /**
      * The 'affixYear' will be sticked to
-     * a possible year pattern with 'patternDigitsCount'.
+     * a possible year pattern with 'numberOfPatternDigits'.
      */
     struct ImplicitCentury {
-      int affixYear = 20, patternDigitsCount = 2;
+      int affixYear = 20, numberOfPatternDigits = 2;
     };
 
     Stopwatch stopwatch;
     static ImplicitCentury implicitCentury;
+    inline static bool usingZeroPrefix = true;
+    inline static size_t maxNumberOfLeadingZeros = 3;
     inline static FORMAT_CODE formatCode = LITTLE_ENDIAN;
     inline static std::string languageKey = "en", separator = "/";
 
   private:
     int dd = 1, mm = 1, yyyy = 1;
-    int yearSign = 1;
-
     static const int monthDays[12][2];
     static STRUNORMAP<ARR2_STR<12, 2>> monthNames;
     static STRUNORMAP<PAIR_STR> christTimeSign;
@@ -89,6 +89,9 @@ namespace Timer {
      * avoid creating unwanted new key pair.
      */
     static bool isLanguageKeyExist(CR_STR languageKey_in);
+
+    // get number of zeros for string constructor
+    int countLeadingZeros() const;
 
     // stringifiers
     std::string getCapitalizedNamedMonth(CR_INT longShortIndex) const;
