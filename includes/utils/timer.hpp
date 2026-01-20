@@ -33,10 +33,10 @@ namespace Timer {
     double getHours();
 
     // display elapsed time
-    void printInMilliseconds();
-    void printInSeconds();
-    void printInMinutes();
-    void printInHours();
+    void printInMilliseconds(CR_STR timeUnit = "ms");
+    void printInSeconds(CR_STR timeUnit = "s");
+    void printInMinutes(CR_STR timeUnit = "m");
+    void printInHours(CR_STR timeUnit = "h");
   };
 
   //______|

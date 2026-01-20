@@ -52,24 +52,24 @@ namespace Timer {
 
   /** DISPLAYERS */
 
-  void Stopwatch::printInMilliseconds() {
+  void Stopwatch::printInMilliseconds(CR_STR timeUnit) {
     std::cout << title << std::endl;
-    std::cout << Stopwatch::getMilliseconds() << "ms\n";
+    std::cout << Stopwatch::getMilliseconds() << timeUnit << std::endl;
   }
 
-  void Stopwatch::printInSeconds() {
+  void Stopwatch::printInSeconds(CR_STR timeUnit) {
     std::cout << title << std::endl;
-    std::cout << Stopwatch::getSeconds() << "s\n";
+    std::cout << Stopwatch::getSeconds() << timeUnit << std::endl;
   }
 
-  void Stopwatch::printInMinutes() {
+  void Stopwatch::printInMinutes(CR_STR timeUnit) {
     std::cout << title << std::endl;
-    std::cout << Stopwatch::getMinutes() << "m\n";
+    std::cout << Stopwatch::getMinutes() << timeUnit << std::endl;
   }
 
-  void Stopwatch::printInHours() {
+  void Stopwatch::printInHours(CR_STR timeUnit) {
     std::cout << title << std::endl;
-    std::cout << Stopwatch::getHours() << "m\n";
+    std::cout << Stopwatch::getHours() << timeUnit << std::endl;
   }
 
   //______|
