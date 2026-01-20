@@ -6,8 +6,8 @@ set (SOURCES
   utils/printer.cpp
   utils/random-words.cpp
   utils/scanner.cpp
-  utils/str-tools.cpp
-  utils/time-date.cpp
+  utils/str-tool.cpp
+  utils/timer.cpp
   utils/booleanizer.cpp
 )
 

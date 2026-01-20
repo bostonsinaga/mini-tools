@@ -1,37 +1,37 @@
-#ifndef __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
-#define __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
+#ifndef __MINI_TOOLS__UTILS__STR_TOOL_CPP__
+#define __MINI_TOOLS__UTILS__STR_TOOL_CPP__
 
 #include "utils/str-tools.hpp"
 
 namespace mini_tools {
 namespace utils {
 
-  void StrTools::modifyCase(char &ch, CR_BOL isUpper) {
+  void StrTool::modifyCase(char &ch, CR_BOL isUpper) {
     if (isUpper) {
       ch = std::toupper(ch);
     }
     else ch = std::tolower(ch);
   }
 
-  void StrTools::modifyToLowercase(char &ch) {
+  void StrTool::modifyToLowercase(char &ch) {
     modifyCase(ch, false);
   }
 
-  void StrTools::modifyToUppercase(char &ch) {
+  void StrTool::modifyToUppercase(char &ch) {
     modifyCase(ch, true);
   }
 
-  char StrTools::copyToLowercase(char ch) {
+  char StrTool::copyToLowercase(char ch) {
     modifyCase(ch, false);
     return ch;
   }
 
-  char StrTools::copyToUppercase(char ch) {
+  char StrTool::copyToUppercase(char ch) {
     modifyCase(ch, true);
     return ch;
   }
 
-  void StrTools::modifyCharCase(
+  void StrTool::modifyCharCase(
     std::string &str,
     CR_LI index,
     CR_BOL isUpper
@@ -41,21 +41,21 @@ namespace utils {
     }
   }
 
-  void StrTools::modifyCharToLowercase(
+  void StrTool::modifyCharToLowercase(
     std::string &str,
     CR_LI index
   ) {
     modifyCharCase(str, index, false);
   }
 
-  void StrTools::modifyCharToUppercase(
+  void StrTool::modifyCharToUppercase(
     std::string &str,
     CR_LI index
   ) {
     modifyCharCase(str, index, true);
   }
 
-  std::string StrTools::copyCharToLowercase(
+  std::string StrTool::copyCharToLowercase(
     std::string str,
     CR_LI index
   ) {
@@ -63,7 +63,7 @@ namespace utils {
     return str;
   }
 
-  std::string StrTools::copyCharToUppercase(
+  std::string StrTool::copyCharToUppercase(
     std::string str,
     CR_LI index
   ) {
@@ -71,7 +71,7 @@ namespace utils {
     return str;
   }
 
-  void StrTools::modifyStringCase(std::string &str, CR_BOL isUpper) {
+  void StrTool::modifyStringCase(std::string &str, CR_BOL isUpper) {
     std::transform(
       str.begin(), str.end(), str.begin(),
       [&](unsigned char c) {
@@ -81,39 +81,39 @@ namespace utils {
     );
   }
 
-  void StrTools::modifyStringsCase(VEC_STR &vecStr, CR_BOL isUpper) {
+  void StrTool::modifyStringsCase(VEC_STR &vecStr, CR_BOL isUpper) {
     for (int i = 0; i < vecStr.size(); i++) {
       modifyStringCase(vecStr.at(i), isUpper);
     }
   }
 
-  void StrTools::modifyStringToLowercase(std::string &str) {
+  void StrTool::modifyStringToLowercase(std::string &str) {
     modifyStringCase(str, false);
   }
 
-  void StrTools::modifyStringToUppercase(std::string &str) {
+  void StrTool::modifyStringToUppercase(std::string &str) {
     modifyStringCase(str, true);
   }
 
-  std::string StrTools::copyStringToLowercase(std::string str) {
+  std::string StrTool::copyStringToLowercase(std::string str) {
     modifyStringCase(str, false);
     return str;
   }
 
-  std::string StrTools::copyStringToUppercase(std::string str) {
+  std::string StrTool::copyStringToUppercase(std::string str) {
     modifyStringCase(str, true);
     return str;
   }
 
-  void StrTools::modifyStringsToLowercase(VEC_STR &vecStr) {
+  void StrTool::modifyStringsToLowercase(VEC_STR &vecStr) {
     modifyStringsCase(vecStr, false);
   }
 
-  void StrTools::modifyStringsToUppercase(VEC_STR &vecStr) {
+  void StrTool::modifyStringsToUppercase(VEC_STR &vecStr) {
     modifyStringsCase(vecStr, true);
   }
 
-  std::string StrTools::joinVector(
+  std::string StrTool::joinVector(
     CR_VEC_STR &vecStr,
     CR_STR separator,
     CR_BOL separatedExceptLast
@@ -131,7 +131,7 @@ namespace utils {
     return text;
   }
 
-  void StrTools::findSpaceBoundaryIndex(
+  void StrTool::findSpaceBoundaryIndex(
     std::string &text,
     int &forwardSpaceBoundaryIndex,
     int &reverseSpaceBoundaryIndex
@@ -162,7 +162,7 @@ namespace utils {
     }
   }
 
-  void StrTools::tidyUp(
+  void StrTool::tidyUp(
     std::string &text,
     CR_BOL noNewline,
     CR_INT forwardSpaceBoundaryIndex,
@@ -286,7 +286,7 @@ namespace utils {
     }
   }
 
-  std::string StrTools::trim(CR_STR text) {
+  std::string StrTool::trim(CR_STR text) {
     if (text.empty()) return "";
     int i = 0, j = text.length() - 1;
 
@@ -319,39 +319,39 @@ namespace utils {
 
   /** Character Detectors */
 
-  bool StrTools::isWhitespace(CR_CH ch) {
+  bool StrTool::isWhitespace(CR_CH ch) {
     return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
   }
 
-  bool StrTools::isWhitespaces(CR_STR str) {
+  bool StrTool::isWhitespaces(CR_STR str) {
     for (CR_CH ch : str) {
       if (!isWhitespace(ch)) return false;
     }
     return true;
   }
 
-  bool StrTools::isUppercaseLetter(CR_CH ch) {
+  bool StrTool::isUppercaseLetter(CR_CH ch) {
     return ch >= 'A' && ch <= 'Z';
   }
 
-  bool StrTools::isLowercaseLetter(CR_CH ch) {
+  bool StrTool::isLowercaseLetter(CR_CH ch) {
     return ch >= 'a' && ch <= 'z';
   }
 
-  bool StrTools::isLetter(CR_CH ch) {
+  bool StrTool::isLetter(CR_CH ch) {
     return isUppercaseLetter(ch) || isLowercaseLetter(ch);
   }
 
   /** Number Detectors */
 
-  bool StrTools::isDigit(CR_CH ch) {
+  bool StrTool::isDigit(CR_CH ch) {
     return ch >= '0' && ch <= '9';
   }
 
-  bool StrTools::isInteger(CR_STR str) {
+  bool StrTool::isInteger(CR_STR str) {
 
     for (CR_CH ch : str) {
-      if (!StrTools::isDigit(ch)) {
+      if (!StrTool::isDigit(ch)) {
         return false;
       }
     }
@@ -359,7 +359,7 @@ namespace utils {
     return true;
   }
 
-  bool StrTools::isFloatingPoint(
+  bool StrTool::isFloatingPoint(
     CR_STR str, CR_CH decPtSign
   ) {
     bool decPtFound = false;
@@ -368,7 +368,7 @@ namespace utils {
       if (!decPtFound && ch == decPtSign) {
         decPtFound = true;
       }
-      else if (!StrTools::isDigit(ch)) {
+      else if (!StrTool::isDigit(ch)) {
         return false;
       }
     }
@@ -376,7 +376,7 @@ namespace utils {
     return true;
   }
 
-  VEC_STR StrTools::argvToStringVector(
+  VEC_STR StrTool::argvToStringVector(
     CR_INT argc, char *argv[]
   ) {
     // strings converted from 'argv'
@@ -394,4 +394,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__STR_TOOLS_CPP__
+#endif // __MINI_TOOLS__UTILS__STR_TOOL_CPP__

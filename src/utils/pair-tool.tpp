@@ -1,17 +1,17 @@
-#ifndef __MINI_TOOLS__UTILS__PAIR_TOOLS_CPP__
-#define __MINI_TOOLS__UTILS__PAIR_TOOLS_CPP__
+#ifndef __MINI_TOOLS__UTILS__PAIR_TOOL_CPP__
+#define __MINI_TOOLS__UTILS__PAIR_TOOL_CPP__
 
 namespace mini_tools {
 namespace utils {
 
   template <typename T, typename U>
-  VEC_PAIR2<T, U> PairTools<T, U>::mergeVectors(
+  VEC_PAIR2<T, U> PairTool<T, U>::mergeVectors(
     CR_VEC<T> &vecA,
     CR_VEC<U> &vecB
   ) {
     VEC_PAIR2<T, U> merged;
 
-    for (int i = 0; i < PairTools<T, U>::getMin(vecA, vecB); i++) {
+    for (int i = 0; i < PairTool<T, U>::getMin(vecA, vecB); i++) {
       merged.push_back({vecA[i], vecB[i]});
     }
 
@@ -19,7 +19,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  void PairTools<T, U>::unmergeVectors(
+  void PairTool<T, U>::unmergeVectors(
     CR_VEC_PAIR2<T, U> merged,
     VEC<T> &vecA,
     VEC<U> &vecB,
@@ -37,13 +37,13 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR2<VEC<T>, VEC<U>> PairTools<T, U>::unmergeVectors(
+  PAIR2<VEC<T>, VEC<U>> PairTool<T, U>::unmergeVectors(
     CR_VEC_PAIR2<T, U> merged
   ) {
     VEC<T> vecA;
     VEC<U> vecB;
 
-    PairTools<T, U>::unmergeVectors(
+    PairTool<T, U>::unmergeVectors(
       merged, vecA, vecB
     );
 
@@ -55,7 +55,7 @@ namespace utils {
   //____________|
 
   template <typename T, typename U>
-  PAIR_SZ PairTools<T, U>::generateSizes(
+  PAIR_SZ PairTool<T, U>::generateSizes(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
@@ -65,17 +65,17 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR_SZ PairTools<T, U>::generateSizes(
+  PAIR_SZ PairTool<T, U>::generateSizes(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
-    return PairTools<T, U>::generateSizes(
+    return PairTool<T, U>::generateSizes(
       pairVec.first,
       pairVec.second
     );
   }
 
   template <typename T, typename U>
-  size_t PairTools<T, U>::getMin(
+  size_t PairTool<T, U>::getMin(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
@@ -87,17 +87,17 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  size_t PairTools<T, U>::getMin(
+  size_t PairTool<T, U>::getMin(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
-    return PairTools<T, U>::getMin(
+    return PairTool<T, U>::getMin(
       pairVec.first,
       pairVec.second
     );
   }
 
   template <typename T, typename U>
-  size_t PairTools<T, U>::getMax(
+  size_t PairTool<T, U>::getMax(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
@@ -109,21 +109,21 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  size_t PairTools<T, U>::getMax(
+  size_t PairTool<T, U>::getMax(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
-    return PairTools<T, U>::getMax(
+    return PairTool<T, U>::getMax(
       pairVec.first,
       pairVec.second
     );
   }
 
   template <typename T, typename U>
-  PAIR_SZ PairTools<T, U>::getDifferences(
+  PAIR_SZ PairTool<T, U>::getDifferences(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB
   ) {
-    const size_t max = PairTools<T, U>::getMax(vecA, vecB);
+    const size_t max = PairTool<T, U>::getMax(vecA, vecB);
 
     return std::make_pair(
       max - vecA.size(),
@@ -132,17 +132,17 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR_SZ PairTools<T, U>::getDifferences(
+  PAIR_SZ PairTool<T, U>::getDifferences(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec
   ) {
-    return PairTools<T, U>::getDifferences(
+    return PairTool<T, U>::getDifferences(
       pairVec.first,
       pairVec.second
     );
   }
 
   template <typename T, typename U>
-  PAIR_LLI PairTools<T, U>::getDifferences(
+  PAIR_LLI PairTool<T, U>::getDifferences(
     CR_VEC<T> vecA,
     CR_VEC<U> vecB,
     CR_LLI targetSz
@@ -154,11 +154,11 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  PAIR_LLI PairTools<T, U>::getDifferences(
+  PAIR_LLI PairTool<T, U>::getDifferences(
     CR_PAIR2<VEC<T>, VEC<U>> pairVec,
     CR_LLI targetSz
   ) {
-    return PairTools<T, U>::getDifferences(
+    return PairTool<T, U>::getDifferences(
       pairVec.first,
       pairVec.second,
       targetSz
@@ -166,13 +166,13 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  void PairTools<T, U>::balance(
+  void PairTool<T, U>::balance(
     VEC<T> &vecA,
     VEC<U> &vecB,
     CR<T> paddingA,
     CR<U> paddingB
   ) {
-    PAIR_SZ differences = PairTools<T, U>::getDifferences(vecA, vecB);
+    PAIR_SZ differences = PairTool<T, U>::getDifferences(vecA, vecB);
 
     std::vector<T> additions(differences.first, paddingA);
     vecA.reserve(vecA.size() + differences.first);
@@ -184,11 +184,11 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  void PairTools<T, U>::balance(
+  void PairTool<T, U>::balance(
     PAIR2<VEC<T>, VEC<U>> &pairVec,
     CR_PAIR2<T, U> pairPadding
   ) {
-    PairTools<T, U>::balance(
+    PairTool<T, U>::balance(
       pairVec.first,
       pairVec.second,
       pairPadding.first,
@@ -197,7 +197,7 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  void PairTools<T, U>::balance(
+  void PairTool<T, U>::balance(
     VEC<T> &vecA,
     VEC<U> &vecB,
     CR<T> paddingA,
@@ -206,7 +206,7 @@ namespace utils {
   ) {
     if (targetSz < 0) targetSz = 0;
 
-    PAIR_LLI differences = PairTools<T, U>::getDifferences(
+    PAIR_LLI differences = PairTool<T, U>::getDifferences(
       vecA, vecB, targetSz
     );
 
@@ -236,12 +236,12 @@ namespace utils {
   }
 
   template <typename T, typename U>
-  void PairTools<T, U>::balance(
+  void PairTool<T, U>::balance(
     PAIR2<VEC<T>, VEC<U>> &pairVec,
     CR_PAIR2<T, U> pairPadding,
     LLI targetSz
   ) {
-    PairTools<T, U>::balance(
+    PairTool<T, U>::balance(
       pairVec.first,
       pairVec.second,
       pairPadding.first,
@@ -251,4 +251,4 @@ namespace utils {
   }
 }}
 
-#endif // __MINI_TOOLS__UTILS__PAIR_TOOLS_CPP__
+#endif // __MINI_TOOLS__UTILS__PAIR_TOOL_CPP__

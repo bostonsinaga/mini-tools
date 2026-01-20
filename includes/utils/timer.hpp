@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__TIME_DATE_HPP__
-#define __MINI_TOOLS__UTILS__TIME_DATE_HPP__
+#ifndef __MINI_TOOLS__UTILS__TIMER_HPP__
+#define __MINI_TOOLS__UTILS__TIMER_HPP__
 
 #include "types.hpp"
 
@@ -250,4 +250,4 @@ namespace Timer {
   };
 }}}
 
-#endif // __MINI_TOOLS__UTILS__TIME_DATE_HPP__
+#endif // __MINI_TOOLS__UTILS__TIMER_HPP__

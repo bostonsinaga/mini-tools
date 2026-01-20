@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__PAIR_TOOLS_HPP__
-#define __MINI_TOOLS__UTILS__PAIR_TOOLS_HPP__
+#ifndef __MINI_TOOLS__UTILS__PAIR_TOOL_HPP__
+#define __MINI_TOOLS__UTILS__PAIR_TOOL_HPP__
 
 #include "types.hpp"
 
@@ -7,9 +7,9 @@ namespace mini_tools {
 namespace utils {
 
   template <class T, class U>
-  class PairTools final {
+  class PairTool final {
   public:
-    PairTools() = delete;
+    PairTool() = delete;
 
     /**
      * Combine two vectors into one vector of pairs.
@@ -114,4 +114,4 @@ namespace utils {
 }}
 
 #include "utils/pair-tools.tpp"
-#endif // __MINI_TOOLS__UTILS__PAIR_TOOLS_HPP__
+#endif // __MINI_TOOLS__UTILS__PAIR_TOOL_HPP__

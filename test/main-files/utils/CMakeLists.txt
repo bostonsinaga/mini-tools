@@ -3,9 +3,9 @@ set(utils
   # printer@printer.cpp
   # random-words@random-words.cpp
   # scanner@scanner.cpp
-  # str-tools@str-tools.cpp
-  time-date@time-date.cpp
-  # vec-tools@vec-tools.cpp
+  # str-tool@str-tool.cpp
+  timer@timer.cpp
+  # vec-tool@vec-tool.cpp
 )
 
 register_test(utils)

@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
   /** PARSERS */
 
   mt_uti::CLIParser<double> stringifyCLI(
-    mt_uti::StrTools::argvToStringVector(argc, argv),
+    mt_uti::StrTool::argvToStringVector(argc, argv),
     {
       std::make_pair("-dd", 1),
       std::make_pair("-mm", 1),

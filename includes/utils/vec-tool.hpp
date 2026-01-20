@@ -1,5 +1,5 @@
-#ifndef __MINI_TOOLS__UTILS__VEC_TOOLS_HPP__
-#define __MINI_TOOLS__UTILS__VEC_TOOLS_HPP__
+#ifndef __MINI_TOOLS__UTILS__VEC_TOOL_HPP__
+#define __MINI_TOOLS__UTILS__VEC_TOOL_HPP__
 
 #include "types.hpp"
 
@@ -11,9 +11,9 @@ namespace utils {
   //______________|
 
   template <class T>
-  class VecTools final {
+  class VecTool final {
   public:
-    VecTools() = delete;
+    VecTool() = delete;
     typedef std::function<bool(CR<T>,CR<T>)> EQUAL_RULE;
 
     static bool hasIndex(CR_SZ targetSz, CR_LLI idx);
@@ -260,7 +260,7 @@ namespace utils {
     static bool fillWasted(
       VEC<T> &vec,
       VEC<T> &wasted,
-      VecTools<T>::EQUAL_RULE &equalRule,
+      VecTool<T>::EQUAL_RULE &equalRule,
       CR<T> &a,
       CR<T> &b,
       CR_SZ cutIdx
@@ -272,7 +272,7 @@ namespace utils {
       VEC<T> &vec,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
-      VecTools<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
+      VecTool<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
 
     /** Remove all members that are equal to an external value */
@@ -281,10 +281,10 @@ namespace utils {
       CR<T> val,
       CR_BOL originalAscending = true,
       // repeated and compared 'T' parameters
-      VecTools<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
+      VecTool<T>::EQUAL_RULE equalRule = [](CR<T> rep, CR<T> com)->bool { return false; }
     );
   };
 }}
 
 #include "utils/vec-tools.tpp"
-#endif // __MINI_TOOLS__UTILS__VEC_TOOLS_HPP__
+#endif // __MINI_TOOLS__UTILS__VEC_TOOL_HPP__

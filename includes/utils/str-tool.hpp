@@ -1,17 +1,17 @@
-#ifndef __MINI_TOOLS__UTILS__STR_TOOLS_HPP__
-#define __MINI_TOOLS__UTILS__STR_TOOLS_HPP__
+#ifndef __MINI_TOOLS__UTILS__STR_TOOL_HPP__
+#define __MINI_TOOLS__UTILS__STR_TOOL_HPP__
 
 #include "types.hpp"
 
 namespace mini_tools {
 namespace utils {
 
-  class StrTools final {
+  class StrTool final {
   private:
     static void modifyCase(char &ch, CR_BOL isUpper);
 
   public:
-    StrTools() = delete;
+    StrTool() = delete;
 
     static void modifyToLowercase(char &ch);
     static void modifyToUppercase(char &ch);
@@ -120,4 +120,4 @@ namespace utils {
   };
 }}
 
-#endif // __MINI_TOOLS__UTILS__STR_TOOLS_HPP__
+#endif // __MINI_TOOLS__UTILS__STR_TOOL_HPP__
