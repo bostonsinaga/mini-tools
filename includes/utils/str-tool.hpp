@@ -70,11 +70,7 @@ namespace utils {
      * Find the first character index other than
      * space or newline from left and right.
      */
-    static void findSpaceBoundaryIndex(
-      std::string &text,
-      int &forwardSpaceBoundaryIndex,
-      int &reverseSpaceBoundaryIndex
-    );
+    static PAIR<int> findSpaceBoundaryIndexes(CR_STR text);
 
     /**
      * Change non-capital letters after dots

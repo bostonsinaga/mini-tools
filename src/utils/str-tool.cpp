@@ -131,35 +131,35 @@ namespace utils {
     return text;
   }
 
-  void StrTool::findSpaceBoundaryIndex(
-    std::string &text,
-    int &forwardSpaceBoundaryIndex,
-    int &reverseSpaceBoundaryIndex
-  ) {
+  PAIR<int> StrTool::findSpaceBoundaryIndexes(CR_STR text) {
+    PAIR<int> spaceBoundaryIndexes = {0, 0};
+
     if (!text.empty()) {
 
       // forward
-      for (forwardSpaceBoundaryIndex = 0;
-        forwardSpaceBoundaryIndex < text.length();
-        forwardSpaceBoundaryIndex++
+      for (spaceBoundaryIndexes.first = 0;
+        spaceBoundaryIndexes.first < text.length();
+        spaceBoundaryIndexes.first++
       ) {
-        if (!isWhitespace(text[forwardSpaceBoundaryIndex])) {
-          forwardSpaceBoundaryIndex--;
+        if (!isWhitespace(text[spaceBoundaryIndexes.first])) {
+          spaceBoundaryIndexes.first--;
           break;
         }
       }
 
       // reverse
-      for (reverseSpaceBoundaryIndex = text.length() - 1;
-        reverseSpaceBoundaryIndex >= 0;
-        reverseSpaceBoundaryIndex--
+      for (spaceBoundaryIndexes.second = text.length() - 1;
+        spaceBoundaryIndexes.second >= 0;
+        spaceBoundaryIndexes.second--
       ) {
-        if (!isWhitespace(text[reverseSpaceBoundaryIndex])) {
-          reverseSpaceBoundaryIndex++;
+        if (!isWhitespace(text[spaceBoundaryIndexes.second])) {
+          spaceBoundaryIndexes.second++;
           break;
         }
       }
     }
+
+    return spaceBoundaryIndexes;
   }
 
   void StrTool::tidyUp(
