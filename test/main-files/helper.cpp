@@ -3,6 +3,55 @@
 
 #include "helper.hpp"
 
+const std::string Helper::EscapeStyle::availables[Helper::EscapeStyle::numberOfAvailables] = {
+  "\x1b[0m", // normal
+  "\x1b[3m", // italic
+  "\x1b[4m", // underline
+  "\x1b[38;2;255;0;0m", // red
+  "\x1b[38;2;0;255;0m", // green
+  "\x1b[38;2;0;0;255m", // blue
+  "\x1b[38;2;255;255;0m", // yellow
+  "\x1b[38;2;255;0;255m", // magenta
+  "\x1b[38;2;0;127;255m", // azure
+  "\x1b[38;2;255;127;0m" // orange
+};
+
+Helper::EscapeStyle::EscapeStyle() {
+  used = availables[NORMAL_ESCAPE_STYLE];
+}
+
+Helper::EscapeStyle::EscapeStyle(const ESCAPE_STYLE_CODE& code) {
+  if (code >= NORMAL_ESCAPE_STYLE &&
+    code <= ORANGE_COLOR_ESCAPE_STYLE
+  ) {
+    used = availables[code];
+  }
+  else used = availables[NORMAL_ESCAPE_STYLE];
+}
+
+Helper::EscapeStyle Helper::titleEscapeStyle = Helper::EscapeStyle(
+  Helper::MAGENTA_COLOR_ESCAPE_STYLE
+);
+
+std::string Helper::EscapeStyle::generate(mt::CR_STR text, mt::CR_BOL needTrim) const {
+  if (needTrim && !text.empty()) {
+
+    // find whitespace boundary indexes
+    mt::PAIR<int> spaceBoundaryIndexes = mt_uti::StrTool::findSpaceBoundaryIndexes(text);
+
+    // trimmed string from whitespaces with ANSI escape code
+    return text.substr(0, spaceBoundaryIndexes.first)
+      + used + text.substr(
+        spaceBoundaryIndexes.first,
+        spaceBoundaryIndexes.second + 1
+      ) + availables[NORMAL_ESCAPE_STYLE]
+      + text.substr(spaceBoundaryIndexes.second + 1);
+  }
+
+  // no need to trim
+  return used + text + availables[NORMAL_ESCAPE_STYLE];
+}
+
 void Helper::getSamples(
   const std::function<TUP4PTR(mt::VEC_INT&, mt::VEC_DBL&, mt::VEC_STR&, mt::VEC_STR&)> &callback,
   mt::CR_STR timerTitle,
@@ -71,22 +120,31 @@ void Helper::CLIWrapper::displayFinalMessage(bool &callbackCompleted) {
   static int currentRunNumber = 1;
 
   if (CLIWrapper::displayingFinalMessage) {
+    // completed message
     if (callbackCompleted) {
-      std::cout << std::endl << Helper::CLIWrapper::greenFontColor
-        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::completedMessage
-        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
+      std::cout << EscapeStyle(GREEN_COLOR_ESCAPE_STYLE).generate(
+        '\n' + CLIWrapper::finalMessageBorderStyle
+        + CLIWrapper::completedMessage
+        + CLIWrapper::finalMessageBorderStyle + '\n'
+      );
     }
+    // failed message
     else if (CLIWrapper::entryDetected) {
-      std::cout << std::endl << Helper::CLIWrapper::redFontColor
-        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::failedMessage
-        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
+      std::cout << EscapeStyle(RED_COLOR_ESCAPE_STYLE).generate(
+        '\n' + CLIWrapper::finalMessageBorderStyle
+        + CLIWrapper::failedMessage
+        + CLIWrapper::finalMessageBorderStyle + '\n'
+      );
     }
+    // invalid message
     else if (CLIWrapper::numberOfRuns == currentRunNumber) {
       CLIWrapper::maxRunsReached = true;
 
-      std::cout << std::endl << Helper::CLIWrapper::yellowFontColor
-        << CLIWrapper::finalMessageBorderStyle << CLIWrapper::invalidMessage
-        << CLIWrapper::finalMessageBorderStyle << "\x1b[0m\n";
+      std::cout << EscapeStyle(YELLOW_COLOR_ESCAPE_STYLE).generate(
+        '\n' + CLIWrapper::finalMessageBorderStyle
+        + CLIWrapper::invalidMessage
+        + CLIWrapper::finalMessageBorderStyle + '\n'
+      );
     }
   }
 
@@ -118,8 +176,8 @@ void Helper::CLIWrapper::printHeader(
   std::string &entry,
   std::string &description
 ) {
-  std::cout << Helper::CLIWrapper::azureFontColor << entry
-    << ":\x1b[0m\n" << italicFont << description << "\x1b[0m";
+  std::cout << EscapeStyle(AZURE_COLOR_ESCAPE_STYLE).generate(entry + ":\n")
+    << EscapeStyle(ITALIC_ESCAPE_STYLE).generate(description);
 }
 
 void Helper::CLIWrapper::printAbout(

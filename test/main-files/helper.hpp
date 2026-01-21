@@ -5,6 +5,38 @@
 
 class Helper {
 public:
+  enum ESCAPE_STYLE_CODE {
+    NORMAL_ESCAPE_STYLE,
+    ITALIC_ESCAPE_STYLE,
+    UNDERLINE_ESCAPE_STYLE,
+    RED_COLOR_ESCAPE_STYLE,
+    GREEN_COLOR_ESCAPE_STYLE,
+    BLUE_COLOR_ESCAPE_STYLE,
+    YELLOW_COLOR_ESCAPE_STYLE,
+    MAGENTA_COLOR_ESCAPE_STYLE,
+    AZURE_COLOR_ESCAPE_STYLE,
+    ORANGE_COLOR_ESCAPE_STYLE
+  };
+
+  /**
+   * ANSI escape code wrapper for styled string.
+   */
+  class EscapeStyle {
+  private:
+    inline static const int numberOfAvailables = 10;
+    static const std::string availables[numberOfAvailables];
+    std::string used;
+
+  public:
+    EscapeStyle();
+    EscapeStyle(const ESCAPE_STYLE_CODE& code);
+
+    std::string generate(
+      mt::CR_STR text,
+      mt::CR_BOL needTrim = false
+    ) const;
+  };
+
   typedef std::tuple<
     mt::VEC_INT*, mt::VEC_DBL*,
     mt::VEC_STR*, mt::VEC_STR*
@@ -20,6 +52,19 @@ public:
     mt::CR_STR timerTitle,
     mt::CR_STR logFilePath
   );
+
+  /**
+   * Print title with styled string using ANSI escape code.
+   */
+
+  static EscapeStyle titleEscapeStyle;
+
+  static void printTitle(
+    mt::CR_STR text,
+    mt::CR_BOL needTrim = false
+  ) {
+    std::cout << titleEscapeStyle.generate(text, needTrim);
+  }
 
   /**
    * Simplifying the use of 'CLIParser'. Providing final responses
@@ -52,13 +97,6 @@ public:
 
     inline static mt::PAIR2<mt::VEC_CH, int>
       lastDefaultEntry = {{'a'}, 1};
-
-    inline static const std::string
-      italicFont = "\x1b[3m",
-      redFontColor = "\x1b[38;2;255;0;0m",
-      greenFontColor = "\x1b[38;2;0;255;0m",
-      azureFontColor = "\x1b[38;2;0;127;255m",
-      yellowFontColor = "\x1b[38;2;255;255;0m";
 
     // keywords and entries always contain strings
     static std::string generateDefaultEntry();
