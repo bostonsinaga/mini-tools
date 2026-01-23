@@ -46,7 +46,11 @@ namespace utils {
       bool, std::conditional_t<
         (std::is_same_v<T, double> && std::is_same_v<U, bool>) ||
         (std::is_same_v<T, bool> && std::is_same_v<U, double>),
-        std::string, int
+        std::string, std::conditional_t<
+          (std::is_same_v<T, bool> && std::is_same_v<U, std::string>) ||
+          (std::is_same_v<T, std::string> && std::is_same_v<U, bool>),
+          double, bool
+        >
       >
     >;
   };
