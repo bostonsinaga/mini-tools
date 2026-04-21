@@ -320,7 +320,7 @@ namespace utils {
   /** Character Detectors */
 
   bool StrTool::isWhitespace(CR_CH ch) {
-    return ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n';
+    return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
   }
 
   bool StrTool::isWhitespaces(CR_STR str) {
