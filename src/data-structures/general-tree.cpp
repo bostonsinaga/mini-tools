@@ -45,7 +45,7 @@ namespace data_structures {
   }
 
   void GeneralTree::movePointer(CR_INT steps) {
-    if (children && !children->isolated()) {
+    if (children && !children->alone()) {
       if (steps < 0) {
         for (int i = 0; i < std::abs(steps); i++) {
           children = static_cast<GeneralTree*>(children->prev());
@@ -75,7 +75,7 @@ namespace data_structures {
     const DIRECTION &direction,
     const LinkedListCallback &callback
   ) {
-    LinkedListMetadata::iteratings[start] = true;
+    LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (children) children->traverse(direction, callback);
@@ -91,7 +91,7 @@ namespace data_structures {
       current = static_cast<GeneralTree*>(current->neighbors[direction]);
     }
 
-    LinkedListMetadata::iteratings[start] = false;
+    LinkedList::Metadata::iteratings[start] = false;
   }
 
   // preorder traversal
@@ -99,7 +99,7 @@ namespace data_structures {
     const DIRECTION &direction,
     const LinkedListCallback &callback
   ) {
-    LinkedListMetadata::iteratings[start] = true;
+    LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (callback(this)) {
@@ -117,19 +117,19 @@ namespace data_structures {
       current = static_cast<GeneralTree*>(current->neighbors[direction]);
     }
 
-    LinkedListMetadata::iteratings[start] = false;
+    LinkedList::Metadata::iteratings[start] = false;
   }
 
   void GeneralTree::bubble(const LinkedListCallback &callback) {
 
-    LinkedListMetadata::iteratings[start] = true;
+    LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *current = this;
 
     while (current && callback(current)) {
       current = current->parent;
     }
 
-    LinkedListMetadata::iteratings[start] = false;
+    LinkedList::Metadata::iteratings[start] = false;
   }
 
   GeneralTree *GeneralTree::getRoot() {
@@ -143,7 +143,7 @@ namespace data_structures {
   void GeneralTree::detach() {
 
     if (parent) {
-      if (parent->children->isolated()) {
+      if (parent->children->alone()) {
         parent->children = nullptr;
       }
 
@@ -165,19 +165,18 @@ namespace data_structures {
   }
 
   void GeneralTree::destroy() {
-    if (parent && parent->children->isolated()) {
+    if (parent && parent->children->alone()) {
       parent->children = nullptr;
     }
 
     if (children) children->xannihilate();
-    // LinkedList::destroy();
   }
 
   // postorder traversal
   void GeneralTree::xannihilate() {
 
-    if (!LinkedListMetadata::iteratings[start]) {
-      LinkedListMetadata::remove(start);
+    if (!LinkedList::Metadata::iteratings[start]) {
+      LinkedList::Metadata::remove(start);
 
       GeneralTree *newCurrent,
         *current = static_cast<GeneralTree*>(neighbors[RIGHT]);

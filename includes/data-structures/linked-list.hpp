@@ -15,36 +15,31 @@ namespace data_structures {
   // return false to force stop the loop
   typedef std::function<bool(LinkedList*)> LinkedListCallback;
 
-  class LinkedListMetadata final {
-  public:
-    LinkedListMetadata() = delete;
-
-  private:
-    inline static UNORMAP<LinkedList*, size_t> numbers;
-    inline static UNORMAP<LinkedList*, bool> iteratings;
-    inline static UNORMAP<LinkedList*, UNORMAP<LinkedList*, bool>> existences;
-
-    static void create(LinkedList *leader);
-    static void remove(LinkedList *leader);
-
-    static void add(
-      LinkedList *leader,
-      LinkedList *follower
-    );
-
-    static void drop(
-      LinkedList *leader,
-      LinkedList *follower
-    );
-
-    friend class LinkedList;
-    friend class GeneralTree;
-  };
-
   class LinkedList {
   private:
-    LinkedList *start,
-      *neighbors[2] = {nullptr, nullptr};
+    class Metadata final {
+    public:
+      Metadata() = delete;
+
+      inline static UNORMAP<LinkedList*, bool> iteratings;
+      inline static UNORMAP<LinkedList*, UNORMAP<LinkedList*, bool>> existences;
+
+      static void create(LinkedList *leader);
+      static void remove(LinkedList *leader);
+
+      static void add(
+        LinkedList *leader,
+        LinkedList *follower
+      );
+
+      static void drop(
+        LinkedList *leader,
+        LinkedList *follower
+      );
+    };
+
+    // head, prev, next
+    LinkedList *start, *neighbors[2];
 
     // these will not check for parameter existence
     void xjoin(LinkedList *insider);
@@ -52,6 +47,7 @@ namespace data_structures {
     void xappoint(LinkedList *newStart);
     void xdetach();
 
+    // the descendant
     friend class GeneralTree;
 
   protected:
@@ -67,23 +63,18 @@ namespace data_structures {
     LinkedList *prev() { return neighbors[LEFT]; }
 
     /**
-     * Disconnect list from this thus dividing it into 2 'start'
-     * and make this a 'start' for the right followers.
-     * 
-     * Rules:
-     *  Returns 'start' if this is follower.
-     *  Returns 'neighbors[RIGHT]' if this the 'start'.
-     *  Returns 'nullptr' if this is single.
+     * Disconnect the list from the right neighbor to the very end.
+     * List with less than three nodes will not be affected.
      */
     virtual LinkedList *slice();
 
     // merged list will have this 'start' as the 'start'
     virtual void merge(LinkedList *outsider);
 
-    bool isolated() { return !neighbors[RIGHT]; }
+    bool alone() { return this == neighbors[RIGHT]; }
     bool atFront() { return this == start; }
     bool atBack() { return this == start->neighbors[LEFT]; }
-    size_t count() { return LinkedListMetadata::numbers[start]; }
+    size_t count() { return Metadata::existences[start].size(); }
 
     // from 'this' to 'left' loop
     virtual void iterate(
@@ -100,9 +91,16 @@ namespace data_structures {
      */
     virtual void appoint(LinkedList *newStart);
 
+    // the insider is on the left
     virtual void join(LinkedList *insider);
+
+    // the outsider is on the right
     virtual void accept(LinkedList *outsider);
+
+    // detach and delete this
     virtual void destroy();
+
+    // delete all nodes
     virtual void annihilate();
   };
 }}
