@@ -67,13 +67,33 @@ namespace algorithms {
       int skipTestCount = 0
     );
 
+    /** To get the exponent number, subtract 'count' by 1 */
+    struct Digits {
+      int valsign = 1;
+      int count = 1;
+      int pow10 = 1;
+    };
+
     /**
+     * Use this instead of 'std::log10' for simplicity and higher performance.
+     * 
      * You can sum this return with the return of 'countDecimalPlaces'
      * to get the full number of digits and +1 for decimal point sign.
      */
     template <inspector::INTEGRAL T>
-    static int countDigits(CR<T> number) {
-      return (number == 0) ? 1 : std::log10(std::abs(number)) + 1;
+    static Digits countDigits(CR<T> number) {
+
+      Digits digits;
+      T temp = std::abs(number);
+      digits.valsign = number / std::abs(number);
+
+      while (temp >= 10) {
+        temp /= 10;
+        digits.count++;
+        digits.pow10 *= 10;
+      }
+
+      return digits;
     }
 
     /**
