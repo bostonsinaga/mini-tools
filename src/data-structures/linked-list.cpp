@@ -10,39 +10,11 @@
 namespace mini_tools {
 namespace data_structures {
 
-  /** METADATA */
-
-  void LinkedList::Metadata::create(LinkedList *leader) {
-    iteratings[leader] = false;
-    existences[leader][leader] = true;
-  }
-
-  void LinkedList::Metadata::remove(LinkedList *leader) {
-    iteratings.erase(leader);
-    existences.erase(leader);
-  }
-
-  void LinkedList::Metadata::add(
-    LinkedList *leader,
-    LinkedList *follower
-  ) {
-    existences[leader][follower] = true;
-  }
-
-  void LinkedList::Metadata::drop(
-    LinkedList *leader,
-    LinkedList *follower
-  ) {
-    existences[leader].erase(follower);
-  }
-
-  /** LINKED LIST */
-
   LinkedList::LinkedList() {
     start = this;
     neighbors[LEFT] = this;
     neighbors[RIGHT] = this;
-    Metadata::create(this);
+    LinkedList::existences[start].insert(this);
   }
 
   LinkedList *LinkedList::slice() {
@@ -70,59 +42,52 @@ namespace data_structures {
     }
   }
 
-  bool LinkedList::hasMember(LinkedList *member) {
-    return UNORMAP_FOUND<LinkedList*, bool>(
-      Metadata::existences[start],
-      member
-    );
+  bool LinkedList::has(LinkedList *member) {
+    return LinkedList::existences[start].find(member) != LinkedList::existences[start].end();
   }
 
-  void LinkedList::iterate(
+  void LinkedList::forEach(
     const DIRECTION &direction,
-    const LinkedListCallback &callback
+    const Callback &callback
   ) {
-    Metadata::iteratings[start] = true;
+    LinkedList *el = neighbors[direction];
 
     // begin from this
-    if (!callback(this) || !neighbors[direction]) {
-      Metadata::iteratings[start] = false;
-      return;
+    if (callback(this)) {
+      while (el != this) {
+        LinkedList *newEl = el->neighbors[direction];
+        if (!callback(el)) break;
+        el = newEl;
+      }
     }
-
-    LinkedList *current = neighbors[direction];
-
-    while (current != this) {
-      if (!callback(current)) break;
-      current = current->neighbors[direction];
-    }
-
-    Metadata::iteratings[start] = false;
   }
 
   void LinkedList::xappoint(LinkedList *newStart) {
 
-    Metadata::remove(start);
-    Metadata::create(newStart);
-    LinkedList *current = neighbors[RIGHT];
+    LinkedList::existences.erase(start);
+    LinkedList::existences[newStart].insert(newStart);
+
+    LinkedList *el = this,
+      *elTail = neighbors[LEFT];
 
     // transfer ownership
-    while (current != this) {
-      Metadata::add(newStart, current);
-      current->start = newStart;
-      current = current->neighbors[RIGHT];
+    while (el != elTail) {
+      LinkedList::existences[newStart].insert(el);
+      el->start = newStart;
+      el = el->neighbors[RIGHT];
     }
 
-    Metadata::add(newStart, this);
-    start = newStart;
+    LinkedList::existences[newStart].insert(elTail);
+    elTail->start = newStart;
   }
 
   void LinkedList::appoint(LinkedList *newStart) {
-    if (hasMember(newStart)) xappoint(newStart);
+    if (has(newStart)) xappoint(newStart);
   }
 
   void LinkedList::xdetach() {
     if (atFront()) xappoint(neighbors[RIGHT]);
-    else Metadata::drop(start, this);
+    else LinkedList::existences[start].erase(this);
 
     neighbors[LEFT]->neighbors[RIGHT] = neighbors[RIGHT];
     neighbors[RIGHT]->neighbors[LEFT] = neighbors[LEFT];
@@ -131,8 +96,7 @@ namespace data_structures {
   void LinkedList::detach() {
     xdetach();
     start = this;
-    Metadata::create(this);
-    Metadata::add(start, this);
+    LinkedList::existences[start].insert(this);
     neighbors[LEFT] = this;
     neighbors[RIGHT] = this;
   }
@@ -144,7 +108,7 @@ namespace data_structures {
     neighbors[RIGHT] = insider->neighbors[RIGHT];
     insider->neighbors[RIGHT]->neighbors[LEFT] = this;
     insider->neighbors[RIGHT] = this;
-    Metadata::add(start, this);
+    LinkedList::existences[start].insert(this);
   }
 
   void LinkedList::join(LinkedList *insider) {
@@ -160,29 +124,24 @@ namespace data_structures {
   }
 
   void LinkedList::destroy() {
-    if (!Metadata::iteratings[start]) {
-      xdetach();
-      Metadata::remove(this);
-      delete this;
-    }
+    xdetach();
+    LinkedList::existences.erase(this);
+    delete this;
   }
 
   void LinkedList::annihilate() {
+    LinkedList::existences.erase(start);
 
-    if (!Metadata::iteratings[start]) {
-      Metadata::remove(start);
+    LinkedList *el = this,
+      *elTail = neighbors[LEFT];
 
-      LinkedList *newCurrent,
-        *current = neighbors[RIGHT];
-
-      while (current != this) {
-        newCurrent = current->neighbors[RIGHT];
-        delete current;
-        current = newCurrent;
-      }
-
-      delete this;
+    while (el != elTail) {
+      LinkedList *newEl = el->neighbors[RIGHT];
+      delete el;
+      el = newEl;
     }
+
+    delete elTail;
   }
 }}
 

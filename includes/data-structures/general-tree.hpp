@@ -53,16 +53,16 @@ namespace data_structures {
 
     virtual void traverse(
       const DIRECTION &direction,
-      const LinkedListCallback &callback
+      const Callback &callback
     );
 
     virtual void branch(
       const DIRECTION &direction,
-      const LinkedListCallback &callback
+      const Callback &callback
     );
 
     // iterate from this to the root */
-    virtual void bubble(const LinkedListCallback &callback);
+    virtual void bubble(const Callback &callback);
 
     /** Override behavior through parent-child relationship configuration */
 

@@ -19,12 +19,12 @@ namespace data_structures {
   }
 
   size_t GeneralTree::numberOfChildren() {
-    if (children) return children->count();
+    if (children) return children->number();
     else return 0;
   }
 
   bool GeneralTree::hasChild(GeneralTree *child) {
-    if (children) return children->hasMember(child);
+    if (children) return children->has(child);
     return false;
   }
 
@@ -73,69 +73,61 @@ namespace data_structures {
   // postorder traversal
   void GeneralTree::traverse(
     const DIRECTION &direction,
-    const LinkedListCallback &callback
+    const Callback &callback
   ) {
-    LinkedList::Metadata::iteratings[start] = true;
-    GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
+    GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (children) children->traverse(direction, callback);
     callback(this);
 
-    while (current && current != this) {
+    while (el && el != this) {
 
-      if (current->children) {
-        current->children->traverse(direction, callback);
+      if (el->children) {
+        el->children->traverse(direction, callback);
       }
 
-      callback(current);
-      current = static_cast<GeneralTree*>(current->neighbors[direction]);
+      GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[direction]);
+      callback(el);
+      el = newEl;
     }
-
-    LinkedList::Metadata::iteratings[start] = false;
   }
 
   // preorder traversal
   void GeneralTree::branch(
     const DIRECTION &direction,
-    const LinkedListCallback &callback
+    const Callback &callback
   ) {
-    LinkedList::Metadata::iteratings[start] = true;
-    GeneralTree *current = static_cast<GeneralTree*>(neighbors[direction]);
+    GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (callback(this)) {
       branch(direction, callback);
-      current = nullptr;
+      el = nullptr;
     }
 
-    while (current && current != this) {
+    while (el && el != this) {
+      GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[direction]);
 
-      if (callback(current)) {
-        current->branch(direction, callback);
+      if (callback(el)) {
+        el->branch(direction, callback);
         break;
       }
 
-      current = static_cast<GeneralTree*>(current->neighbors[direction]);
+      el = newEl;
     }
-
-    LinkedList::Metadata::iteratings[start] = false;
   }
 
-  void GeneralTree::bubble(const LinkedListCallback &callback) {
+  void GeneralTree::bubble(const Callback &callback) {
+    GeneralTree *el = this;
 
-    LinkedList::Metadata::iteratings[start] = true;
-    GeneralTree *current = this;
-
-    while (current && callback(current)) {
-      current = current->parent;
+    while (el && callback(el)) {
+      el = el->parent;
     }
-
-    LinkedList::Metadata::iteratings[start] = false;
   }
 
   GeneralTree *GeneralTree::getRoot() {
-    GeneralTree *current = this;
-    while (current->parent) current = current->parent;
-    return current;
+    GeneralTree *el = this;
+    while (el->parent) el = el->parent;
+    return el;
   }
 
   /** OVERRIDES */
@@ -175,26 +167,22 @@ namespace data_structures {
   // postorder traversal
   void GeneralTree::xannihilate() {
 
-    if (!LinkedList::Metadata::iteratings[start]) {
-      LinkedList::Metadata::remove(start);
+    LinkedList::existences.erase(start);
+    GeneralTree *el = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
-      GeneralTree *newCurrent,
-        *current = static_cast<GeneralTree*>(neighbors[RIGHT]);
+    // vertically and horizontally recursive deletion
+    while (el && el != this) {
 
-      // vertically and horizontally recursive deletion
-      while (current && current != this) {
-
-        if (current->children) {
-          current->children->xannihilate();
-        }
-
-        newCurrent = static_cast<GeneralTree*>(current->neighbors[RIGHT]);
-        delete current;
-        current = newCurrent;
+      if (el->children) {
+        el->children->xannihilate();
       }
 
-      delete this;
+      GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[RIGHT]);
+      delete el;
+      el = newEl;
     }
+
+    delete this;
   }
 
   void GeneralTree::annihilate() {

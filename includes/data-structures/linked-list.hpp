@@ -10,33 +10,9 @@
 namespace mini_tools {
 namespace data_structures {
 
-  class LinkedList;
-
-  // return false to force stop the loop
-  typedef std::function<bool(LinkedList*)> LinkedListCallback;
-
   class LinkedList {
   private:
-    class Metadata final {
-    public:
-      Metadata() = delete;
-
-      inline static UNORMAP<LinkedList*, bool> iteratings;
-      inline static UNORMAP<LinkedList*, UNORMAP<LinkedList*, bool>> existences;
-
-      static void create(LinkedList *leader);
-      static void remove(LinkedList *leader);
-
-      static void add(
-        LinkedList *leader,
-        LinkedList *follower
-      );
-
-      static void drop(
-        LinkedList *leader,
-        LinkedList *follower
-      );
-    };
+    inline static UNORMAP<LinkedList*, UNORSET<LinkedList*>> existences;
 
     // head, prev, next
     LinkedList *start, *neighbors[2];
@@ -56,6 +32,9 @@ namespace data_structures {
   public:
     enum DIRECTION { LEFT, RIGHT };
 
+    // return false to force stop the loop
+    typedef std::function<bool(LinkedList*)> Callback;
+
     LinkedList();
     LinkedList *head() { return start; }
     LinkedList *tail() { return start->neighbors[LEFT]; }
@@ -74,15 +53,15 @@ namespace data_structures {
     bool alone() { return this == neighbors[RIGHT]; }
     bool atFront() { return this == start; }
     bool atBack() { return this == start->neighbors[LEFT]; }
-    size_t count() { return Metadata::existences[start].size(); }
+    size_t number() { return LinkedList::existences[start].size(); }
 
-    // from 'this' to 'left' loop
-    virtual void iterate(
+    // from 'this' to left or right loop
+    virtual void forEach(
       const DIRECTION &direction,
-      const LinkedListCallback &callback
+      const Callback &callback
     );
 
-    bool hasMember(LinkedList *member);
+    bool has(LinkedList *member);
     virtual void detach();
 
     /**
