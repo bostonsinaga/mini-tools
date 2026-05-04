@@ -3,18 +3,16 @@
 
 #include "types.hpp"
 
-//_____________________________|
-// DOUBLY CIRCULAR LINKED LIST |
-//_____________________________|
-
 namespace mini_tools {
 namespace data_structures {
 
+  /**
+   * Doubly Circular Linked List.
+   * Has head, previous, and next nodes.
+   */
   class LinkedList {
   private:
     inline static UNORMAP<LinkedList*, UNORSET<LinkedList*>> existences;
-
-    // head, prev, next
     LinkedList *start, *neighbors[2];
 
     // these will not check for parameter existence

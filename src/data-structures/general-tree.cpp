@@ -70,7 +70,6 @@ namespace data_structures {
     }
   }
 
-  // postorder traversal
   void GeneralTree::traverse(
     const DIRECTION &direction,
     const Callback &callback
@@ -88,30 +87,6 @@ namespace data_structures {
 
       GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[direction]);
       callback(el);
-      el = newEl;
-    }
-  }
-
-  // preorder traversal
-  void GeneralTree::branch(
-    const DIRECTION &direction,
-    const Callback &callback
-  ) {
-    GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
-
-    if (callback(this)) {
-      branch(direction, callback);
-      el = nullptr;
-    }
-
-    while (el && el != this) {
-      GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[direction]);
-
-      if (callback(el)) {
-        el->branch(direction, callback);
-        break;
-      }
-
       el = newEl;
     }
   }

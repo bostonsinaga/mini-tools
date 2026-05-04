@@ -49,19 +49,13 @@ namespace data_structures {
      */
     virtual void movePointer(CR_INT steps);
 
-    /** Iterate through child nodes until reaching the leaves */
-
+    // iterate through child nodes until reaching the leaves
     virtual void traverse(
       const DIRECTION &direction,
       const Callback &callback
     );
 
-    virtual void branch(
-      const DIRECTION &direction,
-      const Callback &callback
-    );
-
-    // iterate from this to the root */
+    // iterate from here to the root without visiting neighbors
     virtual void bubble(const Callback &callback);
 
     /** Override behavior through parent-child relationship configuration */

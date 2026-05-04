@@ -3,10 +3,6 @@
 
 #include "data-structures/linked-list.hpp"
 
-//_____________________________|
-// DOUBLY CIRCULAR LINKED LIST |
-//_____________________________|
-
 namespace mini_tools {
 namespace data_structures {
 
