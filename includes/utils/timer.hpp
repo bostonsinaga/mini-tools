@@ -2,6 +2,7 @@
 #define __MINI_TOOLS__UTILS__TIMER_HPP__
 
 #include "types.hpp"
+#include "data-structures/linked-list.hpp"
 
 namespace mini_tools {
 namespace utils {
@@ -11,7 +12,7 @@ namespace Timer {
   // STOPWATCH |
   //___________|
 
-  class Stopwatch final {
+  class Stopwatch {
   private:
     typedef std::chrono::time_point<std::chrono::high_resolution_clock> TP;
     std::chrono::duration<double> difference = std::chrono::duration<double>::zero();
@@ -40,32 +41,24 @@ namespace Timer {
   // DATE |
   //______|
 
-  class Date final {
+  class Date {
   public:
+    static const int monthDays[12][2];
+
     enum FORMAT_CODE {
       LITTLE_ENDIAN,  // dd-mm-yyyy
       MIDDLE_ENDIAN,  // mm-dd-yyyy
       BIG_ENDIAN      // yyyy-mm-dd
     };
 
-    /**
-     * The 'affixYear' will be sticked to
-     * a possible year pattern with 'numberOfPatternDigits'.
-     */
-    struct ImplicitCentury {
-      int affixYear = 20, numberOfPatternDigits = 2;
-    };
-
     Stopwatch stopwatch;
-    static ImplicitCentury implicitCentury;
     inline static bool usingZeroPrefix = true;
     inline static size_t maxNumberOfLeadingZeros = 3;
     inline static FORMAT_CODE formatCode = LITTLE_ENDIAN;
-    inline static std::string languageKey = "en", separator = "/";
+    inline static std::string languageKey = "en";
 
   private:
     int dd = 1, mm = 1, yyyy = 1;
-    static const int monthDays[12][2];
     static STRUNORMAP<ARR2_STR<12, 2>> monthNames;
     static STRUNORMAP<PAIR_STR> christTimeSign;
 
@@ -74,12 +67,6 @@ namespace Timer {
      * Suffix like BC or AD will be added.
      */
     inline static int unsignedChristTimeYear = 1000;
-
-    /**
-     * The 'parseDates' method will only recognize
-     * years within this interval inclusively.
-     */
-    inline static PAIR_INT recognizedYearsInterval = {1900, 2100};
 
     /**
      * Check for the existence of key to
@@ -121,11 +108,8 @@ namespace Timer {
     // parameter cannot be zero
     static void setUnsignedChristTimeYear(CR_INT yyyy_in);
 
-    // the first one must be smaller than the second one
-    static void setRecognizedYearsInterval(CR_PAIR_INT yyyy_pair);
-    static PAIR_INT getRecognizedYearsInterval();
+    /** Month Names (Long and Short Names) */
 
-    // month names (long and short names)
     static void setMonthNames(
       CR_ARR_STR<2> january, CR_ARR_STR<2> february, CR_ARR_STR<2> march,
       CR_ARR_STR<2> april,   CR_ARR_STR<2> may,      CR_ARR_STR<2> june,
@@ -133,24 +117,20 @@ namespace Timer {
       CR_ARR_STR<2> october, CR_ARR_STR<2> november, CR_ARR_STR<2> december
     );
 
+    static std::string getMonthName(
+      CR_INT index, CR_BOL isShortened
+    );
+
+    struct NamedMonthLengths {
+      int longArray[12], shortArray[12];
+    };
+
+    static NamedMonthLengths createNamedMonthLengths();
+
     // terms of BC and AD in other languages
     static void setChristTimeSign(
       CR_STR beforeChristTerm,
       CR_STR annoDominiTerm
-    );
-
-    /**
-     * This method is divided into two steps.
-     * The first step separates potential date strings based on spaces or special
-     * characters that repeat exactly twice among three potential date strings.
-     * The second step evaluates the potential strings for day, month, and year
-     * (the order can be changed with 'formatCode').
-     * 
-     * The generally 2 digit pattern for possible years will follow the completion
-     * by being sticked to 'implicitCentury' if this 'implyCentury' is set to true.
-     */
-    static VEC<Date> parseDates(
-      CR_STR text, CR_BOL implyCentury = false
     );
 
     // component getters
@@ -187,7 +167,7 @@ namespace Timer {
     int countYearsFrom(const Date &date) const;
 
     // stringifiers
-    std::string numericStringify() const;
+    std::string numericStringify(CR_STR separator = "/") const;
     std::string longCapitalizedStringify() const;
     std::string shortCapitalizedStringify() const;
     std::string longAllCapsStringify() const;
@@ -202,10 +182,112 @@ namespace Timer {
   };
 
   //________|
+  // PARSER |
+  //________|
+
+  class Parser {
+  private:
+    typedef data_structures::LinkedList DS_LinkedList;
+
+    // indexes that following the 'Date::formatCode'
+    enum {DD_I, MM_J, YYYY_K};
+    int idx[3];
+
+    // 3 test strings
+    std::string com_str_arr[3];
+
+    /**
+     * The 'affixYear' will be sticked to
+     * a possible year pattern with 'numberOfPatternDigits'.
+     */
+    class ImplicitYear final {
+    public: 
+      int affixYear = 20;
+      int numberOfPatternDigits = 2;
+      bool active = true;
+    };
+
+    /**
+     * The 'checkDate' will only recognize
+     * years within this interval inclusively.
+     */
+    class RecognizedYearsInterval final {
+    private:
+      PAIR_INT pair = {1900, 2100};
+
+    public:
+      void set(CR_PAIR_INT yyyy_pair);
+      PAIR_INT get() { return pair; }
+      int min() { return pair.first; }
+      int max() { return pair.second; }
+
+      // get the number of digits of the interval
+      algorithms::NumberSequence::Digits minDigits();
+      algorithms::NumberSequence::Digits maxDigits();
+    };
+
+    class WordNode final : public DS_LinkedList {
+    public:
+      std::string value;
+      WordNode(CR_STR value_in = "") : value(value_in) {}
+    };
+
+    class Sequence final : public DS_LinkedList {
+    public:
+      Date date;
+      bool completed = false;
+      Sequence(const Date &date_in, CR_BOL completed_in)
+      : date(date_in), completed(completed_in) {}
+    };
+
+    struct Seqs {
+      Sequence *fixed = nullptr, *temporary = nullptr;
+    } seqs;
+
+    // codes for 'checkDate' status
+    enum DATE_COMPLETENESS_CODE {
+      DATE_INVALID,
+      DATE_MM_YYYY,
+      DATE_COMPLETED
+    };
+
+    // test the possible 3 string components
+    DATE_COMPLETENESS_CODE checkDate();
+
+    // split text into words with separate character types
+    WordNode* spaceSplit(CR_STR text);
+    WordNode* distinctSplit(WordNode *wordNode);
+
+  public:
+    ImplicitYear implicitYear;
+    RecognizedYearsInterval recognizedYearsInterval;
+    bool randomizeUnknownDD = false;
+
+    // constructor & destructor
+    Parser() {}
+    ~Parser() {
+      if (seqs.fixed) seqs.fixed->annihilate();
+    }
+
+    /**
+     * Find the dates in the text by checking every 3 words.
+     * The generally 2 digit pattern for a possible year will follow
+     * the completion by being sticked to 'implicitYear.affixYear' if it active.
+     */
+    void scan(CR_STR text);
+
+    // extract dates from 'Sequence'
+    VEC<Date> getAllDates();
+    VEC<Date> getCompletedDates();
+    VEC<Date> getMMYYYYDates();
+    bool hasDate() { return seqs.fixed; }
+  };
+
+  //________|
   // SPREAD |
   //________|
 
-  class Spread final {
+  class Spread {
   private:
     PAIR<Date> interval;
     bool inclusive = true;

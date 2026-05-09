@@ -1,6 +1,7 @@
 #ifndef __MINI_TOOLS__UTILS__TIMER_CPP__
 #define __MINI_TOOLS__UTILS__TIMER_CPP__
 
+#include "algorithms/number-sequence.hpp"
 #include "utils/timer.hpp"
 #include "utils/scanner.hpp"
 #include "utils/str-tool.hpp"
@@ -65,8 +66,6 @@ namespace Timer {
   //______|
   // DATE |
   //______|
-
-  Date::ImplicitCentury Date::implicitCentury;
 
   const int Date::monthDays[12][2] {
     {31, 31}, // January
@@ -202,18 +201,6 @@ namespace Timer {
     else unsignedChristTimeYear = yyyy_in;
   }
 
-  void Date::setRecognizedYearsInterval(CR_PAIR_INT yyyy_pair) {
-    if (yyyy_pair.first > yyyy_pair.second) {
-      Date::recognizedYearsInterval.first = yyyy_pair.second;
-      Date::recognizedYearsInterval.second = yyyy_pair.first;
-    }
-    else Date::recognizedYearsInterval = yyyy_pair;
-  }
-
-  PAIR_INT Date::getRecognizedYearsInterval() {
-    return Date::recognizedYearsInterval;
-  }
-
   /** MULTILINGUAL TERM SETTERS */
 
   void Date::setMonthNames(
@@ -223,19 +210,37 @@ namespace Timer {
     CR_ARR_STR<2> october, CR_ARR_STR<2> november, CR_ARR_STR<2> december
   ) {
     for (int i = 0; i < 2; i++) {
-      Date::monthNames[Date::languageKey][0][i]  = january[i];
-      Date::monthNames[Date::languageKey][1][i]  = february[i];
-      Date::monthNames[Date::languageKey][2][i]  = march[i];
-      Date::monthNames[Date::languageKey][3][i]  = april[i];
-      Date::monthNames[Date::languageKey][4][i]  = may[i];
-      Date::monthNames[Date::languageKey][5][i]  = june[i];
-      Date::monthNames[Date::languageKey][6][i]  = july[i];
-      Date::monthNames[Date::languageKey][7][i]  = august[i];
-      Date::monthNames[Date::languageKey][8][i]  = september[i];
-      Date::monthNames[Date::languageKey][9][i]  = october[i];
-      Date::monthNames[Date::languageKey][10][i] = november[i];
-      Date::monthNames[Date::languageKey][11][i] = december[i];
+      Date::monthNames[Date::languageKey][i][0]  = january[i];
+      Date::monthNames[Date::languageKey][i][1]  = february[i];
+      Date::monthNames[Date::languageKey][i][2]  = march[i];
+      Date::monthNames[Date::languageKey][i][3]  = april[i];
+      Date::monthNames[Date::languageKey][i][4]  = may[i];
+      Date::monthNames[Date::languageKey][i][5]  = june[i];
+      Date::monthNames[Date::languageKey][i][6]  = july[i];
+      Date::monthNames[Date::languageKey][i][7]  = august[i];
+      Date::monthNames[Date::languageKey][i][8]  = september[i];
+      Date::monthNames[Date::languageKey][i][9]  = october[i];
+      Date::monthNames[Date::languageKey][i][10] = november[i];
+      Date::monthNames[Date::languageKey][i][11] = december[i];
     }
+  }
+
+  std::string Date::getMonthName(CR_INT index, CR_BOL isShortened) {
+    return Date::monthNames[Date::languageKey][isShortened][index];
+  }
+
+  Date::NamedMonthLengths Date::createNamedMonthLengths() {
+    NamedMonthLengths lengths;
+
+    for (int i = 0; i < 12; i++) {
+      lengths.longArray[i] = Date::monthNames[Date::languageKey][0][i].length();
+    }
+
+    for (int i = 0; i < 12; i++) {
+      lengths.shortArray[i] = Date::monthNames[Date::languageKey][1][i].length();
+    }
+
+    return lengths;
   }
 
   void Date::setChristTimeSign(
@@ -245,250 +250,6 @@ namespace Timer {
     Date::christTimeSign[Date::languageKey] = {
       beforeChristTerm, annoDominiTerm
     };
-  }
-
-  /** FROM STRING PARSER */
-
-  VEC<Date> Date::parseDates(CR_STR text, CR_BOL implyCentury) {
-    enum value_code {
-      value_other,
-      value_number,
-      value_word
-    };
-
-    VEC_PAIR2<std::string, value_code> valcod;
-    ARR<value_code, 2> eqdiff;
-    value_code first_value = value_other;
-
-    /** Potential Values Separation */
-
-    for (int i = 0; i < text.length(); i++) {
-
-      // start only from number or word
-      if (StrTool::isDigit(text[i])) {
-        first_value = value_number;
-      }
-      else if (StrTool::isLetter(text[i])) {
-        first_value = value_word;
-      }
-
-      if (first_value) {
-        // initialization
-        valcod = {{"", first_value}};
-        eqdiff = {first_value, first_value};
-
-        for (int j = i; j < text.length(); j++) {
-          eqdiff[0] = eqdiff[1];
-
-          if (StrTool::isDigit(text[j])) {
-            eqdiff[1] = value_number;
-          }
-          else if (StrTool::isLetter(text[j])) {
-            eqdiff[1] = value_word;
-          }
-          else { // non-number and non-word
-            eqdiff[1] = value_other;
-            continue;
-          }
-
-          // continue the last 'valcod'
-          if (eqdiff[0] == eqdiff[1]) {
-            valcod.back().first += text[j];
-          }
-          // add new 'valcod'
-          else valcod.push_back({
-            std::string(1, text[j]), eqdiff[1]
-          });
-        }
-
-        break;
-      }
-    }
-
-    /** Evaluate Patterns */
-
-    VEC<Date> dates;
-    bool needReset = true;
-    int buffer, might_dd = 0, might_mm = 0, might_yyyy = 0;
-
-    /**
-     * Will be assigned with 1 function from 3 versions which have
-     * different order of 3 date component detection conditions.
-     */
-    std::function<void()> detect = [&](){};
-
-    // reset when 'needReset' is true
-    std::function<void()> reset = [&]() {
-      might_dd = 0;
-      might_mm = 0;
-      might_yyyy = 0;
-    };
-
-    // apply implicit century
-    std::function<void()> implyCenturyToBuffer = [&]() {
-      if (implyCentury) {
-
-        // temporary variables
-        int absAffixYear = std::abs(Date::implicitCentury.affixYear);
-        int absBuffer = std::abs(buffer);
-        int absBufferDiv = absBuffer;
-        int numberOfBufferDigits = 0;
-
-        // find buffer digits count
-        while (absBufferDiv > 0) {
-          absBufferDiv /= 10;
-          numberOfBufferDigits++;
-        }
-
-        // buffer digits count is equals to year pattern digits count
-        if (numberOfBufferDigits == Date::implicitCentury.numberOfPatternDigits) {
-
-          int vsignAffixYear = 1;
-          int vsignBuffer = 1;
-          int multiplier = 1;
-          absBufferDiv = absBuffer;
-
-          // find value signs
-          if (absAffixYear != 0) vsignAffixYear = absAffixYear / Date::implicitCentury.affixYear;
-          if (absBuffer != 0) vsignBuffer = absBuffer / buffer;
-
-          // find power of ten multiplier
-          while (absBufferDiv > 0) {
-            absBufferDiv /= 10;
-            multiplier *= 10;
-          }
-
-          // stick 'affixYear' with 'buffer' (e.g. 20 with 25 = 2025)
-          buffer = (
-            // final value sign
-            vsignAffixYear * vsignBuffer
-            // make 'absAffixYear' have enough 0 digits to be filled by 'absBuffer'
-            * (absAffixYear * multiplier + absBuffer)
-          );
-        }
-      }
-    };
-
-    // limited by years interval
-    std::function<bool()> isInRecognizedYearsInterval = [&]()->bool {
-      if (buffer >= Date::recognizedYearsInterval.first &&
-        buffer <= Date::recognizedYearsInterval.second
-      ) {
-        might_yyyy = buffer;
-        return true;
-      }
-      return false;
-    };
-
-    // 'might_mm' and 'might_yyyy' should have been found
-    std::function<void()> pushValidDate = [&]() {
-
-      // limited by different maximum days in a month
-      if (might_dd <= Date::monthDays[Date::isLeapYear(might_yyyy)][might_mm - 1]) {
-
-        dates.push_back(Date(
-          might_dd, might_mm, might_yyyy
-        ));
-      }
-    };
-
-    // conditional function selection
-    switch (Date::formatCode) {
-      case LITTLE_ENDIAN: {
-        detect = [&]() {
-          if (!might_dd && buffer < 31) { // day
-            might_dd = buffer;
-            needReset = false;
-          }
-          else if (might_dd && !might_mm && buffer < 12) { // month
-            might_mm = buffer;
-            needReset = false;
-          }
-          else if (might_dd && might_mm) { // year
-            implyCenturyToBuffer();
-            if (isInRecognizedYearsInterval()) pushValidDate();
-          }
-        };
-      break;}
-      case MIDDLE_ENDIAN: {
-        detect = [&]() {
-          if (!might_mm && buffer < 12) { // month
-            might_mm = buffer;
-            needReset = false;
-          }
-          else if (might_mm && !might_dd && buffer < 31) { // day
-            might_dd = buffer;
-            needReset = false;
-          }
-          else if (might_mm && might_dd) { // year
-            implyCenturyToBuffer();
-            if (isInRecognizedYearsInterval()) pushValidDate();
-          }
-        };
-      break;}
-      case BIG_ENDIAN: {
-        detect = [&]() {
-          if (!might_yyyy) { // year
-            implyCenturyToBuffer();
-            if (isInRecognizedYearsInterval()) needReset = false;
-          }
-          else if (might_yyyy && !might_mm && buffer < 12) { // month
-            might_mm = buffer;
-            needReset = false;
-          }
-          else if (might_yyyy && might_mm) {
-            might_dd = buffer;
-            pushValidDate();
-          }
-        };
-      break;}
-    }
-
-    // string-code iteration 
-    for (int i = 0; i < valcod.size(); i++) {
-      if (valcod[i].second == value_number) {
-
-        // this number is a potential date component
-        buffer = Scanner::stringToNumber<int>(valcod[i].first);
-        detect();
-
-        // reset valid or invalid pattern
-        if (needReset) reset();
-        needReset = false;
-      }
-      else { // 'value_word': string that might be a named month
-        if (!might_yyyy) continue;
-        int detected_mm = 0;
-
-        // convert to lowercase
-        StrTool::modifyStringToLowercase(valcod[i].first);
-
-        // 2D array loop
-        for (int j = 0; j < 2; j++) {
-          for (int k = 0; k < Date::monthNames[Date::languageKey][j].size(); k++) {
-
-            // named month found and loop stopped
-            if (valcod[i].first == Date::monthNames[Date::languageKey][j][k]) {
-              detected_mm = k + 1;
-              break;
-            }
-          }
-
-          if (detected_mm) break;
-        }
-
-        if (detected_mm) {
-          // month already exist
-          if (might_mm) reset();
-          // valid pattern (saved)
-          else might_mm = detected_mm;
-        }
-        // named month not found
-        else reset();
-      }
-    }
-
-    return dates;
   }
 
   /** LEAP YEARS COUNTERS */
@@ -639,20 +400,20 @@ namespace Timer {
       + std::to_string(std::abs(yyyy));
   }
 
-  std::string Date::numericStringify() const {
+  std::string Date::numericStringify(CR_STR separator) const {
     switch (Date::formatCode) {
       case LITTLE_ENDIAN:
         return applyZeroPrefixDate()
-          + Date::separator + applyZeroPrefixMonth()
-          + Date::separator + applyZeroPrefixYearWithChristTimeSign();
+          + separator + applyZeroPrefixMonth()
+          + separator + applyZeroPrefixYearWithChristTimeSign();
       case MIDDLE_ENDIAN:
         return applyZeroPrefixMonth()
-          + Date::separator + applyZeroPrefixDate()
-          + Date::separator + applyZeroPrefixYearWithChristTimeSign();
+          + separator + applyZeroPrefixDate()
+          + separator + applyZeroPrefixYearWithChristTimeSign();
       case BIG_ENDIAN:
         return applyZeroPrefixYearWithNumberSign()
-          + Date::separator + applyZeroPrefixMonth()
-          + Date::separator + applyZeroPrefixDate();
+          + separator + applyZeroPrefixMonth()
+          + separator + applyZeroPrefixDate();
       default: return "";
     }
   }
@@ -755,6 +516,382 @@ namespace Timer {
       (yyyy == withDate.yyyy && mm > withDate.mm) ||
       (yyyy == withDate.yyyy && mm == withDate.mm && dd > withDate.dd)
     );
+  }
+
+  //________|
+  // PARSER |
+  //________|
+
+  Parser::DATE_COMPLETENESS_CODE Parser::checkDate() {
+
+    /** 1st: The year test */
+
+    int yyyy = Scanner::stringToNumber<int>(com_str_arr[idx[YYYY_K]]);
+
+    // outside of possible recognized years
+    if (yyyy < recognizedYearsInterval.min() ||
+      yyyy > recognizedYearsInterval.max()
+    ) {
+      if (implicitYear.active) {
+        algorithms::NumberSequence::Digits digits = algorithms::NumberSequence::countDigits<int>(yyyy);
+
+        if (digits.count == implicitYear.numberOfPatternDigits) {
+          yyyy = 10 * digits.valsign * implicitYear.affixYear * digits.pow10 + yyyy;
+        }
+        else return Parser::DATE_INVALID;
+      }
+      else return Parser::DATE_INVALID;
+    }
+
+    /** 2nd: The month test */
+
+    int mm = Scanner::stringToNumber<int>(com_str_arr[idx[MM_J]]);
+
+    // 'mm' may be a word
+    if (mm == 0) {
+      bool break_i = false;
+      StrTool::modifyStringToLowercase(com_str_arr[idx[MM_J]]);
+
+      for (int i = 0; i < 12; i++) {
+        for (int j = 0; j < 2; j++) {
+
+          // month name detected
+          if (com_str_arr[idx[MM_J]] == Date::getMonthName(i, j)) {
+            mm = i + 1;
+            break_i = true;
+            break;
+          }
+        }
+
+        if (break_i) break;
+      }
+
+      // the test string is empty
+      if (!break_i) return Parser::DATE_INVALID;
+    }
+    // outside of possible numeric month
+    else if (mm < 1 || mm > 12) {
+      return Parser::DATE_INVALID;
+    }
+
+    /** 3rd: The day test */
+
+    int dd = Scanner::stringToNumber<int>(com_str_arr[idx[DD_I]]);
+    bool isLeapYYYY = Date::isLeapYear(yyyy);
+
+    // outside of possible month days
+    if (dd <= 0 ||
+      dd > Date::monthDays[mm - 1][isLeapYYYY]
+    ) {
+      seqs.temporary = new Sequence(
+        Date(randomizeUnknownDD ?
+          (std::rand() % Date::monthDays[mm - 1][isLeapYYYY] + 1) : 1,
+          mm, yyyy
+        ), false
+      );
+
+      return Parser::DATE_MM_YYYY;
+    }
+
+    // the 'com_str_arr' is a valid date
+    Sequence *newFixedSeqs = new Sequence(
+      Date(dd, mm, yyyy), true
+    );
+
+    // the 'seqs.fixed' is always at the tail
+    if (seqs.fixed) seqs.fixed->accept(newFixedSeqs);
+    seqs.fixed = newFixedSeqs;
+
+    return Parser::DATE_COMPLETED;
+  }
+
+  Parser::WordNode* Parser::spaceSplit(CR_STR text) {
+    bool anyWhiteSpace = false;
+
+    // text node initialization
+    WordNode *wordNode = new WordNode();
+
+    for (CR_CH ch : text) {
+      // whitespace detected, add new node
+      if (StrTool::isWhitespace(ch)) {
+        if (!anyWhiteSpace) {
+          anyWhiteSpace = true;
+          wordNode->accept(new WordNode());
+          wordNode = static_cast<WordNode*>(wordNode->next());
+        }
+      }
+      else { // not a whitespace
+        anyWhiteSpace = false;
+        static_cast<WordNode*>(wordNode)->value.push_back(ch);
+      }
+    }
+
+    /**
+     * The last node will have an empty value
+     * if the text has a whitespace at the end.
+     * It's removed to reduce unnecessary empty string checks.
+     */
+    if (wordNode->value.empty()) {
+      wordNode->destroy();
+    }
+
+    // reset to head
+    wordNode = static_cast<WordNode*>(wordNode->head());
+    return wordNode;
+  }
+
+  Parser::WordNode* Parser::distinctSplit(WordNode *wordNode) {
+
+    // indexes of array 'chTypes'
+    enum { _current, _previous };
+
+    // codes that represent changes in character type
+    enum ch_type { ch_unset, ch_number, ch_letter, ch_other };
+    ch_type chTypes[2];
+
+    /**
+     * Cannot delete nodes in an iteration,
+     * so they are stored here first before being deleted later.
+     */
+    VEC<DS_LinkedList*> emptyNodes;
+
+    wordNode->forEach(
+      DS_LinkedList::RIGHT,
+      [&](DS_LinkedList *node)->bool {
+
+        // reset at each node to only compare characters in their values
+        chTypes[_current] = ch_unset;
+        chTypes[_previous] = ch_unset;
+
+        // store only similar type of characters
+        std::string buffer;
+
+        // detect changes in character type in a string
+        for (CR_CH ch : static_cast<WordNode*>(node)->value) {
+
+          // alphanumeric conditions
+          bool isDigit = StrTool::isDigit(ch);
+          bool isLetter = StrTool::isLetter(ch);
+
+          // shift current to previous
+          chTypes[_previous] = chTypes[_current];
+
+          // assign current to detected type
+          if (isDigit) {
+            chTypes[_current] = ch_number;
+          }
+          else if (isLetter) {
+            chTypes[_current] = ch_letter;
+          }
+          else chTypes[_current] = ch_other;
+
+          // current is not similar with the previous
+          if (chTypes[_current] != chTypes[_previous] &&
+            chTypes[_previous] != ch_unset &&
+            !buffer.empty()
+          ) {
+            // add new node as previous of node
+            WordNode *newNode = new WordNode(buffer);
+
+            // node is the head
+            if (node->atFront()) newNode->merge(node);
+            // node is after the head
+            else node->prev()->accept(newNode);
+
+            buffer = "";
+          }
+
+          // collect similar type of 'ch'
+          if (isDigit || isLetter) buffer += ch;
+        }
+
+        // will be removed
+        if (buffer.empty()) {
+          emptyNodes.push_back(node);
+        }
+        else { // keep the remaining alphanumeric
+          static_cast<WordNode*>(node)->value = buffer;
+        }
+
+        return true;
+      }
+    );
+
+    // nodes are removed to reduce unnecessary empty string checks
+    for (DS_LinkedList *node : emptyNodes) {
+      node->destroy();
+    }
+
+    // reset to head
+    wordNode = static_cast<WordNode*>(wordNode->head());
+    return wordNode;
+  }
+
+  void Parser::scan(CR_STR text) {
+
+    // use current time as random seed
+    if (randomizeUnknownDD) {
+      std::srand(std::time(0));
+    }
+
+    // container of string array for joined check
+    std::string comStrBuffer = "";
+    int comCtr = DD_I;
+
+    // directing 'idx' to corresponding date format position
+    if (Date::formatCode == Date::LITTLE_ENDIAN) {
+      idx[DD_I] = 0;
+      idx[MM_J] = 1;
+      idx[YYYY_K] = 2;
+    }
+    else if (Date::formatCode == Date::MIDDLE_ENDIAN) {
+      idx[DD_I] = 1;
+      idx[MM_J] = 0;
+      idx[YYYY_K] = 2;
+    }
+    else if (Date::formatCode == Date::BIG_ENDIAN) {
+      idx[DD_I] = 2;
+      idx[MM_J] = 1;
+      idx[YYYY_K] = 0;
+    }
+
+    // split text to words
+    WordNode *wordNode = distinctSplit(spaceSplit(text));
+
+    // the previous only MM and YYYY detected date is approved for inclusion
+    std::function<void()> approveMMYYYYSequence = [&]()->void {
+      if (seqs.fixed) {
+        seqs.fixed->accept(seqs.temporary);
+      }
+      else seqs.fixed = seqs.temporary;
+    };
+
+    wordNode->forEach(
+      DS_LinkedList::RIGHT,
+      [&](DS_LinkedList *node)->bool {
+
+        // three-phase assignment
+        com_str_arr[comCtr] = static_cast<WordNode*>(node)->value;
+        comCtr++;
+
+        // after three-phase check
+        if (comCtr > YYYY_K) {
+          DATE_COMPLETENESS_CODE completenessCode = checkDate();
+
+          // invalid or MM/YYYY
+          if (completenessCode != DATE_COMPLETED) {
+            if (seqs.temporary) {
+              approveMMYYYYSequence();
+            }
+            else { // shift 'com_str_arr' to the right one step
+              com_str_arr[DD_I] = com_str_arr[MM_J];
+              com_str_arr[MM_J] = com_str_arr[YYYY_K];
+              comCtr = YYYY_K;
+              return true;
+            }
+          }
+
+          // reset temporary sequence and all 'com_str_arr'
+          seqs.temporary = nullptr;
+          comCtr = DD_I;
+        }
+
+        return true;
+      }
+    );
+
+    /**
+     * The 'WordNode' is done. All detected dates are now stored in 'Sequence'.
+     */
+    wordNode->annihilate();
+
+    /**
+     * Include the temporary sequence if the three-phase assignment is not checked.
+     */
+    if (seqs.temporary) {
+      approveMMYYYYSequence();
+      seqs.temporary = nullptr;
+    }
+  }
+
+  void Parser::RecognizedYearsInterval::set(CR_PAIR_INT yyyy_pair) {
+    if (yyyy_pair.first > yyyy_pair.second) {
+      pair.first = yyyy_pair.second;
+      pair.second = yyyy_pair.first;
+    }
+    else pair = yyyy_pair;
+  }
+
+  algorithms::NumberSequence::Digits Parser::RecognizedYearsInterval::minDigits() {
+    int minInterval = std::abs(pair.first);
+
+    if (minInterval > std::abs(pair.second)) {
+      minInterval = pair.second;
+    }
+    else minInterval = pair.first;
+
+    return algorithms::NumberSequence::countDigits<int>(minInterval);
+  }
+
+  algorithms::NumberSequence::Digits Parser::RecognizedYearsInterval::maxDigits() {
+    int maxInterval = std::abs(pair.second);
+
+    if (maxInterval < std::abs(pair.first)) {
+      maxInterval = pair.first;
+    }
+    else maxInterval = pair.second;
+
+    return algorithms::NumberSequence::countDigits<int>(maxInterval);
+  }
+
+  VEC<Date> Parser::getAllDates() {
+    VEC<Date> dates;
+
+    seqs.fixed->forEach(
+      DS_LinkedList::RIGHT,
+      [&](DS_LinkedList *node)->bool {
+        dates.push_back(static_cast<Sequence*>(node)->date);
+        return true;
+      }
+    );
+
+    return dates;
+  }
+
+  VEC<Date> Parser::getCompletedDates() {
+    VEC<Date> dates;
+
+    seqs.fixed->forEach(
+      DS_LinkedList::RIGHT,
+      [&](DS_LinkedList *node)->bool {
+
+        if (static_cast<Sequence*>(node)->completed) {
+          dates.push_back(static_cast<Sequence*>(node)->date);
+        }
+
+        return true;
+      }
+    );
+
+    return dates;
+  }
+
+  VEC<Date> Parser::getMMYYYYDates() {
+    VEC<Date> dates;
+
+    seqs.fixed->forEach(
+      DS_LinkedList::RIGHT,
+      [&](DS_LinkedList *node)->bool {
+
+        if (!static_cast<Sequence*>(node)->completed) {
+          dates.push_back(static_cast<Sequence*>(node)->date);
+        }
+
+        return true;
+      }
+    );
+
+    return dates;
   }
 
   //________|
