@@ -609,13 +609,13 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   template <typename W>
   std::string CLIParser<T, U, V>::getStringifiedType() {
-    if constexpr (std::is_same_v<W, T>) {
-      return CLIParser::stringified_T;
+    if constexpr (std::is_same_v<W, bool>) {
+      return CLIParser::stringified_boolean;
     }
-    else if constexpr (std::is_same_v<W, U>) {
-      return CLIParser::stringified_U;
+    else if constexpr (std::is_same_v<W, double>) {
+      return CLIParser::stringified_number;
     }
-    else return CLIParser::stringified_V;
+    return CLIParser::stringified_word;
   }
 
   template <typename T, typename U, typename V>
@@ -623,13 +623,13 @@ namespace utils {
   template <typename W>
   void CLIParser<T, U, V>::setStringifiedType(CR_STR term) {
     if (!term.empty()) {
-      if constexpr (std::is_same_v<W, T>) {
-        CLIParser::stringified_T = term;
+      if constexpr (std::is_same_v<W, bool>) {
+        CLIParser::stringified_boolean = term;
       }
-      else if constexpr (std::is_same_v<W, U>) {
-        CLIParser::stringified_U = term;
+      else if constexpr (std::is_same_v<W, double>) {
+        CLIParser::stringified_number = term;
       }
-      else CLIParser::stringified_V = term;
+      else CLIParser::stringified_word = term;
     }
   }
 }}

@@ -146,9 +146,9 @@ namespace utils {
 
     // multilingual term for type
     inline static std::string
-      stringified_T = "WORD",
-      stringified_U = "NUMBER",
-      stringified_V = "BOOLEAN";
+      stringified_word = "WORD",
+      stringified_number = "NUMBER",
+      stringified_boolean = "BOOLEAN";
 
     // select a main unordered map
     template <typename W>
