@@ -12,6 +12,7 @@
 #include <queue>
 #include <tuple>
 #include <unordered_map>
+#include <unordered_set>
 #include <algorithm>
 #include <utility>
 #include <functional>
@@ -188,6 +189,10 @@ namespace mini_tools {
   using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
 
   /** SHORTENED STRING UNORDERED MAP TEMPLATES */
+
+  // specifically for unordered set
+  template <typename T>
+  using UNORSET = std::unordered_set<T>;
 
   template <typename T, typename U>
   using UNORMAP = std::unordered_map<T, U>;
