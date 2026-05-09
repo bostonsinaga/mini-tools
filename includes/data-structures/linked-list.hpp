@@ -12,10 +12,25 @@ namespace data_structures {
    */
   class LinkedList {
   private:
-    inline static UNORMAP<LinkedList*, UNORSET<LinkedList*>> existences;
+    class Metadata {
+    public:
+      inline static UNORMAP<LinkedList*, UNORSET<LinkedList*>> existences;
+      inline static UNORMAP<LinkedList*, bool> iteratings;
+
+      static void reg(LinkedList *key) {
+        Metadata::existences[key].insert(key);
+        Metadata::iteratings[key] = false;
+      }
+
+      static void unreg(LinkedList *key) {
+        Metadata::existences.erase(key);
+        Metadata::iteratings.erase(key);
+      }
+    };
+
     LinkedList *start, *neighbors[2];
 
-    // these will not check for parameter existence
+    // these will not check for potential nullptr
     void xjoin(LinkedList *insider);
     void xaccept(LinkedList *outsider);
     void xappoint(LinkedList *newStart);
@@ -32,6 +47,7 @@ namespace data_structures {
 
     // return false to force stop the loop
     typedef std::function<bool(LinkedList*)> Callback;
+    typedef std::function<bool(LinkedList*, CR_INT)> CallbackCounter;
 
     LinkedList();
     LinkedList *head() { return start; }
@@ -39,28 +55,37 @@ namespace data_structures {
     LinkedList *next() { return neighbors[RIGHT]; }
     LinkedList *prev() { return neighbors[LEFT]; }
 
+    // get a node in the order of steps starting from this
+    LinkedList *skip(int steps);
+
     /**
      * Disconnect the list from the right neighbor to the very end.
      * List with less than three nodes will not be affected.
      */
     virtual LinkedList *slice();
 
-    // merged list will have this 'start' as the 'start'
+    // merged list will have this start as the start
     virtual void merge(LinkedList *outsider);
 
     bool alone() { return this == neighbors[RIGHT]; }
     bool atFront() { return this == start; }
     bool atBack() { return this == start->neighbors[LEFT]; }
-    size_t number() { return LinkedList::existences[start].size(); }
+    size_t number() { return LinkedList::Metadata::existences[start].size(); }
 
-    // from 'this' to left or right loop
+    bool has(LinkedList *member);
+    virtual void detach();
+
+    /** From this to left or right loop */
+
     virtual void forEach(
       const DIRECTION &direction,
       const Callback &callback
     );
 
-    bool has(LinkedList *member);
-    virtual void detach();
+    virtual void forEach(
+      const DIRECTION &direction,
+      const CallbackCounter &callback
+    );
 
     /**
      * The list will be iterated by assigning

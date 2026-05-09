@@ -64,7 +64,7 @@ namespace data_structures {
   }
 
   void GeneralTree::cleanChildren() {
-    if (children) {
+    if (children && !LinkedList::Metadata::iteratings[start]) {
       children->xannihilate();
       children = nullptr;
     }
@@ -74,6 +74,7 @@ namespace data_structures {
     const DIRECTION &direction,
     const Callback &callback
   ) {
+    LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
 
     if (children) children->traverse(direction, callback);
@@ -85,18 +86,22 @@ namespace data_structures {
         el->children->traverse(direction, callback);
       }
 
-      GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[direction]);
       callback(el);
-      el = newEl;
+      el = static_cast<GeneralTree*>(el->neighbors[direction]);
     }
+
+    LinkedList::Metadata::iteratings[start] = false;
   }
 
   void GeneralTree::bubble(const Callback &callback) {
+    LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *el = this;
 
     while (el && callback(el)) {
       el = el->parent;
     }
+
+    LinkedList::Metadata::iteratings[start] = false;
   }
 
   GeneralTree *GeneralTree::getRoot() {
@@ -132,17 +137,19 @@ namespace data_structures {
   }
 
   void GeneralTree::destroy() {
-    if (parent && parent->children->alone()) {
-      parent->children = nullptr;
-    }
+    if (!LinkedList::Metadata::iteratings[start]) {
+      if (parent && parent->children->alone()) {
+        parent->children = nullptr;
+      }
 
-    if (children) children->xannihilate();
+      if (children) children->xannihilate();
+    }
   }
 
   // postorder traversal
   void GeneralTree::xannihilate() {
 
-    LinkedList::existences.erase(start);
+    LinkedList::Metadata::unreg(start);
     GeneralTree *el = static_cast<GeneralTree*>(neighbors[RIGHT]);
 
     // vertically and horizontally recursive deletion
@@ -161,8 +168,10 @@ namespace data_structures {
   }
 
   void GeneralTree::annihilate() {
-    if (parent) parent->children = nullptr;
-    xannihilate();
+    if (!LinkedList::Metadata::iteratings[start]) {
+      if (parent) parent->children = nullptr;
+      xannihilate();
+    }
   }
 }}
 
