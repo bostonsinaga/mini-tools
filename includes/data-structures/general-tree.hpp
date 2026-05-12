@@ -51,8 +51,8 @@ namespace data_structures {
 
     // iterate through child nodes until reaching the leaves
     virtual void traverse(
-      const DIRECTION &direction,
-      const Callback &callback
+      const Callback &callback,
+      const DIRECTION &direction = RIGHT
     );
 
     // iterate from here to the root without visiting neighbors

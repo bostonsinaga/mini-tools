@@ -653,11 +653,10 @@ namespace Timer {
      * Cannot delete nodes in an iteration,
      * so they are stored here first before being deleted later.
      */
-    VEC<DS_LinkedList*> emptyNodes;
+    VEC<data_structures::LinkedList*> emptyNodes;
 
     wordNode->forEach(
-      DS_LinkedList::RIGHT,
-      [&](DS_LinkedList *node)->bool {
+      [&](data_structures::LinkedList *node)->bool {
 
         // reset at each node to only compare characters in their values
         chTypes[_current] = ch_unset;
@@ -718,7 +717,7 @@ namespace Timer {
     );
 
     // nodes are removed to reduce unnecessary empty string checks
-    for (DS_LinkedList *node : emptyNodes) {
+    for (data_structures::LinkedList *node : emptyNodes) {
       node->destroy();
     }
 
@@ -767,8 +766,7 @@ namespace Timer {
     };
 
     wordNode->forEach(
-      DS_LinkedList::RIGHT,
-      [&](DS_LinkedList *node)->bool {
+      [&](data_structures::LinkedList *node)->bool {
 
         // three-phase assignment
         com_str_arr[comCtr] = static_cast<WordNode*>(node)->value;
@@ -848,8 +846,7 @@ namespace Timer {
     VEC<Date> dates;
 
     seqs.fixed->forEach(
-      DS_LinkedList::RIGHT,
-      [&](DS_LinkedList *node)->bool {
+      [&](data_structures::LinkedList *node)->bool {
         dates.push_back(static_cast<Sequence*>(node)->date);
         return true;
       }
@@ -862,8 +859,7 @@ namespace Timer {
     VEC<Date> dates;
 
     seqs.fixed->forEach(
-      DS_LinkedList::RIGHT,
-      [&](DS_LinkedList *node)->bool {
+      [&](data_structures::LinkedList *node)->bool {
 
         if (static_cast<Sequence*>(node)->completed) {
           dates.push_back(static_cast<Sequence*>(node)->date);
@@ -880,8 +876,7 @@ namespace Timer {
     VEC<Date> dates;
 
     seqs.fixed->forEach(
-      DS_LinkedList::RIGHT,
-      [&](DS_LinkedList *node)->bool {
+      [&](data_structures::LinkedList *node)->bool {
 
         if (!static_cast<Sequence*>(node)->completed) {
           dates.push_back(static_cast<Sequence*>(node)->date);

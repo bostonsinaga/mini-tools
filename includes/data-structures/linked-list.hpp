@@ -78,13 +78,13 @@ namespace data_structures {
     /** From this to left or right loop */
 
     virtual void forEach(
-      const DIRECTION &direction,
-      const Callback &callback
+      const Callback &callback,
+      const DIRECTION &direction = RIGHT
     );
 
     virtual void forEach(
-      const DIRECTION &direction,
-      const CallbackCounter &callback
+      const CallbackCounter &callback,
+      const DIRECTION &direction = RIGHT
     );
 
     /**

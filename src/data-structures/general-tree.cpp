@@ -71,19 +71,19 @@ namespace data_structures {
   }
 
   void GeneralTree::traverse(
-    const DIRECTION &direction,
-    const Callback &callback
+    const Callback &callback,
+    const DIRECTION &direction
   ) {
     LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
 
-    if (children) children->traverse(direction, callback);
+    if (children) children->traverse(callback, direction);
     callback(this);
 
     while (el && el != this) {
 
       if (el->children) {
-        el->children->traverse(direction, callback);
+        el->children->traverse(callback, direction);
       }
 
       callback(el);

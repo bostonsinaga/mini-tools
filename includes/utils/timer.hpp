@@ -187,8 +187,6 @@ namespace Timer {
 
   class Parser {
   private:
-    typedef data_structures::LinkedList DS_LinkedList;
-
     // indexes that following the 'Date::formatCode'
     enum {DD_I, MM_J, YYYY_K};
     int idx[3];
@@ -226,13 +224,13 @@ namespace Timer {
       algorithms::NumberSequence::Digits maxDigits();
     };
 
-    class WordNode final : public DS_LinkedList {
+    class WordNode final : public data_structures::LinkedList {
     public:
       std::string value;
       WordNode(CR_STR value_in = "") : value(value_in) {}
     };
 
-    class Sequence final : public DS_LinkedList {
+    class Sequence final : public data_structures::LinkedList {
     public:
       Date date;
       bool completed = false;
