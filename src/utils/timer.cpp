@@ -900,9 +900,9 @@ namespace Timer {
 
   // only 1 of the 3 parameters will have a value
   VEC<Date> Spread::everyDateDistribute(
-    CR_INT dd_diff,
-    CR_INT mm_diff,
-    CR_INT yyyy_diff
+    CR_SZ dd_diff,
+    CR_SZ mm_diff,
+    CR_SZ yyyy_diff
   ) {
     VEC<Date> dates;
     if (inclusive) dates.push_back(interval.first);
@@ -933,19 +933,19 @@ namespace Timer {
     return dates;
   }
 
-  VEC<Date> Spread::everyDaysDistribute(CR_INT difference) {
+  VEC<Date> Spread::everyDaysDistribute(CR_SZ difference) {
     return everyDateDistribute(difference, 0, 0);
   }
 
-  VEC<Date> Spread::everyMonthsDistribute(CR_INT difference) {
+  VEC<Date> Spread::everyMonthsDistribute(CR_SZ difference) {
     return everyDateDistribute(0, difference, 0);
   }
 
-  VEC<Date> Spread::everyYearsDistribute(CR_INT difference) {
+  VEC<Date> Spread::everyYearsDistribute(CR_SZ difference) {
     return everyDateDistribute(0, 0, difference);
   }
 
-  VEC<Date> Spread::fixedNumberDistribute(CR_INT quantity) {
+  VEC<Date> Spread::fixedNumberDistribute(CR_SZ quantity) {
     if (quantity != 0) {
       return everyDaysDistribute(
         interval.second.countDaysFrom(interval.first) / quantity

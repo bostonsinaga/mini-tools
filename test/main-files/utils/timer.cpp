@@ -76,9 +76,93 @@ bool dateStringifyCallback(mt_uti::CLIParser<double> &cli) {
   return true;
 }
 
-bool spreadCallback(mt_uti::CLIParser<double> &cli) {
+// string codes for distribution method
+std::string 
+  discode_str_each_days = "each-days",
+  discode_str_each_months = "each-months",
+  discode_str_each_years = "each-years",
+  discode_str_fixed_number = "fixed-number";
+
+bool spreadCallback(mt_uti::CLIParser<double, bool, std::string> &cli) {
   Helper::printTitle("\nSPREAD:\n\n");
-  return false;
+
+  // integer codes for distribution method
+  enum distribution_int_code {
+    discode_int_each_days,
+    discode_int_each_months,
+    discode_int_each_years,
+    discode_int_fixed_number
+  } discode;
+
+  // get string distribution code from the 'cli'
+  std::string strCode = cli.getAt<std::string>("--distribution-method");
+  mt_uti::StrTool::modifyStringToLowercase(strCode);
+
+  // change distribdistributionute code from string to integer
+  if (strCode == discode_str_each_days) discode = discode_int_each_days;
+  else if (strCode == discode_str_each_months) discode = discode_int_each_months;
+  else if (strCode == discode_str_each_years) discode = discode_int_each_years;
+  else discode = discode_int_fixed_number;
+
+  mt_uti::Timer::Date dateStart(
+    cli.getAt<double>("-dd-start"),
+    cli.getAt<double>("-mm-start"),
+    cli.getAt<double>("-yyyy-start")
+  );
+
+  mt_uti::Timer::Date dateEnd(
+    cli.getAt<double>("-dd-end"),
+    cli.getAt<double>("-mm-end"),
+    cli.getAt<double>("-yyyy-end")
+  );
+
+  std::cout << "dateStart: " << dateStart.numericStringify()
+    << "\ndateEnd: " << dateEnd.numericStringify();
+
+  mt_uti::Timer::Spread spread(dateStart, dateEnd);
+  bool inclusive = cli.getAt<bool>("--inclusive");
+
+  /** Information line for status of value boundary */
+
+  std::cout << "\nboundary: " << (inclusive ? "inclusive" : "exclusive") << std::endl;
+
+  if (inclusive) spread.setInclusive();
+  else spread.setExclusive();
+
+  /** Assignment to corresponding distribution method */
+
+  std::string spreadTitle;
+  mt::VEC<mt_uti::Timer::Date> spreadDates;
+  size_t quantity = cli.getAt<double>("-quantity");
+
+  if (discode == discode_int_each_days) {
+    spreadTitle = "spread.everyDaysDistribute";
+    spreadDates = spread.everyDaysDistribute(quantity);
+  }
+  else if (discode == discode_int_each_months) {
+    spreadTitle = "spread.everyMonthsDistribute";
+    spreadDates = spread.everyMonthsDistribute(quantity);
+  }
+  else if (discode == discode_int_each_years) {
+    spreadTitle = "spread.everyYearsDistribute";
+    spreadDates = spread.everyYearsDistribute(quantity);
+  }
+  else {
+    spreadTitle = "spread.fixedNumberDistribute";
+    spreadDates = spread.fixedNumberDistribute(quantity);
+  }
+
+  /** Display the result */
+
+  int atLeastOne = 0;
+  std::cout << "\n" << spreadTitle << ":\n";
+
+  for (mt::CR<mt_uti::Timer::Date> date : spreadDates) {
+    std::cout << "  " << date.numericStringify() << std::endl;
+    atLeastOne++;
+  }
+
+  return atLeastOne;
 }
 
 int main(int argc, char *argv[]) {
@@ -107,7 +191,7 @@ int main(int argc, char *argv[]) {
     }
   );
 
-  mt_uti::CLIParser<double> spreadCLI(
+  mt_uti::CLIParser<double, bool, std::string> spreadCLI(
     raws,
     {
       std::make_pair("-dd-start", 1),
@@ -115,7 +199,14 @@ int main(int argc, char *argv[]) {
       std::make_pair("-yyyy-start", 1),
       std::make_pair("-dd-end", 1),
       std::make_pair("-mm-end", 1),
-      std::make_pair("-yyyy-end", 1)
+      std::make_pair("-yyyy-end", 1),
+      std::make_pair("-quantity", 1),
+    },
+    {
+      std::make_pair("--inclusive", false)
+    },
+    {
+      std::make_pair("--distribution-method", discode_str_fixed_number)
     }
   );
 
@@ -132,21 +223,21 @@ int main(int argc, char *argv[]) {
 
   Helper::CLIWrapper::run<std::string, bool>(
     "--date-parse",
-    "Date parse description.",
+    "Parse potential dates from a long text",
     dateParseCLI,
     dateParseCallback
   );
 
   Helper::CLIWrapper::run<double>(
     "--date-stringify",
-    "Convert date components to text with separators or month names.",
+    "Convert date components to text with separators or month names",
     dateStringifyCLI,
     dateStringifyCallback
   );
 
-  Helper::CLIWrapper::run<double>(
+  Helper::CLIWrapper::run<double, bool, std::string>(
     "--spread",
-    "Spread description.",
+    "Spread dates between 2 dates (the interval)",
     spreadCLI,
     spreadCallback
   );

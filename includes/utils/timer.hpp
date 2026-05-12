@@ -135,8 +135,8 @@ namespace Timer {
 
     // component getters
     int getDay() const { return dd; };
-    int getYear() const { return mm; };
-    int getMonth() const { return yyyy; };
+    int getMonth() const { return mm; };
+    int getYear() const { return yyyy; };
 
     /**
      * A century leap year occurs only once every 400 years
@@ -297,9 +297,9 @@ namespace Timer {
      * component that is in excess of the given difference.
      */
     VEC<Date> everyDateDistribute(
-      CR_INT dd_diff,
-      CR_INT mm_diff,
-      CR_INT yyyy_diff
+      CR_SZ dd_diff,
+      CR_SZ mm_diff,
+      CR_SZ yyyy_diff
     );
 
   public:
@@ -322,10 +322,10 @@ namespace Timer {
     void setInclusive() { inclusive = true; }
     void setExclusive() { inclusive = false; }
 
-    VEC<Date> everyDaysDistribute(CR_INT difference);
-    VEC<Date> everyMonthsDistribute(CR_INT difference);
-    VEC<Date> everyYearsDistribute(CR_INT difference);
-    VEC<Date> fixedNumberDistribute(CR_INT quantity);
+    VEC<Date> everyDaysDistribute(CR_SZ difference);
+    VEC<Date> everyMonthsDistribute(CR_SZ difference);
+    VEC<Date> everyYearsDistribute(CR_SZ difference);
+    VEC<Date> fixedNumberDistribute(CR_SZ quantity);
   };
 }}}
 
