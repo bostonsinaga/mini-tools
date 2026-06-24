@@ -29,24 +29,29 @@ namespace mini_tools {
     template <typename T>
     constexpr bool isLetter() {
       return
-        std::is_same<T, char>::value ||
-        std::is_same<T, wchar_t>::value ||
-        std::is_same<T, std::string>::value;
+        std::is_same_v<T, char> ||
+        std::is_same_v<T, wchar_t> ||
+        std::is_same_v<T, std::string>;
     }
 
     template <typename T>
     constexpr bool isNumber() {
       if constexpr (!isLetter<T>()) {
         return
-          std::is_integral<T>::value ||
-          std::is_floating_point<T>::value;
+          std::is_integral_v<T> ||
+          std::is_floating_point_v<T>;
       }
       return false;
     }
 
     template <typename T>
+    constexpr bool isPointer() {
+      return std::is_pointer_v<T>;
+    }
+
+    template <typename T>
     constexpr bool notNullptr() {
-      return !std::is_same<T, std::nullptr_t>::value;
+      return !std::is_same_v<T, std::nullptr_t>;
     }
 
     template <typename T>
