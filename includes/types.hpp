@@ -1091,7 +1091,7 @@ namespace mini_tools {
 
   // get default value for T
   template <typename T>
-  T getDefaultType(CR<std::function<T()>> customDefaultValueGetter = nullptr) {
+  T getDefaultFromType(CR<std::function<T()>> customDefaultValueGetter = nullptr) {
 
     // default value for pointer
     if constexpr (inspector::isPointer<T>()) {
