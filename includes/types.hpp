@@ -1088,6 +1088,24 @@ namespace mini_tools {
   inline bool STRUNORMAP_LD_P_FOUND(CR_STRUNORMAP_LD_P map, CR_STR key) {
     return STRUNORMAP_FOUND<LD*>(map, key);
   }
+
+  // get default value for T
+  template <typename T>
+  T getDefaultType(CR<std::function<T()>> customDefaultValueGetter = nullptr) {
+
+    // default value for pointer
+    if constexpr (inspector::isPointer<T>()) {
+      return nullptr;
+    }
+    else {
+      // custom default value callback
+      if (customDefaultValueGetter) {
+        return customDefaultValueGetter();
+      }
+      // this may error if T doesn't have default constructor
+      return T();
+    }
+  }
 }
 
 #endif // __MINI_TOOLS__TYPES_HPP__
