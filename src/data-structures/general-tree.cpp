@@ -143,6 +143,7 @@ namespace data_structures {
       }
 
       if (children) children->xannihilate();
+      LinkedList::destroy();
     }
   }
 
