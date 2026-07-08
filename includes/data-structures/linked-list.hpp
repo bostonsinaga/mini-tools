@@ -40,7 +40,7 @@ namespace data_structures {
     friend class GeneralTree;
 
   protected:
-    ~LinkedList() = default;
+    virtual ~LinkedList() = default;
 
   public:
     enum DIRECTION { LEFT, RIGHT };

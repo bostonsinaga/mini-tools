@@ -22,9 +22,6 @@ namespace data_structures {
     void xaddChild(GeneralTree *object);
     void xannihilate();
 
-  protected:
-    ~GeneralTree() = default;
-
   public:
     size_t getLevel() { return level; }
     size_t numberOfChildren();

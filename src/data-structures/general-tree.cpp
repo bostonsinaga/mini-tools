@@ -155,16 +155,13 @@ namespace data_structures {
 
     // vertically and horizontally recursive deletion
     while (el && el != this) {
-
-      if (el->children) {
-        el->children->xannihilate();
-      }
-
+      if (el->children) el->children->xannihilate();
       GeneralTree *newEl = static_cast<GeneralTree*>(el->neighbors[RIGHT]);
       delete el;
       el = newEl;
     }
 
+    if (children) children->xannihilate();
     delete this;
   }
 
