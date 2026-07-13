@@ -21,7 +21,7 @@ namespace utils {
      * The 'falseTerms' is actually used as example of false input in
      * description of user class. The tester only evaluates 'trueTerms'.
      */
-    STRUNORMAP<VEC_STR>
+    UNORMAP_STR<VEC_STR>
       trueTerms = {{ "en", {"TRUE", "YES", "Y"} }},
       falseTerms = {{ "en", {"FALSE", "NO", "N"} }};
 

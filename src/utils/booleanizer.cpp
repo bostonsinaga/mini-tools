@@ -46,7 +46,7 @@ namespace utils {
   }
 
   bool Booleanizer::hasISOCode(CR_STR existingISOCode) {
-    return STRUNORMAP_FOUND<VEC_STR>(trueTerms, existingISOCode);
+    return trueTerms.find(existingISOCode) != trueTerms.end();
   }
 
   void Booleanizer::addTerms(

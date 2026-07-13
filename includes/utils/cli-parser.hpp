@@ -92,7 +92,7 @@ namespace utils {
      * unordered maps since they are just initial string inputs.
      * Verify their existence using the inquiries.
      */
-    STRUNORMAP_UI entries;
+    UNORMAP_STR<UI> entries;
 
     /** Abbreviations of keyword-default */
 
@@ -114,7 +114,7 @@ namespace utils {
     using PAIR_MAIN = PAIR2<VEC<W>, W>;
 
     template <typename W>
-    using UNORMAP_MAIN = STRUNORMAP<PAIR_MAIN<W>>;
+    using UNORMAP_MAIN = UNORMAP_STR<PAIR_MAIN<W>>;
 
     /**
      * MAIN UNORDERED MAPS
@@ -130,7 +130,7 @@ namespace utils {
      * to the order in which they are called in the terminal.
      */
     int latestMainUnormapOrder = 0;
-    STRUNORMAP_INT mainUnormapOrders;
+    UNORMAP_STR<int> mainUnormapOrders;
     void setMainUnormapOrder(CR_STR keyword);
 
     /**

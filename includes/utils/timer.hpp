@@ -59,8 +59,8 @@ namespace Timer {
 
   private:
     int dd = 1, mm = 1, yyyy = 1;
-    static STRUNORMAP<ARR2_STR<12, 2>> monthNames;
-    static STRUNORMAP<PAIR_STR> christTimeSign;
+    static UNORMAP_STR<ARR2_STR<12, 2>> monthNames;
+    static UNORMAP_STR<PAIR_STR> christTimeSign;
 
     /**
      * Less than this year will get the sign of Christ Time.

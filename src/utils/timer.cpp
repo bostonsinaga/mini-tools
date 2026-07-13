@@ -82,7 +82,7 @@ namespace Timer {
     {31, 31}  // December
   };
 
-  STRUNORMAP<ARR2_STR<12, 2>> Date::monthNames = {
+  UNORMAP_STR<ARR2_STR<12, 2>> Date::monthNames = {
     {"en", ARR2_STR<12, 2>{
       ARR_STR<12>{ // long
         "january", "february", "march",
@@ -98,7 +98,7 @@ namespace Timer {
     }}
   };
 
-  STRUNORMAP<PAIR_STR> Date::christTimeSign = {{"en", {"BC", "AD"}}};
+  UNORMAP_STR<PAIR_STR> Date::christTimeSign = {{"en", {"BC", "AD"}}};
 
   Date::Date(
     CR_INT dd_in,
@@ -179,7 +179,7 @@ namespace Timer {
   }
 
   bool Date::isLanguageKeyExist(CR_STR languageKey_in) {
-    return STRUNORMAP_FOUND<ARR2_STR<12, 2>>(Date::monthNames, languageKey_in);
+    return Date::monthNames.find(languageKey_in) != Date::monthNames.end();
   }
 
   std::string Date::getCapitalizedNamedMonth(CR_INT longShortIndex) const {

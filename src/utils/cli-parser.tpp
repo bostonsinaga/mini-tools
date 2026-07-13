@@ -31,7 +31,7 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   int CLIParser<T, U, V>::getMainUnormapOrder(CR_STR keyword) {
 
-    if (STRUNORMAP_INT_FOUND(mainUnormapOrders, keyword)) {
+    if (mainUnormapOrders.find(keyword) != mainUnormapOrders.end()) {
       return mainUnormapOrders[keyword];
     }
 
@@ -314,7 +314,7 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::cleanEntries(CR_BOL fullyClean) {
     if (fullyClean) {
-      STRUNORMAP_UI().swap(entries);
+      UNORMAP_STR<UI>().swap(entries);
     }
     else entries.clear();
   }
@@ -323,7 +323,7 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   void CLIParser<T, U, V>::cleanAll(CR_BOL fullyClean) {
     if (fullyClean) {
-      STRUNORMAP_UI().swap(entries);
+      UNORMAP_STR<UI>().swap(entries);
       UNORMAP_MAIN<T>().swap(mainUnormap_T);
       UNORMAP_MAIN<U>().swap(mainUnormap_U);
       UNORMAP_MAIN<V>().swap(mainUnormap_V);
@@ -359,7 +359,7 @@ namespace utils {
 
     for (CR_STR expected : expectedEntries) {
 
-      if (STRUNORMAP_UI_FOUND(entries, expected) &&
+      if (entries.find(expected) != entries.end() &&
         entries[expected] >= previousOrder
       ) {
         found++;
@@ -383,7 +383,7 @@ namespace utils {
     UI found = 0;
 
     for (CR_STR expected : expectedEntries) {
-      if (STRUNORMAP_UI_FOUND(entries, expected)) {
+      if (entries.find(expected) != entries.end()) {
         found++;
       }
     }
@@ -397,7 +397,7 @@ namespace utils {
   requires CLIUniqueType<T, U, V>
   template <typename W>
   bool CLIParser<T, U, V>::has(CR_STR keyword) {
-    return STRUNORMAP_FOUND<PAIR_MAIN<W>>(selectMainUnormap<W>(), keyword);
+    return selectMainUnormap<W>().find(keyword) != selectMainUnormap<W>().end();
   }
 
   template <typename T, typename U, typename V>

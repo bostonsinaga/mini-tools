@@ -11,8 +11,10 @@
 #include <array>
 #include <queue>
 #include <tuple>
-#include <unordered_map>
+#include <set>
+#include <map>
 #include <unordered_set>
+#include <unordered_map>
 #include <algorithm>
 #include <utility>
 #include <functional>
@@ -192,34 +194,6 @@ namespace mini_tools {
 
   template <typename T, size_t N>
   using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
-
-  /** SHORTENED STRING UNORDERED MAP TEMPLATES */
-
-  // specifically for unordered set
-  template <typename T>
-  using UNORSET = std::unordered_set<T>;
-
-  template <typename T, typename U>
-  using UNORMAP = std::unordered_map<T, U>;
-
-  template <typename T>
-  using STRUNORMAP = std::unordered_map<std::string, T>;
-
-  template <typename T, typename U>
-  using CR_UNORMAP = const UNORMAP<T, U>&;
-
-  template <typename T>
-  using CR_STRUNORMAP = const STRUNORMAP<T>&;
-
-  template <typename T, typename U>
-  inline bool UNORMAP_FOUND(CR_UNORMAP<T, U> map, T key) {
-    return map.find(key) != map.end();
-  }
-
-  template <typename T>
-  inline bool STRUNORMAP_FOUND(CR_STRUNORMAP<T> map, CR_STR key) {
-    return map.find(key) != map.end();
-  }
 
   /** SHORTENED VALUE VECTORS */
 
@@ -869,227 +843,608 @@ namespace mini_tools {
   template <size_t M, size_t N>
   using CR_ARR2_LD_P = const ARR2_LD_P<M, N>&;
 
-  /** SHORTENED VALUE STRING UNORDERED MAPS */
+  /** SHORTENED ORDERED SET TEMPLATES */
 
-  typedef STRUNORMAP<bool> STRUNORMAP_BOL;
-  typedef STRUNORMAP<std::string> STRUNORMAP_STR;
-  typedef STRUNORMAP<char> STRUNORMAP_CH;
-  typedef STRUNORMAP<wchar_t> STRUNORMAP_WCH;
-  typedef STRUNORMAP<int> STRUNORMAP_INT;
-  typedef STRUNORMAP<SI> STRUNORMAP_SI;
-  typedef STRUNORMAP<LI> STRUNORMAP_LI;
-  typedef STRUNORMAP<LLI> STRUNORMAP_LLI;
-  typedef STRUNORMAP<USI> STRUNORMAP_USI;
-  typedef STRUNORMAP<UI> STRUNORMAP_UI;
-  typedef STRUNORMAP<ULI> STRUNORMAP_ULI;
-  typedef STRUNORMAP<ULLI> STRUNORMAP_ULLI;
-  typedef STRUNORMAP<size_t> STRUNORMAP_SZ;
-  typedef STRUNORMAP<time_t> STRUNORMAP_TM;
-  typedef STRUNORMAP<float> STRUNORMAP_FLT;
-  typedef STRUNORMAP<double> STRUNORMAP_DBL;
-  typedef STRUNORMAP<LD> STRUNORMAP_LD;
+  template <typename T>
+  using ORSET = std::set<T>;
 
-  /** SHORTENED POINTER STRING UNORDERED MAPS */
+  template <typename T>
+  using CR_ORSET = CR<ORSET<T>>;
 
-  typedef STRUNORMAP<bool*> STRUNORMAP_BOL_P;
-  typedef STRUNORMAP<std::string*> STRUNORMAP_STR_P;
-  typedef STRUNORMAP<char*> STRUNORMAP_CH_P;
-  typedef STRUNORMAP<wchar_t*> STRUNORMAP_WCH_P;
-  typedef STRUNORMAP<int*> STRUNORMAP_INT_P;
-  typedef STRUNORMAP<SI*> STRUNORMAP_SI_P;
-  typedef STRUNORMAP<LI*> STRUNORMAP_LI_P;
-  typedef STRUNORMAP<LLI*> STRUNORMAP_LLI_P;
-  typedef STRUNORMAP<USI*> STRUNORMAP_USI_P;
-  typedef STRUNORMAP<UI*> STRUNORMAP_UI_P;
-  typedef STRUNORMAP<ULI*> STRUNORMAP_ULI_P;
-  typedef STRUNORMAP<ULLI*> STRUNORMAP_ULLI_P;
-  typedef STRUNORMAP<size_t*> STRUNORMAP_SZ_P;
-  typedef STRUNORMAP<time_t*> STRUNORMAP_TM_P;
-  typedef STRUNORMAP<float*> STRUNORMAP_FLT_P;
-  typedef STRUNORMAP<double*> STRUNORMAP_DBL_P;
-  typedef STRUNORMAP<LD*> STRUNORMAP_LD_P;
+  using ORSET_BOL = ORSET<bool>;
+  using ORSET_STR = ORSET<std::string>;
+  using ORSET_CH = ORSET<char>;
+  using ORSET_WCH = ORSET<wchar_t>;
+  using ORSET_INT = ORSET<int>;
+  using ORSET_SI = ORSET<SI>;
+  using ORSET_LI = ORSET<LI>;
+  using ORSET_LLI = ORSET<LLI>;
+  using ORSET_USI = ORSET<USI>;
+  using ORSET_UI = ORSET<UI>;
+  using ORSET_ULI = ORSET<ULI>;
+  using ORSET_ULLI = ORSET<ULLI>;
+  using ORSET_SZ = ORSET<size_t>;
+  using ORSET_TM = ORSET<time_t>;
+  using ORSET_FLT = ORSET<float>;
+  using ORSET_DBL = ORSET<double>;
+  using ORSET_LD = ORSET<LD>;
 
-  /** SHORTENED CONSTANT REFERENCE VALUE STRING UNORDERED MAPS */
+  using CR_ORSET_BOL = CR<ORSET_BOL>;
+  using CR_ORSET_STR = CR<ORSET_STR>;
+  using CR_ORSET_CH = CR<ORSET_CH>;
+  using CR_ORSET_WCH = CR<ORSET_WCH>;
+  using CR_ORSET_INT = CR<ORSET_INT>;
+  using CR_ORSET_SI = CR<ORSET_SI>;
+  using CR_ORSET_LI = CR<ORSET_LI>;
+  using CR_ORSET_LLI = CR<ORSET_LLI>;
+  using CR_ORSET_USI = CR<ORSET_USI>;
+  using CR_ORSET_UI = CR<ORSET_UI>;
+  using CR_ORSET_ULI = CR<ORSET_ULI>;
+  using CR_ORSET_ULLI = CR<ORSET_ULLI>;
+  using CR_ORSET_SZ = CR<ORSET_SZ>;
+  using CR_ORSET_TM = CR<ORSET_TM>;
+  using CR_ORSET_FLT = CR<ORSET_FLT>;
+  using CR_ORSET_DBL = CR<ORSET_DBL>;
+  using CR_ORSET_LD = CR<ORSET_LD>;
 
-  typedef const STRUNORMAP_BOL& CR_STRUNORMAP_BOL;
-  typedef const STRUNORMAP_STR& CR_STRUNORMAP_STR;
-  typedef const STRUNORMAP_CH& CR_STRUNORMAP_CH;
-  typedef const STRUNORMAP_WCH& CR_STRUNORMAP_WCH;
-  typedef const STRUNORMAP_INT& CR_STRUNORMAP_INT;
-  typedef const STRUNORMAP_SI& CR_STRUNORMAP_SI;
-  typedef const STRUNORMAP_LI& CR_STRUNORMAP_LI;
-  typedef const STRUNORMAP_LLI& CR_STRUNORMAP_LLI;
-  typedef const STRUNORMAP_USI& CR_STRUNORMAP_USI;
-  typedef const STRUNORMAP_UI& CR_STRUNORMAP_UI;
-  typedef const STRUNORMAP_ULI& CR_STRUNORMAP_ULI;
-  typedef const STRUNORMAP_ULLI& CR_STRUNORMAP_ULLI;
-  typedef const STRUNORMAP_SZ& CR_STRUNORMAP_SZ;
-  typedef const STRUNORMAP_TM& CR_STRUNORMAP_TM;
-  typedef const STRUNORMAP_FLT& CR_STRUNORMAP_FLT;
-  typedef const STRUNORMAP_DBL& CR_STRUNORMAP_DBL;
-  typedef const STRUNORMAP_LD& CR_STRUNORMAP_LD;
+  using ORSET_BOL_P = ORSET<bool*>;
+  using ORSET_STR_P = ORSET<std::string*>;
+  using ORSET_CH_P = ORSET<char*>;
+  using ORSET_WCH_P = ORSET<wchar_t*>;
+  using ORSET_INT_P = ORSET<int*>;
+  using ORSET_SI_P = ORSET<SI*>;
+  using ORSET_LI_P = ORSET<LI*>;
+  using ORSET_LLI_P = ORSET<LLI*>;
+  using ORSET_USI_P = ORSET<USI*>;
+  using ORSET_UI_P = ORSET<UI*>;
+  using ORSET_ULI_P = ORSET<ULI*>;
+  using ORSET_ULLI_P = ORSET<ULLI*>;
+  using ORSET_SZ_P = ORSET<size_t*>;
+  using ORSET_TM_P = ORSET<time_t*>;
+  using ORSET_FLT_P = ORSET<float*>;
+  using ORSET_DBL_P = ORSET<double*>;
+  using ORSET_LD_P = ORSET<LD*>;
 
-  /** SHORTENED CONSTANT REFERENCE POINTER STRING UNORDERED MAPS */
+  using CR_ORSET_BOL_P = CR<ORSET_BOL_P>;
+  using CR_ORSET_STR_P = CR<ORSET_STR_P>;
+  using CR_ORSET_CH_P = CR<ORSET_CH_P>;
+  using CR_ORSET_WCH_P = CR<ORSET_WCH_P>;
+  using CR_ORSET_INT_P = CR<ORSET_INT_P>;
+  using CR_ORSET_SI_P = CR<ORSET_SI_P>;
+  using CR_ORSET_LI_P = CR<ORSET_LI_P>;
+  using CR_ORSET_LLI_P = CR<ORSET_LLI_P>;
+  using CR_ORSET_USI_P = CR<ORSET_USI_P>;
+  using CR_ORSET_UI_P = CR<ORSET_UI_P>;
+  using CR_ORSET_ULI_P = CR<ORSET_ULI_P>;
+  using CR_ORSET_ULLI_P = CR<ORSET_ULLI_P>;
+  using CR_ORSET_SZ_P = CR<ORSET_SZ_P>;
+  using CR_ORSET_TM_P = CR<ORSET_TM_P>;
+  using CR_ORSET_FLT_P = CR<ORSET_FLT_P>;
+  using CR_ORSET_DBL_P = CR<ORSET_DBL_P>;
+  using CR_ORSET_LD_P = CR<ORSET_LD_P>;
 
-  typedef const STRUNORMAP_BOL_P& CR_STRUNORMAP_BOL_P;
-  typedef const STRUNORMAP_STR_P& CR_STRUNORMAP_STR_P;
-  typedef const STRUNORMAP_CH_P& CR_STRUNORMAP_CH_P;
-  typedef const STRUNORMAP_WCH_P& CR_STRUNORMAP_WCH_P;
-  typedef const STRUNORMAP_INT_P& CR_STRUNORMAP_INT_P;
-  typedef const STRUNORMAP_SI_P& CR_STRUNORMAP_SI_P;
-  typedef const STRUNORMAP_LI_P& CR_STRUNORMAP_LI_P;
-  typedef const STRUNORMAP_LLI_P& CR_STRUNORMAP_LLI_P;
-  typedef const STRUNORMAP_USI_P& CR_STRUNORMAP_USI_P;
-  typedef const STRUNORMAP_UI_P& CR_STRUNORMAP_UI_P;
-  typedef const STRUNORMAP_ULI_P& CR_STRUNORMAP_ULI_P;
-  typedef const STRUNORMAP_ULLI_P& CR_STRUNORMAP_ULLI_P;
-  typedef const STRUNORMAP_SZ_P& CR_STRUNORMAP_SZ_P;
-  typedef const STRUNORMAP_TM_P& CR_STRUNORMAP_TM_P;
-  typedef const STRUNORMAP_FLT_P& CR_STRUNORMAP_FLT_P;
-  typedef const STRUNORMAP_DBL_P& CR_STRUNORMAP_DBL_P;
-  typedef const STRUNORMAP_LD_P& CR_STRUNORMAP_LD_P;
+  /** SHORTENED UNORDERED SET TEMPLATES */
 
-  /** VALUE STRING UNORDERED MAP CONTAINING CHECK FUNCTIONS */
+  template <typename T>
+  using UNORSET = std::unordered_set<T>;
 
-  inline bool STRUNORMAP_BOL_FOUND(CR_STRUNORMAP_BOL map, CR_STR key) {
-    return STRUNORMAP_FOUND<bool>(map, key);
-  }
+  template <typename T>
+  using CR_UNORSET = CR<UNORSET<T>>;
 
-  inline bool STRUNORMAP_STR_FOUND(CR_STRUNORMAP_STR map, CR_STR key) {
-    return STRUNORMAP_FOUND<std::string>(map, key);
-  }
+  using UNORSET_BOL = UNORSET<bool>;
+  using UNORSET_STR = UNORSET<std::string>;
+  using UNORSET_CH = UNORSET<char>;
+  using UNORSET_WCH = UNORSET<wchar_t>;
+  using UNORSET_INT = UNORSET<int>;
+  using UNORSET_SI = UNORSET<SI>;
+  using UNORSET_LI = UNORSET<LI>;
+  using UNORSET_LLI = UNORSET<LLI>;
+  using UNORSET_USI = UNORSET<USI>;
+  using UNORSET_UI = UNORSET<UI>;
+  using UNORSET_ULI = UNORSET<ULI>;
+  using UNORSET_ULLI = UNORSET<ULLI>;
+  using UNORSET_SZ = UNORSET<size_t>;
+  using UNORSET_TM = UNORSET<time_t>;
+  using UNORSET_FLT = UNORSET<float>;
+  using UNORSET_DBL = UNORSET<double>;
+  using UNORSET_LD = UNORSET<LD>;
 
-  inline bool STRUNORMAP_CH_FOUND(CR_STRUNORMAP_CH map, CR_STR key) {
-    return STRUNORMAP_FOUND<char>(map, key);
-  }
+  using CR_UNORSET_BOL = CR<UNORSET_BOL>;
+  using CR_UNORSET_STR = CR<UNORSET_STR>;
+  using CR_UNORSET_CH = CR<UNORSET_CH>;
+  using CR_UNORSET_WCH = CR<UNORSET_WCH>;
+  using CR_UNORSET_INT = CR<UNORSET_INT>;
+  using CR_UNORSET_SI = CR<UNORSET_SI>;
+  using CR_UNORSET_LI = CR<UNORSET_LI>;
+  using CR_UNORSET_LLI = CR<UNORSET_LLI>;
+  using CR_UNORSET_USI = CR<UNORSET_USI>;
+  using CR_UNORSET_UI = CR<UNORSET_UI>;
+  using CR_UNORSET_ULI = CR<UNORSET_ULI>;
+  using CR_UNORSET_ULLI = CR<UNORSET_ULLI>;
+  using CR_UNORSET_SZ = CR<UNORSET_SZ>;
+  using CR_UNORSET_TM = CR<UNORSET_TM>;
+  using CR_UNORSET_FLT = CR<UNORSET_FLT>;
+  using CR_UNORSET_DBL = CR<UNORSET_DBL>;
+  using CR_UNORSET_LD = CR<UNORSET_LD>;
 
-  inline bool STRUNORMAP_WCH_FOUND(CR_STRUNORMAP_WCH map, CR_STR key) {
-    return STRUNORMAP_FOUND<wchar_t>(map, key);
-  }
+  using UNORSET_BOL_P = UNORSET<bool*>;
+  using UNORSET_STR_P = UNORSET<std::string*>;
+  using UNORSET_CH_P = UNORSET<char*>;
+  using UNORSET_WCH_P = UNORSET<wchar_t*>;
+  using UNORSET_INT_P = UNORSET<int*>;
+  using UNORSET_SI_P = UNORSET<SI*>;
+  using UNORSET_LI_P = UNORSET<LI*>;
+  using UNORSET_LLI_P = UNORSET<LLI*>;
+  using UNORSET_USI_P = UNORSET<USI*>;
+  using UNORSET_UI_P = UNORSET<UI*>;
+  using UNORSET_ULI_P = UNORSET<ULI*>;
+  using UNORSET_ULLI_P = UNORSET<ULLI*>;
+  using UNORSET_SZ_P = UNORSET<size_t*>;
+  using UNORSET_TM_P = UNORSET<time_t*>;
+  using UNORSET_FLT_P = UNORSET<float*>;
+  using UNORSET_DBL_P = UNORSET<double*>;
+  using UNORSET_LD_P = UNORSET<LD*>;
 
-  inline bool STRUNORMAP_INT_FOUND(CR_STRUNORMAP_INT map, CR_STR key) {
-    return STRUNORMAP_FOUND<int>(map, key);
-  }
+  using CR_UNORSET_BOL_P = CR<UNORSET_BOL_P>;
+  using CR_UNORSET_STR_P = CR<UNORSET_STR_P>;
+  using CR_UNORSET_CH_P = CR<UNORSET_CH_P>;
+  using CR_UNORSET_WCH_P = CR<UNORSET_WCH_P>;
+  using CR_UNORSET_INT_P = CR<UNORSET_INT_P>;
+  using CR_UNORSET_SI_P = CR<UNORSET_SI_P>;
+  using CR_UNORSET_LI_P = CR<UNORSET_LI_P>;
+  using CR_UNORSET_LLI_P = CR<UNORSET_LLI_P>;
+  using CR_UNORSET_USI_P = CR<UNORSET_USI_P>;
+  using CR_UNORSET_UI_P = CR<UNORSET_UI_P>;
+  using CR_UNORSET_ULI_P = CR<UNORSET_ULI_P>;
+  using CR_UNORSET_ULLI_P = CR<UNORSET_ULLI_P>;
+  using CR_UNORSET_SZ_P = CR<UNORSET_SZ_P>;
+  using CR_UNORSET_TM_P = CR<UNORSET_TM_P>;
+  using CR_UNORSET_FLT_P = CR<UNORSET_FLT_P>;
+  using CR_UNORSET_DBL_P = CR<UNORSET_DBL_P>;
+  using CR_UNORSET_LD_P = CR<UNORSET_LD_P>;
 
-  inline bool STRUNORMAP_SI_FOUND(CR_STRUNORMAP_SI map, CR_STR key) {
-    return STRUNORMAP_FOUND<SI>(map, key);
-  }
+  /** SHORTENED ORDERED MAP TEMPLATES */
 
-  inline bool STRUNORMAP_LI_FOUND(CR_STRUNORMAP_LI map, CR_STR key) {
-    return STRUNORMAP_FOUND<LI>(map, key);
-  }
+  template <typename T, typename U>
+  using ORMAP = std::map<T, U>;
 
-  inline bool STRUNORMAP_LLI_FOUND(CR_STRUNORMAP_LLI map, CR_STR key) {
-    return STRUNORMAP_FOUND<LLI>(map, key);
-  }
+  template <typename T, typename U>
+  using CR_ORMAP = CR<ORMAP<T, U>>;
 
-  inline bool STRUNORMAP_USI_FOUND(CR_STRUNORMAP_USI map, CR_STR key) {
-    return STRUNORMAP_FOUND<USI>(map, key);
-  }
+  /** SHORTENED VALUE ORDERED MAPS */
 
-  inline bool STRUNORMAP_UI_FOUND(CR_STRUNORMAP_UI map, CR_STR key) {
-    return STRUNORMAP_FOUND<UI>(map, key);
-  }
+  template <typename T>
+  using ORMAP_BOL = ORMAP<bool, T>;
 
-  inline bool STRUNORMAP_ULI_FOUND(CR_STRUNORMAP_ULI map, CR_STR key) {
-    return STRUNORMAP_FOUND<ULI>(map, key);
-  }
+  template <typename T>
+  using ORMAP_STR = ORMAP<std::string, T>;
 
-  inline bool STRUNORMAP_ULLI_FOUND(CR_STRUNORMAP_ULLI map, CR_STR key) {
-    return STRUNORMAP_FOUND<ULLI>(map, key);
-  }
+  template <typename T>
+  using ORMAP_CH = ORMAP<char, T>;
 
-  inline bool STRUNORMAP_SZ_FOUND(CR_STRUNORMAP_SZ map, CR_STR key) {
-    return STRUNORMAP_FOUND<size_t>(map, key);
-  }
+  template <typename T>
+  using ORMAP_WCH = ORMAP<wchar_t, T>;
 
-  inline bool STRUNORMAP_TM_FOUND(CR_STRUNORMAP_TM map, CR_STR key) {
-    return STRUNORMAP_FOUND<time_t>(map, key);
-  }
+  template <typename T>
+  using ORMAP_INT = ORMAP<int, T>;
 
-  inline bool STRUNORMAP_FLT_FOUND(CR_STRUNORMAP_FLT map, CR_STR key) {
-    return STRUNORMAP_FOUND<float>(map, key);
-  }
+  template <typename T>
+  using ORMAP_SI = ORMAP<SI, T>;
 
-  inline bool STRUNORMAP_DBL_FOUND(CR_STRUNORMAP_DBL map, CR_STR key) {
-    return STRUNORMAP_FOUND<double>(map, key);
-  }
+  template <typename T>
+  using ORMAP_LI = ORMAP<LI, T>;
 
-  inline bool STRUNORMAP_LD_FOUND(CR_STRUNORMAP_LD map, CR_STR key) {
-    return STRUNORMAP_FOUND<LD>(map, key);
-  }
+  template <typename T>
+  using ORMAP_LLI = ORMAP<LLI, T>;
 
-  /** POINTER STRING UNORDERED MAP CONTAINING CHECK FUNCTIONS */
+  template <typename T>
+  using ORMAP_USI = ORMAP<USI, T>;
 
-  inline bool STRUNORMAP_BOL_P_FOUND(CR_STRUNORMAP_BOL_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<bool*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_UI = ORMAP<UI, T>;
 
-  inline bool STRUNORMAP_STR_P_FOUND(CR_STRUNORMAP_STR_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<std::string*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_ULI = ORMAP<ULI, T>;
 
-  inline bool STRUNORMAP_CH_P_FOUND(CR_STRUNORMAP_CH_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<char*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_ULLI = ORMAP<ULLI, T>;
 
-  inline bool STRUNORMAP_WCH_P_FOUND(CR_STRUNORMAP_WCH_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<wchar_t*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_SZ = ORMAP<size_t, T>;
 
-  inline bool STRUNORMAP_INT_P_FOUND(CR_STRUNORMAP_INT_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<int*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_TM = ORMAP<time_t, T>;
 
-  inline bool STRUNORMAP_SI_P_FOUND(CR_STRUNORMAP_SI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<SI*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_FLT = ORMAP<float, T>;
 
-  inline bool STRUNORMAP_LI_P_FOUND(CR_STRUNORMAP_LI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<LI*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_DBL = ORMAP<double, T>;
 
-  inline bool STRUNORMAP_LLI_P_FOUND(CR_STRUNORMAP_LLI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<LLI*>(map, key);
-  }
+  template <typename T>
+  using ORMAP_LD = ORMAP<LD, T>;
 
-  inline bool STRUNORMAP_USI_P_FOUND(CR_STRUNORMAP_USI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<USI*>(map, key);
-  }
+  /** SHORTENED CONSTANT REFERENCE VALUE ORDERED MAPS */
 
-  inline bool STRUNORMAP_UI_P_FOUND(CR_STRUNORMAP_UI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<UI*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_BOL = CR<ORMAP_BOL<T>>;
 
-  inline bool STRUNORMAP_ULI_P_FOUND(CR_STRUNORMAP_ULI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<ULI*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_STR = CR<ORMAP_STR<T>>;
 
-  inline bool STRUNORMAP_ULLI_P_FOUND(CR_STRUNORMAP_ULLI_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<ULLI*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_CH = CR<ORMAP_CH<T>>;
 
-  inline bool STRUNORMAP_SZ_P_FOUND(CR_STRUNORMAP_SZ_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<size_t*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_WCH = CR<ORMAP_WCH<T>>;
 
-  inline bool STRUNORMAP_TM_P_FOUND(CR_STRUNORMAP_TM_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<time_t*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_INT = CR<ORMAP_INT<T>>;
 
-  inline bool STRUNORMAP_FLT_P_FOUND(CR_STRUNORMAP_FLT_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<float*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_SI = CR<ORMAP_SI<T>>;
 
-  inline bool STRUNORMAP_DBL_P_FOUND(CR_STRUNORMAP_DBL_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<double*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_LI = CR<ORMAP_LI<T>>;
 
-  inline bool STRUNORMAP_LD_P_FOUND(CR_STRUNORMAP_LD_P map, CR_STR key) {
-    return STRUNORMAP_FOUND<LD*>(map, key);
-  }
+  template <typename T>
+  using CR_ORMAP_LLI = CR<ORMAP_LLI<T>>;
 
-  // get default value for T
+  template <typename T>
+  using CR_ORMAP_USI = CR<ORMAP_USI<T>>;
+
+  template <typename T>
+  using CR_ORMAP_UI = CR<ORMAP_UI<T>>;
+
+  template <typename T>
+  using CR_ORMAP_ULI = CR<ORMAP_ULI<T>>;
+
+  template <typename T>
+  using CR_ORMAP_ULLI = CR<ORMAP_ULLI<T>>;
+
+  template <typename T>
+  using CR_ORMAP_SZ = CR<ORMAP_SZ<T>>;
+
+  template <typename T>
+  using CR_ORMAP_TM = CR<ORMAP_TM<T>>;
+
+  template <typename T>
+  using CR_ORMAP_FLT = CR<ORMAP_FLT<T>>;
+
+  template <typename T>
+  using CR_ORMAP_DBL = CR<ORMAP_DBL<T>>;
+
+  template <typename T>
+  using CR_ORMAP_LD = CR<ORMAP_LD<T>>;
+
+  /** SHORTENED POINTER ORDERED MAPS */
+
+  template <typename T>
+  using ORMAP_BOL_P = ORMAP<bool*, T>;
+
+  template <typename T>
+  using ORMAP_STR_P = ORMAP<std::string*, T>;
+
+  template <typename T>
+  using ORMAP_CH_P = ORMAP<char*, T>;
+
+  template <typename T>
+  using ORMAP_WCH_P = ORMAP<wchar_t*, T>;
+
+  template <typename T>
+  using ORMAP_INT_P = ORMAP<int*, T>;
+
+  template <typename T>
+  using ORMAP_SI_P = ORMAP<SI*, T>;
+
+  template <typename T>
+  using ORMAP_LI_P = ORMAP<LI*, T>;
+
+  template <typename T>
+  using ORMAP_LLI_P = ORMAP<LLI*, T>;
+
+  template <typename T>
+  using ORMAP_USI_P = ORMAP<USI*, T>;
+
+  template <typename T>
+  using ORMAP_UI_P = ORMAP<UI*, T>;
+
+  template <typename T>
+  using ORMAP_ULI_P = ORMAP<ULI*, T>;
+
+  template <typename T>
+  using ORMAP_ULLI_P = ORMAP<ULLI*, T>;
+
+  template <typename T>
+  using ORMAP_SZ_P = ORMAP<size_t*, T>;
+
+  template <typename T>
+  using ORMAP_TM_P = ORMAP<time_t*, T>;
+
+  template <typename T>
+  using ORMAP_FLT_P = ORMAP<float*, T>;
+
+  template <typename T>
+  using ORMAP_DBL_P = ORMAP<double*, T>;
+
+  template <typename T>
+  using ORMAP_LD_P = ORMAP<LD*, T>;
+
+  /** SHORTENED CONSTANT REFERENCE POINTER ORDERED MAPS */
+
+  template <typename T>
+  using CR_ORMAP_BOL_P = CR<ORMAP_BOL_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_STR_P = CR<ORMAP_STR_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_CH_P = CR<ORMAP_CH_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_WCH_P = CR<ORMAP_WCH_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_INT_P = CR<ORMAP_INT_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_SI_P = CR<ORMAP_SI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_LI_P = CR<ORMAP_LI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_LLI_P = CR<ORMAP_LLI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_USI_P = CR<ORMAP_USI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_UI_P = CR<ORMAP_UI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_ULI_P = CR<ORMAP_ULI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_ULLI_P = CR<ORMAP_ULLI_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_SZ_P = CR<ORMAP_SZ_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_TM_P = CR<ORMAP_TM_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_FLT_P = CR<ORMAP_FLT_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_DBL_P = CR<ORMAP_DBL_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_LD_P = CR<ORMAP_LD_P<T>>;
+
+  /** SHORTENED UNORDERED MAP TEMPLATES */
+
+  template <typename T, typename U>
+  using UNORMAP = std::unordered_map<T, U>;
+
+  template <typename T, typename U>
+  using CR_UNORMAP = CR<UNORMAP<T, U>>;
+
+  /** SHORTENED VALUE UNORDERED MAPS */
+
+  template <typename T>
+  using UNORMAP_BOL = UNORMAP<bool, T>;
+
+  template <typename T>
+  using UNORMAP_STR = UNORMAP<std::string, T>;
+
+  template <typename T>
+  using UNORMAP_CH = UNORMAP<char, T>;
+
+  template <typename T>
+  using UNORMAP_WCH = UNORMAP<wchar_t, T>;
+
+  template <typename T>
+  using UNORMAP_INT = UNORMAP<int, T>;
+
+  template <typename T>
+  using UNORMAP_SI = UNORMAP<SI, T>;
+
+  template <typename T>
+  using UNORMAP_LI = UNORMAP<LI, T>;
+
+  template <typename T>
+  using UNORMAP_LLI = UNORMAP<LLI, T>;
+
+  template <typename T>
+  using UNORMAP_USI = UNORMAP<USI, T>;
+
+  template <typename T>
+  using UNORMAP_UI = UNORMAP<UI, T>;
+
+  template <typename T>
+  using UNORMAP_ULI = UNORMAP<ULI, T>;
+
+  template <typename T>
+  using UNORMAP_ULLI = UNORMAP<ULLI, T>;
+
+  template <typename T>
+  using UNORMAP_SZ = UNORMAP<size_t, T>;
+
+  template <typename T>
+  using UNORMAP_TM = UNORMAP<time_t, T>;
+
+  template <typename T>
+  using UNORMAP_FLT = UNORMAP<float, T>;
+
+  template <typename T>
+  using UNORMAP_DBL = UNORMAP<double, T>;
+
+  template <typename T>
+  using UNORMAP_LD = UNORMAP<LD, T>;
+
+  /** SHORTENED CONSTANT REFERENCE VALUE UNORDERED MAPS */
+
+  template <typename T>
+  using CR_UNORMAP_BOL = CR<UNORMAP_BOL<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_STR = CR<UNORMAP_STR<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_CH = CR<UNORMAP_CH<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_WCH = CR<UNORMAP_WCH<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_INT = CR<UNORMAP_INT<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_SI = CR<UNORMAP_SI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LI = CR<UNORMAP_LI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LLI = CR<UNORMAP_LLI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_USI = CR<UNORMAP_USI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_UI = CR<UNORMAP_UI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_ULI = CR<UNORMAP_ULI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_ULLI = CR<UNORMAP_ULLI<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_SZ = CR<UNORMAP_SZ<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_TM = CR<UNORMAP_TM<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_FLT = CR<UNORMAP_FLT<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_DBL = CR<UNORMAP_DBL<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LD = CR<UNORMAP_LD<T>>;
+
+  /** SHORTENED POINTER UNORDERED MAPS */
+
+  template <typename T>
+  using UNORMAP_BOL_P = UNORMAP<bool*, T>;
+
+  template <typename T>
+  using UNORMAP_STR_P = UNORMAP<std::string*, T>;
+
+  template <typename T>
+  using UNORMAP_CH_P = UNORMAP<char*, T>;
+
+  template <typename T>
+  using UNORMAP_WCH_P = UNORMAP<wchar_t*, T>;
+
+  template <typename T>
+  using UNORMAP_INT_P = UNORMAP<int*, T>;
+
+  template <typename T>
+  using UNORMAP_SI_P = UNORMAP<SI*, T>;
+
+  template <typename T>
+  using UNORMAP_LI_P = UNORMAP<LI*, T>;
+
+  template <typename T>
+  using UNORMAP_LLI_P = UNORMAP<LLI*, T>;
+
+  template <typename T>
+  using UNORMAP_USI_P = UNORMAP<USI*, T>;
+
+  template <typename T>
+  using UNORMAP_UI_P = UNORMAP<UI*, T>;
+
+  template <typename T>
+  using UNORMAP_ULI_P = UNORMAP<ULI*, T>;
+
+  template <typename T>
+  using UNORMAP_ULLI_P = UNORMAP<ULLI*, T>;
+
+  template <typename T>
+  using UNORMAP_SZ_P = UNORMAP<size_t*, T>;
+
+  template <typename T>
+  using UNORMAP_TM_P = UNORMAP<time_t*, T>;
+
+  template <typename T>
+  using UNORMAP_FLT_P = UNORMAP<float*, T>;
+
+  template <typename T>
+  using UNORMAP_DBL_P = UNORMAP<double*, T>;
+
+  template <typename T>
+  using UNORMAP_LD_P = UNORMAP<LD*, T>;
+
+  /** SHORTENED CONSTANT REFERENCE POINTER UNORDERED MAPS */
+
+  template <typename T>
+  using CR_UNORMAP_BOL_P = CR<UNORMAP_BOL_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_STR_P = CR<UNORMAP_STR_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_CH_P = CR<UNORMAP_CH_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_WCH_P = CR<UNORMAP_WCH_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_INT_P = CR<UNORMAP_INT_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_SI_P = CR<UNORMAP_SI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LI_P = CR<UNORMAP_LI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LLI_P = CR<UNORMAP_LLI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_USI_P = CR<UNORMAP_USI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_UI_P = CR<UNORMAP_UI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_ULI_P = CR<UNORMAP_ULI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_ULLI_P = CR<UNORMAP_ULLI_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_SZ_P = CR<UNORMAP_SZ_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_TM_P = CR<UNORMAP_TM_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_FLT_P = CR<UNORMAP_FLT_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_DBL_P = CR<UNORMAP_DBL_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_LD_P = CR<UNORMAP_LD_P<T>>;
+
+  /** Get default value for T */
+
   template <typename T>
   T getDefaultFromType(CR<std::function<T()>> customDefaultValueGetter = nullptr) {
 
