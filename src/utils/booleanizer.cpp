@@ -22,27 +22,37 @@ namespace utils {
     return {};
   }
 
-  // only evaluate the 'trueTerms' to return true
-  bool Booleanizer::test(
+  BOOLEANIZER_CODE Booleanizer::test(
     CR_STR existingISOCode,
-    std::string input
+    CR_STR input
   ) {
-    // 'input' is zero
+    // input is zero or text
     if (!Scanner::stringToNumber<int>(input)) {
-      StrTool::modifyStringToUppercase(input);
+
+      // terms are always case-insensitive
+      std::string uppercase = StrTool::copyStringToUppercase(input),
+        lowercase = StrTool::copyStringToLowercase(input);
 
       if (hasISOCode(existingISOCode)) {
+        // false
+        for (CR_STR term : falseTerms[existingISOCode]) {
+          if (uppercase == term) return BOOLEANIZER_FALSE;
+          else if (lowercase == term) return BOOLEANIZER_FALSE;
+        }
+
+        // true
         for (CR_STR term : trueTerms[existingISOCode]) {
-          if (input == term) return true;
+          if (uppercase == term) return BOOLEANIZER_TRUE;
+          else if (lowercase == term) return BOOLEANIZER_TRUE;
         }
       }
 
-      // 'input' does not match any 'trueTerms'
-      return false;
+      // input does not match any terms
+      return BOOLEANIZER_OTHER;
     }
 
-    // 'input' is not zero
-    return true;
+    // input is not zero
+    return BOOLEANIZER_TRUE;
   }
 
   bool Booleanizer::hasISOCode(CR_STR existingISOCode) {

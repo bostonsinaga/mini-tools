@@ -6,6 +6,12 @@
 namespace mini_tools {
 namespace utils {
 
+  enum BOOLEANIZER_CODE {
+    BOOLEANIZER_FALSE,
+    BOOLEANIZER_TRUE,
+    BOOLEANIZER_OTHER
+  };
+
   /**
    * Interpret string as boolean.
    */
@@ -17,9 +23,6 @@ namespace utils {
      * 
      * All strings are expected to be interpreted
      * as representing the boolean values.
-     * 
-     * The 'falseTerms' is actually used as example of false input in
-     * description of user class. The tester only evaluates 'trueTerms'.
      */
     UNORMAP_STR<VEC_STR>
       trueTerms = {{ "en", {"TRUE", "YES", "Y"} }},
@@ -31,16 +34,12 @@ namespace utils {
     VEC_STR getFalseTerms(CR_STR existingISOCode);
 
     /**
-     * Compare each selected 'trueTerms' vector with 'input'.
-     * Return false if the input is interpreted as:
-     * - The string 'false'
-     * - The numeric value zero
-     * - A term in 'falseTerms'
-     * - Or a term not included in the allowed list
+     * Compare each selected 'falseTerms' and 'trueTerms' vectors with given input.
+     * Return 'BOOLEANIZER_OTHER' if the input is not included in the terms list.
      */
-    bool test(
+    BOOLEANIZER_CODE test(
       CR_STR existingISOCode,
-      std::string input
+      CR_STR input
     );
 
     /** Modify extension for other languages */
