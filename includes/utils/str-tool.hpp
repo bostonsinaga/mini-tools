@@ -67,6 +67,12 @@ namespace utils {
     );
 
     /**
+     * Split the string into a vector of strings
+     * by separating it based on spaces.
+     */
+    static VEC_STR whitespaceSlice(CR_STR str);
+
+    /**
      * Find the first character index other than
      * space or newline from left and right.
      */

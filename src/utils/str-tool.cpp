@@ -131,6 +131,22 @@ namespace utils {
     return text;
   }
 
+  VEC_STR StrTool::whitespaceSlice(CR_STR str) {
+    VEC_STR vec;
+    bool detected = true;
+
+    for (CR_CH ch : str) {
+      if (isWhitespace(ch)) detected = true;
+      else {
+        if (detected) vec.push_back("");
+        detected = false;
+        vec.back() += ch;
+      }
+    }
+
+    return vec;
+  }
+
   PAIR<int> StrTool::findSpaceBoundaryIndexes(CR_STR text) {
     PAIR<int> spaceBoundaryIndexes = {0, 0};
 
