@@ -147,6 +147,28 @@ namespace utils {
     return vec;
   }
 
+  VEC_STR StrTool::whitespaceSliceExceptQuotes(CR_STR str) {
+    VEC_STR vec;
+    bool detected = true, quoted = false;
+
+    for (CR_CH ch : str) {
+      if (ch == '"') {
+        detected = true;
+        quoted = !quoted;
+      }
+      else if (!quoted && isWhitespace(ch)) {
+        detected = true;
+      }
+      else {
+        if (detected) vec.push_back("");
+        detected = false;
+        vec.back() += ch;
+      }
+    }
+
+    return vec;
+  }
+
   PAIR<int> StrTool::findSpaceBoundaryIndexes(CR_STR text) {
     PAIR<int> spaceBoundaryIndexes = {0, 0};
 

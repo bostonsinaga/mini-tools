@@ -71,6 +71,7 @@ namespace utils {
      * by separating it based on spaces.
      */
     static VEC_STR whitespaceSlice(CR_STR str);
+    static VEC_STR whitespaceSliceExceptQuotes(CR_STR str);
 
     /**
      * Find the first character index other than
