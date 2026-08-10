@@ -18,8 +18,8 @@ namespace utils {
 
     static bool hasIndex(CR_SZ targetSz, CR_LLI idx);
     static bool hasIndex(CR_VEC<T> vec, CR_LLI idx);
-    static bool hasIndices(CR_SZ targetSz, CR_VEC_LLI indices);
-    static bool hasIndices(CR_VEC<T> vec, CR_VEC_LLI indices);
+    static bool hasIndexes(CR_SZ targetSz, CR_VEC_LLI indexes);
+    static bool hasIndexes(CR_VEC<T> vec, CR_VEC_LLI indexes);
 
     // return -1 if not found
     static LLI getIndex(
@@ -70,8 +70,8 @@ namespace utils {
 
     /**
      * NOTE:
-     * Make sure the indices match the size of 'vec' parameter
-     * or use 'fixIndices' and 'fixIndexInterval' methods
+     * Make sure the indexes match the size of 'vec' parameter
+     * or use 'fixIndexes' and 'fixIndexInterval' methods
      * before calling 'erase..' or 'extract..' to prevent
      * undefined behavior when these methods accessing the vector.
      */
@@ -90,9 +90,9 @@ namespace utils {
       VEC<T> &extracted
     );
 
-    static void eraseIndicesStable(
+    static void eraseIndexesStable(
       VEC<T> &vec,
-      CR_VEC_SZ indices,
+      CR_VEC_SZ indexes,
       VEC<T> &extracted
     );
 
@@ -106,9 +106,9 @@ namespace utils {
       CR_PAIR_SZ interval
     );
 
-    static void eraseIndicesStable(
+    static void eraseIndexesStable(
       VEC<T> &vec,
-      CR_VEC_SZ indices
+      CR_VEC_SZ indexes
     );
 
     /** UNSTABLE ERASERS (FASTER) */
@@ -125,9 +125,9 @@ namespace utils {
       VEC<T> &extracted
     );
 
-    static void eraseIndicesUnstable(
+    static void eraseIndexesUnstable(
       VEC<T> &vec,
-      CR_VEC_SZ indices,
+      CR_VEC_SZ indexes,
       VEC<T> &extracted
     );
 
@@ -138,12 +138,12 @@ namespace utils {
 
     static void eraseIntervalUnstable(
       VEC<T> &vec,
-      CR_PAIR_SZ inter
+      CR_PAIR_SZ interval
     );
 
-    static void eraseIndicesUnstable(
+    static void eraseIndexesUnstable(
       VEC<T> &vec,
-      CR_VEC_SZ indice
+      CR_VEC_SZ Indexes
     );
 
     /** STABLE EXTRACTORS */
@@ -158,9 +158,9 @@ namespace utils {
       CR_PAIR_SZ interval
     );
 
-    static VEC<T> extractIndicesStable(
+    static VEC<T> extractIndexesStable(
       VEC<T> &vec,
-      CR_VEC_SZ indices
+      CR_VEC_SZ indexes
     );
 
     /** UNSTABLE EXTRACTORS */
@@ -175,34 +175,34 @@ namespace utils {
       CR_PAIR_SZ interval
     );
 
-    static VEC<T> extractIndicesUnstable(
+    static VEC<T> extractIndexesUnstable(
       VEC<T> &vec,
-      CR_VEC_SZ indices
+      CR_VEC_SZ indexes
     );
 
     /** INDEX LIMITERS */
 
-    static void fixIndices(
+    static void fixIndexes(
       CR_SZ targetSz,
-      VEC_LLI &indices,
+      VEC_LLI &indexes,
       CR_BOL needRemove = true
     );
 
-    static void fixIndices(
+    static void fixIndexes(
       VEC<T> &vec,
-      VEC_LLI &indices,
+      VEC_LLI &indexes,
       CR_BOL needRemove = true
     );
 
-    static VEC_LLI fixIndices(
+    static VEC_LLI fixIndexes(
       CR_SZ targetSz,
-      CR_VEC_LLI indices,
+      CR_VEC_LLI indexes,
       CR_BOL needRemove = true
     );
 
-    static VEC_LLI fixIndices(
+    static VEC_LLI fixIndexes(
       VEC<T> &vec,
-      CR_VEC_LLI indices,
+      CR_VEC_LLI indexes,
       CR_BOL needRemove = true
     );
 

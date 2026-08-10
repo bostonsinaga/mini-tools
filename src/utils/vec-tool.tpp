@@ -22,17 +22,17 @@ namespace utils {
   }
 
   template <typename T>
-  bool VecTool<T>::hasIndices(CR_SZ targetSz, CR_VEC_LLI indices) {
-    for (CR_LLI i : indices) {
+  bool VecTool<T>::hasIndexes(CR_SZ targetSz, CR_VEC_LLI indexes) {
+    for (CR_LLI i : indexes) {
       if (!hasIndex(targetSz, i)) return false;
     }
-    return indices.size() > 0 ? true : false;
+    return indexes.size() > 0 ? true : false;
   }
 
   template <typename T>
-  bool VecTool<T>::hasIndices(CR_VEC<T> vec, CR_VEC_LLI indices) {
-    return VecTool<T>::hasIndices(
-      vec.size(), indices
+  bool VecTool<T>::hasIndexes(CR_VEC<T> vec, CR_VEC_LLI indexes) {
+    return VecTool<T>::hasIndexes(
+      vec.size(), indexes
     );
   }
 
@@ -172,12 +172,12 @@ namespace utils {
   }
 
   template <typename T>
-  void VecTool<T>::eraseIndicesStable(
+  void VecTool<T>::eraseIndexesStable(
     VEC<T> &vec,
-    CR_VEC_SZ indices,
+    CR_VEC_SZ indexes,
     VEC<T> &extracted
   ) {
-    for (CR_SZ i : indices) {
+    for (CR_SZ i : indexes) {
       extracted.push_back(vec[i]);
       vec.erase(vec.begin() + i);
     }
@@ -203,11 +203,11 @@ namespace utils {
   }
 
   template <typename T>
-  void VecTool<T>::eraseIndicesStable(
+  void VecTool<T>::eraseIndexesStable(
     VEC<T> &vec,
-    CR_VEC_SZ indices
+    CR_VEC_SZ indexes
   ) {
-    for (CR_SZ i : indices) {
+    for (CR_SZ i : indexes) {
       vec.erase(vec.begin() + i);
     }
   }
@@ -243,12 +243,12 @@ namespace utils {
   }
 
   template <typename T>
-  void VecTool<T>::eraseIndicesUnstable(
+  void VecTool<T>::eraseIndexesUnstable(
     VEC<T> &vec,
-    CR_VEC_SZ indices,
+    CR_VEC_SZ indexes,
     VEC<T> &extracted
   ) {
-    for (CR_SZ i : indices) {
+    for (CR_SZ i : indexes) {
       extracted.push_back(vec[i]);
       vec[i] = vec.back();
       vec.pop_back();
@@ -276,11 +276,11 @@ namespace utils {
   }
 
   template <typename T>
-  void VecTool<T>::eraseIndicesUnstable(
+  void VecTool<T>::eraseIndexesUnstable(
     VEC<T> &vec,
-    CR_VEC_SZ indices
+    CR_VEC_SZ indexes
   ) {
-    for (CR_SZ i : indices) {
+    for (CR_SZ i : indexes) {
       vec[i] = vec.back();
       vec.pop_back();
     }
@@ -309,12 +309,12 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> VecTool<T>::extractIndicesStable(
+  VEC<T> VecTool<T>::extractIndexesStable(
     VEC<T> &vec,
-    CR_VEC_SZ indices
+    CR_VEC_SZ indexes
   ) {
     VEC<T> extracted;
-    VecTool<T>::eraseIndicesStable(vec, indices, extracted);
+    VecTool<T>::eraseIndexesStable(vec, indexes, extracted);
     return extracted;
   }
 
@@ -341,74 +341,74 @@ namespace utils {
   }
 
   template <typename T>
-  VEC<T> VecTool<T>::extractIndicesUnstable(
+  VEC<T> VecTool<T>::extractIndexesUnstable(
     VEC<T> &vec,
-    CR_VEC_SZ indices
+    CR_VEC_SZ indexes
   ) {
     VEC<T> extracted;
-    VecTool<T>::eraseIndicesUnstable(vec, indices, extracted);
+    VecTool<T>::eraseIndexesUnstable(vec, indexes, extracted);
     return extracted;
   }
 
   /** INDEX LIMITERS */
 
   template <typename T>
-  static void fixIndices(
+  static void fixIndexes(
     CR_SZ targetSz,
-    VEC_LLI &indices,
+    VEC_LLI &indexes,
     CR_BOL needRemove
   ) {
     if (!targetSz) return;
 
-    for (LLI i = 0; i < indices.size(); i++) {
-      if (!VecTool<T>::hasIndex(targetSz, indices[i])) {
+    for (LLI i = 0; i < indexes.size(); i++) {
+      if (!VecTool<T>::hasIndex(targetSz, indexes[i])) {
 
         if (needRemove) {
-          VecTool<T>::extractSingleStable(indices, i);
+          VecTool<T>::extractSingleStable(indexes, i);
           i--;
         }
         else {
-          if (indices[i] < 0) indices[i] = 0;
-          else if (indices[i] >= targetSz) indices[i] = targetSz - 1;
+          if (indexes[i] < 0) indexes[i] = 0;
+          else if (indexes[i] >= targetSz) indexes[i] = targetSz - 1;
         }
       }
     }
   }
 
   template <typename T>
-  void VecTool<T>::fixIndices(
+  void VecTool<T>::fixIndexes(
     VEC<T> &vec,
-    VEC_LLI &indices,
+    VEC_LLI &indexes,
     CR_BOL needRemove
   ) {
-    VecTool<T>::fixIndices(
-      vec.size(), indices, needRemove
+    VecTool<T>::fixIndexes(
+      vec.size(), indexes, needRemove
     );
   }
 
   template <typename T>
-  VEC_LLI VecTool<T>::fixIndices(
+  VEC_LLI VecTool<T>::fixIndexes(
     CR_SZ targetSz,
-    CR_VEC_LLI indices,
+    CR_VEC_LLI indexes,
     CR_BOL needRemove
   ) {
-    VEC_LLI newIndices = indices;
+    VEC_LLI newIndexes = indexes;
 
-    VecTool<T>::fixIndices(
-      targetSz, newIndices, needRemove
+    VecTool<T>::fixIndexes(
+      targetSz, newIndexes, needRemove
     );
 
-    return newIndices;
+    return newIndexes;
   }
 
   template <typename T>
-  VEC_LLI VecTool<T>::fixIndices(
+  VEC_LLI VecTool<T>::fixIndexes(
     VEC<T> &vec,
-    CR_VEC_LLI indices,
+    CR_VEC_LLI indexes,
     CR_BOL needRemove
   ) {
-    return VecTool<T>::fixIndices(
-      vec.size(), indices, needRemove
+    return VecTool<T>::fixIndexes(
+      vec.size(), indexes, needRemove
     );
   }
 
