@@ -47,6 +47,13 @@ namespace utils {
   }
 
   template <inspector::NUMBER T>
+  VEC_STR Scanner::numbersToStrings(CR_VEC<T> numbers) {
+    VEC_STR strings;
+    for (CR<T> n : numbers) strings.push_back(std::to_string(n));
+    return strings;
+  }
+
+  template <inspector::NUMBER T>
   VEC<T> Scanner::parseNumbers(CR_STR text) {
 
     VEC<T> numVec;

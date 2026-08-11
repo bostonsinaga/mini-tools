@@ -31,6 +31,9 @@ namespace utils {
     static T stringToNumber(CR_STR str);
 
     template <inspector::NUMBER T>
+    static VEC_STR numbersToStrings(CR_VEC<T> numbers);
+
+    template <inspector::NUMBER T>
     static VEC<T> parseNumbers(CR_STR text);
 
     template <inspector::LETTER T>
