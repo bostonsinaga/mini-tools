@@ -104,7 +104,7 @@ namespace Timer {
     CR_INT dd_in,
     CR_INT mm_in,
     CR_INT yyyy_in,
-    const Stopwatch &stopwatch_in
+    CR<Stopwatch> stopwatch_in
   ) {
     dd = dd_in;
     mm = mm_in;
@@ -272,7 +272,7 @@ namespace Timer {
     return yyyy / 4 - yyyy / 100 + yyyy / 400;
   }
 
-  int Date::countLeapYearsFrom(const Date &date) const {
+  int Date::countLeapYearsFrom(CR<Date> date) const {
     return countLeapYearsFromZero() - date.countLeapYearsFromZero();
   }
 
@@ -310,7 +310,7 @@ namespace Timer {
     return count + reverseCountDaysThisYear();
   }
 
-  int Date::countDaysFrom(const Date &date) const {
+  int Date::countDaysFrom(CR<Date> date) const {
     int dateDays = date.countDaysFromZero();
 
     if (dateDays < 0) dateDays -= 366;
@@ -334,17 +334,17 @@ namespace Timer {
     return count + reverseCountMonthsThisYear();
   }
 
-  int Date::countMonthsFrom(const Date &date) const {
+  int Date::countMonthsFrom(CR<Date> date) const {
     return countMonthsFromZero() - date.countMonthsFromZero();
   }
 
   /** YEARS COUNTERS */
 
-  int Date::countYearsFromZero(const Date &date) const {
+  int Date::countYearsFromZero(CR<Date> date) const {
     return yyyy - (yyyy / std::abs(yyyy));
   }
 
-  int Date::countYearsFrom(const Date &date) const {
+  int Date::countYearsFrom(CR<Date> date) const {
     int dateYear = date.yyyy;
     int thisYearSign = yyyy / std::abs(yyyy);
     int dateYearSign = dateYear / std::abs(dateYear);
@@ -470,7 +470,7 @@ namespace Timer {
     return allCapsStringify(1);
   }
 
-  bool Date::operator==(const Date &withDate) const {
+  bool Date::operator==(CR<Date> withDate) const {
     return (
       yyyy == withDate.yyyy &&
       mm == withDate.mm &&
@@ -478,7 +478,7 @@ namespace Timer {
     );
   }
 
-  bool Date::operator<(const Date &withDate) const {
+  bool Date::operator<(CR<Date> withDate) const {
     return (
       (yyyy < withDate.yyyy) ||
       (yyyy == withDate.yyyy && mm < withDate.mm) ||
@@ -486,7 +486,7 @@ namespace Timer {
     );
   }
 
-  bool Date::operator>(const Date &withDate) const {
+  bool Date::operator>(CR<Date> withDate) const {
     return (
       (yyyy > withDate.yyyy) ||
       (yyyy == withDate.yyyy && mm > withDate.mm) ||
@@ -494,7 +494,7 @@ namespace Timer {
     );
   }
 
-  bool Date::operator<=(const Date &withDate) const {
+  bool Date::operator<=(CR<Date> withDate) const {
     return (
       (yyyy < withDate.yyyy) ||
       (yyyy == withDate.yyyy && mm < withDate.mm) ||
@@ -506,7 +506,7 @@ namespace Timer {
     );
   }
 
-  bool Date::operator>=(const Date &withDate) const {
+  bool Date::operator>=(CR<Date> withDate) const {
     return (
       (yyyy < withDate.yyyy) ||
       (yyyy == withDate.yyyy && mm < withDate.mm) ||

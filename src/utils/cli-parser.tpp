@@ -44,7 +44,7 @@ namespace utils {
   template <typename CLIParser<T, U, V>::FoundCountEnum N>
   void CLIParser<T, U, V>::pushDefault(
     CR_STR keyword,
-    const FoundEnum &found
+    CR<FoundEnum> found
   ) {
     setMainUnormapOrder(keyword);
 

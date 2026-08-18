@@ -120,14 +120,11 @@ namespace utils {
   ) {
     std::string text;
 
-    for (const std::string &str : vecStr) {
+    for (CR_STR str : vecStr) {
       text += str + separator;
     }
 
-    if (separatedExceptLast &&
-      !(text.empty() || separator.empty())
-    ) { text.pop_back(); }
-
+    if (separatedExceptLast && !text.empty() && !separator.empty()) text.pop_back();
     return text;
   }
 

@@ -60,7 +60,7 @@ namespace utils {
         current = current.parent_path();
       }
     }
-    else for (const std::filesystem::directory_entry& entry:
+    else for (CR<std::filesystem::directory_entry> entry:
       FS::recursive_directory_iterator(FS::current_path())
     ) {
       combined = entry.path() / path;

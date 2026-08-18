@@ -71,8 +71,8 @@ namespace data_structures {
   }
 
   void GeneralTree::traverse(
-    const Callback &callback,
-    const DIRECTION &direction
+    CR<Callback> callback,
+    CR<DIRECTION> direction
   ) {
     LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *el = static_cast<GeneralTree*>(neighbors[direction]);
@@ -93,7 +93,7 @@ namespace data_structures {
     LinkedList::Metadata::iteratings[start] = false;
   }
 
-  void GeneralTree::bubble(const Callback &callback) {
+  void GeneralTree::bubble(CR<Callback> callback) {
     LinkedList::Metadata::iteratings[start] = true;
     GeneralTree *el = this;
 

@@ -100,13 +100,13 @@ namespace utils {
     using KEYDEF = PAIR2<std::string, W>;
 
     template <typename W>
-    using CR_KEYDEF = const KEYDEF<W>&;
+    using CR_KEYDEF = CR<KEYDEF<W>>;
 
     template <typename W>
     using VEC_KEYDEF = VEC<KEYDEF<W>>;
 
     template <typename W>
-    using CR_VEC_KEYDEF = const VEC_KEYDEF<W>&;
+    using CR_VEC_KEYDEF = CR<VEC_KEYDEF<W>>;
 
     /** Abbreviations of vector-default */
 
@@ -166,7 +166,7 @@ namespace utils {
     template <FoundCountEnum N>
     void pushDefault(
       CR_STR keyword,
-      const FoundEnum &found
+      CR<FoundEnum> found
     );
 
     /**

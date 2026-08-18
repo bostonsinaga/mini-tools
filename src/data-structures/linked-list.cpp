@@ -58,8 +58,8 @@ namespace data_structures {
   }
 
   void LinkedList::forEach(
-    const Callback &callback,
-    const DIRECTION &direction
+    CR<Callback> callback,
+    CR<DIRECTION> direction
   ) {
     LinkedList::Metadata::iteratings[start] = true;
     LinkedList *el = neighbors[direction];
@@ -76,8 +76,8 @@ namespace data_structures {
   }
 
   void LinkedList::forEach(
-    const CallbackCounter &callback,
-    const DIRECTION &direction
+    CR<CallbackCounter> callback,
+    CR<DIRECTION> direction
   ) {
     LinkedList::Metadata::iteratings[start] = true;
     LinkedList *el = neighbors[direction];

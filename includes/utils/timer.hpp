@@ -102,7 +102,7 @@ namespace Timer {
       CR_INT dd_in,
       CR_INT mm_in,
       CR_INT yyyy_in,
-      const Stopwatch &stopwatch_in = Stopwatch()
+      CR<Stopwatch> stopwatch_in = Stopwatch()
     );
 
     // parameter cannot be zero
@@ -148,23 +148,23 @@ namespace Timer {
     // leap years counters
     static int countLeapYearsFromZero(int yyyy_test);
     int countLeapYearsFromZero() const;
-    int countLeapYearsFrom(const Date &date) const;
+    int countLeapYearsFrom(CR<Date> date) const;
 
     // days counters
     int countDaysThisYear() const;
     int reverseCountDaysThisYear() const;
     int countDaysFromZero() const;
-    int countDaysFrom(const Date &date) const;
+    int countDaysFrom(CR<Date> date) const;
 
     // months counters
     int countMonthsThisYear() const;
     int reverseCountMonthsThisYear() const;
     int countMonthsFromZero() const;
-    int countMonthsFrom(const Date &date) const;
+    int countMonthsFrom(CR<Date> date) const;
 
     // years counters
-    int countYearsFromZero(const Date &date) const;
-    int countYearsFrom(const Date &date) const;
+    int countYearsFromZero(CR<Date> date) const;
+    int countYearsFrom(CR<Date> date) const;
 
     // stringifiers
     std::string numericStringify(CR_STR separator = "/") const;
@@ -174,11 +174,11 @@ namespace Timer {
     std::string shortAllCapsStringify() const;
 
     // operators overloading
-    bool operator==(const Date &withDate) const;
-    bool operator<(const Date &withDate) const;
-    bool operator>(const Date &withDate) const;
-    bool operator<=(const Date &withDate) const;
-    bool operator>=(const Date &withDate) const;
+    bool operator==(CR<Date> withDate) const;
+    bool operator<(CR<Date> withDate) const;
+    bool operator>(CR<Date> withDate) const;
+    bool operator<=(CR<Date> withDate) const;
+    bool operator>=(CR<Date> withDate) const;
   };
 
   //________|
@@ -234,7 +234,7 @@ namespace Timer {
     public:
       Date date;
       bool completed = false;
-      Sequence(const Date &date_in, CR_BOL completed_in)
+      Sequence(CR<Date> date_in, CR_BOL completed_in)
       : date(date_in), completed(completed_in) {}
     };
 
@@ -304,15 +304,15 @@ namespace Timer {
     Spread() = delete;
 
     Spread(
-      const Date &fromDate,
-      const Date &toDate
+      CR<Date> fromDate,
+      CR<Date> toDate
     ) {
       interval = {fromDate, toDate};
     }
 
     void setInterval(
-      const Date &fromDate,
-      const Date &toDate
+      CR<Date> fromDate,
+      CR<Date> toDate
     ) {
       interval = {fromDate, toDate};
     }

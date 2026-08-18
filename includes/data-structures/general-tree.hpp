@@ -48,12 +48,12 @@ namespace data_structures {
 
     // iterate through child nodes until reaching the leaves
     virtual void traverse(
-      const Callback &callback,
-      const DIRECTION &direction = RIGHT
+      CR<Callback> callback,
+      CR<DIRECTION> direction = RIGHT
     );
 
     // iterate from here to the root without visiting neighbors
-    virtual void bubble(const Callback &callback);
+    virtual void bubble(CR<Callback> callback);
 
     /** Override behavior through parent-child relationship configuration */
 
