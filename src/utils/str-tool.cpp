@@ -255,7 +255,7 @@ namespace utils {
         recent.first = character;
       }
       // change to uppercase
-      else if (isLetter(text[i])) {
+      else if (isAlphabet(text[i])) {
         recent.second = recent.first;
         recent.first = character;
 
@@ -364,12 +364,6 @@ namespace utils {
     return text.substr(index, length);
   }
 
-  /** Character Detectors */
-
-  bool StrTool::isWhitespace(CR_CH ch) {
-    return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
-  }
-
   bool StrTool::isWhitespaces(CR_STR str) {
     for (CR_CH ch : str) {
       if (!isWhitespace(ch)) return false;
@@ -377,32 +371,10 @@ namespace utils {
     return true;
   }
 
-  bool StrTool::isUppercaseLetter(CR_CH ch) {
-    return ch >= 'A' && ch <= 'Z';
-  }
-
-  bool StrTool::isLowercaseLetter(CR_CH ch) {
-    return ch >= 'a' && ch <= 'z';
-  }
-
-  bool StrTool::isLetter(CR_CH ch) {
-    return isUppercaseLetter(ch) || isLowercaseLetter(ch);
-  }
-
-  /** Number Detectors */
-
-  bool StrTool::isDigit(CR_CH ch) {
-    return ch >= '0' && ch <= '9';
-  }
-
   bool StrTool::isInteger(CR_STR str) {
-
     for (CR_CH ch : str) {
-      if (!StrTool::isDigit(ch)) {
-        return false;
-      }
+      if (!isDigit(ch)) return false;
     }
-
     return true;
   }
 
@@ -415,7 +387,7 @@ namespace utils {
       if (!decPtFound && ch == decPtSign) {
         decPtFound = true;
       }
-      else if (!StrTool::isDigit(ch)) {
+      else if (!isDigit(ch)) {
         return false;
       }
     }

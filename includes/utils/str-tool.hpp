@@ -99,17 +99,16 @@ namespace utils {
      */
     static std::string trim(CR_STR text);
 
-    /** Character Detectors */
+    /** Detectors */
 
-    static bool isWhitespace(CR_CH ch);
+    inline static bool isWhitespace(CR_UCH ch) { return std::isspace(ch); }
+    inline static bool isUppercase(CR_UCH ch) { return std::isupper(ch); }
+    inline static bool isLowercase(CR_UCH ch) { return std::islower(ch); }
+    inline static bool isAlphabet(CR_UCH ch) { return std::isalpha(ch); }
+    inline static bool isDigit(CR_UCH ch) { return std::isdigit(ch); }
+    inline static bool isAlphaNumeric(CR_UCH ch) { return std::isalnum(ch); }
+
     static bool isWhitespaces(CR_STR str);
-    static bool isUppercaseLetter(CR_CH ch);
-    static bool isLowercaseLetter(CR_CH ch);
-    static bool isLetter(CR_CH ch);
-
-    /** Number Detectors */
-
-    static bool isDigit(CR_CH ch);
     static bool isInteger(CR_STR str);
 
     static bool isFloatingPoint(

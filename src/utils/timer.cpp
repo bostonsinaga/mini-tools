@@ -670,7 +670,7 @@ namespace Timer {
 
           // alphanumeric conditions
           bool isDigit = StrTool::isDigit(ch);
-          bool isLetter = StrTool::isLetter(ch);
+          bool isAlphabet = StrTool::isAlphabet(ch);
 
           // shift current to previous
           chTypes[_previous] = chTypes[_current];
@@ -679,7 +679,7 @@ namespace Timer {
           if (isDigit) {
             chTypes[_current] = ch_number;
           }
-          else if (isLetter) {
+          else if (isAlphabet) {
             chTypes[_current] = ch_letter;
           }
           else chTypes[_current] = ch_other;
@@ -701,7 +701,7 @@ namespace Timer {
           }
 
           // collect similar type of 'ch'
-          if (isDigit || isLetter) buffer += ch;
+          if (isDigit || isAlphabet) buffer += ch;
         }
 
         // will be removed
