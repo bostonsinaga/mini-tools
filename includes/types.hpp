@@ -59,6 +59,7 @@ namespace mini_tools {
     template <typename T>
     concept LETTER =
       std::is_same_v<T, char> ||
+      std::is_same_v<T, unsigned char> ||
       std::is_same_v<T, wchar_t> ||
       std::is_same_v<T, std::string> ||
       std::is_same_v<T, std::wstring>;
@@ -100,6 +101,7 @@ namespace mini_tools {
   typedef short int SI;
   typedef long int LI;
   typedef long long int LLI;
+  typedef unsigned char UCH;
   typedef unsigned short int USI;
   typedef unsigned int UI;
   typedef unsigned long int ULI;
@@ -111,6 +113,7 @@ namespace mini_tools {
   typedef const bool& CR_BOL;
   typedef const std::string& CR_STR;
   typedef const char& CR_CH;
+  typedef const UCH& CR_UCH;
   typedef const wchar_t& CR_WCH;
   typedef const int& CR_INT;
   typedef const SI& CR_SI;
@@ -200,6 +203,7 @@ namespace mini_tools {
   typedef VEC<bool> VEC_BOL;
   typedef VEC<std::string> VEC_STR;
   typedef VEC<char> VEC_CH;
+  typedef VEC<UCH> VEC_UCH;
   typedef VEC<wchar_t> VEC_WCH;
   typedef VEC<int> VEC_INT;
   typedef VEC<SI> VEC_SI;
@@ -218,6 +222,7 @@ namespace mini_tools {
   typedef VEC<VEC_BOL> VEC2_BOL;
   typedef VEC<VEC_STR> VEC2_STR;
   typedef VEC<VEC_CH> VEC2_CH;
+  typedef VEC<VEC_UCH> VEC2_UCH;
   typedef VEC<VEC_WCH> VEC2_WCH;
   typedef VEC<VEC_INT> VEC2_INT;
   typedef VEC<VEC_SI> VEC2_SI;
@@ -238,6 +243,7 @@ namespace mini_tools {
   typedef VEC<bool*> VEC_BOL_P;
   typedef VEC<std::string*> VEC_STR_P;
   typedef VEC<char*> VEC_CH_P;
+  typedef VEC<UCH*> VEC_UCH_P;
   typedef VEC<wchar_t*> VEC_WCH_P;
   typedef VEC<int*> VEC_INT_P;
   typedef VEC<SI*> VEC_SI_P;
@@ -256,6 +262,7 @@ namespace mini_tools {
   typedef VEC<VEC_BOL_P> VEC2_BOL_P;
   typedef VEC<VEC_STR_P> VEC2_STR_P;
   typedef VEC<VEC_CH_P> VEC2_CH_P;
+  typedef VEC<VEC_UCH_P> VEC2_UCH_P;
   typedef VEC<VEC_WCH_P> VEC2_WCH_P;
   typedef VEC<VEC_INT_P> VEC2_INT_P;
   typedef VEC<VEC_SI_P> VEC2_SI_P;
@@ -276,6 +283,7 @@ namespace mini_tools {
   typedef const VEC_BOL& CR_VEC_BOL;
   typedef const VEC_STR& CR_VEC_STR;
   typedef const VEC_CH& CR_VEC_CH;
+  typedef const VEC_UCH& CR_VEC_UCH;
   typedef const VEC_WCH& CR_VEC_WCH;
   typedef const VEC_INT& CR_VEC_INT;
   typedef const VEC_SI& CR_VEC_SI;
@@ -294,6 +302,7 @@ namespace mini_tools {
   typedef const VEC2_BOL& CR_VEC2_BOL;
   typedef const VEC2_STR& CR_VEC2_STR;
   typedef const VEC2_CH& CR_VEC2_CH;
+  typedef const VEC2_UCH& CR_VEC2_UCH;
   typedef const VEC2_WCH& CR_VEC2_WCH;
   typedef const VEC2_INT& CR_VEC2_INT;
   typedef const VEC2_SI& CR_VEC2_SI;
@@ -314,6 +323,7 @@ namespace mini_tools {
   typedef const VEC_BOL_P& CR_VEC_BOL_P;
   typedef const VEC_STR_P& CR_VEC_STR_P;
   typedef const VEC_CH_P& CR_VEC_CH_P;
+  typedef const VEC_UCH_P& CR_VEC_UCH_P;
   typedef const VEC_WCH_P& CR_VEC_WCH_P;
   typedef const VEC_INT_P& CR_VEC_INT_P;
   typedef const VEC_SI_P& CR_VEC_SI_P;
@@ -332,6 +342,7 @@ namespace mini_tools {
   typedef const VEC2_BOL_P& CR_VEC2_BOL_P;
   typedef const VEC2_STR_P& CR_VEC2_STR_P;
   typedef const VEC2_CH_P& CR_VEC2_CH_P;
+  typedef const VEC2_UCH_P& CR_VEC2_UCH_P;
   typedef const VEC2_WCH_P& CR_VEC2_WCH_P;
   typedef const VEC2_INT_P& CR_VEC2_INT_P;
   typedef const VEC2_SI_P& CR_VEC2_SI_P;
@@ -352,6 +363,7 @@ namespace mini_tools {
   typedef PAIR<bool> PAIR_BOL;
   typedef PAIR<std::string> PAIR_STR;
   typedef PAIR<char> PAIR_CH;
+  typedef PAIR<UCH> PAIR_UCH;
   typedef PAIR<wchar_t> PAIR_WCH;
   typedef PAIR<int> PAIR_INT;
   typedef PAIR<SI> PAIR_SI;
@@ -372,6 +384,7 @@ namespace mini_tools {
   typedef PAIR<bool*> PAIR_BOL_P;
   typedef PAIR<std::string*> PAIR_STR_P;
   typedef PAIR<char*> PAIR_CH_P;
+  typedef PAIR<UCH*> PAIR_UCH_P;
   typedef PAIR<wchar_t*> PAIR_WCH_P;
   typedef PAIR<int*> PAIR_INT_P;
   typedef PAIR<SI*> PAIR_SI_P;
@@ -392,6 +405,7 @@ namespace mini_tools {
   typedef const PAIR_BOL& CR_PAIR_BOL;
   typedef const PAIR_STR& CR_PAIR_STR;
   typedef const PAIR_CH& CR_PAIR_CH;
+  typedef const PAIR_UCH& CR_PAIR_UCH;
   typedef const PAIR_WCH& CR_PAIR_WCH;
   typedef const PAIR_INT& CR_PAIR_INT;
   typedef const PAIR_SI& CR_PAIR_SI;
@@ -412,6 +426,7 @@ namespace mini_tools {
   typedef const PAIR_BOL_P& CR_PAIR_BOL_P;
   typedef const PAIR_STR_P& CR_PAIR_STR_P;
   typedef const PAIR_CH_P& CR_PAIR_CH_P;
+  typedef const PAIR_UCH_P& CR_PAIR_UCH_P;
   typedef const PAIR_WCH_P& CR_PAIR_WCH_P;
   typedef const PAIR_INT_P& CR_PAIR_INT_P;
   typedef const PAIR_SI_P& CR_PAIR_SI_P;
@@ -437,6 +452,9 @@ namespace mini_tools {
 
   template <size_t N>
   using ARR_CH = ARR<char, N>;
+
+  template <size_t N>
+  using ARR_UCH = ARR<UCH, N>;
 
   template <size_t N>
   using ARR_WCH = ARR<wchar_t, N>;
@@ -488,6 +506,9 @@ namespace mini_tools {
 
   template <size_t M, size_t N>
   using ARR2_CH = ARR<ARR_CH<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_UCH = ARR<ARR_UCH<M>, N>;
 
   template <size_t M, size_t N>
   using ARR2_WCH = ARR<ARR_WCH<M>, N>;
@@ -543,6 +564,9 @@ namespace mini_tools {
   using ARR_CH_P = ARR<char*, N>;
 
   template <size_t N>
+  using ARR_UCH_P = ARR<UCH*, N>;
+
+  template <size_t N>
   using ARR_WCH_P = ARR<wchar_t*, N>;
 
   template <size_t N>
@@ -592,6 +616,9 @@ namespace mini_tools {
 
   template <size_t M, size_t N>
   using ARR2_CH_P = ARR<ARR_CH_P<M>, N>;
+
+  template <size_t M, size_t N>
+  using ARR2_UCH_P = ARR<ARR_UCH_P<M>, N>;
 
   template <size_t M, size_t N>
   using ARR2_WCH_P = ARR<ARR_WCH_P<M>, N>;
@@ -647,6 +674,9 @@ namespace mini_tools {
   using CR_ARR_CH = const ARR_CH<N>&;
 
   template <size_t N>
+  using CR_ARR_UCH = const ARR_UCH<N>&;
+
+  template <size_t N>
   using CR_ARR_WCH = const ARR_WCH<N>&;
 
   template <size_t N>
@@ -696,6 +726,9 @@ namespace mini_tools {
 
   template <size_t M, size_t N>
   using CR_ARR2_CH = const ARR2_CH<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_UCH = const ARR2_UCH<M, N>&;
 
   template <size_t M, size_t N>
   using CR_ARR2_WCH = const ARR2_WCH<M, N>&;
@@ -751,6 +784,9 @@ namespace mini_tools {
   using CR_ARR_CH_P = const ARR_CH_P<N>&;
 
   template <size_t N>
+  using CR_ARR_UCH_P = const ARR_UCH_P<N>&;
+
+  template <size_t N>
   using CR_ARR_WCH_P = const ARR_WCH_P<N>&;
 
   template <size_t N>
@@ -800,6 +836,9 @@ namespace mini_tools {
 
   template <size_t M, size_t N>
   using CR_ARR2_CH_P = const ARR2_CH_P<M, N>&;
+
+  template <size_t M, size_t N>
+  using CR_ARR2_UCH_P = const ARR2_UCH_P<M, N>&;
 
   template <size_t M, size_t N>
   using CR_ARR2_WCH_P = const ARR2_WCH_P<M, N>&;
@@ -854,6 +893,7 @@ namespace mini_tools {
   using ORSET_BOL = ORSET<bool>;
   using ORSET_STR = ORSET<std::string>;
   using ORSET_CH = ORSET<char>;
+  using ORSET_UCH = ORSET<UCH>;
   using ORSET_WCH = ORSET<wchar_t>;
   using ORSET_INT = ORSET<int>;
   using ORSET_SI = ORSET<SI>;
@@ -872,6 +912,7 @@ namespace mini_tools {
   using CR_ORSET_BOL = CR<ORSET_BOL>;
   using CR_ORSET_STR = CR<ORSET_STR>;
   using CR_ORSET_CH = CR<ORSET_CH>;
+  using CR_ORSET_UCH = CR<ORSET_UCH>;
   using CR_ORSET_WCH = CR<ORSET_WCH>;
   using CR_ORSET_INT = CR<ORSET_INT>;
   using CR_ORSET_SI = CR<ORSET_SI>;
@@ -890,6 +931,7 @@ namespace mini_tools {
   using ORSET_BOL_P = ORSET<bool*>;
   using ORSET_STR_P = ORSET<std::string*>;
   using ORSET_CH_P = ORSET<char*>;
+  using ORSET_UCH_P = ORSET<char*>;
   using ORSET_WCH_P = ORSET<wchar_t*>;
   using ORSET_INT_P = ORSET<int*>;
   using ORSET_SI_P = ORSET<SI*>;
@@ -908,6 +950,7 @@ namespace mini_tools {
   using CR_ORSET_BOL_P = CR<ORSET_BOL_P>;
   using CR_ORSET_STR_P = CR<ORSET_STR_P>;
   using CR_ORSET_CH_P = CR<ORSET_CH_P>;
+  using CR_ORSET_UCH_P = CR<ORSET_UCH_P>;
   using CR_ORSET_WCH_P = CR<ORSET_WCH_P>;
   using CR_ORSET_INT_P = CR<ORSET_INT_P>;
   using CR_ORSET_SI_P = CR<ORSET_SI_P>;
@@ -934,6 +977,7 @@ namespace mini_tools {
   using UNORSET_BOL = UNORSET<bool>;
   using UNORSET_STR = UNORSET<std::string>;
   using UNORSET_CH = UNORSET<char>;
+  using UNORSET_UCH = UNORSET<UCH>;
   using UNORSET_WCH = UNORSET<wchar_t>;
   using UNORSET_INT = UNORSET<int>;
   using UNORSET_SI = UNORSET<SI>;
@@ -952,6 +996,7 @@ namespace mini_tools {
   using CR_UNORSET_BOL = CR<UNORSET_BOL>;
   using CR_UNORSET_STR = CR<UNORSET_STR>;
   using CR_UNORSET_CH = CR<UNORSET_CH>;
+  using CR_UNORSET_UCH = CR<UNORSET_UCH>;
   using CR_UNORSET_WCH = CR<UNORSET_WCH>;
   using CR_UNORSET_INT = CR<UNORSET_INT>;
   using CR_UNORSET_SI = CR<UNORSET_SI>;
@@ -970,6 +1015,7 @@ namespace mini_tools {
   using UNORSET_BOL_P = UNORSET<bool*>;
   using UNORSET_STR_P = UNORSET<std::string*>;
   using UNORSET_CH_P = UNORSET<char*>;
+  using UNORSET_UCH_P = UNORSET<UCH*>;
   using UNORSET_WCH_P = UNORSET<wchar_t*>;
   using UNORSET_INT_P = UNORSET<int*>;
   using UNORSET_SI_P = UNORSET<SI*>;
@@ -988,6 +1034,7 @@ namespace mini_tools {
   using CR_UNORSET_BOL_P = CR<UNORSET_BOL_P>;
   using CR_UNORSET_STR_P = CR<UNORSET_STR_P>;
   using CR_UNORSET_CH_P = CR<UNORSET_CH_P>;
+  using CR_UNORSET_UCH_P = CR<UNORSET_UCH_P>;
   using CR_UNORSET_WCH_P = CR<UNORSET_WCH_P>;
   using CR_UNORSET_INT_P = CR<UNORSET_INT_P>;
   using CR_UNORSET_SI_P = CR<UNORSET_SI_P>;
@@ -1021,6 +1068,9 @@ namespace mini_tools {
 
   template <typename T>
   using ORMAP_CH = ORMAP<char, T>;
+
+  template <typename T>
+  using ORMAP_UCH = ORMAP<UCH, T>;
 
   template <typename T>
   using ORMAP_WCH = ORMAP<wchar_t, T>;
@@ -1076,6 +1126,9 @@ namespace mini_tools {
   using CR_ORMAP_CH = CR<ORMAP_CH<T>>;
 
   template <typename T>
+  using CR_ORMAP_UCH = CR<ORMAP_UCH<T>>;
+
+  template <typename T>
   using CR_ORMAP_WCH = CR<ORMAP_WCH<T>>;
 
   template <typename T>
@@ -1129,6 +1182,9 @@ namespace mini_tools {
   using ORMAP_CH_P = ORMAP<char*, T>;
 
   template <typename T>
+  using ORMAP_UCH_P = ORMAP<UCH*, T>;
+
+  template <typename T>
   using ORMAP_WCH_P = ORMAP<wchar_t*, T>;
 
   template <typename T>
@@ -1180,6 +1236,9 @@ namespace mini_tools {
 
   template <typename T>
   using CR_ORMAP_CH_P = CR<ORMAP_CH_P<T>>;
+
+  template <typename T>
+  using CR_ORMAP_UCH_P = CR<ORMAP_UCH_P<T>>;
 
   template <typename T>
   using CR_ORMAP_WCH_P = CR<ORMAP_WCH_P<T>>;
@@ -1243,6 +1302,9 @@ namespace mini_tools {
   using UNORMAP_CH = UNORMAP<char, T>;
 
   template <typename T>
+  using UNORMAP_UCH = UNORMAP<UCH, T>;
+
+  template <typename T>
   using UNORMAP_WCH = UNORMAP<wchar_t, T>;
 
   template <typename T>
@@ -1294,6 +1356,9 @@ namespace mini_tools {
 
   template <typename T>
   using CR_UNORMAP_CH = CR<UNORMAP_CH<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_UCH = CR<UNORMAP_UCH<T>>;
 
   template <typename T>
   using CR_UNORMAP_WCH = CR<UNORMAP_WCH<T>>;
@@ -1349,6 +1414,9 @@ namespace mini_tools {
   using UNORMAP_CH_P = UNORMAP<char*, T>;
 
   template <typename T>
+  using UNORMAP_UCH_P = UNORMAP<UCH*, T>;
+
+  template <typename T>
   using UNORMAP_WCH_P = UNORMAP<wchar_t*, T>;
 
   template <typename T>
@@ -1400,6 +1468,9 @@ namespace mini_tools {
 
   template <typename T>
   using CR_UNORMAP_CH_P = CR<UNORMAP_CH_P<T>>;
+
+  template <typename T>
+  using CR_UNORMAP_UCH_P = CR<UNORMAP_UCH_P<T>>;
 
   template <typename T>
   using CR_UNORMAP_WCH_P = CR<UNORMAP_WCH_P<T>>;
