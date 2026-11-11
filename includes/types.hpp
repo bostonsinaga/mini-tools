@@ -10,6 +10,7 @@
 #include <vector>
 #include <array>
 #include <queue>
+#include <stack>
 #include <tuple>
 #include <set>
 #include <map>
@@ -110,6 +111,9 @@ namespace mini_tools {
 
   /** SHORTENED CONSTANT REFERENCES */
 
+  template <typename T>
+  using CR = const T&;
+
   typedef const bool& CR_BOL;
   typedef const std::string& CR_STR;
   typedef const char& CR_CH;
@@ -136,9 +140,6 @@ namespace mini_tools {
   typedef const FS_PATH& CR_FS_PATH;
 
   /** SHORTENED VECTOR TEMPLATES */
-
-  template <typename T>
-  using CR = const T&;
 
   template <typename T>
   using VEC = std::vector<T>;
@@ -197,6 +198,14 @@ namespace mini_tools {
 
   template <typename T, size_t N>
   using CR_VEC_ARR2 = const VEC_ARR2<T, N>&;
+
+  /** SHORTENED STACK TEMPLATES */
+
+  template <typename T>
+  using STK = std::stack<T>;
+
+  template <typename T>
+  using CR_STK = const STK<T>&;
 
   /** SHORTENED VALUE VECTORS */
 
@@ -881,6 +890,90 @@ namespace mini_tools {
 
   template <size_t M, size_t N>
   using CR_ARR2_LD_P = const ARR2_LD_P<M, N>&;
+
+  /** SHORTENED VALUE STACKS */
+
+  typedef STK<bool> STK_BOL;
+  typedef STK<std::string> STK_STR;
+  typedef STK<char> STK_CH;
+  typedef STK<UCH> STK_UCH;
+  typedef STK<wchar_t> STK_WCH;
+  typedef STK<int> STK_INT;
+  typedef STK<SI> STK_SI;
+  typedef STK<LI> STK_LI;
+  typedef STK<LLI> STK_LLI;
+  typedef STK<USI> STK_USI;
+  typedef STK<UI> STK_UI;
+  typedef STK<ULI> STK_ULI;
+  typedef STK<ULLI> STK_ULLI;
+  typedef STK<size_t> STK_SZ;
+  typedef STK<time_t> STK_TM;
+  typedef STK<float> STK_FLT;
+  typedef STK<double> STK_DBL;
+  typedef STK<LD> STK_LD;
+
+  /** SHORTENED POINTER STACKS */
+
+  typedef STK<bool*> STK_BOL_P;
+  typedef STK<std::string*> STK_STR_P;
+  typedef STK<char*> STK_CH_P;
+  typedef STK<UCH*> STK_UCH_P;
+  typedef STK<wchar_t*> STK_WCH_P;
+  typedef STK<int*> STK_INT_P;
+  typedef STK<SI*> STK_SI_P;
+  typedef STK<LI*> STK_LI_P;
+  typedef STK<LLI*> STK_LLI_P;
+  typedef STK<USI*> STK_USI_P;
+  typedef STK<UI*> STK_UI_P;
+  typedef STK<ULI*> STK_ULI_P;
+  typedef STK<ULLI*> STK_ULLI_P;
+  typedef STK<size_t*> STK_SZ_P;
+  typedef STK<time_t*> STK_TM_P;
+  typedef STK<float*> STK_FLT_P;
+  typedef STK<double*> STK_DBL_P;
+  typedef STK<LD*> STK_LD_P;
+
+  /** SHORTENED CONSTANT REFERENCE VALUE STACKS */
+
+  typedef const STK_BOL& CR_STK_BOL;
+  typedef const STK_STR& CR_STK_STR;
+  typedef const STK_CH& CR_STK_CH;
+  typedef const STK_UCH& CR_STK_UCH;
+  typedef const STK_WCH& CR_STK_WCH;
+  typedef const STK_INT& CR_STK_INT;
+  typedef const STK_SI& CR_STK_SI;
+  typedef const STK_LI& CR_STK_LI;
+  typedef const STK_LLI& CR_STK_LLI;
+  typedef const STK_USI& CR_STK_USI;
+  typedef const STK_UI& CR_STK_UI;
+  typedef const STK_ULI& CR_STK_ULI;
+  typedef const STK_ULLI& CR_STK_ULLI;
+  typedef const STK_SZ& CR_STK_SZ;
+  typedef const STK_TM& CR_STK_TM;
+  typedef const STK_FLT& CR_STK_FLT;
+  typedef const STK_DBL& CR_STK_DBL;
+  typedef const STK_LD& CR_STK_LD;
+
+  /** SHORTENED CONSTANT REFERENCE POINTER STACKS */
+
+  typedef const STK_BOL_P& CR_STK_BOL_P;
+  typedef const STK_STR_P& CR_STK_STR_P;
+  typedef const STK_CH_P& CR_STK_CH_P;
+  typedef const STK_UCH_P& CR_STK_UCH_P;
+  typedef const STK_WCH_P& CR_STK_WCH_P;
+  typedef const STK_INT_P& CR_STK_INT_P;
+  typedef const STK_SI_P& CR_STK_SI_P;
+  typedef const STK_LI_P& CR_STK_LI_P;
+  typedef const STK_LLI_P& CR_STK_LLI_P;
+  typedef const STK_USI_P& CR_STK_USI_P;
+  typedef const STK_UI_P& CR_STK_UI_P;
+  typedef const STK_ULI_P& CR_STK_ULI_P;
+  typedef const STK_ULLI_P& CR_STK_ULLI_P;
+  typedef const STK_SZ_P& CR_STK_SZ_P;
+  typedef const STK_TM_P& CR_STK_TM_P;
+  typedef const STK_FLT_P& CR_STK_FLT_P;
+  typedef const STK_DBL_P& CR_STK_DBL_P;
+  typedef const STK_LD_P& CR_STK_LD_P;
 
   /** SHORTENED ORDERED SET TEMPLATES */
 
