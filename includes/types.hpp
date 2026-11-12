@@ -34,17 +34,20 @@ namespace mini_tools {
       return
         std::is_same_v<T, char> ||
         std::is_same_v<T, wchar_t> ||
-        std::is_same_v<T, std::string>;
+        std::is_same_v<T, std::string> ||
+        std::is_same_v<T, std::wstring>;
+    }
+
+    template <typename T>
+    constexpr bool isFloategral() {
+      return
+        std::is_integral_v<T> ||
+        std::is_floating_point_v<T>;
     }
 
     template <typename T>
     constexpr bool isNumber() {
-      if constexpr (!isLetter<T>()) {
-        return
-          std::is_integral_v<T> ||
-          std::is_floating_point_v<T>;
-      }
-      return false;
+      return !isLetter<T>() && isFloategral<T>();
     }
 
     template <typename T>
