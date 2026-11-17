@@ -41,6 +41,9 @@ namespace mini_tools {
     std::is_same_v<T, std::u32string>;
 
   template <typename T>
+  concept LETSTR = LETTER<T> || STRING<T>;
+
+  template <typename T>
   concept INTEGRAL = std::is_integral_v<T>;
 
   template <typename T>
