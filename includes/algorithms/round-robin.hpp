@@ -10,7 +10,7 @@ namespace algorithms {
   public:
     RoundRobin() = delete;
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     struct NumericTask {
       std::function<void(T&)> ongoing;
       std::function<void()> finish;
@@ -24,7 +24,7 @@ namespace algorithms {
       VEC<T> load;
     };
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static void arbitrateNumeric(
       std::queue<NumericTask<T>> &taskQueue,
       CR<T> valueLimit

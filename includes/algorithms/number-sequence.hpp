@@ -80,7 +80,7 @@ namespace algorithms {
      * You can sum this return with the return of 'countDecimalPlaces'
      * to get the full number of digits and +1 for decimal point sign.
      */
-    template <inspector::INTEGRAL T>
+    template <INTEGRAL T>
     static Digits countDigits(CR<T> number) {
 
       Digits digits;
@@ -106,7 +106,7 @@ namespace algorithms {
      * with 'PRECISION_ENUM' from 'types.hpp'
      * which stores the above standards.
      */
-    template <inspector::FLOATING_POINT T>
+    template <FLOATING T>
     static int countDecimalPlaces(
       T number,
       CR_USI precision = 6

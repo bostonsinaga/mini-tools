@@ -6,7 +6,7 @@ namespace utils {
 
   /** Primitive Data Type Detectors */
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   T Scanner::stringToNumber(CR_STR str) {
 
     // select all available number conversion types
@@ -46,14 +46,14 @@ namespace utils {
     return T();
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   VEC_STR Scanner::numbersToStrings(CR_VEC<T> numbers) {
     VEC_STR strings;
     for (CR<T> n : numbers) strings.push_back(std::to_string(n));
     return strings;
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   VEC<T> Scanner::parseNumbers(CR_STR text) {
 
     VEC<T> numVec;
@@ -97,8 +97,8 @@ namespace utils {
     return numVec;
   }
 
-  template <inspector::LETTER T>
-  VEC<T> Scanner::parseLetters(CR_STR text) {
+  template <STRING T>
+  VEC<T> Scanner::parseWords(CR_STR text) {
 
     VEC<T> wordVec;
     bool separated = false;
@@ -124,7 +124,7 @@ namespace utils {
     return wordVec;
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   VEC<T> Scanner::txtToNumbers(CR_FS_PATH path) {
 
     return Scanner::parseNumbers<T>(
@@ -132,10 +132,10 @@ namespace utils {
     );
   }
 
-  template <inspector::LETTER T>
-  VEC<T> Scanner::txtToLetters(CR_FS_PATH path) {
+  template <STRING T>
+  VEC<T> Scanner::txtToWords(CR_FS_PATH path) {
 
-    return Scanner::parseLetters<T>(
+    return Scanner::parseWords<T>(
       Scanner::readFileString(path)
     );
   }

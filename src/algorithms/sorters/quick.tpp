@@ -5,7 +5,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
+  template <NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::lomutoPartition(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order,
@@ -31,7 +31,7 @@ namespace sorters {
     return i + 1;
   }
 
-  template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
+  template <NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::hoarePartition(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order,
@@ -56,7 +56,7 @@ namespace sorters {
     }
   }
 
-  template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
+  template <NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   int Quick<T, U, SCHEME>::randomPartition(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order,
@@ -77,7 +77,7 @@ namespace sorters {
     );
   }
 
-  template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
+  template <NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   void Quick<T, U, SCHEME>::recursion(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order,
@@ -104,7 +104,7 @@ namespace sorters {
     }
   }
 
-  template <inspector::NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
+  template <NUMBER T, typename U, QUICK_SCHEME_ENUM SCHEME>
   void Quick<T, U, SCHEME>::solve(
     VEC_PAIR2<T, U> &messy,
     CR_ORDER_ENUM order

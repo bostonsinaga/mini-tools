@@ -68,11 +68,11 @@ void Helper::getSamples(
     testPath / "samples/reals.txt"
   );
 
-  mt::VEC_STR letters = mt_uti::Scanner::txtToLetters<std::string>(
+  mt::VEC_STR letters = mt_uti::Scanner::txtToWords<std::string>(
     testPath / "samples/letters.txt"
   );
 
-  mt::VEC_STR words = mt_uti::Scanner::txtToLetters<std::string>(
+  mt::VEC_STR words = mt_uti::Scanner::txtToWords<std::string>(
     testPath / "samples/words.txt"
   );
 

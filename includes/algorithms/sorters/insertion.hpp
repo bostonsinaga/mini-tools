@@ -10,7 +10,7 @@ namespace sorters {
   // this belongs to quick sort
   enum QUICK_SCHEME_ENUM {QUICK_HOARE, QUICK_LOMUTO};
 
-  template <inspector::NUMBER T, class U>
+  template <NUMBER T, class U>
   class Insertion final {
   protected:
     static void process(
@@ -29,7 +29,7 @@ namespace sorters {
     );
 
   private:
-    template <inspector::NUMBER, class, QUICK_SCHEME_ENUM>
+    template <NUMBER, class, QUICK_SCHEME_ENUM>
     friend class Quick;
   };
 }}}

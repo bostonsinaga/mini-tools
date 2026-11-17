@@ -14,7 +14,7 @@ namespace utils {
     );
 
     // output example: "Error: 404"
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     static std::string getHeader(CR_SZ endNewlinesCount);
 
   /**
@@ -28,12 +28,12 @@ namespace utils {
 
     inline static std::string title = "Step";
 
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     inline static T tag = T();
 
     /** METHODS */
 
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     static std::string stringify(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
@@ -41,21 +41,21 @@ namespace utils {
     );
 
     /** Warning! Floating numbers will be rounded down */
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static std::string barStringify(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
       CR_STR barStyle = "="
     );
 
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     static void log(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
       CR_STR separator = "\n"
     );
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static void barLog(
       CR_VEC<T> vec,
       CR_SZ endNewlinesCount = 0,
@@ -78,7 +78,7 @@ namespace utils {
       CR_SZ endNewlinesCount = 0
     );
 
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     static bool writeFileString(
       CR_VEC<T> vec,
       CR_FS_PATH path,
@@ -94,7 +94,7 @@ namespace utils {
       CR_BOL extended
     );
 
-    template <inspector::ALPHANUMERIC T>
+    template <STRNUMERIC T>
     static bool logf(
       CR_VEC<T> vec,
       CR_FS_PATH path,
@@ -103,7 +103,7 @@ namespace utils {
       CR_STR separator = "\n"
     );
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static bool barLogf(
       CR_VEC<T> vec,
       CR_FS_PATH path,

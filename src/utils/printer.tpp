@@ -6,12 +6,12 @@
 namespace mini_tools {
 namespace utils {
 
-  template <inspector::ALPHANUMERIC T>
+  template <STRNUMERIC T>
   std::string Printer::getHeader(CR_SZ endNewlinesCount) {
 
     std::string text = Printer::title + ": ";
 
-    if constexpr (inspector::isNumber<T>()) {
+    if constexpr (NUMBER<T>) {
       text += std::to_string(Printer::tag<T>);
     }
     else text += Printer::tag<T>;
@@ -19,7 +19,7 @@ namespace utils {
     return Printer::getNewlines(text, endNewlinesCount);
   }
 
-  template <inspector::ALPHANUMERIC T>
+  template <STRNUMERIC T>
   std::string Printer::stringify(
     CR_VEC<T> vec,
     CR_SZ endNewlinesCount,
@@ -29,7 +29,7 @@ namespace utils {
 
     for (size_t i = 0; i < vec.size(); i++) {
 
-      if constexpr (inspector::isNumber<T>()) {
+      if constexpr (NUMBER<T>) {
         text += std::to_string(vec[i]) + separator;
       }
       else text += vec[i] + separator;
@@ -38,7 +38,7 @@ namespace utils {
     return Printer::getNewlines(text, endNewlinesCount);
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   std::string Printer::barStringify(
     CR_VEC<T> vec,
     CR_SZ endNewlinesCount,
@@ -53,7 +53,7 @@ namespace utils {
     return Printer::getNewlines(text, endNewlinesCount);
   }
 
-  template <inspector::ALPHANUMERIC T>
+  template <STRNUMERIC T>
   void Printer::log(
     CR_VEC<T> vec,
     CR_SZ endNewlinesCount,
@@ -63,7 +63,7 @@ namespace utils {
       << Printer::stringify<T>(vec, endNewlinesCount, separator);
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   void Printer::barLog(
     CR_VEC<T> vec,
     CR_SZ endNewlinesCount,
@@ -73,7 +73,7 @@ namespace utils {
       << Printer::barStringify<T>(vec, endNewlinesCount, barStyle);
   }
 
-  template <inspector::ALPHANUMERIC T>
+  template <STRNUMERIC T>
   bool Printer::writeFileString(
     CR_VEC<T> vec,
     CR_FS_PATH path,
@@ -110,7 +110,7 @@ namespace utils {
     return false;
   }
 
-  template <inspector::ALPHANUMERIC T>
+  template <STRNUMERIC T>
   bool Printer::logf(
     CR_VEC<T> vec,
     CR_FS_PATH path,
@@ -125,7 +125,7 @@ namespace utils {
     );
   }
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   bool Printer::barLogf(
     CR_VEC<T> vec,
     CR_FS_PATH path,

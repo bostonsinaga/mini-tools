@@ -27,25 +27,25 @@ namespace utils {
 
     /** Primitive Data Type Parsers */
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static T stringToNumber(CR_STR str);
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static VEC_STR numbersToStrings(CR_VEC<T> numbers);
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static VEC<T> parseNumbers(CR_STR text);
 
-    template <inspector::LETTER T>
-    static VEC<T> parseLetters(CR_STR text);
+    template <STRING T>
+    static VEC<T> parseWords(CR_STR text);
 
     /** Read TXT File */
 
-    template <inspector::NUMBER T>
+    template <NUMBER T>
     static VEC<T> txtToNumbers(CR_FS_PATH filename);
 
-    template <inspector::LETTER T>
-    static VEC<T> txtToLetters(CR_FS_PATH filename);
+    template <STRING T>
+    static VEC<T> txtToWords(CR_FS_PATH filename);
   };
 }}
 

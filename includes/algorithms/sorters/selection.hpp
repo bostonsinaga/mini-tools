@@ -7,7 +7,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-	template <inspector::NUMBER T, class U>
+	template <NUMBER T, class U>
 	class Selection final {
 	private:
 		static void process(

@@ -6,7 +6,7 @@
 namespace mini_tools {
 namespace algorithms {
 
-  template <inspector::NUMBER T>
+  template <NUMBER T>
   void RoundRobin::arbitrateNumeric(
     std::queue<RoundRobin::NumericTask<T>> &taskQueue,
     CR<T> valueLimit

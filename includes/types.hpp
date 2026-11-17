@@ -25,68 +25,44 @@
 
 namespace mini_tools {
 
-  /** TYPE CHECKERS */
+  /** TYPE CONSTRAINTS */
 
-  namespace inspector {
+  template <typename T>
+  concept LETTER =
+    std::is_same_v<T, char> ||
+    std::is_same_v<T, unsigned char> ||
+    std::is_same_v<T, wchar_t>;
 
-    template <typename T>
-    constexpr bool isLetter() {
-      return
-        std::is_same_v<T, char> ||
-        std::is_same_v<T, wchar_t> ||
-        std::is_same_v<T, std::string> ||
-        std::is_same_v<T, std::wstring>;
-    }
+  template <typename T>
+  concept STRING =
+    std::is_same_v<T, std::string> ||
+    std::is_same_v<T, std::wstring> ||
+    std::is_same_v<T, std::u16string> ||
+    std::is_same_v<T, std::u32string>;
 
-    template <typename T>
-    constexpr bool isFloategral() {
-      return
-        std::is_integral_v<T> ||
-        std::is_floating_point_v<T>;
-    }
+  template <typename T>
+  concept INTEGRAL = std::is_integral_v<T>;
 
-    template <typename T>
-    constexpr bool isNumber() {
-      return !isLetter<T>() && isFloategral<T>();
-    }
+  template <typename T>
+  concept FLOATING = std::is_floating_point_v<T>;
 
-    template <typename T>
-    constexpr bool isPointer() {
-      return std::is_pointer_v<T>;
-    }
+  template <typename T>
+  concept NUMBER = (INTEGRAL<T> || FLOATING<T>) && !LETTER<T>;
 
-    template <typename T>
-    constexpr bool notNullptr() {
-      return !std::is_same_v<T, std::nullptr_t>;
-    }
+  template <typename T>
+  concept ALPHANUMERIC = LETTER<T> || INTEGRAL<T> || FLOATING<T>;
 
-    template <typename T>
-    concept LETTER =
-      std::is_same_v<T, char> ||
-      std::is_same_v<T, unsigned char> ||
-      std::is_same_v<T, wchar_t> ||
-      std::is_same_v<T, std::string> ||
-      std::is_same_v<T, std::wstring>;
+  template <typename T>
+  concept STRNUMERIC = STRING<T> || ALPHANUMERIC<T>;
 
-    template <typename T>
-    concept INTEGRAL =
-      std::is_integral_v<T> &&
-      !std::is_same_v<T, bool> &&
-      !std::is_same_v<T, char> &&
-      !std::is_same_v<T, wchar_t>;
+  template <typename T>
+  concept POINTER = std::is_pointer_v<T>;
 
-    template <typename T>
-    concept FLOATING_POINT = std::is_floating_point_v<T>;
+  template <typename T>
+  concept NULLPTR = std::is_same_v<T, std::nullptr_t>;
 
-    template <typename T>
-    concept NUMBER = INTEGRAL<T> || FLOATING_POINT<T>;
-
-    template <typename T>
-    concept ALPHANUMERIC = LETTER<T> || NUMBER<T>;
-
-    template <typename T>
-    concept NOT_NULLPTR = !std::is_same_v<T, std::nullptr_t>;
-  }
+  template <typename T>
+  concept PRIMITIVE = std::is_fundamental_v<T>;
 
   /**
    * Floating point precisions based on IEEE 754 standard:
@@ -95,9 +71,9 @@ namespace mini_tools {
    * - Long Double = 19-21 digits.
    */
   enum PRECISION_ENUM {
-    FLT_PRECISION = 6,
-    DBL_PRECISION = 15,
-    LD_PRECISION = 19
+    FLOAT_PRECISION = 6,
+    DOUBLE_PRECISION = 15,
+    LONG_DOUBLE_PRECISION = 19
   };
 
   /** SHORTENED PRIMITIVE DATA TYPES */
@@ -1610,13 +1586,14 @@ namespace mini_tools {
   template <typename T>
   using CR_UNORMAP_LD_P = CR<UNORMAP_LD_P<T>>;
 
-  /** Get default value for T */
-
+  /**
+   * Get default value for T.
+   */
   template <typename T>
   T getDefaultFromType(CR<std::function<T()>> customDefaultValueGetter = nullptr) {
 
     // default value for pointer
-    if constexpr (inspector::isPointer<T>()) {
+    if constexpr (POINTER<T>) {
       return nullptr;
     }
     else {

@@ -7,7 +7,7 @@ namespace mini_tools {
 namespace algorithms {
 namespace sorters {
 
-  template <inspector::NUMBER T, class U, QUICK_SCHEME_ENUM SCHEME = QUICK_HOARE>
+  template <NUMBER T, class U, QUICK_SCHEME_ENUM SCHEME = QUICK_HOARE>
   class Quick final {
   private:
     /** Slower */
